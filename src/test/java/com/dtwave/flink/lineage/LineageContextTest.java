@@ -29,7 +29,7 @@ public class LineageContextTest {
 
 
     @Before
-    public void setUp() {
+    public void createTable() {
         // create mysql cdc table ods_mysql_users
         createTableOfOdsMysqlUsers();
 
