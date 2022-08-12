@@ -49,7 +49,7 @@ Apache Calcite是一款开源的动态数据管理框架，它提供了标准的
 5. **Execute阶段**
 
 把逻辑查询计划翻译成物理执行计划，依次生成StreamGraph、JobGraph，最终提交运行。
-![2.1 Flink Sql](data/images/https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.1%20FlinkSQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
+![2.1 Flink Sql](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.1%20FlinkSQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
                                                                      FlinkSQL 执行流程图
 
 > 注1: 图中的Abstract Syntax Tree、Optimized Physical Plan、Optimized Execution Plan、Physical Execution Plan名称来源于StreamPlanner中的explain()方法。
