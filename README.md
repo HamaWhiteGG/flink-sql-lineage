@@ -6,9 +6,6 @@
 
 
 </br>
-</br>
-源码地址: [https://github.com/HamaWhiteGG/flink-sql-lineage](https://github.com/HamaWhiteGG/flink-sql-lineage)
-
 作者邮箱: song.bs@dtwave-inc.com
 
 ## 一、基础知识
@@ -521,11 +518,11 @@ $ git checkout -b release-1.14.4.1
 1. 在flink-table模块，修改calcite.version的版本为 1.26.0.1，flink-table-planner会引用此版本号。即让flink-table-planner引用calcite-core-1.26.0.1。flink/flink-table/pom.xml。
 ```xml
 <properties>
-		<!-- When updating Janino, make sure that Calcite supports it as well. -->
-		<janino.version>3.0.11</janino.version>
-		<!--<calcite.version>1.26.0</calcite.version>-->
-		<calcite.version>1.26.0.1</calcite.version>
-		<guava.version>29.0-jre</guava.version>
+    <!-- When updating Janino, make sure that Calcite supports it as well. -->
+    <janino.version>3.0.11</janino.version>
+    <!--<calcite.version>1.26.0</calcite.version>-->
+    <calcite.version>1.26.0.1</calcite.version>
+    <guava.version>29.0-jre</guava.version>
 </properties>
 ```
 
