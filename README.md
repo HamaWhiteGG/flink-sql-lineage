@@ -319,6 +319,7 @@ FROM
 ```
 
 - 测试结果
+
 | **sourceTable** | **sourceColumn** | **targetTable** | **targetColumn** |
 | --- | --- | --- | --- |
 | ods_mysql_users | id | dwd_hudi_users | id |
@@ -370,6 +371,7 @@ Optimized RelNode
 ```
 
 - 测试结果
+
 | **sourceTable** | **sourceColumn** | **targetTable** | **targetColumn** |
 | --- | --- | --- | --- |
 | ods_mysql_users | id | dwd_hudi_users | id |
