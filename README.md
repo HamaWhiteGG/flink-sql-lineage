@@ -49,20 +49,20 @@ Apache Calcite是一款开源的动态数据管理框架，它提供了标准的
 5. **Execute阶段**
 
 把逻辑查询计划翻译成物理执行计划，依次生成StreamGraph、JobGraph，最终提交运行。
-![2.1 Flink Sql](data/images/2.1 FlinkSQL执行流程图.png)
+![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660209648574-24c3d99b-77c1-4ec6-84ea-eaa28af82622.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=499&id=u826a4987&margin=%5Bobject%20Object%5D&name=image.png&originHeight=998&originWidth=2094&originalType=binary&ratio=1&rotation=0&showTitle=false&size=237468&status=done&style=stroke&taskId=ub27dc4e8-5435-41c3-a05f-2265c90993a&title=&width=1047)
                                                                      FlinkSQL 执行流程图
 
 > 注1: 图中的Abstract Syntax Tree、Optimized Physical Plan、Optimized Execution Plan、Physical Execution Plan名称来源于StreamPlanner中的explain()方法。
 
 ### 2.2 字段血缘解析思路
-![2.2 Flink Sql](data/images/2.2 FlinkSQL 字段血缘解析流程图.pngg)
+![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660217179519-685945bf-63ba-4d6d-8431-808834057330.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=92&id=u57194b24&margin=%5Bobject%20Object%5D&name=image.png&originHeight=184&originWidth=1504&originalType=binary&ratio=1&rotation=0&showTitle=false&size=44788&status=done&style=stroke&taskId=ue47c74e1-6d40-4bcf-a415-eafe3e7d836&title=&width=752)
                                                                        FlinkSQL 字段血缘解析流程图
 FlinkSQL字段血缘解析分为四个阶段:
 
 1. 对输入SQL进行Parse、Validate、Convert，生成关系表达式RelNode树，对应FlinkSQL 执行流程图中的第1、2和3步骤。
 1. 在优化阶段，只生成到Optimized Logical Plan即可，而非原本的Optimized Physical Plan。要**修正**FlinkSQL 执行流程图中的第4步骤。
 
-![2.2 Flink sql11](data/images/2.2 FlinkSQL字段血缘解析思路图.png)
+![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660209743133-74afdd35-9c91-4059-a87a-3f9b4f268f88.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=265&id=u08b5838e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=530&originWidth=1872&originalType=binary&ratio=1&rotation=0&showTitle=false&size=128202&status=done&style=stroke&taskId=ue8900338-a386-4dd9-9935-49c7a5b0f4d&title=&width=936)
 
 3. 针对上步骤优化生成的逻辑RelNode，调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息。然后构造血缘关系，并返回结果。
 ### 2.3 核心源码阐述
@@ -182,7 +182,7 @@ private RelNode optimize(RelNode relNode) {
 }
 ```
 > 注: 此代码可参考StreamCommonSubGraphBasedOptimizer中的optimizeTree方法来书写。
-> ![dama](data/images/2.3.2 optimizeTree.png)
+> > ![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660217111513-24709f71-0a24-4172-b93e-7ab9c91883d9.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=624&id=ucb85ca95&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1366&originWidth=1386&originalType=binary&ratio=1&rotation=0&showTitle=false&size=349121&status=done&style=stroke&taskId=u42aeec0a-70fc-424c-b038-52555b10e45&title=&width=633)
 
 #### 2.3.3 查询原始字段并构造血缘
 调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息，然后构造血缘关系，并返回结果。
