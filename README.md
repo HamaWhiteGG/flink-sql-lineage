@@ -13,7 +13,8 @@
 Apache Calcite是一款开源的动态数据管理框架，它提供了标准的SQL语言、多种查询优化和连接各种数据源的能力，但不包括数据存储、处理数据的算法和存储元数据的存储库。Calcite采用的是业界大数据查询框架的一种通用思路，它的目标是“one size fits all”，希望能为不同计算平台和数据源提供统一的查询引擎。Calcite作为一个强大的SQL计算引擎，在Flink内部的SQL引擎模块就是基于Calcite。
 ### 1.2 Calcite RelNode介绍
 在CalciteSQL解析中，Parser解析后生成的SqlNode语法树，在Calcite的Converter阶段会把SqlNode抽象语法树转为关系运算符树(RelNode Tree)，如下图所示。
-![1.2 Calacite RelNode](data/images/1.2 Calacite SqlNode vs RelNode.png)
+![1.2 Calacite RelNode](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/1.2%20Calacite%20SqlNode%20vs%20RelNode.png)
+
 详情请参考[How to screw SQL to anything with Apache Calcite](https://zephyrnet.com/how-to-screw-sql-to-anything-with-apache-calcite/)
 
 ### 1.3   组件版本信息
