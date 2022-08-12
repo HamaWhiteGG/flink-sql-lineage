@@ -1,10 +1,12 @@
+<h2>FlinkSQL字段血缘解决方案及源码</h2>
+
 | 序号 | 作者 | 版本 | 时间 | 备注 |
 | --- | --- | --- | --- | --- |
 | 1 | 白松 | 1.0.0 | 2022-08-09 | 增加文档和源码 |
 
 
-
-
+</br>
+</br>
 源码地址: [https://github.com/HamaWhiteGG/flink-sql-lineage](https://github.com/HamaWhiteGG/flink-sql-lineage)
 
 作者邮箱: song.bs@dtwave-inc.com
@@ -14,7 +16,7 @@
 Apache Calcite是一款开源的动态数据管理框架，它提供了标准的SQL语言、多种查询优化和连接各种数据源的能力，但不包括数据存储、处理数据的算法和存储元数据的存储库。Calcite采用的是业界大数据查询框架的一种通用思路，它的目标是“one size fits all”，希望能为不同计算平台和数据源提供统一的查询引擎。Calcite作为一个强大的SQL计算引擎，在Flink内部的SQL引擎模块就是基于Calcite。
 ### 1.2 Calcite RelNode介绍
 在CalciteSQL解析中，Parser解析后生成的SqlNode语法树，在Calcite的Converter阶段会把SqlNode抽象语法树转为关系运算符树(RelNode Tree)，如下图所示。
-![image.png](https://cdn.nlark.com/yuque/0/2022/png/21496089/1660295391021-7dd6ac2c-6d6e-4272-9cae-8d0c44ff2f8f.png#clientId=u692aafbb-2da2-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=434&id=u555e49d7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1032&originWidth=1702&originalType=binary&ratio=1&rotation=0&showTitle=false&size=277084&status=done&style=stroke&taskId=ud436934f-bbaa-47fd-bdbb-1fb62f9b759&title=&width=715.48828125)
+![1.2 Calacite RelNode](data/images/1.2 Calacite SqlNode vs RelNode.png)
 详情请参考[How to screw SQL to anything with Apache Calcite](https://zephyrnet.com/how-to-screw-sql-to-anything-with-apache-calcite/)
 
 ### 1.3   组件版本信息
@@ -49,20 +51,20 @@ Apache Calcite是一款开源的动态数据管理框架，它提供了标准的
 5. **Execute阶段**
 
 把逻辑查询计划翻译成物理执行计划，依次生成StreamGraph、JobGraph，最终提交运行。
-![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660209648574-24c3d99b-77c1-4ec6-84ea-eaa28af82622.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=499&id=u826a4987&margin=%5Bobject%20Object%5D&name=image.png&originHeight=998&originWidth=2094&originalType=binary&ratio=1&rotation=0&showTitle=false&size=237468&status=done&style=stroke&taskId=ub27dc4e8-5435-41c3-a05f-2265c90993a&title=&width=1047)
+![2.1 Flink Sql](data/images/2.1 FlinkSQL执行流程图.png)
                                                                      FlinkSQL 执行流程图
 
 > 注1: 图中的Abstract Syntax Tree、Optimized Physical Plan、Optimized Execution Plan、Physical Execution Plan名称来源于StreamPlanner中的explain()方法。
 
 ### 2.2 字段血缘解析思路
-![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660217179519-685945bf-63ba-4d6d-8431-808834057330.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=92&id=u57194b24&margin=%5Bobject%20Object%5D&name=image.png&originHeight=184&originWidth=1504&originalType=binary&ratio=1&rotation=0&showTitle=false&size=44788&status=done&style=stroke&taskId=ue47c74e1-6d40-4bcf-a415-eafe3e7d836&title=&width=752)
+![2.2 Flink Sql](data/images/2.2 FlinkSQL 字段血缘解析流程图.png)
                                                                        FlinkSQL 字段血缘解析流程图
 FlinkSQL字段血缘解析分为四个阶段:
 
 1. 对输入SQL进行Parse、Validate、Convert，生成关系表达式RelNode树，对应FlinkSQL 执行流程图中的第1、2和3步骤。
 1. 在优化阶段，只生成到Optimized Logical Plan即可，而非原本的Optimized Physical Plan。要**修正**FlinkSQL 执行流程图中的第4步骤。
 
-![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660209743133-74afdd35-9c91-4059-a87a-3f9b4f268f88.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=265&id=u08b5838e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=530&originWidth=1872&originalType=binary&ratio=1&rotation=0&showTitle=false&size=128202&status=done&style=stroke&taskId=ue8900338-a386-4dd9-9935-49c7a5b0f4d&title=&width=936)
+![2.2 Flink sql11](data/images/2.2 FlinkSQL字段血缘解析思路图.png)
 
 3. 针对上步骤优化生成的逻辑RelNode，调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息。然后构造血缘关系，并返回结果。
 ### 2.3 核心源码阐述
@@ -182,7 +184,7 @@ private RelNode optimize(RelNode relNode) {
 }
 ```
 > 注: 此代码可参考StreamCommonSubGraphBasedOptimizer中的optimizeTree方法来书写。
-> > ![image.png](https://cdn.nlark.com/yuque/0/2022/png/499433/1660217111513-24709f71-0a24-4172-b93e-7ab9c91883d9.png#clientId=u3bed663e-6acd-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=624&id=ucb85ca95&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1366&originWidth=1386&originalType=binary&ratio=1&rotation=0&showTitle=false&size=349121&status=done&style=stroke&taskId=u42aeec0a-70fc-424c-b038-52555b10e45&title=&width=633)
+> ![dama](data/images/2.3.2 optimizeTree.png)
 
 #### 2.3.3 查询原始字段并构造血缘
 调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息，然后构造血缘关系，并返回结果。
@@ -428,9 +430,7 @@ Lookup Join-Original RelNode
 
 但calcite-core中RelMdColumnOrigins这个Handler类里并没有处理Snapshot类型的RelNode，导致返回空，继而丢失Lookup Join字段的血缘关系。因此，需要在RelMdColumnOrigins增加一个处理Snapshot的getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)方法。
 
-由于flink-table-planner是采用maven-shade-plugin打包的，因此修改calcite-core后要重新打flink包。
-
-flink-table/flink-table-planner/pom.xml
+由于flink-table-planner是采用maven-shade-plugin打包的，因此修改calcite-core后要重新打flink包。flink-table/flink-table-planner/pom.xml。
 
 ```xml
 
@@ -459,9 +459,7 @@ $ git checkout -b calcite-1.26.0.1
 ```
 #### 4.2.2 修改源码
 
-1. 在calcite-core模块，给RelMdColumnOrigins类增加方法 getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)。
-
-   org.apache.calcite.rel.metadata.RelMdColumnOrigins
+1. 在calcite-core模块，给RelMdColumnOrigins类增加方法 getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)。org.apache.calcite.rel.metadata.RelMdColumnOrigins
 ```java
 public Set<RelColumnOrigin> getColumnOrigins(Snapshot rel,
         RelMetadataQuery mq, int iOutputColumn) {
@@ -469,9 +467,7 @@ public Set<RelColumnOrigin> getColumnOrigins(Snapshot rel,
 }
 ```
 
-2. 修改版本号为 1.26.0.1
-
-   calcite/gradle.properties
+2. 修改版本号为 1.26.0.1，calcite/gradle.properties
 ```properties
 # 修改前
 calcite.version=1.26.0
@@ -522,9 +518,7 @@ $ git checkout -b release-1.14.4.1
 ```
 #### 4.3.2 修改源码
 
-1. 在flink-table模块，修改calcite.version的版本为 1.26.0.1，flink-table-planner会引用此版本号。即让flink-table-planner引用calcite-core-1.26.0.1。
-
-   flink/flink-table/pom.xml
+1. 在flink-table模块，修改calcite.version的版本为 1.26.0.1，flink-table-planner会引用此版本号。即让flink-table-planner引用calcite-core-1.26.0.1。flink/flink-table/pom.xml。
 ```xml
 <properties>
 		<!-- When updating Janino, make sure that Calcite supports it as well. -->
@@ -535,9 +529,7 @@ $ git checkout -b release-1.14.4.1
 </properties>
 ```
 
-2. 修改flink-table-planner版本号为1.14.4.1，包含下面3点。
-
-   flink/flink-table/flink-table-planner/pom.xml
+2. 修改flink-table-planner版本号为1.14.4.1，包含下面3点。flink/flink-table/flink-table-planner/pom.xml。
 ```xml
 
 <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
@@ -565,7 +557,6 @@ $ mvn clean install -pl flink-table/flink-table-planner -am -Dscala-2.12 -DskipT
 
 如果要推送到Maven仓库，修改pom.xml 增加仓库地址(以数澜科技仓库为例)。
 
-flink/pom.xml
 
 ```xml
 <distributionManagement>
@@ -590,7 +581,6 @@ $ mvn clean deploy -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.
 ### 4.4 修改Flink依赖版本并测试Lookup Join
 修改pom.xml中依赖的flink-table-planner的版本为1.14.4.1。
 
-pom.xml
 
 ```xml
 <dependency>
