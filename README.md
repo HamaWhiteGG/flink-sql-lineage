@@ -67,8 +67,6 @@ FlinkSQL字段血缘解析分为四个阶段:
 ### 2.3 核心源码阐述
 parseFieldLineage(String sql)方法是对外提供的字段血缘解析API，里面分别执行三大步骤。
 
-parseFieldLineage(String sql)
-
 ```java
 public List<FieldLineage> parseFieldLineage(String sql) {
     LOG.info("Input Sql: \n {}", sql);
@@ -88,8 +86,6 @@ public List<FieldLineage> parseFieldLineage(String sql) {
 ```
 #### 2.3.1 根据SQL生成RelNode树
 调用ParserImpl.List<Operation> parse(String statement) 方法即可，然后返回第一个operation中的calciteTree。此代码限制只支持Insert的血缘关系。
-
-parseStatement(String sql)
 
 ```java
 private Tuple2<String, RelNode> parseStatement(String sql) {
@@ -116,8 +112,6 @@ private Tuple2<String, RelNode> parseStatement(String sql) {
 #### 2.3.2 生成Optimized Logical Plan
 在第4步骤的逻辑计划优化阶段，根据源码可知核心是调用FlinkStreamProgram的中的优化策略，共包含12个阶段(subquery_rewrite、temporal_join_rewrite...logical_rewrite、time_indicator、physical、physical_rewrite)，优化后生成的是Optimized Pysical Plan。
 根据SQL的字段血缘解析原理可知，只要解析到logical_rewrite优化后即可，因此复制FlinkStreamProgram源码为FlinkStreamProgramWithoutPhysical类，并删除time_indicator、physical、physical_rewrite策略及最后面chainedProgram.addLast相关代码。然后调用optimize方法核心代码如下:
-
-optimize(RelNode relNode)
 
 ```java
 
@@ -185,9 +179,7 @@ private RelNode optimize(RelNode relNode) {
 
 #### 2.3.3 查询原始字段并构造血缘
 调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息，然后构造血缘关系，并返回结果。
-
 buildFiledLineageResult(String sinkTable, RelNode optRelNode)
-
 ```java
 private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
     // target columns
@@ -236,7 +228,6 @@ private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode opt
 下面新建三张表，分别是: ods_mysql_users、dim_mysql_company和dwd_hudi_users。
 #### 3.1.1 新建mysql cdc table-ods_mysql_users
 
-ods_mysql_users
 
 ```sql
 DROP TABLE IF EXISTS ods_mysql_users;
@@ -260,8 +251,6 @@ CREATE TABLE ods_mysql_users(
 ```
 #### 3.1.2 新建mysql dim table-dim_mysql_company
 
-dim_mysql_company
-
 ```sql
 DROP TABLE IF EXISTS dim_mysql_company;
 
@@ -277,8 +266,6 @@ CREATE TABLE dim_mysql_company (
 );
 ```
 #### 3.1.3 新建hudi sink table-dwd_hudi_users
-
-dim_mysql_company
 
 ```sql
 DROP TABLE IF EXISTS dwd_hudi_users;
