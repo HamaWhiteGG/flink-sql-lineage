@@ -513,7 +513,7 @@ $ git checkout -b release-1.14.4.1
 
 <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
 <!--1.新增此行-->
-<version>1.14.4.2</version>
+<version>1.14.4.1</version>
 <name>Flink : Table : Planner</name>
 
 <!--2. 全局替换${project.version}为${parent.version}-->
