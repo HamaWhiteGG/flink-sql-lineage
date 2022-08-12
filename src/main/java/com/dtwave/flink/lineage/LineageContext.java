@@ -45,7 +45,7 @@ public class LineageContext {
 
     private static final Logger LOG = LoggerFactory.getLogger(LineageContext.class);
 
-    private static final String HIVE_CONF_DIR = "conf";
+    private static final String HIVE_CONF_DIR = "data/conf";
 
     private final StreamExecutionEnvironment env;
     private final TableEnvironmentImpl tableEnv;
