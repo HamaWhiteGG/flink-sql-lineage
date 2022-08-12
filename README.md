@@ -539,9 +539,9 @@ $ git checkout -b release-1.14.4.1
 <!--3.新增加此依赖，强制指定flink-test-utils-junit版本，否则编译会报错-->
 <dependency>
   <artifactId>flink-test-utils-junit</artifactId>
-	<groupId>org.apache.flink</groupId>
-	<version>${parent.version}</version>
-	<scope>test</scope>
+  <groupId>org.apache.flink</groupId>
+  <version>${parent.version}</version>
+  <scope>test</scope>
 </dependency>
 
 ```
