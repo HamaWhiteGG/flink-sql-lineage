@@ -50,19 +50,18 @@ Apache Calcite是一款开源的动态数据管理框架，它提供了标准的
 
 把逻辑查询计划翻译成物理执行计划，依次生成StreamGraph、JobGraph，最终提交运行。
 ![2.1 Flink Sql](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.1%20FlinkSQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
-                                                                     FlinkSQL 执行流程图
-
+                               
 > 注1: 图中的Abstract Syntax Tree、Optimized Physical Plan、Optimized Execution Plan、Physical Execution Plan名称来源于StreamPlanner中的explain()方法。
 
 ### 2.2 字段血缘解析思路
-![2.2 Flink Sql](data/images/2.2 FlinkSQL 字段血缘解析流程图.png)
-                                                                       FlinkSQL 字段血缘解析流程图
+![2.2 Flink Sql](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.2%20FlinkSQL%E5%AD%97%E6%AE%B5%E8%A1%80%E7%BC%98%E8%A7%A3%E6%9E%90%E6%80%9D%E8%B7%AF%E5%9B%BE.png)
+                                                         
 FlinkSQL字段血缘解析分为四个阶段:
 
 1. 对输入SQL进行Parse、Validate、Convert，生成关系表达式RelNode树，对应FlinkSQL 执行流程图中的第1、2和3步骤。
 1. 在优化阶段，只生成到Optimized Logical Plan即可，而非原本的Optimized Physical Plan。要**修正**FlinkSQL 执行流程图中的第4步骤。
 
-![2.2 Flink sql11](data/images/2.2 FlinkSQL字段血缘解析思路图.png)
+![2.2 Flink sql11](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.2%20FlinkSQL%E5%AD%97%E6%AE%B5%E8%A1%80%E7%BC%98%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
 3. 针对上步骤优化生成的逻辑RelNode，调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息。然后构造血缘关系，并返回结果。
 ### 2.3 核心源码阐述
@@ -182,7 +181,7 @@ private RelNode optimize(RelNode relNode) {
 }
 ```
 > 注: 此代码可参考StreamCommonSubGraphBasedOptimizer中的optimizeTree方法来书写。
-> ![dama](data/images/2.3.2 optimizeTree.png)
+> ![optimizeTree.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.3.2%20optimizeTree.png)
 
 #### 2.3.3 查询原始字段并构造血缘
 调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息，然后构造血缘关系，并返回结果。
