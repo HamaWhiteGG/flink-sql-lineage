@@ -359,10 +359,7 @@ ON a.id = b.user_id
       LogicalTableScan(table=[[hive, flink_demo, ods_mysql_users]])
     LogicalTableScan(table=[[hive, flink_demo, dim_mysql_company]])
 ```
-经过optimize(RelNode relNode)优化后的结果如下: 
-
-Optimized RelNode
-
+  经过optimize(RelNode relNode)优化后的Optimized RelNode结果如下: 
 ```shell
  FlinkLogicalCalc(select=[id AS id1, CONCAT(name, company_name) AS EXPR$1, company_name, birthday, ts, DATE_FORMAT(birthday, _UTF-16LE'yyyyMMdd') AS p])
   FlinkLogicalJoin(condition=[=($0, $4)], joinType=[inner])
