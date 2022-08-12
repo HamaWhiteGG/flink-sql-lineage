@@ -290,7 +290,6 @@ CREATE TABLE dwd_hudi_users (
 
 - 测试SQL
 
-  insert-select
 ```sql
 INSERT INTO
     dwd_hudi_users
@@ -320,7 +319,6 @@ FROM
 
 - 测试SQL
 
-  insert-select-table-join
 ```sql
 SELECT
     a.id as id1,
@@ -367,8 +365,6 @@ ON a.id = b.user_id
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
 上述步骤完成后还不支持Look up Join的字段血缘解析。例如针对测试SQL:
-
-insert-select-table-lookup join
 
 ```sql
 SELECT
