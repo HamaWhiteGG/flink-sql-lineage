@@ -437,7 +437,9 @@ Lookup Join-Original RelNode
 ```
 
 本文在下面的4.2-4.5章节给出基础性操作步骤，分别讲述如何修改calcite、flink源码，以及如何打包。
-同时在4.6章节通过动态编辑Java字节码技术来增加getColumnOrigins方法，源码已默认采用此技术，读者可直接跳到4.6小节进行阅读。
+
+
+同时在4.6章节通过动态编辑Java字节码技术来增加getColumnOrigins方法，源码已默认采用此技术，读者也可直接跳到4.6小节进行阅读。
 
 ### 4.2 重新编译Calcite源码
 #### 4.2.1 下载源码及创建分支
@@ -631,7 +633,7 @@ static {
 	}
 }
 ```
-> 注1: 也可把RelMdColumnOrigins类及package拷贝到项目中，然后手动增加getColumnOrigins方法。但是此方法兼容性不够友好，后续calcite源码进行迭代后，要跟随calcite源码一起修改。
+> 注1: 也可把RelMdColumnOrigins类及package拷贝到项目中，然后手动增加getColumnOrigins方法。但是此方法兼容性不够友好，后续calcite源码进行迭代后血缘代码要跟随calcite一起修正。
 
 
 
