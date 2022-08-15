@@ -321,7 +321,7 @@ FROM
 | ods_mysql_users | ts | dwd_hudi_users | ts |
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
-#### 3.2.2 测试insert-select-table-join
+#### 3.2.2 测试insert-select-join
 
 - 测试SQL
 
@@ -370,7 +370,11 @@ ON a.id = b.user_id
 | ods_mysql_users | ts | dwd_hudi_users | ts |
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
-上述步骤完成后还不支持Look up Join的字段血缘解析。例如针对测试SQL:
+#### 3.2.3 测试insert-select-lookup-join
+
+上述步骤完成后还不支持Lookup Join的字段血缘解析，测试情况如下所述。
+
+- 测试SQL
 
 ```sql
 SELECT
@@ -386,7 +390,8 @@ JOIN
     dim_mysql_company FOR SYSTEM_TIME AS OF a.proc_time AS b
 ON a.id = b.user_id
 ```
-字段血缘测试结果如下:
+
+- 测试结果
 
 | **sourceTable** | **sourceColumn** | **targetTable** | **targetColumn** |
 | --- | --- | --- | --- |
@@ -397,6 +402,7 @@ ON a.id = b.user_id
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
 可以看到，维表dim_mysql_company的字段血缘关系都被丢失掉，因此继续进行下面的步骤。
+
 ## 四、修改Calcite源码支持Lookup Join
 ### 4.1 实现思路
 针对Lookup Join，Parser会把SQL语句“FOR SYSTEM_TIME AS OF ”解析成 SqlSnapshot ( SqlNode)，validate() 将其转换成 LogicalSnapshot(RelNode)。
@@ -429,6 +435,10 @@ Lookup Join-Original RelNode
         <include>org.apache.calcite.avatica:*</include>
   ...             
 ```
+
+本文在下面的4.2-4.5章节给出基础性操作步骤，分别讲述如何修改calcite、flink源码，以及如何打包。
+同时在4.6章节通过动态编辑Java字节码技术来增加getColumnOrigins方法，源码已默认采用此技术，读者可直接跳到4.6小节进行阅读。
+
 ### 4.2 重新编译Calcite源码
 #### 4.2.1 下载源码及创建分支
 flink1.14.4依赖的calcite版本是1.26.0，因此基于tag calcite-1.26.0来修改源码。并且在原有3位版本号后面再增加一位版本号，以区别于官方发布的版本。
@@ -575,7 +585,7 @@ $ mvn clean deploy -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.
 </dependency>
 ```
 
-执行测试用例得到Lookup Join血缘结果如下，已经包含维表dim_mysql_company的字段血缘关系。
+执行第3.2.3章节的测试用例得到Lookup Join血缘结果如下，已经包含维表dim_mysql_company的字段血缘关系。
 
 | **sourceTable** | **sourceColumn** | **targetTable** | **targetColumn** |
 | --- | --- | --- | --- |
@@ -586,6 +596,44 @@ $ mvn clean deploy -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.
 | ods_mysql_users | birthday | dwd_hudi_users | birthday |
 | ods_mysql_users | ts | dwd_hudi_users | ts |
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
+
+### 4.6 动态编辑Java字节码增加getColumnOrigins方法
+Javassist是可以动态编辑Java字节码的类库。它可以在Java程序运行时定义一个新的类，并加载到JVM中；还可以在JVM加载时修改一个类文件。
+因此，本文通过Javassist技术来动态给RelMdColumnOrigins类增加getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)方法。
+
+核心代码如下:
+```java
+/**
+ * Dynamic add getColumnOrigins method to class RelMdColumnOrigins by javassist:
+ *
+ * public Set<RelColumnOrigin> getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn) {
+ *      return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
+ * }
+ */
+static {
+	try {
+		ClassPool classPool = ClassPool.getDefault();
+		CtClass ctClass = classPool.getCtClass("org.apache.calcite.rel.metadata.RelMdColumnOrigins");
+
+		CtClass[] parameters = new CtClass[]{classPool.get(Snapshot.class.getName())
+                , classPool.get(RelMetadataQuery.class.getName())
+                , CtClass.intType
+        };
+		// add method
+		CtMethod ctMethod = new CtMethod(classPool.get("java.util.Set"), "getColumnOrigins", parameters, ctClass);
+		ctMethod.setModifiers(Modifier.PUBLIC);
+		ctMethod.setBody("{return $2.getColumnOrigins($1.getInput(), $3);}");
+      	ctClass.addMethod(ctMethod);
+        // load the class
+        ctClass.toClass();
+	} catch (Exception e) {
+		throw new TableException("Dynamic add getColumnOrigins() method exception.", e);
+	}
+}
+```
+> 注1: 也可把RelMdColumnOrigins类及package拷贝到项目中，然后手动增加getColumnOrigins方法。但是此方法兼容性不够友好，后续calcite源码进行迭代后，要跟随calcite源码一起修改。
+
+
 
 ## 五、参考文献
 
