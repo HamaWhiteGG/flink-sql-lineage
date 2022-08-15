@@ -11,6 +11,7 @@
 
     <properties>
         <flink.version>1.14.4</flink.version>
+        <!--<flink.table.planner.version>1.14.4.1</flink.table.planner.version>-->
         <hadoop.version>3.2.2</hadoop.version>
         <hive.version>3.1.2</hive.version>
         <junit.version>4.13.2</junit.version>
@@ -39,6 +40,7 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
+            <!--<version>${flink.table.planner.version}</version>-->
         </dependency>
 
         <dependency>
