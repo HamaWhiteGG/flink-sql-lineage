@@ -10,12 +10,14 @@
 
 ## 一、基础知识
 ### 1.1 Apache Calcite简介
-Apache Calcite是一款开源的动态数据管理框架，它提供了标准的SQL语言、多种查询优化和连接各种数据源的能力，但不包括数据存储、处理数据的算法和存储元数据的存储库。Calcite采用的是业界大数据查询框架的一种通用思路，它的目标是“one size fits all”，希望能为不同计算平台和数据源提供统一的查询引擎。Calcite作为一个强大的SQL计算引擎，在Flink内部的SQL引擎模块就是基于Calcite。
-### 1.2 Calcite RelNode介绍
-在CalciteSQL解析中，Parser解析后生成的SqlNode语法树，在Calcite的Converter阶段会把SqlNode抽象语法树转为关系运算符树(RelNode Tree)，如下图所示。
-![1.2 Calacite SqlNode vs RelNode.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/1.2%20Calacite%20SqlNode%20vs%20RelNode.png)
+Apache Calcite是一款开源的动态数据管理框架，它提供了标准的SQL语言、多种查询优化和连接各种数据源的能力，但不包括数据存储、处理数据的算法和存储元数据的存储库。Calcite采用的是业界大数据查询框架的一种通用思路，它的目标是“one size fits all”，希望能为不同计算平台和数据源提供统一的查询引擎。Calcite作为一个强大的SQL计算引擎，在Flink内部的SQL引擎模块也是基于Calcite。Calcite工作流程如下图所示，一般分为Parser、Validator和Converter、Optimizer阶段。
 
 详情请参考[How to screw SQL to anything with Apache Calcite](https://zephyrnet.com/how-to-screw-sql-to-anything-with-apache-calcite/)
+
+### 1.2 Calcite RelNode介绍
+在CalciteSQL解析中，Parser解析后生成的SqlNode语法树，经过Validator校验后在Converter阶段会把SqlNode抽象语法树转为关系运算符树(RelNode Tree)，如下图所示。
+![1.2 Calacite SqlNode vs RelNode.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/1.2%20Calacite%20SqlNode%20vs%20RelNode.png)
+
 
 ### 1.3   组件版本信息
 | 组件名称 | 版本 | 备注 |
@@ -52,6 +54,7 @@ Apache Calcite是一款开源的动态数据管理框架，它提供了标准的
 ![2.1 FlinkSQL执行流程图.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.1%20FlinkSQL%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
                                
 > 注1: 图中的Abstract Syntax Tree、Optimized Physical Plan、Optimized Execution Plan、Physical Execution Plan名称来源于StreamPlanner中的explain()方法。
+> 注2: 相比Calcite官方工作流程图，此处把Validate和Convert分为两个阶段。
 
 ### 2.2 字段血缘解析思路
 ![2.2 FlinkSQL字段血缘解析思路图.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.2%20FlinkSQL%E5%AD%97%E6%AE%B5%E8%A1%80%E7%BC%98%E8%A7%A3%E6%9E%90%E6%80%9D%E8%B7%AF%E5%9B%BE.png)
