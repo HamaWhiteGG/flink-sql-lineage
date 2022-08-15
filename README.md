@@ -436,10 +436,10 @@ Lookup Join-Original RelNode
   ...             
 ```
 
-本文在下面的4.2-4.5章节给出基础性操作步骤，分别讲述如何修改calcite、flink源码，以及如何打包。
+本文在下面的4.2-4.4小节给出基础性操作步骤，分别讲述如何修改calcite、flink源码，以及如何编译、打包。
 
 
-同时在4.6章节通过动态编辑Java字节码技术来增加getColumnOrigins方法，源码已默认采用此技术，读者也可直接跳到4.6小节进行阅读。
+同时在4.5小节通过动态编辑Java字节码技术来增加getColumnOrigins方法，源码已默认采用此技术，读者也可直接跳到4.5小节进行阅读。
 
 ### 4.2 重新编译Calcite源码
 #### 4.2.1 下载源码及创建分支
@@ -599,7 +599,7 @@ $ mvn clean deploy -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.
 | ods_mysql_users | ts | dwd_hudi_users | ts |
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
-### 4.6 动态编辑Java字节码增加getColumnOrigins方法
+### 4.5 动态编辑Java字节码增加getColumnOrigins方法
 Javassist是可以动态编辑Java字节码的类库。它可以在Java程序运行时定义一个新的类，并加载到JVM中；还可以在JVM加载时修改一个类文件。
 因此，本文通过Javassist技术来动态给RelMdColumnOrigins类增加getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)方法。
 
