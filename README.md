@@ -620,14 +620,14 @@ static {
 		CtClass[] parameters = new CtClass[]{classPool.get(Snapshot.class.getName())
                 , classPool.get(RelMetadataQuery.class.getName())
                 , CtClass.intType
-        };
+		};
 		// add method
 		CtMethod ctMethod = new CtMethod(classPool.get("java.util.Set"), "getColumnOrigins", parameters, ctClass);
 		ctMethod.setModifiers(Modifier.PUBLIC);
 		ctMethod.setBody("{return $2.getColumnOrigins($1.getInput(), $3);}");
-      	ctClass.addMethod(ctMethod);
-        // load the class
-        ctClass.toClass();
+		ctClass.addMethod(ctMethod);
+		// load the class
+		ctClass.toClass();
 	} catch (Exception e) {
 		throw new TableException("Dynamic add getColumnOrigins() method exception.", e);
 	}
