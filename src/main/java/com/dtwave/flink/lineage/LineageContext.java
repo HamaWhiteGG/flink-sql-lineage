@@ -52,6 +52,7 @@ public class LineageContext {
     private static final Logger LOG = LoggerFactory.getLogger(LineageContext.class);
 
     private static final String HIVE_CONF_DIR = "data/conf";
+    private static final String DELIMITER = ".";
 
     private final StreamExecutionEnvironment env;
     private final TableEnvironmentImpl tableEnv;
@@ -237,7 +238,7 @@ public class LineageContext {
                 for (RelColumnOrigin relColumnOrigin : relColumnOriginSet) {
                     // table
                     RelOptTable table = relColumnOrigin.getOriginTable();
-                    String sourceTable = String.join(".", table.getQualifiedName());
+                    String sourceTable = String.join(DELIMITER, table.getQualifiedName());
 
                     // filed
                     int ordinal = relColumnOrigin.getOriginColumnOrdinal();
@@ -257,8 +258,8 @@ public class LineageContext {
 
 
     private Result buildResult(String sourceTablePath, String sourceColumn, String targetTablePath, String targetColumn) {
-        String[] sourceItems = sourceTablePath.split("\\.");
-        String[] targetItems = targetTablePath.split("\\.");
+        String[] sourceItems = sourceTablePath.split("\\" + DELIMITER);
+        String[] targetItems = targetTablePath.split("\\" + DELIMITER);
 
         return Result.builder()
                 .sourceCatalog(sourceItems[0])
