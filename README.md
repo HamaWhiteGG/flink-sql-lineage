@@ -62,7 +62,7 @@ Calcite工作流程如下图所示，一般分为Parser、Validator和Converter�
 ### 2.2 字段血缘解析思路
 ![2.2 FlinkSQL字段血缘解析思路图.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.2%20FlinkSQL%E5%AD%97%E6%AE%B5%E8%A1%80%E7%BC%98%E8%A7%A3%E6%9E%90%E6%80%9D%E8%B7%AF%E5%9B%BE.png)
                                                          
-FlinkSQL字段血缘解析分为四个阶段:
+FlinkSQL字段血缘解析分为三个阶段:
 
 1. 对输入SQL进行Parse、Validate、Convert，生成关系表达式RelNode树，对应FlinkSQL 执行流程图中的第1、2和3步骤。
 1. 在优化阶段，只生成到Optimized Logical Plan即可，而非原本的Optimized Physical Plan。要**修正**FlinkSQL 执行流程图中的第4步骤。
