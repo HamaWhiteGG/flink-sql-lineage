@@ -600,7 +600,7 @@ $ mvn clean deploy -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
 ### 4.5 动态编辑Java字节码增加getColumnOrigins方法
-Javassist是可以动态编辑Java字节码的类库。它可以在Java程序运行时定义一个新的类，并加载到JVM中；还可以在JVM加载时修改一个类文件。
+Javassist是可以动态编辑Java字节码的类库，它可以在Java程序运行时定义一个新的类并加载到JVM中，还可以在JVM加载时修改一个类文件。
 因此，本文通过Javassist技术来动态给RelMdColumnOrigins类增加getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)方法。
 
 核心代码如下:
