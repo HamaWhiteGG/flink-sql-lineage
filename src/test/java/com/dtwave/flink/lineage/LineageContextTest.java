@@ -1,5 +1,6 @@
 package com.dtwave.flink.lineage;
 
+import org.apache.flink.table.api.ValidationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -39,6 +40,28 @@ public class LineageContextTest {
         // create hudi sink table dwd_hudi_users
         createTableOfDwdHudiUsers();
     }
+
+
+    /**
+     * insert-select, but the fields of the query and sink do not match
+     *
+     * insert into hudi table from mysql cdc stream join.
+     */
+    @Test(expected = ValidationException.class)
+    public void testInsertSelectMismatchField() {
+        String sql = "INSERT INTO dwd_hudi_users " +
+                "SELECT " +
+                "   id ," +
+                "   name ," +
+                "   birthday ," +
+                "   ts ," +
+                "   DATE_FORMAT(birthday, 'yyyyMMdd') " +
+                "FROM" +
+                "   ods_mysql_users";
+
+        context.parseFieldLineage(sql);
+    }
+
 
 
     /**

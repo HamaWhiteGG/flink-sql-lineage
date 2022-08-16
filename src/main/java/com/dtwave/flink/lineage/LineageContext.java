@@ -19,6 +19,7 @@ import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableConfig;
 import org.apache.flink.table.api.TableException;
 import org.apache.flink.table.api.TableResult;
+import org.apache.flink.table.api.ValidationException;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.CatalogManager;
@@ -221,8 +222,10 @@ public class LineageContext {
                 .getResolvedSchema()
                 .getColumnNames();
 
-        RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
+        // check the size of query and sink fields match
+        validateSchema(sinkTable,optRelNode,targetColumnList);
 
+        RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
         List<Result> resultList = new ArrayList<>();
 
         for (int index = 0; index < targetColumnList.size(); index++) {
@@ -254,6 +257,22 @@ public class LineageContext {
             }
         }
         return resultList;
+    }
+
+
+    /**
+     * Check the size of query and sink fields match
+     */
+    private void validateSchema(String sinkTable, RelNode relNode, List<String> sinkFieldList) {
+        List<String> queryFieldList = relNode.getRowType().getFieldNames();
+        if (queryFieldList.size() != sinkFieldList.size()) {
+            throw new ValidationException(
+                    String.format(
+                            "Column types of query result and sink for %s do not match.\n"
+                                    + "Query schema: %s\n"
+                                    + "Sink schema:  %s",
+                            sinkTable, queryFieldList, sinkFieldList));
+        }
     }
 
 
