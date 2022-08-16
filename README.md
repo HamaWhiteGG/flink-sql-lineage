@@ -635,6 +635,7 @@ static {
 ```
 > 注1: 也可把RelMdColumnOrigins类及package拷贝到项目中，然后手动增加getColumnOrigins方法。但是此方法兼容性不够友好，后续calcite源码进行迭代后血缘代码要跟随calcite一起修正。
 
+上述代码增加后，执行Lookup Join的测试用例后就能看到维表dim_mysql_company的字段血缘关系，如4.4节的表格所示。
 
 
 ## 五、参考文献
