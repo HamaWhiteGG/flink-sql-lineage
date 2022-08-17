@@ -6,6 +6,8 @@
 
 
 </br>
+源码地址: [https://github.com/HamaWhiteGG/flink-sql-lineage](https://github.com/HamaWhiteGG/flink-sql-lineage)
+
 作者邮箱: song.bs@dtwave-inc.com
 
 ## 一、基础知识
@@ -552,7 +554,7 @@ $ git checkout -b release-1.14.4.1
 $ mvn clean install -pl flink-table/flink-table-planner -am -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.skip=true -Pskip-webui-build
 ```
 
-如果要推送到Maven仓库，修改pom.xml 增加仓库地址(以数澜科技仓库为例)。
+如果要推送到Maven仓库，修改pom.xml 增加仓库地址。
 
 
 ```xml
