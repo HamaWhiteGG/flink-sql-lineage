@@ -6,7 +6,7 @@
 
 
 </br>
-源码地址: [https://github.com/HamaWhiteGG/flink-sql-lineage](https://github.com/HamaWhiteGG/flink-sql-lineage)
+源码地址: https://github.com/HamaWhiteGG/flink-sql-lineage
 
 作者邮箱: song.bs@dtwave-inc.com
 
