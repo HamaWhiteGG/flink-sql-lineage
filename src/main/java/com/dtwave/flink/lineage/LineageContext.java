@@ -27,7 +27,6 @@ import org.apache.flink.table.catalog.FunctionCatalog;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.operations.CatalogSinkModifyOperation;
 import org.apache.flink.table.operations.Operation;
-import org.apache.flink.table.planner.calcite.FlinkContext;
 import org.apache.flink.table.planner.calcite.FlinkRelBuilder;
 import org.apache.flink.table.planner.calcite.SqlExprToRexConverterFactory;
 import org.apache.flink.table.planner.delegation.PlannerBase;
@@ -176,7 +175,7 @@ public class LineageContext {
 
             @Override
             public FunctionCatalog getFunctionCatalog() {
-                return ((PlannerBase) tableEnv.getPlanner()).getFlinkContext().getFunctionCatalog();
+                return getPlanner().getFlinkContext().getFunctionCatalog();
             }
 
             @Override
@@ -186,17 +185,18 @@ public class LineageContext {
 
             @Override
             public SqlExprToRexConverterFactory getSqlExprToRexConverterFactory() {
-                return relNode.getCluster().getPlanner().getContext().unwrap(FlinkContext.class).getSqlExprToRexConverterFactory();
+                return getPlanner().getFlinkContext().getSqlExprToRexConverterFactory();
             }
 
             @Override
             public <C> C unwrap(Class<C> clazz) {
-                return StreamOptimizeContext.super.unwrap(clazz);
+                return getPlanner().getFlinkContext().unwrap(clazz);
+
             }
 
             @Override
             public FlinkRelBuilder getFlinkRelBuilder() {
-                return ((PlannerBase) tableEnv.getPlanner()).getRelBuilder();
+                return getPlanner().getRelBuilder();
             }
 
             @Override
@@ -213,6 +213,11 @@ public class LineageContext {
             public MiniBatchInterval getMiniBatchInterval() {
                 return MiniBatchInterval.NONE;
             }
+
+
+            private PlannerBase getPlanner() {
+                return (PlannerBase) tableEnv.getPlanner();
+            }
         });
     }
 
@@ -223,7 +228,7 @@ public class LineageContext {
                 .getColumnNames();
 
         // check the size of query and sink fields match
-        validateSchema(sinkTable,optRelNode,targetColumnList);
+        validateSchema(sinkTable, optRelNode, targetColumnList);
 
         RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
         List<Result> resultList = new ArrayList<>();
