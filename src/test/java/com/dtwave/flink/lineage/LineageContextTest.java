@@ -39,13 +39,16 @@ public class LineageContextTest {
 
         // create hudi sink table dwd_hudi_users
         createTableOfDwdHudiUsers();
+
+        // create append_suffix udf
+        createFunctionOfAppendSuffix();
     }
 
 
     /**
      * insert-select, but the fields of the query and sink do not match
      *
-     * insert into hudi table from mysql cdc stream join.
+     * insert into hudi table from mysql cdc stream table.
      */
     @Test(expected = ValidationException.class)
     public void testInsertSelectMismatchField() {
@@ -63,11 +66,10 @@ public class LineageContextTest {
     }
 
 
-
     /**
      * insert-select.
      *
-     * insert into hudi table from mysql cdc stream join.
+     * insert into hudi table from mysql cdc stream table.
      */
     @Test
     public void testInsertSelect() {
@@ -94,11 +96,93 @@ public class LineageContextTest {
         parseFieldLineage(sql, expectedArray);
     }
 
+    /**
+     * insert-select with append_suffix udf
+     *
+     * insert into hudi table from mysql cdc stream table.
+     */
+    @Test
+    public void testInsertSelectWithUDF() {
+        String sql = "INSERT INTO dwd_hudi_users " +
+                "SELECT " +
+                "   id ," +
+                "   append_suffix(name) ," +
+                "   name as company_name ," +
+                "   birthday ," +
+                "   ts ," +
+                "   DATE_FORMAT(birthday, 'yyyyMMdd') " +
+                "FROM" +
+                "   ods_mysql_users";
+
+        String[][] expectedArray = {
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+        };
+
+        parseFieldLineage(sql, expectedArray);
+    }
+
+
+    /**
+     * insert-partition-select.
+     *
+     * insert into hudi table with specified partition from mysql cdc table.
+     */
+    @Test
+    public void testInsertPartitionSelect() {
+        String sql = "INSERT INTO dwd_hudi_users PARTITION (`partition`='20220824') " +
+                "SELECT " +
+                "   id ," +
+                "   name ," +
+                "   name as company_name ," +
+                "   birthday ," +
+                "   ts " +
+                "FROM" +
+                "   ods_mysql_users";
+
+        String[][] expectedArray = {
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"}
+        };
+
+        parseFieldLineage(sql, expectedArray);
+    }
+
+
+    /**
+     * insert-partition-with-columnList select.
+     *
+     * insert into hudi table with specified partition from mysql cdc table.
+     */
+    @Test
+    public void testInsertPartitionWithColumnListSelect() {
+        String sql = "INSERT INTO dwd_hudi_users PARTITION (`partition`='20220824') (id,company_name) " +
+                "SELECT " +
+                "   id ," +
+                "   name " +
+                "FROM" +
+                "   ods_mysql_users";
+
+        String[][] expectedArray = {
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"}
+        };
+
+        parseFieldLineage(sql, expectedArray);
+    }
+
 
     /**
      * insert-select-select
      *
-     * insert into hudi table from mysql cdc stream join.
+     * insert into hudi table from mysql cdc stream table.
      */
     @Test
     public void testInsertSelectSelect() {
@@ -138,7 +222,7 @@ public class LineageContextTest {
     /**
      * insert-select-two-table join.
      *
-     * insert into hudi table from mysql cdc stream join mysql dim table, which has system function
+     * insert into hudi table from mysql cdc stream join mysql dim table, which has system udf
      * CONCAT
      */
     @Test
@@ -176,7 +260,7 @@ public class LineageContextTest {
      * insert-select-two-table lookup join.
      *
      * insert into hudi table from mysql cdc stream lookup join mysql dim table, which has system
-     * function CONCAT
+     * udf CONCAT
      */
     @Test
     public void testInsertSelectTwoLookupJoin() {
@@ -279,6 +363,19 @@ public class LineageContextTest {
                 ")"
         );
     }
+
+
+    /**
+     * Create append_suffix udf
+     */
+    private void createFunctionOfAppendSuffix() {
+        context.execute("DROP FUNCTION IF EXISTS append_suffix");
+
+        context.execute("CREATE FUNCTION IF NOT EXISTS append_suffix " +
+                "AS 'com.dtwave.flink.lineage.udf.AppendSuffixUDF'"
+        );
+    }
+
 
 
     private void parseFieldLineage(String sql, String[][] expectedArray) {
