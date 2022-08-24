@@ -82,11 +82,9 @@ public List<FieldLineage> parseFieldLineage(String sql) {
     Tuple2<String, RelNode> parsed = parseStatement(sql);
     String sinkTable = parsed.getField(0);
     RelNode oriRelNode = parsed.getField(1);
-    LOG.debug("Original RelNode: \n {}", oriRelNode.explain());
 
     // 2. Optimize original relNode to generate Optimized Logical Plan
     RelNode optRelNode = optimize(oriRelNode);
-    LOG.debug("Optimized RelNode: \n {}", optRelNode.explain());
 
     // 3. Build lineage based from RelMetadataQuery
     return buildFiledLineageResult(sinkTable, optRelNode);
@@ -142,7 +140,7 @@ private RelNode optimize(RelNode relNode) {
 
         @Override
         public FunctionCatalog getFunctionCatalog() {
-            return ((PlannerBase)tableEnv.getPlanner()).getFlinkContext().getFunctionCatalog();
+            return getPlanner().getFlinkContext().getFunctionCatalog();
         }
 
         @Override
@@ -152,17 +150,18 @@ private RelNode optimize(RelNode relNode) {
 
         @Override
         public SqlExprToRexConverterFactory getSqlExprToRexConverterFactory() {
-            return relNode.getCluster().getPlanner().getContext().unwrap(FlinkContext.class).getSqlExprToRexConverterFactory();
+            return getPlanner().getFlinkContext().getSqlExprToRexConverterFactory();
         }
 
         @Override
         public <C> C unwrap(Class<C> clazz) {
-            return StreamOptimizeContext.super.unwrap(clazz);
+            return getPlanner().getFlinkContext().unwrap(clazz);
+
         }
 
         @Override
         public FlinkRelBuilder getFlinkRelBuilder() {
-            return ((PlannerBase)tableEnv.getPlanner()).getRelBuilder();
+            return getPlanner().getRelBuilder();
         }
 
         @Override
@@ -179,11 +178,15 @@ private RelNode optimize(RelNode relNode) {
         public MiniBatchInterval getMiniBatchInterval() {
             return MiniBatchInterval.NONE;
         }
+
+
+        private PlannerBase getPlanner() {
+            return (PlannerBase) tableEnv.getPlanner();
+        }
     });
 }
 ```
 > 注: 此代码可参考StreamCommonSubGraphBasedOptimizer中的optimizeTree方法来书写。
-> ![2.3.2 optimizeTree.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.3.2%20optimizeTree.png)
 
 #### 2.3.3 查询原始字段并构造血缘
 调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息，然后构造血缘关系，并返回结果。
@@ -194,6 +197,9 @@ private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode opt
     List<String> targetColumnList = tableEnv.from(sinkTable)
             .getResolvedSchema()
             .getColumnNames();
+    
+    // check the size of query and sink fields match
+    validateSchema(sinkTable, optRelNode, targetColumnList);
 
     RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
 
