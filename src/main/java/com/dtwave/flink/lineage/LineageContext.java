@@ -125,11 +125,14 @@ public class LineageContext {
         Tuple2<String, RelNode> parsed = parseStatement(sql);
         String sinkTable = parsed.getField(0);
         RelNode oriRelNode = parsed.getField(1);
-        LOG.debug("Original RelNode: \n {}", oriRelNode.explain());
 
         // 2. Optimize original relNode to generate Optimized Logical Plan
         RelNode optRelNode = optimize(oriRelNode);
-        LOG.debug("Optimized RelNode: \n {}", optRelNode.explain());
+
+        if(LOG.isDebugEnabled()) {
+            LOG.debug("Original RelNode: \n {}", oriRelNode.explain());
+            LOG.debug("Optimized RelNode: \n {}", optRelNode.explain());
+        }
 
         // 3. Build lineage based from RelMetadataQuery
         return buildFiledLineageResult(sinkTable, optRelNode);
