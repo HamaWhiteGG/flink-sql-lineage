@@ -1,17 +1,17 @@
 package com.dtwave.flink.lineage
 
 
+import org.apache.calcite.plan.hep.HepMatchOrder
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.table.api.config.OptimizerConfigOptions
 import org.apache.flink.table.planner.plan.nodes.FlinkConventions
-import org.apache.flink.table.planner.plan.rules.FlinkStreamRuleSets
-import org.apache.calcite.plan.hep.HepMatchOrder
 import org.apache.flink.table.planner.plan.optimize.program._
+import org.apache.flink.table.planner.plan.rules.FlinkStreamRuleSets
 
 /**
   * Defines a sequence of programs to optimize for stream table plan without physical optimize .
   *
-  * @description: delete three point
+  * @description: delete time_indicator, physical and physical_rewrite
   * @author: baisong
   * @version: 1.0.0
   * @date: 2022/8/6 10:58 PM
