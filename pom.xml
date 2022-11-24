@@ -8,28 +8,22 @@
     <artifactId>flink-sql-lineage</artifactId>
     <version>1.0.0</version>
 
-
     <properties>
         <flink.version>1.14.4</flink.version>
-        <!--<flink.table.planner.version>1.14.4.1</flink.table.planner.version>-->
         <hadoop.version>3.2.2</hadoop.version>
         <hive.version>3.1.2</hive.version>
+
+        <mysql.cdc.version>2.2.1</mysql.cdc.version>
+        <hudi.version>0.12.1</hudi.version>
+
         <junit.version>4.13.2</junit.version>
         <lombok.version>1.18.24</lombok.version>
-        <javassist.version>3.29.1-GA</javassist.version>
         <java.version>1.8</java.version>
         <scala.binary.version>2.12</scala.binary.version>
-
-        <!--本地源码编译,适配flink1.14-->
-        <mysql.cdc.version>2.2-SNAPSHOT</mysql.cdc.version>
-        <!--本地源码编译,适配flink1.14-->
-        <hudi.version>0.12.0-SNAPSHOT</hudi.version>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    
     <dependencies>
-
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-clients_${scala.binary.version}</artifactId>
@@ -40,7 +34,6 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
-            <!--<version>${flink.table.planner.version}</version>-->
         </dependency>
 
         <dependency>
@@ -69,7 +62,7 @@
 
         <dependency>
             <groupId>org.apache.hudi</groupId>
-            <artifactId>hudi-flink1.14-bundle_${scala.binary.version}</artifactId>
+            <artifactId>hudi-flink1.14-bundle</artifactId>
             <version>${hudi.version}</version>
         </dependency>
 
@@ -121,13 +114,6 @@
             <version>${lombok.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>${javassist.version}</version>
-        </dependency>
-
-
     </dependencies>
 
 
@@ -136,7 +122,7 @@
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>2.12.2</version>
                 <executions>
                     <execution>
                         <goals>

@@ -1,14 +1,8 @@
 package com.dtwave.flink.lineage;
 
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-import javassist.Modifier;
-
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
-import org.apache.calcite.rel.core.Snapshot;
 import org.apache.calcite.rel.metadata.RelColumnOrigin;
 import org.apache.calcite.rel.metadata.RelMetadataQuery;
 import org.apache.commons.collections.CollectionUtils;
@@ -58,36 +52,6 @@ public class LineageContext {
     private final TableEnvironmentImpl tableEnv;
     private final FlinkChainedProgram flinkChainedProgram;
 
-
-    /**
-     * Dynamic add getColumnOrigins method to class RelMdColumnOrigins by javassist:
-     *
-     * public Set<RelColumnOrigin> getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn) {
-     *      return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
-     * }
-     */
-    static {
-        try {
-            ClassPool classPool = ClassPool.getDefault();
-            CtClass ctClass = classPool.getCtClass("org.apache.calcite.rel.metadata.RelMdColumnOrigins");
-
-            CtClass[] parameters = new CtClass[]{classPool.get(Snapshot.class.getName())
-                    , classPool.get(RelMetadataQuery.class.getName())
-                    , CtClass.intType
-            };
-            // add method
-            CtMethod ctMethod = new CtMethod(classPool.get("java.util.Set"), "getColumnOrigins", parameters, ctClass);
-            ctMethod.setModifiers(Modifier.PUBLIC);
-            ctMethod.setBody("{return $2.getColumnOrigins($1.getInput(), $3);}");
-            ctClass.addMethod(ctMethod);
-            // load the class
-            ctClass.toClass();
-        } catch (Exception e) {
-            throw new TableException("Dynamic add getColumnOrigins() method exception.", e);
-        }
-    }
-
-
     public LineageContext(String catalogName, String defaultDataBase) {
         Configuration configuration = new Configuration();
         configuration.setBoolean("table.dynamic-table-options.enabled", true);
@@ -129,7 +93,7 @@ public class LineageContext {
         // 2. Optimize original relNode to generate Optimized Logical Plan
         RelNode optRelNode = optimize(oriRelNode);
 
-        if(LOG.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Original RelNode: \n {}", oriRelNode.explain());
             LOG.debug("Optimized RelNode: \n {}", optRelNode.explain());
         }
