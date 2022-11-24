@@ -3,7 +3,7 @@
 | 序号 | 作者 | 版本 | 时间 | 备注 |
 | --- | --- | --- | --- | --- |
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 增加文档和源码 |
-| 1 | HamaWhite | 2.0.0 | 2022-11-24 | 1.支持watermark</br> 2.支持UDTF </br> 3. 改变Calcite源码修改方式|
+| 1 | HamaWhite | 2.0.0 | 2022-11-24 | 1.支持watermark</br> 2.支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级hudi和mysql cdc版本|
 
 
 </br>
