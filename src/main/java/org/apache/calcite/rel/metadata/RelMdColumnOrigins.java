@@ -35,6 +35,12 @@ import java.util.Set;
 /**
  * Modified based on calcite's source code org.apache.calcite.rel.metadata.RelMdColumnOrigins
  *
+ * Modification point:
+ * 1. Support lookup join, add method getColumnOrigins(Snapshot rel, RelMetadataQuery mq, int iOutputColumn)
+ * 2. Support watermark, add method getColumnOrigins(SingleRel rel,RelMetadataQuery mq, int iOutputColumn)
+ * 3. Support table function, add method getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)
+ *
+ *
  * @description: RelMdColumnOrigins supplies a default implementation of {@link
  * RelMetadataQuery#getColumnOrigins} for the standard logical algebra.
  * @author: baisong
@@ -105,8 +111,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         return set;
     }
 
-    public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq,
-                                                 int iOutputColumn) {
+
+    /**
+     * Support the field blood relationship of table function
+     */
+    public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) {
 
         List<RelDataTypeField> leftFieldList = rel.getLeft().getRowType().getFieldList();
 
@@ -115,10 +124,10 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (iOutputColumn < nLeftColumns) {
             set = mq.getColumnOrigins(rel.getLeft(), iOutputColumn);
         } else {
-            // 获取右表Table Function中配置的左表字段名
+            // get the field name of the left table configured in the Table Function on the right
             TableFunctionScan tableFunctionScan = (TableFunctionScan) rel.getRight();
             RexCall rexCall = (RexCall) tableFunctionScan.getCall();
-            // 假设只用一个字段
+            // support only one field in table function
             RexFieldAccess rexFieldAccess = (RexFieldAccess) rexCall.operands.get(0);
             String fieldName = rexFieldAccess.getField().getName();
 
@@ -129,7 +138,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                     break;
                 }
             }
-            // 从左表获取字段
+            /**
+             * Get the fields from the left table, don't go to
+             * getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
+             * otherwise the return is null, and the UDTF field origin cannot be parsed
+             */
             set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
         }
         return set;
@@ -148,13 +161,17 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         return set;
     }
 
+
+    /**
+     * Support the field blood relationship of lookup join
+     */
     public Set<RelColumnOrigin> getColumnOrigins(Snapshot rel,
                                                  RelMetadataQuery mq, int iOutputColumn) {
         return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
     }
 
     /**
-     * Support
+     * Support the field blood relationship of watermark
      */
     public Set<RelColumnOrigin> getColumnOrigins(SingleRel rel,
                                                  RelMetadataQuery mq, int iOutputColumn) {
