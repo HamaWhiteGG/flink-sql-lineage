@@ -3,6 +3,7 @@
 | 序号 | 作者 | 版本 | 时间 | 备注 |
 | --- | --- | --- | --- | --- |
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 增加文档和源码 |
+| 1 | HamaWhite | 2.0.0 | 2022-11-24 | 1.支持watermark</br> 2.支持UDTF </br> 3. 改变Calcite源码修改方式|
 
 
 </br>
@@ -27,11 +28,13 @@ Calcite工作流程如下图所示，一般分为Parser、Validator和Converter�
 ### 1.3   组件版本信息
 | 组件名称 | 版本 | 备注 |
 | --- | --- | --- |
-| JDK | 1.8 | scala 2.12 |
+| Flink | 1.14.4 |  
 | Hadoop | 3.2.2 |  |
 | Hive | 3.1.2 |  |
-| Flink | 1.14.4 |  |
-| Hudi | 0.12.0-SNAPSHOT | 本地源码编译，支持Flink-1.14 |
+| Hudi-flink1.14-bundle | 0.12.1 |  |
+| Flink-connector-mysql-cdc | 2.2.1 |  |
+| JDK | 1.8 | |
+| Scala | 2.12 | 也支持2.11 |
 
 ## 二、字段血缘解析核心思想
 ### 2.1 FlinkSQL 执行流程解析
@@ -659,14 +662,14 @@ static {
 上述代码增加后，执行Lookup Join的测试用例后就能看到维表dim_mysql_company的字段血缘关系，如4.4节的表格所示。
 
 ## 五、Flink其他高级语法支持
-在1.0.0版本发布后，经过读者实践测试发现还不支持Table Functions(UDTF)和Watermark语法的字段血缘解析，于是开始进一步完善代码。
+在1.0.0版本发布后，经过读者@SinyoWong实践测试发现还不支持Table Functions(UDTF)和Watermark语法的字段血缘解析，于是开始进一步完善代码。
 
 
-详见issue: [https://github.com/HamaWhiteGG/flink-sql-lineage/issues/3](https://github.com/HamaWhiteGG/flink-sql-lineage/issues/3)
+详见issue: [https://github.com/HamaWhiteGG/flink-sql-lineage/issues/3](https://github.com/HamaWhiteGG/flink-sql-lineage/issues/3)，在此表示感谢。
 
 ### 5.1 改变Calcite源码修改方式
-由于下面步骤还需要修改Calcite源码中的RelMdColumnOrigins类，上面介绍的两种方法(修改Calcite源码重新编译和动态编辑字节码）都太过于笨重，
-因此直接在本项目下新建org.apache.calcite.rel.metadata.RelMdColumnOrigins类，把Calcite的源码拷贝过来后进行如下修改。
+由于下面步骤还需要修改Calcite源码中的RelMdColumnOrigins类，第四章节介绍的两种修改Calcite源码重新编译和动态编辑字节码方法都太过于笨重，
+因此直接在本项目下新建org.apache.calcite.rel.metadata.RelMdColumnOrigins类，把Calcite的源码拷贝过来后进行修改。
 
 记得把支持Lookup Join添加的getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)增加进来。
 ```java
@@ -706,9 +709,7 @@ CREATE FUNCTION IF NOT EXISTS my_split_udtf
   AS 'com.dtwave.flink.lineage.tablefuncion.MySplitFunction';
 ```
 
-#### 5.2.2 测试UDTF
-
-- 测试SQL
+#### 5.2.2 测试UDTF SQL
 
 ```sql
 INSERT INTO
@@ -745,19 +746,24 @@ FROM
 # FlinkLogicalCorrelate
 FlinkLogicalCorrelate -> Correlate -> BiRel -> AbstractRelNode -> RelNode
 
-# Join
+# Join(Join和Correlate有类似，此处也展示下)
 Join -> BiRel -> AbstractRelNode -> RelNode
 
 # FlinkLogicalTableSourceScan
-FlinkLogicalTableSourceScan ->TableScan ->AbstractRelNode -> RelNode
+FlinkLogicalTableSourceScan -> TableScan ->AbstractRelNode -> RelNode
+	      
+# FlinkLogicalTableFunctionScan
+FlinkLogicalTableFunctionScan -> TableFunctionScan ->AbstractRelNode -> RelNode	     
 ```
 
 #### 5.2.4 新增getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)方法
-在org.apache.calcite.rel.metadata.RelMdColumnOrigins类的getColumnOrigins()的方法中，没有Correlate作为参数的方法，因此解析不出UDTF的字段血缘关系。
-由于Correlate和Join都继承自BiRel,即有left和right两个RelNode。因此在书写Correlate的解析时可参考下已有的getColumnOrigins(Join rel, RelMetadataQuery mq,int iOutputColumn)方法。
+在org.apache.calcite.rel.metadata.RelMdColumnOrigins类的getColumnOrigins()的方法中，发现没有Correlate作为参数的方法，因此解析不出UDTF的字段血缘关系。
 
-因为LATERAL TABLE (my_split_udtf (name))生成的临时表两个字段word和length，本质是来自dwd_hudi_users表的name字段。
-因此针对右边的LATERAL TABLE获取UDTF中的字段，根据字段名获取左表信息和索引，最终是获取的左边的字段血缘关系。
+	      
+由于Correlate和Join都继承自BiRel，即有left和right两个RelNode。因此在书写Correlate的解析时可参考下已有的getColumnOrigins(Join rel, RelMetadataQuery mq,int iOutputColumn)方法。
+
+LATERAL TABLE (my_split_udtf (name))生成的临时表两个字段word和length，本质是来自dwd_hudi_users表的name字段。
+因此针对右边的LATERAL TABLE获取UDTF中的字段，然后再根据字段名获取左表信息和索引，最终是获取的是左表的字段血缘关系。
 
 
 核心代码如下:
@@ -799,8 +805,8 @@ public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq,
     return set;
 }
 ```
-> 注1: 在Logical Plan中可以看到其right是FlinkLogicalTableFunctionScan，但在已有getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn) 获取的结果是null。
-刚开始也尝试修改此方法，但一直无法获取的左表的信息。因此改为修改getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) 获取右变LATERAL TABLE血缘的代码。
+> 注: 在Logical Plan中可以看到right RelNode是FlinkLogicalTableFunctionScan类型，继承自TableFunctionScan，但在已有getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn) 获取的结果是null。
+刚开始也尝试修改此方法，但一直无法获取的左表的信息。因此改为在getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) 获取右变LATERAL TABLE血缘的代码。
 
 #### 5.2.5 测试结果
 
@@ -813,11 +819,14 @@ public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq,
 | ods_mysql_users | ts | dwd_hudi_users | ts |
 | ods_mysql_users | birthday | dwd_hudi_users | partition |
 
-> 注1: word和length本质是来自dwd_hudi_users表的name字段，因此字段血缘关系展示的是name。
+> 注: SQL中的word和length本质是来自dwd_hudi_users表的name字段，因此字段血缘关系展示的是name。
+即 ods_mysql_users.name -> length -> dwd_hudi_users.id 和 ods_mysql_users.name -> word -> dwd_hudi_users.company_name
+	  
+	      
 
 
 ### 5.3 支持Watermark
-#### 5.3.1 新建含Watermark的表ods_mysql_users_watermark
+#### 5.3.1 新建ods_mysql_users_watermark
 
 ```sql
 DROP TABLE IF EXISTS ods_mysql_users_watermark;
@@ -841,9 +850,7 @@ CREATE TABLE ods_mysql_users_watermark(
 );
 ```
 
-#### 5.3.2 测试Watermark
-
-- 测试SQL
+#### 5.3.2 测试Watermark SQL
 
 ```sql
 INSERT INTO
@@ -871,7 +878,7 @@ FROM
 FlinkLogicalWatermarkAssigner -> WatermarkAssigner -> SingleRel -> AbstractRelNode -> RelNode
 ```
 
-因此下面增加SingleRel作为参数的方法。
+因此下面增加SingleRel作为参数的getColumnOrigins方法。
 
 #### 5.3.4 新增getColumnOrigins(SingleRel rel, RelMetadataQuery mq, int iOutputColumn)方法
 ```java
