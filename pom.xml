@@ -8,7 +8,6 @@
     <artifactId>flink-sql-lineage</artifactId>
     <version>1.0.0</version>
 
-
     <properties>
         <flink.version>1.14.4</flink.version>
         <hadoop.version>3.2.2</hadoop.version>
@@ -23,8 +22,7 @@
         <scala.binary.version>2.12</scala.binary.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-
+    
     <dependencies>
         <dependency>
             <groupId>org.apache.flink</groupId>
