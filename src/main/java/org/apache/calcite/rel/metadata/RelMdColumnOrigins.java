@@ -26,8 +26,10 @@ import org.apache.calcite.rex.RexShuttle;
 import org.apache.calcite.rex.RexVisitor;
 import org.apache.calcite.rex.RexVisitorImpl;
 import org.apache.calcite.util.BuiltInMethod;
+import org.apache.flink.table.planner.plan.schema.TableSourceTable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,11 +37,10 @@ import java.util.Set;
 /**
  * Modified based on calcite's source code org.apache.calcite.rel.metadata.RelMdColumnOrigins
  *
- * Modification point:
- * 1. Support lookup join, add method getColumnOrigins(Snapshot rel, RelMetadataQuery mq, int iOutputColumn)
- * 2. Support watermark, add method getColumnOrigins(SingleRel rel,RelMetadataQuery mq, int iOutputColumn)
- * 3. Support table function, add method getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)
- *
+ * Modification point: 1. Support lookup join, add method getColumnOrigins(Snapshot rel,
+ * RelMetadataQuery mq, int iOutputColumn) 2. Support watermark, add method
+ * getColumnOrigins(SingleRel rel,RelMetadataQuery mq, int iOutputColumn) 3. Support table function,
+ * add method getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)
  *
  * @description: RelMdColumnOrigins supplies a default implementation of {@link
  * RelMetadataQuery#getColumnOrigins} for the standard logical algebra.
@@ -212,7 +213,26 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
             // Direct reference:  no derivation added.
             RexInputRef inputRef = (RexInputRef) rexNode;
             return mq.getColumnOrigins(input, inputRef.getIndex());
+        } else if (rexNode instanceof RexCall && ((RexCall) rexNode).operands.isEmpty()) {
+            // support for new fields in the source table similar to those created with the LOCALTIMESTAMP function
+            TableSourceTable table = ((TableSourceTable) rel.getInput().getTable());
+            if (table != null) {
+                String targetFieldName = rel.getProgram().getOutputRowType().getFieldList().get(iOutputColumn).getName();
+                List<String> fieldList = table.catalogTable().getResolvedSchema().getColumnNames();
+
+                int index = -1;
+                for (int i = 0; i < fieldList.size(); i++) {
+                    if (fieldList.get(i).equalsIgnoreCase(targetFieldName)) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    return Collections.singleton(new RelColumnOrigin(table, index, false));
+                }
+            }
         }
+
         // Anything else is a derivation, possibly from multiple columns.
         final Set<RelColumnOrigin> set = getMultipleColumns(rexNode, input, mq);
         return createDerivedColumnOrigins(set);
