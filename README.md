@@ -4,6 +4,7 @@
 | --- | --- | --- | --- | --- |
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 增加文档和源码 |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1.支持watermark</br> 2.支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级hudi和mysql cdc版本|
+| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1.建表时支持XX AS LOCALTIMESTAMP|
 
 
 </br>
