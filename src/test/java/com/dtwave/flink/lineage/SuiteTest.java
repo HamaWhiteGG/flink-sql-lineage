@@ -1,6 +1,7 @@
 package com.dtwave.flink.lineage;
 
 import com.dtwave.flink.lineage.common.CommonTest;
+import com.dtwave.flink.lineage.localtimestamp.LocaltimestampTest;
 import com.dtwave.flink.lineage.lookup.join.LookupJoinTest;
 import com.dtwave.flink.lineage.tablefuncion.TableFunctionTest;
 import com.dtwave.flink.lineage.watermark.WatermarkTest;
@@ -18,7 +19,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({CommonTest.class
         , LookupJoinTest.class
         , TableFunctionTest.class
-        , WatermarkTest.class})
+        , WatermarkTest.class
+        , LocaltimestampTest.class})
 public class SuiteTest {
 
     /**
