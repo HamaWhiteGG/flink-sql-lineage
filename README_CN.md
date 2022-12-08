@@ -909,10 +909,10 @@ FlinkLogicalWatermarkAssigner -> WatermarkAssigner -> SingleRel -> AbstractRelNo
 ## 六、参考文献
 
 1. [How to screw SQL to anything with Apache Calcite](https://zephyrnet.com/how-to-screw-sql-to-anything-with-apache-calcite/)
-1. [使用build.gradle.kts发布到mavenLocal](https://www.javaroad.cn/questions/71299)
-1. [Flink SQL LookupJoin终极解决方案及Flink Rule入门](https://zhuanlan.zhihu.com/p/546080679)
-1. [基于Calcite解析Flink SQL列级数据血缘](https://blog.csdn.net/nazeniwaresakini/article/details/121652104)
-1. [干货|详解FlinkSQL实现原理](https://www.modb.pro/db/133495)
-1. [SQL解析框架: Calcite](https://www.liaojiayi.com/calcite/)
-1. [Flink1.14-table functions doc](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/table/functions/udfs/#table-functions)
+2. [使用build.gradle.kts发布到mavenLocal](https://www.javaroad.cn/questions/71299)
+3. [Flink SQL LookupJoin终极解决方案及Flink Rule入门](https://zhuanlan.zhihu.com/p/546080679)
+4. [基于Calcite解析Flink SQL列级数据血缘](https://blog.csdn.net/nazeniwaresakini/article/details/121652104)
+5. [干货|详解FlinkSQL实现原理](https://www.modb.pro/db/133495)
+6. [SQL解析框架: Calcite](https://www.liaojiayi.com/calcite/)
+7. [Flink1.14-table functions doc](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/table/functions/udfs/#table-functions)
 
