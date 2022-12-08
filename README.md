@@ -1,8 +1,9 @@
 # FlinkSQL field lineage solution and source code
 
-
 English | [简体中文](README_CN.md)
 
+The core idea is to parse SQL through Calcite to generate a RelNode tree of relational expressions. Then get the optimized logical paln through optimization stage, and finally call Calcite RelMetadataQuery to get the lineage relationship at the field level.  
+<br/>
 
 | Number | Author | Version | time | Remark |
 | --- | --- | --- | --- | --- |
