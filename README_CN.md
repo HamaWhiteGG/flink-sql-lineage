@@ -1,12 +1,12 @@
-English | [简体中文](README_CN.md)
+简体中文 | [English](README.md)
 
-<h2>FlinkSQL field lineage solution and source code</h2>
+<h2>FlinkSQL字段血缘解决方案及源码</h2>
 
 | 序号 | 作者 | 版本 | 时间 | 备注 |
 | --- | --- | --- | --- | --- |
-| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. Add documentation and source code |
-| 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. Support Watermark</br> 2. Support UDTF </br> 3. Change Calcite source code modification method </br> 4. Upgrade Hudi and Mysql CDC versions|
-| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP when creating a table|
+| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码 |
+| 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. 支持Watermark</br> 2. 支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级Hudi和Mysql CDC版本|
+| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 建表时支持field AS LOCALTIMESTAMP|
 
 
 </br>
