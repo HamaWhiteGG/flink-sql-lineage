@@ -6,9 +6,9 @@ English | [简体中文](README_CN.md)
 
 | Number | Author | Version | time | Remark |
 | --- | --- | --- | --- | --- |
-| 1 | HamaWhite | 1.0.0 | 2022-8-9 | 1. Add documentation and source code |
+| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. Add documentation and source code |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. Support Watermark</br> 2. Support UDTF </br> 3. Change Calcite source code modification method </br> 4. Upgrade Hudi and Mysql CDC versions |
-| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP when creating a table |
+| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP |
 
 
 </br>
