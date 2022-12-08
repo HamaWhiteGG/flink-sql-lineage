@@ -908,10 +908,10 @@ Therefore, the getColumnOrigins method with SingleRel as a parameter is added be
 ## 六、References
 
 1. [How to screw SQL to anything with Apache Calcite](https://zephyrnet.com/how-to-screw-sql-to-anything-with-apache-calcite/)
-1. [Publish to mavenLocal using build.gradle.kts](https://www.javaroad.cn/questions/71299)
-1. [Flink SQL LookupJoin Ultimate Solution and Getting Started with Flink Rule](https://zhuanlan.zhihu.com/p/546080679)
-1. [Analyzing Flink SQL column-level data lineage based on Calcite](https://blog.csdn.net/nazeniwaresakini/article/details/121652104)
-1. [Dry goods | Detailed explanation of FlinkSQL implementation principle](https://www.modb.pro/db/133495)
-1. [SQL parsing framework: Calcite](https://www.liaojiayi.com/calcite/)
-1. [Flink1.14-table functions doc](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/table/functions/udfs/#table-functions)
+2. [Publish to mavenLocal using build.gradle.kts](https://www.javaroad.cn/questions/71299)
+3. [Flink SQL LookupJoin Ultimate Solution and Getting Started with Flink Rule](https://zhuanlan.zhihu.com/p/546080679)
+4. [Analyzing Flink SQL column-level data lineage based on Calcite](https://blog.csdn.net/nazeniwaresakini/article/details/121652104)
+5. [Dry goods | Detailed explanation of FlinkSQL implementation principle](https://www.modb.pro/db/133495)
+6. [SQL parsing framework: Calcite](https://www.liaojiayi.com/calcite/)
+7. [Flink1.14-table functions doc](https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/table/functions/udfs/#table-functions)
 
