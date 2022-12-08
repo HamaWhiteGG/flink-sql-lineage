@@ -1,12 +1,14 @@
+# FlinkSQL field lineage solution and source code
+
+
 English | [简体中文](README_CN.md)
 
-<h2>FlinkSQL field lineage solution and source code</h2>
 
 | Number | Author | Version | time | Remark |
 | --- | --- | --- | --- | --- |
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. Add documentation and source code |
-| 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. Support Watermark</br> 2. Support UDTF </br> 3. Change Calcite source code modification method </br> 4. Upgrade Hudi and Mysql CDC versions|
-| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP when creating a table|
+| 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. Support Watermark</br> 2. Support UDTF </br> 3. Change Calcite source code modification method </br> 4. Upgrade Hudi and Mysql CDC versions |
+| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP when creating a table |
 
 
 </br>
@@ -50,6 +52,7 @@ For syntax analysis, use JavaCC to convert SQL into an abstract syntax tree (AST
 2. **Validate Stage**
 
 Grammatical verification, grammatical verification based on metadata information, such as whether the queried table, field, and function exist, will validate the clauses such as from, where, group by, having, select, orader by, etc. After verification, the SqlNode is still composed The syntax tree AST.
+
 3. **Convert Stage**
 
 Semantic analysis, based on SqlNode and metadata information to build a relational expression RelNode tree, which is the original version of the logical plan.
@@ -120,7 +123,7 @@ private Tuple2<String, RelNode> parseStatement(String sql) {
     }
 }
 ```
-#### 2.3.2 生成Optimized Logical Plan
+#### 2.3.2 Generate Optimized Logical Plan
 In the logical plan optimization stage of step 4, according to the source code, the core is to call the optimization strategy in FlinkStreamProgram, which includes 12 stages (subquery_rewrite, temporal_join_rewrite...logical_rewrite, time_indicator, physical, physical_rewrite), and the optimized one is Optimized Physical Plan.
 According to the principle of SQL field lineage analysis, as long as logical_rewrite is optimized after parsing, copy the FlinkStreamProgram source code to the FlinkStreamProgramWithoutPhysical class, and delete the time_indicator, physical, physical_rewrite strategies and the last chainedProgram.addLast related code. Then call the optimize method core code as follows:
 ```java
@@ -807,7 +810,7 @@ public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq,
 > Note: In the Logical Plan, you can see that the right RelNode is of the FlinkLogicalTableFunctionScan type, inherited from TableFunctionScan, but the result obtained by the existing getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn) is null.
 At the beginning, I also tried to modify this method, but I have been unable to obtain the information of the left table. So change to getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) to get the code of right-changing LATERAL TABLE origin.
 
-#### 5.2.5 测试结果
+#### 5.2.5 Test Result
 
 | **sourceTable** | **sourceColumn** | **targetTable** | **targetColumn** |
 | --- | --- | --- | --- |
