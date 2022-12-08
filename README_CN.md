@@ -1,8 +1,9 @@
 # FlinkSQL字段血缘解决方案及源码
 
+简体中文 | [English](README.md) 
 
-简体中文 | [English](README.md)
-
+核心思想是通过Calcite解析SQL生成关系表达式RelNode树，再通过优化得到optimized logical paln，最后调用Calcite RelMetadataQuery获取字段级别的血缘关系。 
+<br/>
 
 | 序号 | 作者 | 版本 | 时间 | 备注 |
 | --- | --- | --- | --- | --- |
