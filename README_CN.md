@@ -28,7 +28,7 @@ Calcite工作流程如下图所示，一般分为Parser、Validator和Converter�
 ![1.2 Calacite SqlNode vs RelNode.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/1.2%20Calacite%20SqlNode%20vs%20RelNode.png)
 
 
-### 1.3   组件版本信息
+### 1.3 组件版本信息
 | 组件名称 | 版本 | 备注 |
 | --- | --- | --- |
 | Flink | 1.14.4 |  
@@ -37,7 +37,7 @@ Calcite工作流程如下图所示，一般分为Parser、Validator和Converter�
 | Hudi-flink1.14-bundle | 0.12.1 |  |
 | Flink-connector-mysql-cdc | 2.2.1 |  |
 | JDK | 1.8 | |
-| Scala | 2.12 | 也支持2.11 |
+| Scala | 2.12 |  |
 
 ## 二、字段血缘解析核心思想
 ### 2.1 FlinkSQL 执行流程解析
@@ -49,7 +49,7 @@ Calcite工作流程如下图所示，一般分为Parser、Validator和Converter�
 
 2. **Validate阶段**
 
-语法校验，根据元数据信息进行语法验证，例如查询的表、字段、函数是否存在，会分别对from、where、group by、having、select、orader by等子句进行validate，验证后还是SqlNode构成的语法树AST；
+语法校验，根据元数据信息进行语法验证，例如查询的表、字段、函数是否存在，会分别对from、where、group by、having、select、orader by等子句进行validate，验证后还是SqlNode构成的语法树AST。
 
 3. **Convert阶段**
 
@@ -73,7 +73,7 @@ Calcite工作流程如下图所示，一般分为Parser、Validator和Converter�
 FlinkSQL字段血缘解析分为三个阶段:
 
 1. 对输入SQL进行Parse、Validate、Convert，生成关系表达式RelNode树，对应FlinkSQL 执行流程图中的第1、2和3步骤。
-1. 在优化阶段，只生成到Optimized Logical Plan即可，而非原本的Optimized Physical Plan。要**修正**FlinkSQL 执行流程图中的第4步骤。
+2. 在优化阶段，只生成到Optimized Logical Plan即可，而非原本的Optimized Physical Plan。要**修正**FlinkSQL 执行流程图中的第4步骤。
 
 ![2.2 FlinkSQL字段血缘解析流程图.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/2.2%20FlinkSQL%E5%AD%97%E6%AE%B5%E8%A1%80%E7%BC%98%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
@@ -122,7 +122,7 @@ private Tuple2<String, RelNode> parseStatement(String sql) {
 }
 ```
 #### 2.3.2 生成Optimized Logical Plan
-在第4步骤的逻辑计划优化阶段，根据源码可知核心是调用FlinkStreamProgram的中的优化策略，共包含12个阶段(subquery_rewrite、temporal_join_rewrite...logical_rewrite、time_indicator、physical、physical_rewrite)，优化后生成的是Optimized Pysical Plan。
+在第4步骤的逻辑计划优化阶段，根据源码可知核心是调用FlinkStreamProgram的中的优化策略，共包含12个阶段(subquery_rewrite、temporal_join_rewrite...logical_rewrite、time_indicator、physical、physical_rewrite)，优化后生成的是Optimized Physical Plan。
 根据SQL的字段血缘解析原理可知，只要解析到logical_rewrite优化后即可，因此复制FlinkStreamProgram源码为FlinkStreamProgramWithoutPhysical类，并删除time_indicator、physical、physical_rewrite策略及最后面chainedProgram.addLast相关代码。然后调用optimize方法核心代码如下:
 
 ```java
@@ -196,6 +196,7 @@ private RelNode optimize(RelNode relNode) {
 
 #### 2.3.3 查询原始字段并构造血缘
 调用RelMetadataQuery的getColumnOrigins(RelNode rel, int column)查询原始字段信息，然后构造血缘关系，并返回结果。
+
 buildFiledLineageResult(String sinkTable, RelNode optRelNode)
 ```java
 private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
@@ -243,7 +244,7 @@ private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode opt
 }
 ```
 ## 三、测试结果
-详细测试用例可查看代码中的单测，此处只描述两个测试点。
+详细测试用例可查看代码中的单测，此处只描述部分测试点。
 ### 3.1 建表语句
 下面新建三张表，分别是: ods_mysql_users、dim_mysql_company和dwd_hudi_users。
 #### 3.1.1 新建mysql cdc table-ods_mysql_users
@@ -356,7 +357,7 @@ ON a.id = b.user_id
 
 - RelNode树展示
 
-  Original RelNode
+Original RelNode
 ```shell
  LogicalProject(id1=[$0], EXPR$1=[CONCAT($1, $6)], company_name=[$6], birthday=[$2], ts=[$3], p=[DATE_FORMAT($2, _UTF-16LE'yyyyMMdd')])
   LogicalJoin(condition=[=($0, $5)], joinType=[inner])
@@ -364,7 +365,8 @@ ON a.id = b.user_id
       LogicalTableScan(table=[[hive, flink_demo, ods_mysql_users]])
     LogicalTableScan(table=[[hive, flink_demo, dim_mysql_company]])
 ```
-  经过optimize(RelNode relNode)优化后的Optimized RelNode结果如下: 
+
+经过optimize(RelNode relNode)优化后的Optimized RelNode结果如下: 
 ```shell
  FlinkLogicalCalc(select=[id AS id1, CONCAT(name, company_name) AS EXPR$1, company_name, birthday, ts, DATE_FORMAT(birthday, _UTF-16LE'yyyyMMdd') AS p])
   FlinkLogicalJoin(condition=[=($0, $4)], joinType=[inner])
@@ -419,7 +421,7 @@ ON a.id = b.user_id
 
 ## 四、修改Calcite源码支持Lookup Join
 ### 4.1 实现思路
-针对Lookup Join，Parser会把SQL语句“FOR SYSTEM_TIME AS OF ”解析成 SqlSnapshot ( SqlNode)，validate() 将其转换成 LogicalSnapshot(RelNode)。
+针对Lookup Join，Parser会把SQL语句'FOR SYSTEM_TIME AS OF'解析成 SqlSnapshot ( SqlNode)，validate() 将其转换成 LogicalSnapshot(RelNode)。
 
 Lookup Join-Original RelNode
 
@@ -496,7 +498,7 @@ calcite.version=1.26.0.1
 # 修改前
 val buildVersion = "calcite".v + releaseParams.snapshotSuffix
 
-#修改后
+# 修改后
 val buildVersion = "calcite".v
 ```
 #### 4.2.3 编译源码和推送到本地仓库
@@ -507,7 +509,7 @@ $ ./gradlew build -x test
 # 推送到本地仓库
 $ ./gradlew publishToMavenLocal
 ```
-  运行成功后查看本地maven仓库，已经产生calcite-core-1.26.0.1.jar。
+运行成功后查看本地maven仓库，已经产生calcite-core-1.26.0.1.jar。
 ```shell
 $ ll ~/.m2/repository/org/apache/calcite/calcite-core/1.26.0.1
 
@@ -519,7 +521,7 @@ $ ll ~/.m2/repository/org/apache/calcite/calcite-core/1.26.0.1
 ```
 ### 4.3 重新编译Flink源码
 #### 4.2.1 下载源码及创建分支
-基于tag calcite-1.26.0来修改源码。并且在原有3位版本号后面再增加一位版本号，以区别于官方发布的版本。
+基于tag release-1.14.4来修改源码。并且在原有3位版本号后面再增加一位版本号，以区别于官方发布的版本。
 ```shell
 # 下载github上flink源码
 $ git clone git@github.com:apache/flink.git
@@ -547,13 +549,13 @@ $ git checkout -b release-1.14.4.1
 ```xml
 
 <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
-<!--1.新增此行-->
+<!--1. 新增此行-->
 <version>1.14.4.1</version>
 <name>Flink : Table : Planner</name>
 
 <!--2. 全局替换${project.version}为${parent.version}-->
 
-<!--3.新增加此依赖，强制指定flink-test-utils-junit版本，否则编译会报错-->
+<!--3. 新增加此依赖，强制指定flink-test-utils-junit版本，否则编译会报错-->
 <dependency>
     <artifactId>flink-test-utils-junit</artifactId>
     <groupId>org.apache.flink</groupId>
@@ -568,7 +570,7 @@ $ git checkout -b release-1.14.4.1
 # 只编译 flink-table-planner
 $ mvn clean install -pl flink-table/flink-table-planner -am -Dscala-2.12 -DskipTests -Dfast -Drat.skip=true -Dcheckstyle.skip=true -Pskip-webui-build
 ```
-  运行成功后查看本地maven仓库，已经产生flink-table-planner_2.12-1.14.4.1.jar
+运行成功后查看本地maven仓库，已经产生flink-table-planner_2.12-1.14.4.1.jar
 ```shell
 $ ll ~/.m2/repository/org/apache/flink/flink-table-planner_2.12/1.14.4.1
 
@@ -824,9 +826,6 @@ public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq,
 
 > 注: SQL中的word和length本质是来自dwd_hudi_users表的name字段，因此字段血缘关系展示的是name。
 即 ods_mysql_users.name -> length -> dwd_hudi_users.id 和 ods_mysql_users.name -> word -> dwd_hudi_users.company_name
-	  
-	      
-
 
 ### 5.3 支持Watermark
 #### 5.3.1 新建ods_mysql_users_watermark
