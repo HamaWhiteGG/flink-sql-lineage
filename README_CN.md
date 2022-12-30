@@ -10,6 +10,7 @@
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码 |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. 支持Watermark</br> 2. 支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级Hudi和Mysql CDC版本 |
 | 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP |
+| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER()  |
 
 
 </br>
