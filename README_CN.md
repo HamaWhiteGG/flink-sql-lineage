@@ -17,7 +17,7 @@
 </br>
 源码地址: https://github.com/HamaWhiteGG/flink-sql-lineage
 
-作者邮箱: song.bs@dtwave-inc.com
+作者邮箱: baisongxx@gmail.com
 
 ## 一、基础知识
 ### 1.1 Apache Calcite简介
