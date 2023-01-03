@@ -32,7 +32,7 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-select, but the fields of the query and sink do not match
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test(expected = ValidationException.class)
@@ -53,7 +53,7 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-select.
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
@@ -75,7 +75,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -83,7 +83,7 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-select with my_suffix_udf
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
@@ -101,11 +101,41 @@ public class CommonTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name", "my_suffix_udf(name)"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
+        };
+
+        parseFieldLineage(sql, expectedArray);
+    }
+
+    /**
+     * insert-select with function cover
+     * <p>
+     * insert into hudi table from mysql cdc stream table.
+     */
+    @Test
+    public void testInsertSelectWithFunctionCover() {
+        String sql = "INSERT INTO dwd_hudi_users " +
+                "SELECT " +
+                "   id ," +
+                "   LOWER(my_suffix_udf(name)) ," +
+                "   UPPER(TRIM(name)) as company_name ," +
+                "   birthday ," +
+                "   ts ," +
+                "   DATE_FORMAT(birthday, 'yyyyMMdd') " +
+                "FROM" +
+                "   ods_mysql_users";
+
+        String[][] expectedArray = {
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name", "LOWER(my_suffix_udf(name))"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name", "UPPER(TRIM(FLAG(BOTH), ' ', name))"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -114,7 +144,7 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-partition-select.
-     *
+     * <p>
      * insert into hudi table with specified partition from mysql cdc table.
      */
     @Test
@@ -143,7 +173,7 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-partition-with-columnList select.
-     *
+     * <p>
      * insert into hudi table with specified partition from mysql cdc table.
      */
     @Test
@@ -166,14 +196,14 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-select-select
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
     public void testInsertSelectSelect() {
         String sql = "INSERT INTO dwd_hudi_users " +
                 "SELECT " +
-                "   sum_id ," +
+                "   ABS(sum_id) ," +
                 "   name ," +
                 "   company_name ," +
                 "   birthday1 ," +
@@ -195,9 +225,9 @@ public class CommonTest extends AbstractBasicTest {
                 ")";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id", "ABS(SUM(id))"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -206,7 +236,7 @@ public class CommonTest extends AbstractBasicTest {
 
     /**
      * insert-select-two-table join.
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream join mysql dim table, which has system udf
      * CONCAT
      */
@@ -229,17 +259,16 @@ public class CommonTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
+                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
                 {"dim_mysql_company", "company_name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
     }
-
 
 
     /**

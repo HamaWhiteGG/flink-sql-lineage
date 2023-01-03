@@ -25,10 +25,9 @@ public class TableFunctionTest extends AbstractBasicTest {
     }
 
 
-
     /**
      * insert-select with my_split_udtf
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
@@ -46,12 +45,12 @@ public class TableFunctionTest extends AbstractBasicTest {
                 "   LATERAL TABLE(my_split_udtf(name))";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "name", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "id", "my_split_udtf(name).length"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name", "my_split_udtf(name).word"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -60,7 +59,7 @@ public class TableFunctionTest extends AbstractBasicTest {
 
     /**
      * insert-select left join with my_split_udtf
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
@@ -79,12 +78,12 @@ public class TableFunctionTest extends AbstractBasicTest {
                 "   LATERAL TABLE(my_split_udtf(name)) ON TRUE";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "name", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "id", "my_split_udtf(name).length"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name", "my_split_udtf(name).word"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -93,7 +92,7 @@ public class TableFunctionTest extends AbstractBasicTest {
 
     /**
      * insert-select left join with my_split_udtf and rename fields of the function in SQL
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
@@ -112,17 +111,16 @@ public class TableFunctionTest extends AbstractBasicTest {
                 "   LATERAL TABLE(my_split_udtf(name)) AS T(new_word, new_length) ON TRUE";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "name", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "id", "my_split_udtf(name).length"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name", "my_split_udtf(name).word"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
     }
-
 
 
     /**
