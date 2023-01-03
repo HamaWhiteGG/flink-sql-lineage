@@ -10,7 +10,8 @@ The core idea is to parse SQL through Calcite to generate a RelNode tree of rela
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. Add documentation and source code |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. Support Watermark</br> 2. Support UDTF </br> 3. Change Calcite source code modification method </br> 4. Upgrade Hudi and Mysql CDC versions |
 | 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP |
-| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER()  |
+| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER() |
+| 5 | HamaWhite | 3.0.0-SNAPSHOT | 2023-01-03 | 1. Support displaying transform between fields |
 
 
 

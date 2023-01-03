@@ -3,6 +3,8 @@ package com.dtwave.flink.lineage;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Objects;
+
 /**
  * @description: Result
  * @author: baisong
@@ -28,5 +30,11 @@ public class Result {
     private String targetTable;
 
     private String targetColumn;
+
+    /**
+     * Stores the expression for data conversion,
+     * which source table fields are transformed by which expression the target field
+     */
+    private String transform;
 
 }

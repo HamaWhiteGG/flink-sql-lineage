@@ -5,12 +5,13 @@
 核心思想是通过Calcite解析SQL生成关系表达式RelNode树，再通过优化得到optimized logical paln，最后调用Calcite RelMetadataQuery获取字段级别的血缘关系。 
 <br/>
 
-| 序号 | 作者 | 版本 | 时间 | 备注 |
-| --- | --- | --- | --- | --- |
-| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码 |
+| 序号 | 作者 | 版本 | 时间 | 备注                                                                                 |
+| --- | --- | --- | --- |------------------------------------------------------------------------------------|
+| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码                                                                         |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. 支持Watermark</br> 2. 支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级Hudi和Mysql CDC版本 |
-| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP |
-| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER()  |
+| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP                                                       |
+| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. 支持 CEP</br> 2. 支持 ROW_NUMBER()                                                  |
+| 5 | HamaWhite | 3.0.0-SNAPSHOT | 2023-01-03 | 1. 支持显示字段间转换关系                                                                     |
 
 
 </br>

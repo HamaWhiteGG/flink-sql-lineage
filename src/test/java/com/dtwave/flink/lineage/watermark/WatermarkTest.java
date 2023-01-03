@@ -22,7 +22,7 @@ public class WatermarkTest extends AbstractBasicTest {
 
     /**
      * insert-select-watermark.
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream table.
      */
     @Test
@@ -44,7 +44,7 @@ public class WatermarkTest extends AbstractBasicTest {
                 {"ods_mysql_users_watermark", "name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users_watermark", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -53,7 +53,7 @@ public class WatermarkTest extends AbstractBasicTest {
 
     /**
      * insert-select-two-table-watermark join.
-     *
+     * <p>
      * insert into hudi table from mysql cdc(watermark) stream join mysql dim table, which has system udf
      * CONCAT
      */
@@ -76,12 +76,12 @@ public class WatermarkTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users_watermark", "id", "dwd_hudi_users", "id"},
-                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users_watermark", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users_watermark", "name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users_watermark.name, dim_mysql_company.company_name)"},
+                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users_watermark.name, dim_mysql_company.company_name)"},
                 {"dim_mysql_company", "company_name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users_watermark", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
