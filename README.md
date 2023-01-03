@@ -18,7 +18,7 @@ The core idea is to parse SQL through Calcite to generate a RelNode tree of rela
 </br>
 Source Address: https://github.com/HamaWhiteGG/flink-sql-lineage
 
-Author Email: song.bs@dtwave-inc.com
+Author Email: baisongxx@gmail.com
 
 ## 一、Basic introduction
 ### 1.1 Introduction to Apache Calcite
