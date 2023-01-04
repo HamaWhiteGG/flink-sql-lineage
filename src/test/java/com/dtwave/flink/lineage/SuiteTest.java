@@ -6,14 +6,13 @@ import com.dtwave.flink.lineage.localtimestamp.LocaltimestampTest;
 import com.dtwave.flink.lineage.lookup.join.LookupJoinTest;
 import com.dtwave.flink.lineage.tablefuncion.TableFunctionTest;
 import com.dtwave.flink.lineage.watermark.WatermarkTest;
-
 import com.dtwave.flink.lineage.window.WindowTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
  * @description: SuiteTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/24 5:49 PM
  */

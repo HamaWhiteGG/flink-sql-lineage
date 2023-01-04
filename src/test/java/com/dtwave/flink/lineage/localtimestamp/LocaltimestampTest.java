@@ -1,13 +1,12 @@
 package com.dtwave.flink.lineage.localtimestamp;
 
 import com.dtwave.flink.lineage.basic.AbstractBasicTest;
-
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @description: LocaltimestampTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/24 6:08 PM
  */
@@ -27,7 +26,7 @@ public class LocaltimestampTest extends AbstractBasicTest {
      * Optimized RelNode: FlinkLogicalWatermarkAssigner(rowtime=[ts], watermark=[$3])
      * FlinkLogicalCalc(select=[id, name, LOCALTIMESTAMP() AS birthday, LOCALTIMESTAMP() AS ts])
      * FlinkLogicalTableSourceScan(table=[[hive, flink_demo, datagen_source]], fields=[id, name])
-     *
+     * <p>
      * Since FlinkLogicalTableSourceScan in Optimized RelNode only has id and name fields, there are
      * no birthday and ts fields. The birthday and ts fields have been optimized to LOCALTIMESTAMP()
      * AS birthday, LOCALTIMESTAMP() AS ts. Therefore, in the getColumnOrigins(Calc rel, final

@@ -6,14 +6,11 @@ import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.metadata.RelColumnOrigin;
 import org.apache.calcite.rel.metadata.RelMetadataQuery;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.EnvironmentSettings;
-import org.apache.flink.table.api.TableConfig;
-import org.apache.flink.table.api.TableException;
-import org.apache.flink.table.api.TableResult;
-import org.apache.flink.table.api.ValidationException;
+import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.CatalogManager;
@@ -38,7 +35,7 @@ import java.util.Set;
 
 /**
  * @description: LineageContext
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/8/6 11:06 AM
  */
@@ -48,16 +45,14 @@ public class LineageContext {
 
     private static final String HIVE_CONF_DIR = "data/conf";
     private static final String DELIMITER = ".";
-
-    private final StreamExecutionEnvironment env;
     private final TableEnvironmentImpl tableEnv;
-    private final FlinkChainedProgram flinkChainedProgram;
+    private final FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
     public LineageContext(String catalogName, String defaultDataBase) {
         Configuration configuration = new Configuration();
         configuration.setBoolean("table.dynamic-table-options.enabled", true);
 
-        this.env = StreamExecutionEnvironment.createLocalEnvironment(configuration);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironment(configuration);
 
         EnvironmentSettings settings = EnvironmentSettings.newInstance()
                 .inStreamingMode()
@@ -183,6 +178,7 @@ public class LineageContext {
             }
 
 
+            @SuppressWarnings("squid:S5803")
             private PlannerBase getPlanner() {
                 return (PlannerBase) tableEnv.getPlanner();
             }
@@ -211,22 +207,23 @@ public class LineageContext {
             Set<RelColumnOrigin> relColumnOriginSet = metadataQuery.getColumnOrigins(optRelNode, index);
 
             if (CollectionUtils.isNotEmpty(relColumnOriginSet)) {
-                for (RelColumnOrigin relColumnOrigin : relColumnOriginSet) {
+                for (RelColumnOrigin rco : relColumnOriginSet) {
                     // table
-                    RelOptTable table = relColumnOrigin.getOriginTable();
+                    RelOptTable table = rco.getOriginTable();
                     String sourceTable = String.join(DELIMITER, table.getQualifiedName());
 
                     // filed
-                    int ordinal = relColumnOrigin.getOriginColumnOrdinal();
-                    // List<String> fieldNames = table.getRowType().getFieldNames();
-                    List<String> fieldNames = ((TableSourceTable)table).catalogTable().getResolvedSchema().getColumnNames();
+                    int ordinal = rco.getOriginColumnOrdinal();
+                    List<String> fieldNames = ((TableSourceTable) table).catalogTable().getResolvedSchema().getColumnNames();
                     String sourceColumn = fieldNames.get(ordinal);
                     LOG.debug("----------------------------------------------------------");
                     LOG.debug("Source table: {}", sourceTable);
                     LOG.debug("Source column: {}", sourceColumn);
-
+                    if (StringUtils.isNotEmpty(rco.getTransform())) {
+                        LOG.debug("transform: {}", rco.getTransform());
+                    }
                     // add record
-                    resultList.add(buildResult(sourceTable, sourceColumn, sinkTable, targetColumn));
+                    resultList.add(buildResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
                 }
             }
         }
@@ -250,7 +247,8 @@ public class LineageContext {
     }
 
 
-    private Result buildResult(String sourceTablePath, String sourceColumn, String targetTablePath, String targetColumn) {
+    private Result buildResult(String sourceTablePath, String sourceColumn
+            , String targetTablePath, String targetColumn, String transform) {
         String[] sourceItems = sourceTablePath.split("\\" + DELIMITER);
         String[] targetItems = targetTablePath.split("\\" + DELIMITER);
 
@@ -263,6 +261,7 @@ public class LineageContext {
                 .targetDatabase(targetItems[1])
                 .targetTable(targetItems[2])
                 .targetColumn(targetColumn)
+                .transform(transform)
                 .build();
     }
 }

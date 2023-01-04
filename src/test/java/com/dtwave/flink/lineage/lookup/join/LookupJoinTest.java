@@ -1,13 +1,12 @@
 package com.dtwave.flink.lineage.lookup.join;
 
 import com.dtwave.flink.lineage.basic.AbstractBasicTest;
-
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @description: LookupJoinTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/24 8:03 PM
  */
@@ -28,7 +27,7 @@ public class LookupJoinTest extends AbstractBasicTest {
 
     /**
      * insert-select-two-table lookup join.
-     *
+     * <p>
      * insert into hudi table from mysql cdc stream lookup join mysql dim table, which has system
      * udf CONCAT
      */
@@ -51,12 +50,12 @@ public class LookupJoinTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
+                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
                 {"dim_mysql_company", "company_name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
