@@ -1,7 +1,6 @@
 package com.dtwave.flink.lineage.tablefuncion;
 
 import com.dtwave.flink.lineage.basic.AbstractBasicTest;
-
 import org.junit.Before;
 import org.junit.Test;
 

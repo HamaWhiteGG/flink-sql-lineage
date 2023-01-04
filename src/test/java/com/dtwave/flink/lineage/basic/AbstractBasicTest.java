@@ -2,7 +2,6 @@ package com.dtwave.flink.lineage.basic;
 
 import com.dtwave.flink.lineage.LineageContext;
 import com.dtwave.flink.lineage.Result;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

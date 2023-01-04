@@ -9,13 +9,13 @@ import org.apache.flink.table.planner.plan.optimize.program._
 import org.apache.flink.table.planner.plan.rules.FlinkStreamRuleSets
 
 /**
-  * Defines a sequence of programs to optimize for stream table plan without physical optimize .
-  *
-  * @description: delete time_indicator, physical and physical_rewrite
-  * @author: baisong
-  * @version: 1.0.0
-  * @date: 2022/8/6 10:58 PM
-  */
+ * Defines a sequence of programs to optimize for stream table plan without physical optimize .
+ *
+ * @description: delete time_indicator, physical and physical_rewrite
+ * @author: baisong
+ * @version: 1.0.0
+ * @date: 2022/8/6 10:58 PM
+ */
 
 object FlinkStreamProgramWithoutPhysical {
 
@@ -40,10 +40,10 @@ object FlinkStreamProgramWithoutPhysical {
       FlinkGroupProgramBuilder.newBuilder[StreamOptimizeContext]
         // rewrite QueryOperationCatalogViewTable before rewriting sub-queries
         .addProgram(FlinkHepRuleSetProgramBuilder.newBuilder
-        .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
-        .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
-        .add(FlinkStreamRuleSets.TABLE_REF_RULES)
-        .build(), "convert table references before rewriting sub-queries to semi-join")
+          .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
+          .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
+          .add(FlinkStreamRuleSets.TABLE_REF_RULES)
+          .build(), "convert table references before rewriting sub-queries to semi-join")
         .addProgram(FlinkHepRuleSetProgramBuilder.newBuilder
           .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
           .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
@@ -56,10 +56,10 @@ object FlinkStreamProgramWithoutPhysical {
           .build(), "sub-queries remove")
         // convert RelOptTableImpl (which exists in SubQuery before) to FlinkRelOptTable
         .addProgram(FlinkHepRuleSetProgramBuilder.newBuilder
-        .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
-        .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
-        .add(FlinkStreamRuleSets.TABLE_REF_RULES)
-        .build(), "convert table references after sub-queries removed")
+          .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
+          .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
+          .add(FlinkStreamRuleSets.TABLE_REF_RULES)
+          .build(), "convert table references after sub-queries removed")
         .build())
 
     // rewrite special temporal join plan
@@ -85,11 +85,11 @@ object FlinkStreamProgramWithoutPhysical {
       FlinkGroupProgramBuilder.newBuilder[StreamOptimizeContext]
         // rewrite before decorrelation
         .addProgram(
-        FlinkHepRuleSetProgramBuilder.newBuilder
-          .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
-          .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
-          .add(FlinkStreamRuleSets.PRE_DECORRELATION_RULES)
-          .build(), "pre-rewrite before decorrelation")
+          FlinkHepRuleSetProgramBuilder.newBuilder
+            .setHepRulesExecutionType(HEP_RULES_EXECUTION_TYPE.RULE_SEQUENCE)
+            .setHepMatchOrder(HepMatchOrder.BOTTOM_UP)
+            .add(FlinkStreamRuleSets.PRE_DECORRELATION_RULES)
+            .build(), "pre-rewrite before decorrelation")
         .addProgram(new FlinkDecorrelateProgram)
         .build())
 
