@@ -3,8 +3,6 @@ package com.dtwave.flink.lineage;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Objects;
-
 /**
  * @description: Result
  * @author: baisong

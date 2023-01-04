@@ -6,7 +6,6 @@ import com.dtwave.flink.lineage.localtimestamp.LocaltimestampTest;
 import com.dtwave.flink.lineage.lookup.join.LookupJoinTest;
 import com.dtwave.flink.lineage.tablefuncion.TableFunctionTest;
 import com.dtwave.flink.lineage.watermark.WatermarkTest;
-
 import com.dtwave.flink.lineage.window.WindowTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

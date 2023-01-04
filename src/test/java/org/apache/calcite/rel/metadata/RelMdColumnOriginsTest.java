@@ -1,15 +1,12 @@
 package org.apache.calcite.rel.metadata;
 
 import junit.framework.TestCase;
-import org.apache.flink.util.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.junit.Assert.assertEquals;
 
 public class RelMdColumnOriginsTest extends TestCase {
 
@@ -35,7 +32,7 @@ public class RelMdColumnOriginsTest extends TestCase {
         Map<String, String> sourceColumnMap = new HashMap<>();
         Iterator<String> iterator = sourceColumnSet.iterator();
         operandSet.forEach(e -> sourceColumnMap.put(e, iterator.next()));
-        LOG.debug("sourceColumnMap: {}",sourceColumnMap);
+        LOG.debug("sourceColumnMap: {}", sourceColumnMap);
 
         matcher = pattern.matcher(input);
         String temp;
