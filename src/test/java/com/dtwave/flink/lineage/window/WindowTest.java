@@ -1,13 +1,12 @@
 package com.dtwave.flink.lineage.window;
 
 import com.dtwave.flink.lineage.basic.AbstractBasicTest;
-import org.apache.flink.table.api.ValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @description: WindowTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/12/30 21:27 PM
  */
@@ -48,7 +47,7 @@ public class WindowTest extends AbstractBasicTest {
                 {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -80,7 +79,7 @@ public class WindowTest extends AbstractBasicTest {
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition"}
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         parseFieldLineage(sql, expectedArray);
