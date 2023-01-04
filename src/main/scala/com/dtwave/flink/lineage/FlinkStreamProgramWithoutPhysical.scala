@@ -12,7 +12,7 @@ import org.apache.flink.table.planner.plan.rules.FlinkStreamRuleSets
  * Defines a sequence of programs to optimize for stream table plan without physical optimize .
  *
  * @description: delete time_indicator, physical and physical_rewrite
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/8/6 10:58 PM
  */

@@ -8,7 +8,7 @@ import org.junit.Test;
  * https://nightlies.apache.org/flink/flink-docs-release-1.14/docs/dev/table/functions/udfs/#table-functions
  *
  * @description: TableFunctionTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/23 11:27 AM
  */
