@@ -8,7 +8,7 @@ import org.junit.Test;
  * The test case comes from https://www.jianshu.com/p/c0b76abe4224, thanks
  *
  * @description: CepTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/12/30 6:08 PM
  */
@@ -47,13 +47,17 @@ public class CepTest extends AbstractBasicTest {
                 "               C as C.temperature < 50                     " +
                 "    )";
 
+        /**
+         * Variables A and B in transform are not replaced.
+         * LAST and AVG functions have also been replaced.
+         */
         String[][] expectedArray = {
                 {"temperature_source", "rack_id", "print_sink", "rack_id"},
-                {"temperature_source", "ts", "print_sink", "start_ts"},
-                {"temperature_source", "ts", "print_sink", "end_ts"},
-                {"temperature_source", "temperature", "print_sink", "start_temp"},
-                {"temperature_source", "temperature", "print_sink", "end_temp"},
-                {"temperature_source", "temperature", "print_sink", "avg_temp"}
+                {"temperature_source", "ts", "print_sink", "start_ts", "A.ts"},
+                {"temperature_source", "ts", "print_sink", "end_ts", "LAST(B.ts, 0)"},
+                {"temperature_source", "temperature", "print_sink", "start_temp", "A.temperature"},
+                {"temperature_source", "temperature", "print_sink", "end_temp", "LAST(B.temperature, 0)"},
+                {"temperature_source", "temperature", "print_sink", "avg_temp", "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
         };
 
         parseFieldLineage(sql, expectedArray);
@@ -87,7 +91,7 @@ public class CepTest extends AbstractBasicTest {
                 "   )"
         );
 
-        String sql="INSERT INTO print_sink (rack_id, start_ts, end_ts, start_temp, end_temp, avg_temp) " +
+        String sql = "INSERT INTO print_sink (rack_id, start_ts, end_ts, start_temp, end_temp, avg_temp) " +
                 "SELECT " +
                 "   rack_id     ," +
                 "   start_ts    ," +
@@ -98,13 +102,17 @@ public class CepTest extends AbstractBasicTest {
                 "FROM" +
                 "   temperature_view";
 
+        /**
+         * Variables A and B in transform are not replaced.
+         * LAST and AVG functions have also been replaced, and add CAST function.
+         */
         String[][] expectedArray = {
                 {"temperature_source", "rack_id", "print_sink", "rack_id"},
-                {"temperature_source", "ts", "print_sink", "start_ts"},
-                {"temperature_source", "ts", "print_sink", "end_ts"},
-                {"temperature_source", "temperature", "print_sink", "start_temp"},
-                {"temperature_source", "temperature", "print_sink", "end_temp"},
-                {"temperature_source", "temperature", "print_sink", "avg_temp"}
+                {"temperature_source", "ts", "print_sink", "start_ts", "CAST(A.ts):TIMESTAMP(3)"},
+                {"temperature_source", "ts", "print_sink", "end_ts", "CAST(LAST(B.ts, 0)):TIMESTAMP(3)"},
+                {"temperature_source", "temperature", "print_sink", "start_temp", "A.temperature"},
+                {"temperature_source", "temperature", "print_sink", "end_temp", "LAST(B.temperature, 0)"},
+                {"temperature_source", "temperature", "print_sink", "avg_temp", "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
         };
 
         parseFieldLineage(sql, expectedArray);
