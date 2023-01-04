@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @description: Result
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/8/7 12:48 AM
  */
@@ -28,5 +28,11 @@ public class Result {
     private String targetTable;
 
     private String targetColumn;
+
+    /**
+     * Stores the expression for data conversion,
+     * which source table fields are transformed by which expression the target field
+     */
+    private String transform;
 
 }

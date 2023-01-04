@@ -5,18 +5,19 @@
 核心思想是通过Calcite解析SQL生成关系表达式RelNode树，再通过优化得到optimized logical paln，最后调用Calcite RelMetadataQuery获取字段级别的血缘关系。 
 <br/>
 
-| 序号 | 作者 | 版本 | 时间 | 备注 |
-| --- | --- | --- | --- | --- |
-| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码 |
+| 序号 | 作者 | 版本 | 时间 | 备注                                                                                 |
+| --- | --- | --- | --- |------------------------------------------------------------------------------------|
+| 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码                                                                         |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. 支持Watermark</br> 2. 支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级Hudi和Mysql CDC版本 |
-| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP |
-| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER()  |
+| 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP                                                       |
+| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. 支持 CEP</br> 2. 支持 ROW_NUMBER()                                                  |
+| 5 | HamaWhite | 3.0.0 | 2023-01-03 | 1. 支持显示字段间转换关系                                                                     |
 
 
 </br>
 源码地址: https://github.com/HamaWhiteGG/flink-sql-lineage
 
-作者邮箱: song.bs@dtwave-inc.com
+作者邮箱: baisongxx@gmail.com
 
 ## 一、基础知识
 ### 1.1 Apache Calcite简介
@@ -517,11 +518,11 @@ $ ./gradlew publishToMavenLocal
 ```shell
 $ ll ~/.m2/repository/org/apache/calcite/calcite-core/1.26.0.1
 
--rw-r--r--  1 baisong  staff  8893065  8  9 13:51 calcite-core-1.26.0.1-javadoc.jar
--rw-r--r--  1 baisong  staff  3386193  8  9 13:51 calcite-core-1.26.0.1-sources.jar
--rw-r--r--  1 baisong  staff  2824504  8  9 13:51 calcite-core-1.26.0.1-tests.jar
--rw-r--r--  1 baisong  staff  5813238  8  9 13:51 calcite-core-1.26.0.1.jar
--rw-r--r--  1 baisong  staff     5416  8  9 13:51 calcite-core-1.26.0.1.pom
+-rw-r--r--  1 HamaWhite  staff  8893065  8  9 13:51 calcite-core-1.26.0.1-javadoc.jar
+-rw-r--r--  1 HamaWhite  staff  3386193  8  9 13:51 calcite-core-1.26.0.1-sources.jar
+-rw-r--r--  1 HamaWhite  staff  2824504  8  9 13:51 calcite-core-1.26.0.1-tests.jar
+-rw-r--r--  1 HamaWhite  staff  5813238  8  9 13:51 calcite-core-1.26.0.1.jar
+-rw-r--r--  1 HamaWhite  staff     5416  8  9 13:51 calcite-core-1.26.0.1.pom
 ```
 ### 4.3 重新编译Flink源码
 #### 4.2.1 下载源码及创建分支
@@ -578,11 +579,11 @@ $ mvn clean install -pl flink-table/flink-table-planner -am -Dscala-2.12 -DskipT
 ```shell
 $ ll ~/.m2/repository/org/apache/flink/flink-table-planner_2.12/1.14.4.1
 
--rw-r--r--  1 baisong  staff  11514580 11 24 18:27 flink-table-planner_2.12-1.14.4.1-tests.jar
--rw-r--r--  1 baisong  staff  35776592 11 24 18:28 flink-table-planner_2.12-1.14.4.1.jar
--rw-r--r--  1 baisong  staff        40 11 23 17:13 flink-table-planner_2.12-1.14.4.1.jar.sha1
--rw-r--r--  1 baisong  staff     15666 11 24 18:28 flink-table-planner_2.12-1.14.4.1.pom
--rw-r--r--  1 baisong  staff        40 11 23 17:12 flink-table-planner_2.12-1.14.4.1.pom.sha1
+-rw-r--r--  1 HamaWhite  staff  11514580 11 24 18:27 flink-table-planner_2.12-1.14.4.1-tests.jar
+-rw-r--r--  1 HamaWhite  staff  35776592 11 24 18:28 flink-table-planner_2.12-1.14.4.1.jar
+-rw-r--r--  1 HamaWhite  staff        40 11 23 17:13 flink-table-planner_2.12-1.14.4.1.jar.sha1
+-rw-r--r--  1 HamaWhite  staff     15666 11 24 18:28 flink-table-planner_2.12-1.14.4.1.pom
+-rw-r--r--  1 HamaWhite  staff        40 11 23 17:12 flink-table-planner_2.12-1.14.4.1.pom.sha1
 ```
 
 如果要推送到Maven仓库，修改pom.xml 增加仓库地址。

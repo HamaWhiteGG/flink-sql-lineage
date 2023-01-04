@@ -10,14 +10,15 @@ The core idea is to parse SQL through Calcite to generate a RelNode tree of rela
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. Add documentation and source code |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. Support Watermark</br> 2. Support UDTF </br> 3. Change Calcite source code modification method </br> 4. Upgrade Hudi and Mysql CDC versions |
 | 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP |
-| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER()  |
+| 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER() |
+| 5 | HamaWhite | 3.0.0 | 2023-01-03 | 1. Support displaying transform between fields |
 
 
 
 </br>
 Source Address: https://github.com/HamaWhiteGG/flink-sql-lineage
 
-Author Email: song.bs@dtwave-inc.com
+Author Email: baisongxx@gmail.com
 
 ## 一、Basic introduction
 ### 1.1 Introduction to Apache Calcite
@@ -518,11 +519,11 @@ After running successfully, check the local maven warehouse, and calcite-core-1.
 ```shell
 $ ll ~/.m2/repository/org/apache/calcite/calcite-core/1.26.0.1
 
--rw-r--r--  1 baisong  staff  8893065  8  9 13:51 calcite-core-1.26.0.1-javadoc.jar
--rw-r--r--  1 baisong  staff  3386193  8  9 13:51 calcite-core-1.26.0.1-sources.jar
--rw-r--r--  1 baisong  staff  2824504  8  9 13:51 calcite-core-1.26.0.1-tests.jar
--rw-r--r--  1 baisong  staff  5813238  8  9 13:51 calcite-core-1.26.0.1.jar
--rw-r--r--  1 baisong  staff     5416  8  9 13:51 calcite-core-1.26.0.1.pom
+-rw-r--r--  1 HamaWhite  staff  8893065  8  9 13:51 calcite-core-1.26.0.1-javadoc.jar
+-rw-r--r--  1 HamaWhite  staff  3386193  8  9 13:51 calcite-core-1.26.0.1-sources.jar
+-rw-r--r--  1 HamaWhite  staff  2824504  8  9 13:51 calcite-core-1.26.0.1-tests.jar
+-rw-r--r--  1 HamaWhite  staff  5813238  8  9 13:51 calcite-core-1.26.0.1.jar
+-rw-r--r--  1 HamaWhite  staff     5416  8  9 13:51 calcite-core-1.26.0.1.pom
 ```
 ### 4.3 Recompile Flink source code
 #### 4.2.1 Download the source code and create a branch
@@ -579,11 +580,11 @@ After running successfully, check the local maven warehouse, flink-table-planner
 ```shell
 $ ll ~/.m2/repository/org/apache/flink/flink-table-planner_2.12/1.14.4.1
 
--rw-r--r--  1 baisong  staff  11514580 11 24 18:27 flink-table-planner_2.12-1.14.4.1-tests.jar
--rw-r--r--  1 baisong  staff  35776592 11 24 18:28 flink-table-planner_2.12-1.14.4.1.jar
--rw-r--r--  1 baisong  staff        40 11 23 17:13 flink-table-planner_2.12-1.14.4.1.jar.sha1
--rw-r--r--  1 baisong  staff     15666 11 24 18:28 flink-table-planner_2.12-1.14.4.1.pom
--rw-r--r--  1 baisong  staff        40 11 23 17:12 flink-table-planner_2.12-1.14.4.1.pom.sha1
+-rw-r--r--  1 HamaWhite  staff  11514580 11 24 18:27 flink-table-planner_2.12-1.14.4.1-tests.jar
+-rw-r--r--  1 HamaWhite  staff  35776592 11 24 18:28 flink-table-planner_2.12-1.14.4.1.jar
+-rw-r--r--  1 HamaWhite  staff        40 11 23 17:13 flink-table-planner_2.12-1.14.4.1.jar.sha1
+-rw-r--r--  1 HamaWhite  staff     15666 11 24 18:28 flink-table-planner_2.12-1.14.4.1.pom
+-rw-r--r--  1 HamaWhite  staff        40 11 23 17:12 flink-table-planner_2.12-1.14.4.1.pom.sha1
 ```
 
 If you want to push to the Maven warehouse, modify pom.xml to add the warehouse address.

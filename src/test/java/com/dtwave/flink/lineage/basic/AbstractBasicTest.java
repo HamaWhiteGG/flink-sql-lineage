@@ -2,7 +2,6 @@ package com.dtwave.flink.lineage.basic;
 
 import com.dtwave.flink.lineage.LineageContext;
 import com.dtwave.flink.lineage.Result;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * @description: AbstractBasicTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/23 11:04 AM
  */
@@ -35,8 +34,14 @@ public abstract class AbstractBasicTest {
         actualList.forEach(e -> LOG.info(e.toString()));
 
         List<Result> expectedList = Stream.of(expectedArray)
-                .map(e -> buildResult(e[0], e[1], e[2], e[3]))
-                .collect(Collectors.toList());
+                .map(e -> {
+                    Result result = buildResult(e[0], e[1], e[2], e[3]);
+                    // transform field is optional
+                    if (e.length == 5) {
+                        result.setTransform(e[4]);
+                    }
+                    return result;
+                }).collect(Collectors.toList());
 
 
         assertEquals(expectedList, actualList);
@@ -54,7 +59,6 @@ public abstract class AbstractBasicTest {
                 .targetColumn(targetColumn)
                 .build();
     }
-
 
 
     /**
