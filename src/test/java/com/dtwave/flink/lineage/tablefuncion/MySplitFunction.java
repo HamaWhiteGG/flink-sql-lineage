@@ -7,7 +7,7 @@ import org.apache.flink.types.Row;
 
 /**
  * @description: MySplitFunction
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/23 11:15 AM
  */

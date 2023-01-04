@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @description: Result
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/8/7 12:48 AM
  */

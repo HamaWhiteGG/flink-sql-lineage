@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
 
 /**
  * @description: SuiteTest
- * @author: baisong
+ * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/11/24 5:49 PM
  */
