@@ -19,15 +19,17 @@ import java.util.stream.Collectors;
 
 /**
  * Modified based on calcite's source code org.apache.calcite.rel.metadata.RelMdColumnOrigins
- * <p>
- * Modification point:
- * 1. Support lookup join, add method getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)
- * 2. Support watermark, add method getColumnOrigins(SingleRel rel,RelMetadataQuery mq, int iOutputColumn)
- * 3. Support table function, add method getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)
- * 4. Support field AS LOCALTIMESTAMP, modify method getColumnOrigins(Calc rel, RelMetadataQuery mq, int iOutputColumn)
- * 5. Support CEP, add method getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn)
- * 6. Support ROW_NUMBER(), add method getColumnOrigins(Window rel, RelMetadataQuery mq, int iOutputColumn)
- * 7. Support transform, add method createDerivedColumnOrigins(Set<RelColumnOrigin> inputSet, String transform, boolean originTransform), and related code
+ *
+ * <p>Modification point:
+ * <ol>
+ *  <li>Support lookup join, add method getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support watermark, add method getColumnOrigins(SingleRel rel,RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support table function, add method getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support field AS LOCALTIMESTAMP, modify method getColumnOrigins(Calc rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support CEP, add method getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support ROW_NUMBER(), add method getColumnOrigins(Window rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support transform, add method createDerivedColumnOrigins(Set<RelColumnOrigin> inputSet, String transform, boolean originTransform), and related code
+ * <ol/>
  *
  * @description: RelMdColumnOrigins supplies a default implementation of {@link
  * RelMetadataQuery#getColumnOrigins} for the standard logical algebra.
