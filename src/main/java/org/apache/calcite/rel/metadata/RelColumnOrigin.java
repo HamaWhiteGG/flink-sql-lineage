@@ -22,7 +22,9 @@ import org.apache.calcite.plan.RelOptTable;
  * Modified based on calcite's source code org.apache.calcite.rel.metadata.RelColumnOrigin
  * <p>
  * Modification point:
- * 1. add transform field and related code.
+ * <ol>
+ *  <li>add transform field and related code.
+ * </ol>
  *
  * @description: RelColumnOrigin is a data structure describing one of the origins of an
  * output column produced by a relational expression.
