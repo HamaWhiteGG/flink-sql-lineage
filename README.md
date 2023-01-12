@@ -12,6 +12,7 @@ The core idea is to parse SQL through Calcite to generate a RelNode tree of rela
 | 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. Support field AS LOCALTIMESTAMP |
 | 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. Support CEP</br> 2. Support ROW_NUMBER() |
 | 5 | HamaWhite | 3.0.0 | 2023-01-03 | 1. Support displaying transform between fields |
+| 6 | HamaWhite | 3.0.1 | 2023-01-12 | 1. Remove unit test's dependence on external environment |
 
 
 
@@ -254,6 +255,11 @@ private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode opt
 ```
 ## 三、Test Results
 Detailed test cases can be viewed in the unit test in the code, only some test points are described here.
+```shell
+$ cd flink-sql-lineage
+$ mvn test
+```
+
 ### 3.1 Create table statement
 Create three new tables below, namely: ods_mysql_users, dim_mysql_company and dwd_hudi_users.
 #### 3.1.1 New mysql cdc table-ods_mysql_users
@@ -716,7 +722,7 @@ public class MySplitFunction extends TableFunction<Row> {
 DROP FUNCTION IF EXISTS my_split_udtf;
 
 CREATE FUNCTION IF NOT EXISTS my_split_udtf 
-  AS 'com.dtwave.flink.lineage.tablefuncion.MySplitFunction';
+  AS 'com.hw.flink.lineage.tablefuncion.MySplitFunction';
 ```
 
 #### 5.2.2 Test UDTF SQL
