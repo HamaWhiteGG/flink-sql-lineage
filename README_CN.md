@@ -6,12 +6,13 @@
 <br/>
 
 | 序号 | 作者 | 版本 | 时间 | 备注                                                                                 |
-| --- | --- | --- | --- |------------------------------------------------------------------------------------|
+| -- | --- | --- | --- |------------------------------------------------------------------------------------|
 | 1 | HamaWhite | 1.0.0 | 2022-08-09 | 1. 增加文档和源码                                                                         |
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. 支持Watermark</br> 2. 支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级Hudi和Mysql CDC版本 |
 | 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP                                                       |
 | 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. 支持 CEP</br> 2. 支持 ROW_NUMBER()                                                  |
 | 5 | HamaWhite | 3.0.0 | 2023-01-03 | 1. 支持显示字段间转换关系                                                                     |
+| 6 | HamaWhite | 3.0.1 | 2023-01-12 | 1. 去除单测对外部环境的依赖                                                                    |
 
 
 </br>
@@ -250,6 +251,11 @@ private List<FieldLineage> buildFiledLineageResult(String sinkTable, RelNode opt
 ```
 ## 三、测试结果
 详细测试用例可查看代码中的单测，此处只描述部分测试点。
+```shell
+$ cd flink-sql-lineage
+$ mvn test
+```
+
 ### 3.1 建表语句
 下面新建三张表，分别是: ods_mysql_users、dim_mysql_company和dwd_hudi_users。
 #### 3.1.1 新建mysql cdc table-ods_mysql_users
@@ -716,7 +722,7 @@ public class MySplitFunction extends TableFunction<Row> {
 DROP FUNCTION IF EXISTS my_split_udtf;
 
 CREATE FUNCTION IF NOT EXISTS my_split_udtf 
-  AS 'com.dtwave.flink.lineage.tablefuncion.MySplitFunction';
+  AS 'com.hw.flink.lineage.tablefuncion.MySplitFunction';
 ```
 
 #### 5.2.2 测试UDTF SQL
