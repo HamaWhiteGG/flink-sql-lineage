@@ -1,7 +1,8 @@
 package com.hw.lineage.flink;
 
 
-import com.hw.lineage.Result;
+import com.hw.lineage.LinageService;
+import com.hw.lineage.LineageResult;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.metadata.RelColumnOrigin;
@@ -17,11 +18,10 @@ import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.AbstractCatalog;
 import org.apache.flink.table.catalog.CatalogManager;
 import org.apache.flink.table.catalog.FunctionCatalog;
-import org.apache.flink.table.module.ModuleManager;
+import org.apache.flink.table.operations.CatalogSinkModifyOperation;
 import org.apache.flink.table.operations.Operation;
-import org.apache.flink.table.operations.SinkModifyOperation;
 import org.apache.flink.table.planner.calcite.FlinkRelBuilder;
-import org.apache.flink.table.planner.calcite.RexFactory;
+import org.apache.flink.table.planner.calcite.SqlExprToRexConverterFactory;
 import org.apache.flink.table.planner.delegation.PlannerBase;
 import org.apache.flink.table.planner.operations.PlannerQueryOperation;
 import org.apache.flink.table.planner.plan.optimize.program.FlinkChainedProgram;
@@ -35,19 +35,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.hw.lineage.Constant.DELIMITER;
+
 /**
  * @description: LineageContext
  * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2022/8/6 11:06 AM
  */
-public class LineageContext {
-    private static final Logger LOG = LoggerFactory.getLogger(LineageContext.class);
-    private static final String DELIMITER = ".";
+public class LineageServiceImpl implements LinageService {
+    private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);
     private final TableEnvironmentImpl tableEnv;
     private final FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
-    public LineageContext(AbstractCatalog catalog) {
+    public LineageServiceImpl(AbstractCatalog catalog) {
         Configuration configuration = new Configuration();
         configuration.setBoolean("table.dynamic-table-options.enabled", true);
 
@@ -66,17 +67,14 @@ public class LineageContext {
     }
 
 
-    /**
-     * Execute the single sql
-     */
-    public TableResult execute(String singleSql) {
-        return tableEnv.executeSql(singleSql);
+    @Override
+    public void execute(String singleSql) {
+        tableEnv.executeSql(singleSql);
     }
 
-    /**
-     * Parse the field blood relationship of the input SQL
-     */
-    public List<Result> parseFieldLineage(String sql) {
+
+    @Override
+    public List<LineageResult> parseFieldLineage(String sql) {
         LOG.info("Input Sql: \n {}", sql);
         // 1. Generate original relNode tree
         Tuple2<String, RelNode> parsed = parseStatement(sql);
@@ -104,22 +102,24 @@ public class LineageContext {
                     "Unsupported SQL query! only accepts a single SQL statement.");
         }
         Operation operation = operations.get(0);
-        if (operation instanceof SinkModifyOperation) {
-            SinkModifyOperation sinkOperation = (SinkModifyOperation) operation;
+        if (operation instanceof CatalogSinkModifyOperation) {
+            CatalogSinkModifyOperation sinkOperation = (CatalogSinkModifyOperation) operation;
 
             PlannerQueryOperation queryOperation = (PlannerQueryOperation) sinkOperation.getChild();
             RelNode relNode = queryOperation.getCalciteTree();
             return new Tuple2<>(
-                    sinkOperation.getContextResolvedTable().getIdentifier().asSummaryString(),
+                    sinkOperation.getTableIdentifier().asSummaryString(),
                     relNode);
         } else {
             throw new TableException("Only insert is supported now.");
         }
     }
 
-
     /**
      * Calling each program's optimize method in sequence.
+     *
+     * Modified based on flink's source code {@link org.apache.flink.table.planner.plan.optimize.StreamCommonSubGraphBasedOptimizer}#optimizeTree
+     *
      */
     private RelNode optimize(RelNode relNode) {
         return flinkChainedProgram.optimize(relNode, new StreamOptimizeContext() {
@@ -135,7 +135,7 @@ public class LineageContext {
 
             @Override
             public FunctionCatalog getFunctionCatalog() {
-                return getPlanner().functionCatalog();
+                return getPlanner().getFlinkContext().getFunctionCatalog();
             }
 
             @Override
@@ -144,18 +144,24 @@ public class LineageContext {
             }
 
             @Override
-            public ModuleManager getModuleManager() {
-                return getPlanner().moduleManager();
+            public SqlExprToRexConverterFactory getSqlExprToRexConverterFactory() {
+                return getPlanner().getFlinkContext().getSqlExprToRexConverterFactory();
             }
 
             @Override
-            public RexFactory getRexFactory() {
-                return getPlanner().getFlinkContext().getRexFactory();
+            public <C> C unwrap(Class<C> clazz) {
+                return getPlanner().getFlinkContext().unwrap(clazz);
+
             }
 
             @Override
             public FlinkRelBuilder getFlinkRelBuilder() {
-                return getPlanner().createRelBuilder();
+                return getPlanner().getRelBuilder();
+            }
+
+            @Override
+            public boolean needFinalTimeIndicatorConversion() {
+                return true;
             }
 
             @Override
@@ -168,15 +174,6 @@ public class LineageContext {
                 return MiniBatchInterval.NONE;
             }
 
-            @Override
-            public boolean needFinalTimeIndicatorConversion() {
-                return true;
-            }
-
-            @Override
-            public ClassLoader getClassLoader() {
-                return getPlanner().getFlinkContext().getClassLoader();
-            }
 
             @SuppressWarnings("squid:S5803")
             private PlannerBase getPlanner() {
@@ -185,7 +182,7 @@ public class LineageContext {
         });
     }
 
-    private List<Result> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
+    private List<LineageResult> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
         // target columns
         List<String> targetColumnList = tableEnv.from(sinkTable)
                 .getResolvedSchema()
@@ -195,7 +192,7 @@ public class LineageContext {
         validateSchema(sinkTable, optRelNode, targetColumnList);
 
         RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
-        List<Result> resultList = new ArrayList<>();
+        List<LineageResult> resultList = new ArrayList<>();
 
         for (int index = 0; index < targetColumnList.size(); index++) {
             String targetColumn = targetColumnList.get(index);
@@ -214,7 +211,7 @@ public class LineageContext {
 
                     // filed
                     int ordinal = rco.getOriginColumnOrdinal();
-                    List<String> fieldNames = ((TableSourceTable) table).contextResolvedTable().getResolvedSchema().getColumnNames();
+                    List<String> fieldNames = ((TableSourceTable) table).catalogTable().getResolvedSchema().getColumnNames();
                     String sourceColumn = fieldNames.get(ordinal);
                     LOG.debug("----------------------------------------------------------");
                     LOG.debug("Source table: {}", sourceTable);
@@ -223,7 +220,7 @@ public class LineageContext {
                         LOG.debug("transform: {}", rco.getTransform());
                     }
                     // add record
-                    resultList.add(buildResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
+                    resultList.add(new LineageResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
                 }
             }
         }
@@ -244,24 +241,5 @@ public class LineageContext {
                                     + "Sink schema:  %s",
                             sinkTable, queryFieldList, sinkFieldList));
         }
-    }
-
-
-    private Result buildResult(String sourceTablePath, String sourceColumn
-            , String targetTablePath, String targetColumn, String transform) {
-        String[] sourceItems = sourceTablePath.split("\\" + DELIMITER);
-        String[] targetItems = targetTablePath.split("\\" + DELIMITER);
-
-        return Result.builder()
-                .sourceCatalog(sourceItems[0])
-                .sourceDatabase(sourceItems[1])
-                .sourceTable(sourceItems[2])
-                .sourceColumn(sourceColumn)
-                .targetCatalog(targetItems[0])
-                .targetDatabase(targetItems[1])
-                .targetTable(targetItems[2])
-                .targetColumn(targetColumn)
-                .transform(transform)
-                .build();
     }
 }

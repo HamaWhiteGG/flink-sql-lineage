@@ -8,7 +8,9 @@ import org.apache.flink.table.planner.plan.optimize.program._
 import org.apache.flink.table.planner.plan.rules.FlinkStreamRuleSets
 
 /**
- * Defines a sequence of programs to optimize for stream table plan without physical optimize .
+ * Defines a sequence of programs to optimize for stream table plan without physical optimize.
+ *
+ * Modified based on flink's source code {@link FlinkStreamProgram}
  *
  * @description: delete time_indicator, physical and physical_rewrite
  * @author: HamaWhite
