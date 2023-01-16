@@ -1,8 +1,8 @@
 package com.hw.lineage.flink.basic;
 
 import apache.flink.table.catalog.hive.HiveTestUtils;
-import com.hw.lineage.Result;
-import com.hw.lineage.flink.LineageContext;
+import com.hw.lineage.LineageResult;
+import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -33,14 +33,14 @@ public abstract class AbstractBasicTest {
 
     private static HiveCatalog hiveCatalog;
 
-    protected static LineageContext context;
+    protected static LineageServiceImpl context;
 
     @BeforeClass
     public static void setup() throws Exception {
         hiveCatalog = HiveTestUtils.createHiveCatalog(catalogName, defaultDatabase, hiveVersion);
         hiveCatalog.open();
 
-        context = new LineageContext(hiveCatalog);
+        context = new LineageServiceImpl(hiveCatalog);
     }
 
 
@@ -53,13 +53,13 @@ public abstract class AbstractBasicTest {
     }
 
     protected void parseFieldLineage(String sql, String[][] expectedArray) {
-        List<Result> actualList = context.parseFieldLineage(sql);
+        List<LineageResult> actualList = context.parseFieldLineage(sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 
-        List<Result> expectedList = Stream.of(expectedArray)
+        List<LineageResult> expectedList = Stream.of(expectedArray)
                 .map(e -> {
-                    Result result = buildResult(e[0], e[1], e[2], e[3]);
+                    LineageResult result = buildResult(e[0], e[1], e[2], e[3]);
                     // transform field is optional
                     if (e.length == 5) {
                         result.setTransform(e[4]);
@@ -71,8 +71,8 @@ public abstract class AbstractBasicTest {
         assertEquals(expectedList, actualList);
     }
 
-    protected Result buildResult(String sourceTable, String sourceColumn, String targetTable, String targetColumn) {
-        return Result.builder()
+    protected LineageResult buildResult(String sourceTable, String sourceColumn, String targetTable, String targetColumn) {
+        return LineageResult.builder()
                 .sourceCatalog(catalogName)
                 .sourceDatabase(defaultDatabase)
                 .sourceTable(sourceTable)

@@ -17,6 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.hw.lineage.Constant.DELIMITER;
+
 /**
  * Modified based on calcite's source code org.apache.calcite.rel.metadata.RelMdColumnOrigins
  *
@@ -39,9 +41,6 @@ import java.util.stream.Collectors;
 public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.ColumnOrigin> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RelMdColumnOrigins.class);
-
-    private static final String DELIMITER = ".";
-
 
     public static final RelMetadataProvider SOURCE =
             ReflectiveRelMetadataProvider.reflectiveSource(
