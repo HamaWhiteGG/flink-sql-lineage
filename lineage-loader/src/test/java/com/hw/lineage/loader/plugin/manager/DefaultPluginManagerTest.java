@@ -64,7 +64,6 @@ public class DefaultPluginManagerTest extends PluginTestBase {
 
     @Test
     public void testLoadPlugin() {
-
         String[] parentPatterns = {TestService.class.getName(), OtherTestService.class.getName()};
         PluginManager pluginManager = new DefaultPluginManager(descriptors, PARENT_CLASS_LOADER, parentPatterns);
 
