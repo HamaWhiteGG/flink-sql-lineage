@@ -24,7 +24,7 @@ public abstract class PluginTestBase extends TestLogger{
     public static final String PLUGIN_B_JAR = PLUGIN_B+".jar";
     public static final ClassLoader PARENT_CLASS_LOADER = PluginTestBase.class.getClassLoader();
 
-    URL createPluginJarURLFromString(String fileString) throws MalformedURLException {
+    public URL createPluginJarURLFromString(String fileString) throws MalformedURLException {
         File file = locateJarFile(fileString);
         return file.toURI().toURL();
     }
