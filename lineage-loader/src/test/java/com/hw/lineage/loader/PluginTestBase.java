@@ -18,8 +18,10 @@ public abstract class PluginTestBase extends TestLogger{
     /** Optional prefix to the jar folder if run from an IDE. */
     private static final String OPT_PREFIX = "target/";
 
-    public static final String PLUGIN_A = "plugin-a.jar";
-    public static final String PLUGIN_B = "plugin-b.jar";
+    public static final String PLUGIN_A = "plugin-a";
+    public static final String PLUGIN_B = "plugin-b";
+    public static final String PLUGIN_A_JAR = PLUGIN_A+".jar";
+    public static final String PLUGIN_B_JAR = PLUGIN_B+".jar";
     public static final ClassLoader PARENT_CLASS_LOADER = PluginTestBase.class.getClassLoader();
 
     URL createPluginJarURLFromString(String fileString) throws MalformedURLException {

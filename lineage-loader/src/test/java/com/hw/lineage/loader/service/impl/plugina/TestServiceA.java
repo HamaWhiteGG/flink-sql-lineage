@@ -22,6 +22,6 @@ public class TestServiceA implements TestService {
 
     @Override
     public String say(String name) {
-        return "A-" + name + dynamicDelegate.say(name);
+        return "A-" + name + "-" + dynamicDelegate.say(name);
     }
 }

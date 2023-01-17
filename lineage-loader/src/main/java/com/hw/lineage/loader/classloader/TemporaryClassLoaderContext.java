@@ -1,4 +1,4 @@
-package com.hw.lineage.loader.classloading;
+package com.hw.lineage.loader.classloader;
 
 /**
  * Sets a context class loader in a "try-with-resources" pattern.
