@@ -1,4 +1,4 @@
-package com.hw.lineage.loader.classloader;
+package com.hw.lineage.loader.classloading;
 
 import com.google.common.collect.Iterators;
 import com.hw.lineage.util.function.FunctionWithException;

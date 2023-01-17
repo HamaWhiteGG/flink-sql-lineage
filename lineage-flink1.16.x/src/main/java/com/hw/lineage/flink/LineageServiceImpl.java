@@ -1,7 +1,7 @@
 package com.hw.lineage.flink;
 
 
-import com.hw.lineage.LinageService;
+import com.hw.lineage.LineageService;
 import com.hw.lineage.LineageResult;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
@@ -44,10 +44,13 @@ import static com.hw.lineage.Constant.DELIMITER;
  * @version: 1.0.0
  * @date: 2022/8/6 11:06 AM
  */
-public class LineageServiceImpl implements LinageService {
+public class LineageServiceImpl implements LineageService {
     private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);
-    private final TableEnvironmentImpl tableEnv;
-    private final FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
+    private TableEnvironmentImpl tableEnv;
+    private FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
+
+    public LineageServiceImpl() {
+    }
 
     public LineageServiceImpl(AbstractCatalog catalog) {
         Configuration configuration = new Configuration();
@@ -74,10 +77,10 @@ public class LineageServiceImpl implements LinageService {
     }
 
     @Override
-    public List<LineageResult> parseFieldLineage(String sql) {
-        LOG.info("Input Sql: \n {}", sql);
+    public List<LineageResult> parseFieldLineage(String singleSql) {
+        LOG.info("Input Sql: \n {}", singleSql);
         // 1. Generate original relNode tree
-        Tuple2<String, RelNode> parsed = parseStatement(sql);
+        Tuple2<String, RelNode> parsed = parseStatement(singleSql);
         String sinkTable = parsed.getField(0);
         RelNode oriRelNode = parsed.getField(1);
 
@@ -118,7 +121,7 @@ public class LineageServiceImpl implements LinageService {
 
     /**
      * Calling each program's optimize method in sequence.
-     *
+     * <p>
      * Modified based on flink's source code {@link org.apache.flink.table.planner.plan.optimize.StreamCommonSubGraphBasedOptimizer}#optimizeTree
      */
     private RelNode optimize(RelNode relNode) {

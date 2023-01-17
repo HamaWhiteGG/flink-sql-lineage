@@ -8,12 +8,12 @@ import java.util.List;
  * @version: 1.0.0
  * @date: 2023/1/16 8:39 PM
  */
-public interface LinageService {
+public interface LineageService {
 
     /**
      * Parse the field blood relationship of the input SQL
      */
-     List<LineageResult> parseFieldLineage(String sql);
+     List<LineageResult> parseFieldLineage(String singleSql);
 
     /**
      * Execute the single sql
