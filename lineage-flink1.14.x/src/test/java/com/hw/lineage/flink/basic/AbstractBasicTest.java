@@ -40,7 +40,8 @@ public abstract class AbstractBasicTest {
         hiveCatalog = HiveTestUtils.createHiveCatalog(catalogName, defaultDatabase, hiveVersion);
         hiveCatalog.open();
 
-        context = new LineageServiceImpl(hiveCatalog);
+        context = new LineageServiceImpl();
+        context.registerCatalog(hiveCatalog);
     }
 
 

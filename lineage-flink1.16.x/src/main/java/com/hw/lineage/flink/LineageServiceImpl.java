@@ -50,9 +50,6 @@ public class LineageServiceImpl implements LineageService {
     private FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
     public LineageServiceImpl() {
-    }
-
-    public LineageServiceImpl(AbstractCatalog catalog) {
         Configuration configuration = new Configuration();
         configuration.setBoolean("table.dynamic-table-options.enabled", true);
 
@@ -63,13 +60,13 @@ public class LineageServiceImpl implements LineageService {
                 .build();
 
         this.tableEnv = (TableEnvironmentImpl) StreamTableEnvironment.create(env, settings);
-
-        tableEnv.registerCatalog(catalog.getName(), catalog);
-        tableEnv.useCatalog(catalog.getName());
-
         this.flinkChainedProgram = FlinkStreamProgramWithoutPhysical.buildProgram(configuration);
     }
 
+    public void registerCatalog(AbstractCatalog catalog) {
+        tableEnv.registerCatalog(catalog.getName(), catalog);
+        tableEnv.useCatalog(catalog.getName());
+    }
 
     @Override
     public void execute(String singleSql) {
