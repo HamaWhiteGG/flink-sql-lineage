@@ -12,11 +12,11 @@
         <module>lineage-web</module>
         <module>lineage-dist</module>
         <module>lineage-common</module>
-        <module>lineage-client</module>
         <module>lineage-flink1.14.x</module>
         <module>lineage-flink1.16.x</module>
-        <module>lineage-server</module>
         <module>lineage-loader</module>
+        <module>lineage-client</module>
+        <module>lineage-server</module>
     </modules>
 
     <properties>

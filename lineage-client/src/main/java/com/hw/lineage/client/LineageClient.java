@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.hw.lineage.LineageResult;
 import com.hw.lineage.LineageService;
 import com.hw.lineage.exception.LineageRuntimeException;
+import com.hw.lineage.loader.classloading.TemporaryClassLoaderContext;
 import com.hw.lineage.loader.plugin.PluginDescriptor;
 import com.hw.lineage.loader.plugin.finder.DirectoryBasedPluginFinder;
 import com.hw.lineage.loader.plugin.finder.PluginFinder;
@@ -51,7 +52,7 @@ public class LineageClient {
                 Map.Entry::getKey,
                 entry -> {
                     List<LineageService> lineageServiceList = Lists.newArrayList(entry.getValue());
-                    Preconditions.checkArgument(lineageServiceList.size() != 1,
+                    Preconditions.checkArgument(lineageServiceList.size() == 1,
                             "%s plugin no implementation of LineageService or greater than 1",
                             entry.getKey());
                     return lineageServiceList.get(0);
@@ -63,7 +64,13 @@ public class LineageClient {
      * Parse the field blood relationship of the input SQL
      */
     public List<LineageResult> parseFieldLineage(String pluginId, String singleSql) {
-        return lineageServiceMap.get(pluginId).parseFieldLineage(singleSql);
+        LineageService lineageService=lineageServiceMap.get(pluginId);
+        ClassLoader classloader=lineageService.getClass().getClassLoader();
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classloader)) {
+            return lineageServiceMap.get(pluginId).parseFieldLineage(singleSql);
+        }
+
+//        return lineageServiceMap.get(pluginId).parseFieldLineage(singleSql);
     }
 
     /**
