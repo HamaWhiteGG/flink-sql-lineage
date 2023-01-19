@@ -200,8 +200,6 @@ public class LineageServiceImpl implements LineageService {
             LOG.debug("**********************************************************");
             LOG.debug("Target table: {}", sinkTable);
             LOG.debug("Target column: {}", targetColumn);
-            System.out.println("Target table: {}"+ sinkTable);
-            System.out.println("Target column: {}"+targetColumn);
 
             Set<RelColumnOrigin> relColumnOriginSet = metadataQuery.getColumnOrigins(optRelNode, index);
 
@@ -218,11 +216,8 @@ public class LineageServiceImpl implements LineageService {
                     LOG.debug("----------------------------------------------------------");
                     LOG.debug("Source table: {}", sourceTable);
                     LOG.debug("Source column: {}", sourceColumn);
-                    System.out.println("Source table: {}"+sourceTable);
-                    System.out.println("Source column: {}"+ sourceColumn);
                     if (StringUtils.isNotEmpty(rco.getTransform())) {
                         LOG.debug("transform: {}", rco.getTransform());
-                        System.out.println("transform: {}"+rco.getTransform());
                     }
                     // add record
                     resultList.add(new LineageResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));

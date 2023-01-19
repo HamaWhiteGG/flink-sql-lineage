@@ -117,6 +117,10 @@
                     <artifactId>calcite-linq4j</artifactId>
                     <groupId>org.apache.calcite</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -124,6 +128,12 @@
             <groupId>org.apache.hive</groupId>
             <artifactId>hive-metastore</artifactId>
             <version>${hive.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>
