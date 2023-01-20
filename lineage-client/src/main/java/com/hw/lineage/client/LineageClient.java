@@ -35,14 +35,15 @@ public class LineageClient {
         Path pluginRootFolderPath = pluginRootFolder.toPath();
 
         PluginFinder descriptorsFactory = new DirectoryBasedPluginFinder(pluginRootFolderPath);
-        Collection<PluginDescriptor> descriptors = null;
+        Collection<PluginDescriptor> descriptors;
         try {
             descriptors = descriptorsFactory.findPlugins();
         } catch (IOException e) {
             throw new LineageRuntimeException("Exception when trying to initialize plugin system.", e);
         }
 
-        String[] parentPatterns = {LineageService.class.getName()};
+        // use AppClassLoader to load
+        String[] parentPatterns = {LineageService.class.getName(), LineageResult.class.getName()};
         PluginManager pluginManager =
                 new DefaultPluginManager(descriptors, LineageService.class.getClassLoader(), parentPatterns);
 
@@ -64,13 +65,11 @@ public class LineageClient {
      * Parse the field blood relationship of the input SQL
      */
     public List<LineageResult> parseFieldLineage(String pluginId, String singleSql) {
-        LineageService lineageService=lineageServiceMap.get(pluginId);
-        ClassLoader classloader=lineageService.getClass().getClassLoader();
+        LineageService lineageService = lineageServiceMap.get(pluginId);
+        ClassLoader classloader = lineageService.getClass().getClassLoader();
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classloader)) {
             return lineageServiceMap.get(pluginId).parseFieldLineage(singleSql);
         }
-
-//        return lineageServiceMap.get(pluginId).parseFieldLineage(singleSql);
     }
 
     /**
