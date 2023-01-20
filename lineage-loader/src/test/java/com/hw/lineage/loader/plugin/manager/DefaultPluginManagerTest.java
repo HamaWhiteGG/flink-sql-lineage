@@ -1,13 +1,13 @@
 package com.hw.lineage.loader.plugin.manager;
 
 import com.google.common.collect.Lists;
+import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.loader.PluginTestBase;
 import com.hw.lineage.loader.plugin.PluginDescriptor;
 import com.hw.lineage.loader.plugin.finder.DirectoryBasedPluginFinder;
 import com.hw.lineage.loader.plugin.finder.PluginFinder;
 import com.hw.lineage.loader.service.OtherTestService;
 import com.hw.lineage.loader.service.TestService;
-import com.hw.lineage.util.Preconditions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

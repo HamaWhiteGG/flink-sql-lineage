@@ -1,4 +1,4 @@
-package com.hw.lineage.util;
+package com.hw.lineage.common.util;
 
 /**
  * @description: A collection of utility functions for dealing with exceptions and exception workflows.
@@ -7,6 +7,10 @@ package com.hw.lineage.util;
  * @date: 2023/1/16 10:35 PM
  */
 public class ExceptionUtils {
+    
+    private ExceptionUtils() {
+    }
+
 
     /**
      * Throws the given {@code Throwable} in scenarios where the signatures do not allow you to

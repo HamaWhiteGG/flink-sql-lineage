@@ -1,4 +1,4 @@
-package com.hw.lineage.util;
+package com.hw.lineage.common.util;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +20,8 @@ public class Preconditions {
     /**
      * Private constructor to prevent instantiation.
      */
-    private Preconditions() {}
+    private Preconditions() {
+    }
 
 
     // ------------------------------------------------------------------------
@@ -46,9 +47,9 @@ public class Preconditions {
      * Ensures that the given object reference is not null. Upon violation, a {@code
      * NullPointerException} with the given message is thrown.
      *
-     * @param reference The object reference
+     * @param reference    The object reference
      * @param errorMessage The message for the {@code NullPointerException} that is thrown if the
-     *     check fails.
+     *                     check fails.
      * @return The object reference itself (generically typed).
      * @throws NullPointerException Thrown, if the passed reference was null.
      */
@@ -67,12 +68,12 @@ public class Preconditions {
      * fashion as {@link String#format(String, Object...)}, but supporting only {@code %s} as a
      * placeholder.
      *
-     * @param reference The object reference
+     * @param reference            The object reference
      * @param errorMessageTemplate The message template for the {@code NullPointerException} that is
-     *     thrown if the check fails. The template substitutes its {@code %s} placeholders with the
-     *     error message arguments.
-     * @param errorMessageArgs The arguments for the error message, to be inserted into the message
-     *     template for the {@code %s} placeholders.
+     *                             thrown if the check fails. The template substitutes its {@code %s} placeholders with the
+     *                             error message arguments.
+     * @param errorMessageArgs     The arguments for the error message, to be inserted into the message
+     *                             template for the {@code %s} placeholders.
      * @return The object reference itself (generically typed).
      * @throws NullPointerException Thrown, if the passed reference was null.
      */
@@ -109,9 +110,9 @@ public class Preconditions {
      * condition is not met (evaluates to {@code false}). The exception will have the given error
      * message.
      *
-     * @param condition The condition to check
+     * @param condition    The condition to check
      * @param errorMessage The message for the {@code IllegalArgumentException} that is thrown if
-     *     the check fails.
+     *                     the check fails.
      * @throws IllegalArgumentException Thrown, if the condition is violated.
      */
     public static void checkArgument(boolean condition, @Nullable Object errorMessage) {
@@ -124,12 +125,12 @@ public class Preconditions {
      * Checks the given boolean condition, and throws an {@code IllegalArgumentException} if the
      * condition is not met (evaluates to {@code false}).
      *
-     * @param condition The condition to check
+     * @param condition            The condition to check
      * @param errorMessageTemplate The message template for the {@code IllegalArgumentException}
-     *     that is thrown if the check fails. The template substitutes its {@code %s} placeholders
-     *     with the error message arguments.
-     * @param errorMessageArgs The arguments for the error message, to be inserted into the message
-     *     template for the {@code %s} placeholders.
+     *                             that is thrown if the check fails. The template substitutes its {@code %s} placeholders
+     *                             with the error message arguments.
+     * @param errorMessageArgs     The arguments for the error message, to be inserted into the message
+     *                             template for the {@code %s} placeholders.
      * @throws IllegalArgumentException Thrown, if the condition is violated.
      */
     public static void checkArgument(
@@ -164,9 +165,9 @@ public class Preconditions {
      * condition is not met (evaluates to {@code false}). The exception will have the given error
      * message.
      *
-     * @param condition The condition to check
+     * @param condition    The condition to check
      * @param errorMessage The message for the {@code IllegalStateException} that is thrown if the
-     *     check fails.
+     *                     check fails.
      * @throws IllegalStateException Thrown, if the condition is violated.
      */
     public static void checkState(boolean condition, @Nullable Object errorMessage) {
@@ -179,12 +180,12 @@ public class Preconditions {
      * Checks the given boolean condition, and throws an {@code IllegalStateException} if the
      * condition is not met (evaluates to {@code false}).
      *
-     * @param condition The condition to check
+     * @param condition            The condition to check
      * @param errorMessageTemplate The message template for the {@code IllegalStateException} that
-     *     is thrown if the check fails. The template substitutes its {@code %s} placeholders with
-     *     the error message arguments.
-     * @param errorMessageArgs The arguments for the error message, to be inserted into the message
-     *     template for the {@code %s} placeholders.
+     *                             is thrown if the check fails. The template substitutes its {@code %s} placeholders with
+     *                             the error message arguments.
+     * @param errorMessageArgs     The arguments for the error message, to be inserted into the message
+     *                             template for the {@code %s} placeholders.
      * @throws IllegalStateException Thrown, if the condition is violated.
      */
     public static void checkState(
@@ -201,10 +202,10 @@ public class Preconditions {
      * Ensures that the given index is valid for an array, list or string of the given size.
      *
      * @param index index to check
-     * @param size size of the array, list or string
-     * @throws IllegalArgumentException Thrown, if size is negative.
+     * @param size  size of the array, list or string
+     * @throws IllegalArgumentException  Thrown, if size is negative.
      * @throws IndexOutOfBoundsException Thrown, if the index negative or greater than or equal to
-     *     size
+     *                                   size
      */
     public static void checkElementIndex(int index, int size) {
         checkArgument(size >= 0, "Size was negative.");
@@ -216,13 +217,13 @@ public class Preconditions {
     /**
      * Ensures that the given index is valid for an array, list or string of the given size.
      *
-     * @param index index to check
-     * @param size size of the array, list or string
+     * @param index        index to check
+     * @param size         size of the array, list or string
      * @param errorMessage The message for the {@code IndexOutOfBoundsException} that is thrown if
-     *     the check fails.
-     * @throws IllegalArgumentException Thrown, if size is negative.
+     *                     the check fails.
+     * @throws IllegalArgumentException  Thrown, if size is negative.
      * @throws IndexOutOfBoundsException Thrown, if the index negative or greater than or equal to
-     *     size
+     *                                   size
      */
     public static void checkElementIndex(int index, int size, @Nullable String errorMessage) {
         checkArgument(size >= 0, "Size was negative.");
@@ -236,7 +237,7 @@ public class Preconditions {
      * Ensures that future has completed normally.
      *
      * @throws IllegalStateException Thrown, if future has not completed or it has completed
-     *     exceptionally.
+     *                               exceptionally.
      */
     public static void checkCompletedNormally(CompletableFuture<?> future) {
         checkState(future.isDone());

@@ -1,4 +1,4 @@
-package com.hw.lineage.util;
+package com.hw.lineage.common.util;
 
 /**
  * @description: Constant

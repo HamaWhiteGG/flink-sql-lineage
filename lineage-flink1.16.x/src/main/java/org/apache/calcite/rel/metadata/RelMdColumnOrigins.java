@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.hw.lineage.util.Constant.DELIMITER;
+import static com.hw.lineage.common.util.Constant.DELIMITER;
 
 
 /**
@@ -297,7 +297,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         TableSourceTable table = ((TableSourceTable) rel.getInput().getTable());
         if (table != null) {
             String targetFieldName = rel.getProgram().getOutputRowType().getFieldList().get(iOutputColumn).getName();
-            List<String> fieldList =  table.contextResolvedTable().getResolvedSchema().getColumnNames();
+            List<String> fieldList = table.contextResolvedTable().getResolvedSchema().getColumnNames();
 
             int index = -1;
             for (int i = 0; i < fieldList.size(); i++) {

@@ -1,4 +1,4 @@
-package com.hw.lineage.util;
+package com.hw.lineage.common.util;
 
 /**
  * @description: Utility class for Java arrays.
@@ -7,6 +7,8 @@ package com.hw.lineage.util;
  * @date: 2023/1/16 9:45 PM
  */
 public class ArrayUtils {
+    private ArrayUtils() {
+    }
 
     public static String[] concat(String[] array1, String[] array2) {
         if (array1.length == 0) {
