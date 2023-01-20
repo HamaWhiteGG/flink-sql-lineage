@@ -26,6 +26,7 @@ public class LineageClientTest {
 
     @Test
     public void testParseFieldLineage() {
+
         parseFieldLineage("flink1.14.x");
         parseFieldLineage("flink1.16.x");
     }

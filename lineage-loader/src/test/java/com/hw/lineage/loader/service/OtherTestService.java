@@ -1,6 +1,6 @@
 package com.hw.lineage.loader.service;
 
-import com.hw.lineage.loader.plugin.Plugin;
+import com.hw.lineage.plugin.Plugin;
 
 /**
  * @description: Another service interface for tests of plugin mechanism.

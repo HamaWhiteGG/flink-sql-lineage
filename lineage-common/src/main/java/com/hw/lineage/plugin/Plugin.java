@@ -1,4 +1,4 @@
-package com.hw.lineage.loader.plugin;
+package com.hw.lineage.plugin;
 
 import com.hw.lineage.util.Preconditions;
 
