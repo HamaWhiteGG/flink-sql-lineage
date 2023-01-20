@@ -45,7 +45,7 @@
                 <executions>
                     <execution>
                         <id>plugin-flink1.14.x</id>
-                        <phase>package</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
@@ -59,7 +59,7 @@
                     </execution>
                     <execution>
                         <id>plugin-flink1.16.x</id>
-                        <phase>package</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
