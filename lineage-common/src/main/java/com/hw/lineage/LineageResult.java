@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import static com.hw.lineage.Constant.DELIMITER;
+import static com.hw.lineage.util.Constant.DELIMITER;
 
 /**
  * @description: Result

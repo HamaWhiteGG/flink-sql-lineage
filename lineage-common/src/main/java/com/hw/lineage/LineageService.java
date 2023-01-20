@@ -1,5 +1,7 @@
 package com.hw.lineage;
 
+import com.hw.lineage.plugin.Plugin;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * @version: 1.0.0
  * @date: 2023/1/16 8:39 PM
  */
-public interface LineageService {
+public interface LineageService extends Plugin {
 
     /**
      * Parse the field blood relationship of the input SQL

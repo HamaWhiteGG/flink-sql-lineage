@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.hw.lineage.Constant.DELIMITER;
+import static com.hw.lineage.util.Constant.DELIMITER;
 
 /**
  * @description: LineageContext

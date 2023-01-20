@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.hw.lineage.util.Preconditions.checkArgument;
+import static com.hw.lineage.util.Preconditions.checkNotNull;
+
 /**
  * @description: LineageClient
  * @author: HamaWhite
@@ -53,9 +56,8 @@ public class LineageClient {
                 Map.Entry::getKey,
                 entry -> {
                     List<LineageService> lineageServiceList = Lists.newArrayList(entry.getValue());
-                    Preconditions.checkArgument(lineageServiceList.size() == 1,
-                            "%s plugin no implementation of LineageService or greater than 1",
-                            entry.getKey());
+                    checkArgument(lineageServiceList.size() == 1,
+                            "%s plugin no implementation of LineageService or greater than 1", entry.getKey());
                     return lineageServiceList.get(0);
                 }
         ));
@@ -66,9 +68,11 @@ public class LineageClient {
      */
     public List<LineageResult> parseFieldLineage(String pluginId, String singleSql) {
         LineageService lineageService = lineageServiceMap.get(pluginId);
-        ClassLoader classloader = lineageService.getClass().getClassLoader();
+        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginId);
+        ClassLoader classloader = lineageService.getClassLoader();
+
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classloader)) {
-            return lineageServiceMap.get(pluginId).parseFieldLineage(singleSql);
+            return lineageService.parseFieldLineage(singleSql);
         }
     }
 
@@ -76,6 +80,11 @@ public class LineageClient {
      * Execute the single sql
      */
     public void execute(String pluginId, String singleSql) {
-        lineageServiceMap.get(pluginId).execute(singleSql);
+        LineageService lineageService = lineageServiceMap.get(pluginId);
+        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginId);
+        ClassLoader classloader = lineageService.getClassLoader();
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classloader)) {
+             lineageService.execute(singleSql);
+        }
     }
 }
