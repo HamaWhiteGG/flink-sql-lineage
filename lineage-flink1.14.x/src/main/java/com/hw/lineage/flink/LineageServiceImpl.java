@@ -1,8 +1,9 @@
 package com.hw.lineage.flink;
 
 
-import com.hw.lineage.LineageService;
-import com.hw.lineage.LineageResult;
+import com.hw.lineage.common.LineageResult;
+import com.hw.lineage.common.LineageService;
+import com.hw.lineage.common.catalog.CatalogType;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.metadata.RelColumnOrigin;
@@ -11,13 +12,19 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.connector.jdbc.catalog.JdbcCatalog;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.table.api.*;
+import org.apache.flink.table.api.EnvironmentSettings;
+import org.apache.flink.table.api.TableConfig;
+import org.apache.flink.table.api.TableException;
+import org.apache.flink.table.api.ValidationException;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.AbstractCatalog;
 import org.apache.flink.table.catalog.CatalogManager;
 import org.apache.flink.table.catalog.FunctionCatalog;
+import org.apache.flink.table.catalog.GenericInMemoryCatalog;
+import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.operations.CatalogSinkModifyOperation;
 import org.apache.flink.table.operations.Operation;
 import org.apache.flink.table.planner.calcite.FlinkRelBuilder;
@@ -35,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.hw.lineage.util.Constant.DELIMITER;
+import static com.hw.lineage.common.util.Constant.DELIMITER;
 
 /**
  * @description: LineageContext
@@ -62,9 +69,25 @@ public class LineageServiceImpl implements LineageService {
         this.flinkChainedProgram = FlinkStreamProgramWithoutPhysical.buildProgram(configuration);
     }
 
-    public void registerCatalog(AbstractCatalog catalog) {
+    public void useCatalog(AbstractCatalog catalog) {
         tableEnv.registerCatalog(catalog.getName(), catalog);
         tableEnv.useCatalog(catalog.getName());
+    }
+
+    @Override
+    public void setCatalog(CatalogType catalogType, String catalogName, String defaultDatabase, String... args) {
+        AbstractCatalog catalog;
+        switch (catalogType) {
+            case HIVE:
+                catalog = new HiveCatalog(catalogName, defaultDatabase, args[0]);
+                break;
+            case JDBC:
+                catalog = new JdbcCatalog(catalogName, defaultDatabase, args[0], args[1], args[2]);
+                break;
+            default:
+                catalog = new GenericInMemoryCatalog(catalogName, defaultDatabase);
+        }
+        useCatalog(catalog);
     }
 
 

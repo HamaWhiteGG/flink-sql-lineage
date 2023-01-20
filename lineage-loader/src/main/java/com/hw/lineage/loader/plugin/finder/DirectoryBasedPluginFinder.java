@@ -1,7 +1,7 @@
 package com.hw.lineage.loader.plugin.finder;
 
+import com.hw.lineage.common.util.function.FunctionUtils;
 import com.hw.lineage.loader.plugin.PluginDescriptor;
-import com.hw.lineage.util.function.FunctionUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -65,7 +65,7 @@ public class DirectoryBasedPluginFinder implements  PluginFinder{
                     "Plugins root directory [" + pluginsRootDir + "] does not exist!");
         }
         try (Stream<Path> stream = Files.list(pluginsRootDir)) {
-            return stream.filter((Path path) -> Files.isDirectory(path))
+            return stream.filter(Files::isDirectory)
                     .map(
                             FunctionUtils.uncheckedFunction(
                                     this::createPluginDescriptorForSubDirectory))

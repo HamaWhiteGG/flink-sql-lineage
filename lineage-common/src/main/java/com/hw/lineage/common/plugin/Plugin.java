@@ -1,6 +1,6 @@
-package com.hw.lineage.plugin;
+package com.hw.lineage.common.plugin;
 
-import com.hw.lineage.util.Preconditions;
+import com.hw.lineage.common.util.Preconditions;
 
 /**
  * Interface for plugins. Plugins typically extend this interface in their SPI and the concrete

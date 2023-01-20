@@ -1,7 +1,7 @@
 package com.hw.lineage.flink.basic;
 
 import apache.flink.table.catalog.hive.HiveTestUtils;
-import com.hw.lineage.LineageResult;
+import com.hw.lineage.common.LineageResult;
 import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.junit.AfterClass;
@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,7 +39,7 @@ public abstract class AbstractBasicTest {
         hiveCatalog.open();
 
         context = new LineageServiceImpl();
-        context.registerCatalog(hiveCatalog);
+        context.useCatalog(hiveCatalog);
     }
 
 
@@ -58,31 +56,8 @@ public abstract class AbstractBasicTest {
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 
-        List<LineageResult> expectedList = Stream.of(expectedArray)
-                .map(e -> {
-                    LineageResult result = buildResult(e[0], e[1], e[2], e[3]);
-                    // transform field is optional
-                    if (e.length == 5) {
-                        result.setTransform(e[4]);
-                    }
-                    return result;
-                }).collect(Collectors.toList());
-
-
+        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
-    }
-
-    protected LineageResult buildResult(String sourceTable, String sourceColumn, String targetTable, String targetColumn) {
-        return LineageResult.builder()
-                .sourceCatalog(catalogName)
-                .sourceDatabase(defaultDatabase)
-                .sourceTable(sourceTable)
-                .sourceColumn(sourceColumn)
-                .targetCatalog(catalogName)
-                .targetDatabase(defaultDatabase)
-                .targetTable(targetTable)
-                .targetColumn(targetColumn)
-                .build();
     }
 
 
@@ -159,7 +134,7 @@ public abstract class AbstractBasicTest {
 
     /**
      * Create Hudi sink table dwd_hudi_user.
-     *
+     * <p>
      * Since flink1.16 does not support hudi, temporarily change the connector to print,
      * but the table name remains unchanged
      */

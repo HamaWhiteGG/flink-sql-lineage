@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.hw.lineage.util.Constant.DELIMITER;
+import static com.hw.lineage.common.util.Constant.DELIMITER;
 
 /**
  * Modified based on calcite's source code org.apache.calcite.rel.metadata.RelMdColumnOrigins

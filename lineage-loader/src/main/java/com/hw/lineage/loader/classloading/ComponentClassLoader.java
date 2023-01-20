@@ -1,7 +1,7 @@
 package com.hw.lineage.loader.classloading;
 
 import com.google.common.collect.Iterators;
-import com.hw.lineage.util.function.FunctionWithException;
+import com.hw.lineage.common.util.function.FunctionWithException;
 
 import java.io.IOException;
 import java.net.URL;

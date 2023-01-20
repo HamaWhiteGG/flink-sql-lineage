@@ -1,12 +1,13 @@
 package com.hw.lineage.client;
 
-import com.hw.lineage.LineageResult;
+import com.hw.lineage.common.LineageResult;
+import com.hw.lineage.common.catalog.CatalogType;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
@@ -21,17 +22,69 @@ public class LineageClientTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(LineageClientTest.class);
 
-    private LineageClient client = new LineageClient("target/plugins");
+    private static final String[] PLUGIN_IDS = {"flink1.14.x", "flink1.16.x"};
 
+    private static final String catalogName = "default";
 
-    @Test
-    public void testParseFieldLineage() {
+    private static final String defaultDatabase = "default";
 
-        parseFieldLineage("flink1.14.x");
-        parseFieldLineage("flink1.16.x");
+    private static LineageClient client;
+
+    @BeforeClass
+    public static void setup() {
+        client = new LineageClient("target/plugins");
+
+        Stream.of(PLUGIN_IDS).forEach(pluginId -> {
+            client.setCatalog(pluginId, CatalogType.MEMORY, catalogName, defaultDatabase);
+            // create mysql cdc table ods_mysql_users
+            createTableOfOdsMysqlUsers(pluginId);
+            // create hudi sink table dwd_hudi_users
+            createTableOfDwdHudiUsers(pluginId);
+        });
     }
 
-    private void parseFieldLineage(String pluginId) {
+    @Test
+    public void testInsertSelect() {
+        Stream.of(PLUGIN_IDS).forEach(this::testInsertSelect);
+    }
+
+    private void testInsertSelect(String pluginId) {
+        String sql = "INSERT INTO dwd_hudi_users " +
+                "SELECT " +
+                "   id ," +
+                "   name ," +
+                "   name as company_name ," +
+                "   birthday ," +
+                "   ts ," +
+                "   DATE_FORMAT(birthday, 'yyyyMMdd') " +
+                "FROM" +
+                "   ods_mysql_users";
+
+        String[][] expectedArray = {
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
+                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
+        };
+
+        parseFieldLineage(pluginId, sql, expectedArray);
+    }
+
+    private void parseFieldLineage(String pluginId, String sql, String[][] expectedArray) {
+        List<LineageResult> actualList = client.parseFieldLineage(pluginId, sql);
+        LOG.info("Linage Result: ");
+        actualList.forEach(e -> LOG.info(e.toString()));
+
+        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
+        assertEquals(expectedList, actualList);
+    }
+
+    /**
+     * Create mysql cdc table ods_mysql_users
+     */
+    private static void createTableOfOdsMysqlUsers(String pluginId) {
         client.execute(pluginId, "DROP TABLE IF EXISTS ods_mysql_users ");
 
         client.execute(pluginId, "CREATE TABLE IF NOT EXISTS ods_mysql_users (" +
@@ -51,7 +104,12 @@ public class LineageClientTest {
                 "       'table-name'    = 'users' " +
                 ")"
         );
+    }
 
+    /**
+     * Create Hudi sink table dwd_hudi_users
+     */
+    private static void createTableOfDwdHudiUsers(String pluginId) {
         client.execute(pluginId, "DROP TABLE IF EXISTS dwd_hudi_users");
 
         client.execute(pluginId, "CREATE TABLE IF NOT EXISTS  dwd_hudi_users ( " +
@@ -68,57 +126,6 @@ public class LineageClientTest {
                 "       'read.streaming.check-interval' = '1'                    " +
                 ")"
         );
-
-
-        String sql = "INSERT INTO dwd_hudi_users " +
-                "SELECT " +
-                "   id ," +
-                "   name ," +
-                "   name as company_name ," +
-                "   birthday ," +
-                "   ts ," +
-                "   DATE_FORMAT(birthday, 'yyyyMMdd') " +
-                "FROM" +
-                "   ods_mysql_users";
-
-        List<LineageResult> actualList = client.parseFieldLineage(pluginId, sql);
-        LOG.info("Linage Result: ");
-        actualList.forEach(e -> LOG.info(e.toString()));
-
-        String[][] expectedArray = {
-                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
-                {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
-        };
-
-        List<LineageResult> expectedList = Stream.of(expectedArray)
-                .map(e -> {
-                    LineageResult result = buildResult(e[0], e[1], e[2], e[3]);
-                    // transform field is optional
-                    if (e.length == 5) {
-                        result.setTransform(e[4]);
-                    }
-                    return result;
-                }).collect(Collectors.toList());
-
-
-        assertEquals(expectedList, actualList);
-    }
-
-    private LineageResult buildResult(String sourceTable, String sourceColumn, String targetTable, String targetColumn) {
-        return LineageResult.builder()
-                .sourceCatalog("default_catalog")
-                .sourceDatabase("default_database")
-                .sourceTable(sourceTable)
-                .sourceColumn(sourceColumn)
-                .targetCatalog("default_catalog")
-                .targetDatabase("default_database")
-                .targetTable(targetTable)
-                .targetColumn(targetColumn)
-                .build();
     }
 
 }

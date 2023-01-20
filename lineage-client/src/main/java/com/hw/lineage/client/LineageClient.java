@@ -1,16 +1,17 @@
 package com.hw.lineage.client;
 
 import com.google.common.collect.Lists;
-import com.hw.lineage.LineageResult;
-import com.hw.lineage.LineageService;
-import com.hw.lineage.exception.LineageRuntimeException;
+import com.hw.lineage.common.LineageResult;
+import com.hw.lineage.common.LineageService;
+import com.hw.lineage.common.catalog.CatalogType;
+import com.hw.lineage.common.exception.LineageRuntimeException;
+import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.loader.classloading.TemporaryClassLoaderContext;
 import com.hw.lineage.loader.plugin.PluginDescriptor;
 import com.hw.lineage.loader.plugin.finder.DirectoryBasedPluginFinder;
 import com.hw.lineage.loader.plugin.finder.PluginFinder;
 import com.hw.lineage.loader.plugin.manager.DefaultPluginManager;
 import com.hw.lineage.loader.plugin.manager.PluginManager;
-import com.hw.lineage.util.Preconditions;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.hw.lineage.util.Preconditions.checkArgument;
-import static com.hw.lineage.util.Preconditions.checkNotNull;
+import static com.hw.lineage.common.util.Preconditions.checkArgument;
 
 /**
  * @description: LineageClient
@@ -34,6 +34,20 @@ public class LineageClient {
     private final Map<String, LineageService> lineageServiceMap;
 
     public LineageClient(String path) {
+        Map<String, Iterator<LineageService>> pluginIteratorMap = loadPlugins(path);
+
+        this.lineageServiceMap = pluginIteratorMap.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                entry -> {
+                    List<LineageService> lineageServiceList = Lists.newArrayList(entry.getValue());
+                    checkArgument(lineageServiceList.size() == 1,
+                            "%s plugin no implementation of LineageService or greater than 1", entry.getKey());
+                    return lineageServiceList.get(0);
+                }
+        ));
+    }
+
+    private Map<String, Iterator<LineageService>> loadPlugins(String path) {
         File pluginRootFolder = new File(path);
         Path pluginRootFolderPath = pluginRootFolder.toPath();
 
@@ -46,33 +60,31 @@ public class LineageClient {
         }
 
         // use AppClassLoader to load
-        String[] parentPatterns = {LineageService.class.getName(), LineageResult.class.getName()};
+        // String[] parentPatterns = {LineageService.class.getName(), LineageResult.class.getName()};
+        String[] parentPatterns = {"com.hw.lineage.common"};
+
         PluginManager pluginManager =
                 new DefaultPluginManager(descriptors, LineageService.class.getClassLoader(), parentPatterns);
 
-        Map<String, Iterator<LineageService>> pluginIteratorMap = pluginManager.load(LineageService.class);
+        return pluginManager.load(LineageService.class);
+    }
 
-        lineageServiceMap = pluginIteratorMap.entrySet().stream().collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> {
-                    List<LineageService> lineageServiceList = Lists.newArrayList(entry.getValue());
-                    checkArgument(lineageServiceList.size() == 1,
-                            "%s plugin no implementation of LineageService or greater than 1", entry.getKey());
-                    return lineageServiceList.get(0);
-                }
-        ));
+    /**
+     * Set the catalog information, the flink plugin defaults to GenericInMemoryCatalog
+     */
+    public void setCatalog(String pluginId, CatalogType catalogType, String catalogName
+            , String defaultDatabase, String... args) {
+        LineageService service = getLineageService(pluginId);
+        service.setCatalog(catalogType, catalogName, defaultDatabase, args);
     }
 
     /**
      * Parse the field blood relationship of the input SQL
      */
     public List<LineageResult> parseFieldLineage(String pluginId, String singleSql) {
-        LineageService lineageService = lineageServiceMap.get(pluginId);
-        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginId);
-        ClassLoader classloader = lineageService.getClassLoader();
-
-        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classloader)) {
-            return lineageService.parseFieldLineage(singleSql);
+        LineageService service = getLineageService(pluginId);
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
+            return service.parseFieldLineage(singleSql);
         }
     }
 
@@ -80,11 +92,15 @@ public class LineageClient {
      * Execute the single sql
      */
     public void execute(String pluginId, String singleSql) {
+        LineageService service = getLineageService(pluginId);
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
+            service.execute(singleSql);
+        }
+    }
+
+    private LineageService getLineageService(String pluginId) {
         LineageService lineageService = lineageServiceMap.get(pluginId);
         Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginId);
-        ClassLoader classloader = lineageService.getClassLoader();
-        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(classloader)) {
-             lineageService.execute(singleSql);
-        }
+        return lineageService;
     }
 }

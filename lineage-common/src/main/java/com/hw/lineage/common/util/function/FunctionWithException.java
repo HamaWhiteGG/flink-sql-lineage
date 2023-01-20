@@ -1,4 +1,4 @@
-package com.hw.lineage.util.function;
+package com.hw.lineage.common.util.function;
 
 /**
  * A functional interface for a {@link java.util.function.Function} that may throw exceptions.

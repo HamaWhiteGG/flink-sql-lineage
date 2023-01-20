@@ -1,4 +1,4 @@
-package com.hw.lineage.exception;
+package com.hw.lineage.common.exception;
 
 /**
  * @description: LineageRuntimeException
@@ -6,8 +6,8 @@ package com.hw.lineage.exception;
  * @version: 1.0.0
  * @date: 2023/1/17 9:21 PM
  */
-public class LineageRuntimeException extends RuntimeException{
-    
+public class LineageRuntimeException extends RuntimeException {
+
     private static final long serialVersionUID = 193141189399279147L;
 
     /**
@@ -32,7 +32,7 @@ public class LineageRuntimeException extends RuntimeException{
      * Creates a new exception with the given message and cause.
      *
      * @param message The exception message
-     * @param cause The exception that caused this exception
+     * @param cause   The exception that caused this exception
      */
     public LineageRuntimeException(String message, Throwable cause) {
         super(message, cause);

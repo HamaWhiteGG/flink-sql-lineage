@@ -1,6 +1,6 @@
 package com.hw.lineage.loader;
 
-import com.hw.lineage.util.Preconditions;
+import com.hw.lineage.common.util.Preconditions;
 
 import java.io.File;
 import java.net.MalformedURLException;
