@@ -31,12 +31,8 @@ target
 *.tmp
 Thumbs.db
 *.DS_Store
-
-
 *.tgz
 
-.DS_Store
-node_modules
 
 # local env files
 .env.local
@@ -54,11 +50,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-
-dist/dependency-lineage*
-data/tmp
-data/log
-
 dist
 
+node_modules
 package-lock.json
