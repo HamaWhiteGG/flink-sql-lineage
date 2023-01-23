@@ -18,6 +18,7 @@
         <module>lineage-web</module>
         <module>lineage-server</module>
         <module>lineage-dist</module>
+        <module>lineage-server/lineage-server-start</module>
     </modules>
 
     <properties>
@@ -30,6 +31,7 @@
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
         <log4j-slf4j-impl.version>2.17.1</log4j-slf4j-impl.version>
         <scala.binary.version>2.12</scala.binary.version>
+        <mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
 
         <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
         <scala-maven-plugin.version>3.3.1</scala-maven-plugin.version>
@@ -53,6 +55,12 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
             </dependency>
 
             <dependency>

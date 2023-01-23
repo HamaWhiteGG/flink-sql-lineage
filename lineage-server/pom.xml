@@ -9,17 +9,11 @@
     </parent>
 
     <artifactId>lineage-server</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <packaging>pom</packaging>
+    <modules>
+        <module>lineage-server-application</module>
+        <module>lineage-server-domain</module>
+        <module>lineage-server-infrastructure</module>
+        <module>lineage-server-interfaces</module>
+    </modules>
 </project>
