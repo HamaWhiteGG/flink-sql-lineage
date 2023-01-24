@@ -11,8 +11,6 @@ public abstract class BasicDO {
 
     private Long modifyUserId;
 
-    private Long tenantId;
-
     /**
      * create time
      */
