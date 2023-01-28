@@ -1,0 +1,48 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="application.properties"/>
+
+    <context id="dsql" targetRuntime="MyBatis3DynamicSql" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin">
+            <property name="useEqualsHashCodeFromRoot" value="true"/>
+        </plugin>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin">
+            <property name="useToStringFromRoot" value="true"/>
+        </plugin>
+        <plugin type="com.lineage.server.infrastructure.persistence.mybatis.plugin.RenameDoPlugin"/>
+
+        <commentGenerator type="com.lineage.server.infrastructure.persistence.mybatis.generator.CustomCommentGenerator">
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="false"/>
+            <property name="addRemarkComments" value="true"/>
+            <property name="author" value="HamaWhite"/>
+            <property name="version" value="${application.version}"/>
+            <property name="dateFormat" value="yyyy/MM/dd HH:mm:ss"/>
+        </commentGenerator>
+
+        <jdbcConnection
+                driverClass="${spring.datasource.driver-class-name}"
+                connectionURL="${spring.datasource.url}"
+                userId="${spring.datasource.username}"
+                password="${spring.datasource.password}" />
+
+        <javaModelGenerator targetPackage="com.lineage.server.infrastructure.persistence.model"
+                            targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
+
+        <javaClientGenerator targetPackage="com.lineage.server.infrastructure.persistence.mapper"
+                             targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
+
+        <table tableName="bas_task" domainObjectName="Task"/>
+        <table tableName="bas_plugin" domainObjectName="Plugin"/>
+        <table tableName="bas_catalog" domainObjectName="Catalog"/>
+        <table tableName="bas_function" domainObjectName="Function"/>
+
+    </context>
+
+</generatorConfiguration>

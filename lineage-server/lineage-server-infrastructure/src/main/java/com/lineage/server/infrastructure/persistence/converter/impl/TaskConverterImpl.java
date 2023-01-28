@@ -1,8 +1,8 @@
 package com.lineage.server.infrastructure.persistence.converter.impl;
 
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.infrastructure.persistence.TaskDO;
 import com.lineage.server.infrastructure.persistence.converter.TaskConverter;
+import com.lineage.server.infrastructure.persistence.model.TaskDO;
 import org.springframework.stereotype.Component;
 
 /**
