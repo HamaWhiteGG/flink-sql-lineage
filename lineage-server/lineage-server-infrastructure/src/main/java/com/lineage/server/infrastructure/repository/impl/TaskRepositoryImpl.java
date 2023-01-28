@@ -3,9 +3,9 @@ package com.lineage.server.infrastructure.repository.impl;
 import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.repository.TaskRepository;
 import com.lineage.server.domain.types.TaskId;
-import com.lineage.server.infrastructure.persistence.TaskDO;
 import com.lineage.server.infrastructure.persistence.converter.TaskConverter;
 import com.lineage.server.infrastructure.persistence.mapper.TaskMapper;
+import com.lineage.server.infrastructure.persistence.model.TaskDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
-    @Autowired(required=false)
+    @Autowired
     private TaskMapper taskMapper;
 
     @Autowired
@@ -25,7 +25,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task find(TaskId taskId) {
-        TaskDO taskDO = taskMapper.selectByTaskId(taskId.getValue());
+        TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue()).get();
         return taskConverter.toTask(taskDO);
     }
 
@@ -35,7 +35,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         if (taskDO.getTaskId() == null) {
             taskMapper.insert(taskDO);
         } else {
-            taskMapper.update(taskDO);
+            taskMapper.updateByPrimaryKey(taskDO);
         }
         return task;
     }

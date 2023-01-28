@@ -31,6 +31,8 @@
         <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version>
         <log4j-slf4j-impl.version>2.17.1</log4j-slf4j-impl.version>
         <scala.binary.version>2.12</scala.binary.version>
+        <mybatis-generator-core.version>1.4.1</mybatis-generator-core.version>
+        <mybatis-dynamic-sql.version>1.4.1</mybatis-dynamic-sql.version>
         <mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
 
         <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
@@ -40,6 +42,7 @@
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
+        <mybatis-generator-maven-plugin.version>1.4.1</mybatis-generator-maven-plugin.version>
 
         <target.java.version>1.8</target.java.version>
         <maven.compiler.source>${target.java.version}</maven.compiler.source>
@@ -61,6 +64,18 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>${mybatis-generator-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.dynamic-sql</groupId>
+                <artifactId>mybatis-dynamic-sql</artifactId>
+                <version>${mybatis-dynamic-sql.version}</version>
             </dependency>
 
             <dependency>
@@ -189,6 +204,12 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
                     <version>${versions-maven-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.mybatis.generator</groupId>
+                    <artifactId>mybatis-generator-maven-plugin</artifactId>
+                    <version>${mybatis-generator-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
