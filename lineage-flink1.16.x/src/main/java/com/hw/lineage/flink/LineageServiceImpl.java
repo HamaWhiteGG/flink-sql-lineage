@@ -1,8 +1,8 @@
 package com.hw.lineage.flink;
 
 
-import com.hw.lineage.common.LineageResult;
-import com.hw.lineage.common.LineageService;
+import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.enums.CatalogType;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;

@@ -1,6 +1,7 @@
 package com.lineage.server.application.service;
 
 import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
+import com.lineage.server.application.dto.TaskDTO;
 
 /**
  * @description: TaskService
@@ -10,5 +11,7 @@ import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
  */
 public interface TaskService {
 
-    long createTask(CreateTaskCmd createTaskCmd);
+    Long createTask(CreateTaskCmd createTaskCmd);
+
+    TaskDTO queryTask(Long taskId);
 }

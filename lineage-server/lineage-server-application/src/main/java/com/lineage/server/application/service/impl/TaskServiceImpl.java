@@ -1,9 +1,12 @@
 package com.lineage.server.application.service.impl;
 
+import com.lineage.server.application.assembler.DtoAssembler;
 import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
+import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
 import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.repository.TaskRepository;
+import com.lineage.server.domain.types.TaskId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository repository;
 
     @Override
-    public long createTask(CreateTaskCmd createTaskCmd) {
+    public Long createTask(CreateTaskCmd createTaskCmd) {
         Task task = new Task()
                 .taskName(createTaskCmd.getTaskName())
                 .descr(createTaskCmd.getDescr())
@@ -32,5 +35,11 @@ public class TaskServiceImpl implements TaskService {
 
         task = repository.save(task);
         return task.taskId().getValue();
+    }
+
+    @Override
+    public TaskDTO queryTask(Long taskId) {
+        Task task = repository.find(new TaskId(taskId));
+        return DtoAssembler.INSTANCE.fromTask(task);
     }
 }

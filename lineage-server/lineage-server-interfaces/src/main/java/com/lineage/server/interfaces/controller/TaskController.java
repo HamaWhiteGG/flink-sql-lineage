@@ -4,6 +4,8 @@ import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
 import com.lineage.server.application.cqe.command.task.UpdateTaskCmd;
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
+import com.lineage.server.interfaces.result.Result;
+import com.lineage.server.interfaces.result.ResultMessage;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,8 +25,9 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/{taskId}")
-    public TaskDTO queryTask(@PathVariable("taskId") final Long taskId) {
-        return null;
+    public Result<TaskDTO> queryTask(@PathVariable("taskId") final Long taskId) {
+        TaskDTO taskDTO = taskService.queryTask(taskId);
+        return Result.success(ResultMessage.DETAIL_SUCCESS, taskDTO);
     }
 
     @GetMapping("")
@@ -33,8 +36,9 @@ public class TaskController {
     }
 
     @PostMapping("")
-    public long createTask(@RequestBody final CreateTaskCmd createTaskCmd) {
-        return taskService.createTask(createTaskCmd);
+    public Result<Long> createTask(@RequestBody final CreateTaskCmd createTaskCmd) {
+        Long taskId = taskService.createTask(createTaskCmd);
+        return Result.success(ResultMessage.CREATE_SUCCESS, taskId);
     }
 
     @PutMapping("/{taskId}")
