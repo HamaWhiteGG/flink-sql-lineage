@@ -7,8 +7,9 @@ import com.lineage.server.domain.types.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.TaskConverter;
 import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import com.lineage.server.infrastructure.persistence.mapper.TaskMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
 
 /**
  * @description: TaskRepositoryImpl
@@ -18,10 +19,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TaskRepositoryImpl implements TaskRepository {
-    @Autowired
+    @Resource
     private TaskMapper taskMapper;
 
-    @Autowired
+    @Resource
     private TaskConverter taskConverter;
 
     @Override
