@@ -1,8 +1,9 @@
 package com.lineage.server.infrastructure.persistence.converter.impl;
 
 import com.lineage.server.domain.entity.Task;
+import com.lineage.server.domain.types.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.TaskConverter;
-import com.lineage.server.infrastructure.persistence.model.TaskDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,11 +16,36 @@ import org.springframework.stereotype.Component;
 public class TaskConverterImpl implements TaskConverter {
     @Override
     public Task toTask(TaskDO taskDO) {
-        return null;
+        Task task = new Task()
+                .taskId(new TaskId(taskDO.getTaskId()))
+                .taskName(taskDO.getTaskName())
+                .descr(taskDO.getDescr())
+                .pluginId(taskDO.getPluginId())
+                .catalogId(taskDO.getCatalogId())
+                .source(taskDO.getSource());
+
+        task.createUserId(taskDO.getCreateUserId())
+                .modifyUserId(taskDO.getModifyUserId())
+                .createTime(taskDO.getCreateTime())
+                .modifyTime(taskDO.getModifyTime());
+        return task;
     }
 
     @Override
     public TaskDO fromTask(Task task) {
-        return null;
+        TaskDO taskDO = new TaskDO();
+        if (task.taskId() != null) {
+            taskDO.setTaskId(task.taskId().getValue());
+        }
+        taskDO.setTaskName(task.taskName());
+        taskDO.setDescr(task.descr());
+        taskDO.setPluginId(task.pluginId());
+        taskDO.setCatalogId(task.catalogId());
+        taskDO.setSource(task.source());
+        taskDO.setCreateUserId(task.createUserId());
+        taskDO.setModifyUserId(task.modifyUserId());
+        taskDO.setCreateTime(task.createTime());
+        taskDO.setModifyTime(task.modifyTime());
+        return taskDO;
     }
 }

@@ -3,7 +3,7 @@ package com.lineage.server.infrastructure.persistence.mapper;
 import static com.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
-import com.lineage.server.infrastructure.persistence.model.FunctionDO;
+import com.lineage.server.infrastructure.persistence.dos.FunctionDO;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +30,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, CommonInsertMapper<FunctionDO>, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(functionId, functionName, functionFormat, functionPath, functionClass, descr, createUserId, modifyUserId, ctime, mtime, invalid);
+    BasicColumn[] selectList = BasicColumn.columnList(functionId, functionName, functionFormat, functionPath, functionClass, descr, createUserId, modifyUserId, createTime, modifyTime, invalid);
 
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="FunctionDOResult", value = {
@@ -42,9 +42,9 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
         @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_user_id", property="modifyUserId", jdbcType=JdbcType.BIGINT),
-        @Result(column="ctime", property="ctime", jdbcType=JdbcType.BIGINT),
-        @Result(column="mtime", property="mtime", jdbcType=JdbcType.BIGINT),
-        @Result(column="invalid", property="invalid", jdbcType=JdbcType.INTEGER)
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="modify_time", property="modifyTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT)
     })
     List<FunctionDO> selectMany(SelectStatementProvider selectStatement);
 
@@ -76,8 +76,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
             .map(descr).toProperty("descr")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
-            .map(ctime).toProperty("ctime")
-            .map(mtime).toProperty("mtime")
+            .map(createTime).toProperty("createTime")
+            .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
         );
     }
@@ -92,8 +92,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
             .map(descr).toProperty("descr")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
-            .map(ctime).toProperty("ctime")
-            .map(mtime).toProperty("mtime")
+            .map(createTime).toProperty("createTime")
+            .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
         );
     }
@@ -108,8 +108,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
             .map(descr).toPropertyWhenPresent("descr", row::getDescr)
             .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
             .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
-            .map(ctime).toPropertyWhenPresent("ctime", row::getCtime)
-            .map(mtime).toPropertyWhenPresent("mtime", row::getMtime)
+            .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
+            .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
         );
     }
@@ -145,8 +145,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
                 .set(descr).equalTo(row::getDescr)
                 .set(createUserId).equalTo(row::getCreateUserId)
                 .set(modifyUserId).equalTo(row::getModifyUserId)
-                .set(ctime).equalTo(row::getCtime)
-                .set(mtime).equalTo(row::getMtime)
+                .set(createTime).equalTo(row::getCreateTime)
+                .set(modifyTime).equalTo(row::getModifyTime)
                 .set(invalid).equalTo(row::getInvalid);
     }
 
@@ -159,8 +159,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
                 .set(descr).equalToWhenPresent(row::getDescr)
                 .set(createUserId).equalToWhenPresent(row::getCreateUserId)
                 .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-                .set(ctime).equalToWhenPresent(row::getCtime)
-                .set(mtime).equalToWhenPresent(row::getMtime)
+                .set(createTime).equalToWhenPresent(row::getCreateTime)
+                .set(modifyTime).equalToWhenPresent(row::getModifyTime)
                 .set(invalid).equalToWhenPresent(row::getInvalid);
     }
 
@@ -173,8 +173,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
             .set(descr).equalTo(row::getDescr)
             .set(createUserId).equalTo(row::getCreateUserId)
             .set(modifyUserId).equalTo(row::getModifyUserId)
-            .set(ctime).equalTo(row::getCtime)
-            .set(mtime).equalTo(row::getMtime)
+            .set(createTime).equalTo(row::getCreateTime)
+            .set(modifyTime).equalTo(row::getModifyTime)
             .set(invalid).equalTo(row::getInvalid)
             .where(functionId, isEqualTo(row::getFunctionId))
         );
@@ -189,8 +189,8 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
             .set(descr).equalToWhenPresent(row::getDescr)
             .set(createUserId).equalToWhenPresent(row::getCreateUserId)
             .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-            .set(ctime).equalToWhenPresent(row::getCtime)
-            .set(mtime).equalToWhenPresent(row::getMtime)
+            .set(createTime).equalToWhenPresent(row::getCreateTime)
+            .set(modifyTime).equalToWhenPresent(row::getModifyTime)
             .set(invalid).equalToWhenPresent(row::getInvalid)
             .where(functionId, isEqualTo(row::getFunctionId))
         );
