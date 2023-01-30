@@ -1,11 +1,12 @@
 package com.lineage.server.infrastructure.repository.impl;
 
+import com.hw.lineage.common.exception.LineageException;
 import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.repository.TaskRepository;
 import com.lineage.server.domain.types.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.TaskConverter;
+import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import com.lineage.server.infrastructure.persistence.mapper.TaskMapper;
-import com.lineage.server.infrastructure.persistence.model.TaskDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,10 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Task find(TaskId taskId) {
-        TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue()).get();
+        TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue())
+                .orElseThrow(() ->
+                        new LineageException(String.format("taskId [%s] cannot be found", taskId.getValue()))
+                );
         return taskConverter.toTask(taskDO);
     }
 
@@ -33,10 +37,15 @@ public class TaskRepositoryImpl implements TaskRepository {
     public Task save(Task task) {
         TaskDO taskDO = taskConverter.fromTask(task);
         if (taskDO.getTaskId() == null) {
-            taskMapper.insert(taskDO);
+            taskMapper.insertSelective(taskDO);
         } else {
             taskMapper.updateByPrimaryKey(taskDO);
         }
-        return task;
+        return taskConverter.toTask(taskDO);
+    }
+
+    @Override
+    public void remove(TaskId taskId) {
+        taskMapper.deleteByPrimaryKey(taskId.getValue());
     }
 }

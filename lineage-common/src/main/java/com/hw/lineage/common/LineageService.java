@@ -1,6 +1,6 @@
 package com.hw.lineage.common;
 
-import com.hw.lineage.common.catalog.CatalogType;
+import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.plugin.Plugin;
 
 import java.util.List;

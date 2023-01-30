@@ -14,4 +14,6 @@ public interface TaskRepository {
     Task find(TaskId taskId);
 
     Task save(Task task);
+
+    void remove(TaskId taskId);
 }

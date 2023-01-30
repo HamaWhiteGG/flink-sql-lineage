@@ -3,7 +3,8 @@ package com.lineage.server.infrastructure.persistence.mapper;
 import static com.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
-import com.lineage.server.infrastructure.persistence.model.CatalogDO;
+import com.lineage.server.infrastructure.persistence.dos.CatalogDO;
+import com.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -30,20 +31,20 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, CommonInsertMapper<CatalogDO>, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(catalogId, catalogName, catalogType, defaultDatabase, descr, createUserId, modifyUserId, ctime, mtime, invalid);
+    BasicColumn[] selectList = BasicColumn.columnList(catalogId, catalogName, catalogType, defaultDatabase, descr, createUserId, modifyUserId, createTime, modifyTime, invalid);
 
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="CatalogDOResult", value = {
         @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="catalog_name", property="catalogName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="catalog_type", property="catalogType", jdbcType=JdbcType.TINYINT),
+        @Result(column="catalog_type", property="catalogType", typeHandler=CatalogTypeHandler.class, jdbcType=JdbcType.TINYINT),
         @Result(column="default_database", property="defaultDatabase", jdbcType=JdbcType.VARCHAR),
         @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_user_id", property="modifyUserId", jdbcType=JdbcType.BIGINT),
-        @Result(column="ctime", property="ctime", jdbcType=JdbcType.BIGINT),
-        @Result(column="mtime", property="mtime", jdbcType=JdbcType.BIGINT),
-        @Result(column="invalid", property="invalid", jdbcType=JdbcType.INTEGER)
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="modify_time", property="modifyTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT)
     })
     List<CatalogDO> selectMany(SelectStatementProvider selectStatement);
 
@@ -74,8 +75,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
             .map(descr).toProperty("descr")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
-            .map(ctime).toProperty("ctime")
-            .map(mtime).toProperty("mtime")
+            .map(createTime).toProperty("createTime")
+            .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
         );
     }
@@ -89,8 +90,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
             .map(descr).toProperty("descr")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
-            .map(ctime).toProperty("ctime")
-            .map(mtime).toProperty("mtime")
+            .map(createTime).toProperty("createTime")
+            .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
         );
     }
@@ -104,8 +105,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
             .map(descr).toPropertyWhenPresent("descr", row::getDescr)
             .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
             .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
-            .map(ctime).toPropertyWhenPresent("ctime", row::getCtime)
-            .map(mtime).toPropertyWhenPresent("mtime", row::getMtime)
+            .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
+            .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
         );
     }
@@ -140,8 +141,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
                 .set(descr).equalTo(row::getDescr)
                 .set(createUserId).equalTo(row::getCreateUserId)
                 .set(modifyUserId).equalTo(row::getModifyUserId)
-                .set(ctime).equalTo(row::getCtime)
-                .set(mtime).equalTo(row::getMtime)
+                .set(createTime).equalTo(row::getCreateTime)
+                .set(modifyTime).equalTo(row::getModifyTime)
                 .set(invalid).equalTo(row::getInvalid);
     }
 
@@ -153,8 +154,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
                 .set(descr).equalToWhenPresent(row::getDescr)
                 .set(createUserId).equalToWhenPresent(row::getCreateUserId)
                 .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-                .set(ctime).equalToWhenPresent(row::getCtime)
-                .set(mtime).equalToWhenPresent(row::getMtime)
+                .set(createTime).equalToWhenPresent(row::getCreateTime)
+                .set(modifyTime).equalToWhenPresent(row::getModifyTime)
                 .set(invalid).equalToWhenPresent(row::getInvalid);
     }
 
@@ -166,8 +167,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
             .set(descr).equalTo(row::getDescr)
             .set(createUserId).equalTo(row::getCreateUserId)
             .set(modifyUserId).equalTo(row::getModifyUserId)
-            .set(ctime).equalTo(row::getCtime)
-            .set(mtime).equalTo(row::getMtime)
+            .set(createTime).equalTo(row::getCreateTime)
+            .set(modifyTime).equalTo(row::getModifyTime)
             .set(invalid).equalTo(row::getInvalid)
             .where(catalogId, isEqualTo(row::getCatalogId))
         );
@@ -181,8 +182,8 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
             .set(descr).equalToWhenPresent(row::getDescr)
             .set(createUserId).equalToWhenPresent(row::getCreateUserId)
             .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-            .set(ctime).equalToWhenPresent(row::getCtime)
-            .set(mtime).equalToWhenPresent(row::getMtime)
+            .set(createTime).equalToWhenPresent(row::getCreateTime)
+            .set(modifyTime).equalToWhenPresent(row::getModifyTime)
             .set(invalid).equalToWhenPresent(row::getInvalid)
             .where(catalogId, isEqualTo(row::getCatalogId))
         );

@@ -21,25 +21,17 @@ public final class TaskDynamicSqlSupport {
 
     public static final SqlColumn<Long> modifyUserId = task.modifyUserId;
 
-    public static final SqlColumn<Long> ctime = task.ctime;
+    public static final SqlColumn<Long> createTime = task.createTime;
 
-    public static final SqlColumn<Long> mtime = task.mtime;
+    public static final SqlColumn<Long> modifyTime = task.modifyTime;
 
-    public static final SqlColumn<Integer> invalid = task.invalid;
+    public static final SqlColumn<Boolean> invalid = task.invalid;
 
     /**
      * Base64 encode
      */
     public static final SqlColumn<String> source = task.source;
 
-    /**
-     * @description: This class corresponds to the database table bas_task
-     * @author: HamaWhite
-     * @version: 1.0.0
-     * @date: 2023/01/28 23:03:46
-     *
-     * @mbg.generated
-     */
     public static final class Task extends AliasableSqlTable<Task> {
         public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
 
@@ -55,11 +47,11 @@ public final class TaskDynamicSqlSupport {
 
         public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> ctime = column("ctime", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> mtime = column("mtime", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
 
-        public final SqlColumn<Integer> invalid = column("invalid", JDBCType.INTEGER);
+        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
 
         public final SqlColumn<String> source = column("source", JDBCType.LONGVARCHAR);
 
