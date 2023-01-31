@@ -1,7 +1,8 @@
-package com.hw.lineage.common;
+package com.hw.lineage.common.service;
 
-import com.hw.lineage.common.catalog.CatalogType;
+import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.plugin.Plugin;
+import com.hw.lineage.common.result.LineageResult;
 
 import java.util.List;
 

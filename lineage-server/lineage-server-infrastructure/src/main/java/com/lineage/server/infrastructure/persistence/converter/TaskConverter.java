@@ -1,7 +1,7 @@
 package com.lineage.server.infrastructure.persistence.converter;
 
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.infrastructure.persistence.model.TaskDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 
 /**
  * @description: TaskBuilder

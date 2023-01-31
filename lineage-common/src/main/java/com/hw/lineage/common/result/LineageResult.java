@@ -1,4 +1,4 @@
-package com.hw.lineage.common;
+package com.hw.lineage.common.result;
 
 import com.hw.lineage.common.util.Constant;
 import lombok.AllArgsConstructor;

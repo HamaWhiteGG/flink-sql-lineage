@@ -3,18 +3,20 @@ package com.lineage.server.infrastructure.persistence.mapper;
 import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
-import com.lineage.server.infrastructure.persistence.model.TaskDO;
-import java.util.Collection;
+import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import java.util.List;
 import java.util.Optional;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
+import org.mybatis.dynamic.sql.insert.render.InsertStatementProvider;
 import org.mybatis.dynamic.sql.select.CountDSLCompleter;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
@@ -24,13 +26,16 @@ import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
-import org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
-public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, CommonInsertMapper<TaskDO>, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(taskId, taskName, descr, pluginId, catalogId, createUserId, modifyUserId, ctime, mtime, invalid, source);
+public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
+    BasicColumn[] selectList = BasicColumn.columnList(taskId, taskName, descr, pluginId, catalogId, createUserId, modifyUserId, createTime, modifyTime, invalid, source);
+
+    @InsertProvider(type=SqlProviderAdapter.class, method="insert")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.taskId", before=false, resultType=Long.class)
+    int insert(InsertStatementProvider<TaskDO> insertStatement);
 
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="TaskDOResult", value = {
@@ -41,9 +46,9 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
         @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT),
         @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_user_id", property="modifyUserId", jdbcType=JdbcType.BIGINT),
-        @Result(column="ctime", property="ctime", jdbcType=JdbcType.BIGINT),
-        @Result(column="mtime", property="mtime", jdbcType=JdbcType.BIGINT),
-        @Result(column="invalid", property="invalid", jdbcType=JdbcType.INTEGER),
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="modify_time", property="modifyTime", jdbcType=JdbcType.BIGINT),
+        @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT),
         @Result(column="source", property="source", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<TaskDO> selectMany(SelectStatementProvider selectStatement);
@@ -68,31 +73,14 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
 
     default int insert(TaskDO row) {
         return MyBatis3Utils.insert(this::insert, row, task, c ->
-            c.map(taskId).toProperty("taskId")
-            .map(taskName).toProperty("taskName")
+            c.map(taskName).toProperty("taskName")
             .map(descr).toProperty("descr")
             .map(pluginId).toProperty("pluginId")
             .map(catalogId).toProperty("catalogId")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
-            .map(ctime).toProperty("ctime")
-            .map(mtime).toProperty("mtime")
-            .map(invalid).toProperty("invalid")
-            .map(source).toProperty("source")
-        );
-    }
-
-    default int insertMultiple(Collection<TaskDO> records) {
-        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, task, c ->
-            c.map(taskId).toProperty("taskId")
-            .map(taskName).toProperty("taskName")
-            .map(descr).toProperty("descr")
-            .map(pluginId).toProperty("pluginId")
-            .map(catalogId).toProperty("catalogId")
-            .map(createUserId).toProperty("createUserId")
-            .map(modifyUserId).toProperty("modifyUserId")
-            .map(ctime).toProperty("ctime")
-            .map(mtime).toProperty("mtime")
+            .map(createTime).toProperty("createTime")
+            .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
             .map(source).toProperty("source")
         );
@@ -100,15 +88,14 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
 
     default int insertSelective(TaskDO row) {
         return MyBatis3Utils.insert(this::insert, row, task, c ->
-            c.map(taskId).toPropertyWhenPresent("taskId", row::getTaskId)
-            .map(taskName).toPropertyWhenPresent("taskName", row::getTaskName)
+            c.map(taskName).toPropertyWhenPresent("taskName", row::getTaskName)
             .map(descr).toPropertyWhenPresent("descr", row::getDescr)
             .map(pluginId).toPropertyWhenPresent("pluginId", row::getPluginId)
             .map(catalogId).toPropertyWhenPresent("catalogId", row::getCatalogId)
             .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
             .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
-            .map(ctime).toPropertyWhenPresent("ctime", row::getCtime)
-            .map(mtime).toPropertyWhenPresent("mtime", row::getMtime)
+            .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
+            .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
             .map(source).toPropertyWhenPresent("source", row::getSource)
         );
@@ -137,29 +124,27 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
     }
 
     static UpdateDSL<UpdateModel> updateAllColumns(TaskDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(taskId).equalTo(row::getTaskId)
-                .set(taskName).equalTo(row::getTaskName)
+        return dsl.set(taskName).equalTo(row::getTaskName)
                 .set(descr).equalTo(row::getDescr)
                 .set(pluginId).equalTo(row::getPluginId)
                 .set(catalogId).equalTo(row::getCatalogId)
                 .set(createUserId).equalTo(row::getCreateUserId)
                 .set(modifyUserId).equalTo(row::getModifyUserId)
-                .set(ctime).equalTo(row::getCtime)
-                .set(mtime).equalTo(row::getMtime)
+                .set(createTime).equalTo(row::getCreateTime)
+                .set(modifyTime).equalTo(row::getModifyTime)
                 .set(invalid).equalTo(row::getInvalid)
                 .set(source).equalTo(row::getSource);
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(TaskDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(taskId).equalToWhenPresent(row::getTaskId)
-                .set(taskName).equalToWhenPresent(row::getTaskName)
+        return dsl.set(taskName).equalToWhenPresent(row::getTaskName)
                 .set(descr).equalToWhenPresent(row::getDescr)
                 .set(pluginId).equalToWhenPresent(row::getPluginId)
                 .set(catalogId).equalToWhenPresent(row::getCatalogId)
                 .set(createUserId).equalToWhenPresent(row::getCreateUserId)
                 .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-                .set(ctime).equalToWhenPresent(row::getCtime)
-                .set(mtime).equalToWhenPresent(row::getMtime)
+                .set(createTime).equalToWhenPresent(row::getCreateTime)
+                .set(modifyTime).equalToWhenPresent(row::getModifyTime)
                 .set(invalid).equalToWhenPresent(row::getInvalid)
                 .set(source).equalToWhenPresent(row::getSource);
     }
@@ -172,8 +157,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .set(catalogId).equalTo(row::getCatalogId)
             .set(createUserId).equalTo(row::getCreateUserId)
             .set(modifyUserId).equalTo(row::getModifyUserId)
-            .set(ctime).equalTo(row::getCtime)
-            .set(mtime).equalTo(row::getMtime)
+            .set(createTime).equalTo(row::getCreateTime)
+            .set(modifyTime).equalTo(row::getModifyTime)
             .set(invalid).equalTo(row::getInvalid)
             .set(source).equalTo(row::getSource)
             .where(taskId, isEqualTo(row::getTaskId))
@@ -188,8 +173,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .set(catalogId).equalToWhenPresent(row::getCatalogId)
             .set(createUserId).equalToWhenPresent(row::getCreateUserId)
             .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-            .set(ctime).equalToWhenPresent(row::getCtime)
-            .set(mtime).equalToWhenPresent(row::getMtime)
+            .set(createTime).equalToWhenPresent(row::getCreateTime)
+            .set(modifyTime).equalToWhenPresent(row::getModifyTime)
             .set(invalid).equalToWhenPresent(row::getInvalid)
             .set(source).equalToWhenPresent(row::getSource)
             .where(taskId, isEqualTo(row::getTaskId))

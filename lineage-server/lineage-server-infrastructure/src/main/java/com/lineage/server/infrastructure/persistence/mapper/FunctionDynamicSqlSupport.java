@@ -23,20 +23,12 @@ public final class FunctionDynamicSqlSupport {
 
     public static final SqlColumn<Long> modifyUserId = function.modifyUserId;
 
-    public static final SqlColumn<Long> ctime = function.ctime;
+    public static final SqlColumn<Long> createTime = function.createTime;
 
-    public static final SqlColumn<Long> mtime = function.mtime;
+    public static final SqlColumn<Long> modifyTime = function.modifyTime;
 
-    public static final SqlColumn<Integer> invalid = function.invalid;
+    public static final SqlColumn<Boolean> invalid = function.invalid;
 
-    /**
-     * @description: This class corresponds to the database table bas_function
-     * @author: HamaWhite
-     * @version: 1.0.0
-     * @date: 2023/01/28 23:03:46
-     *
-     * @mbg.generated
-     */
     public static final class Function extends AliasableSqlTable<Function> {
         public final SqlColumn<Long> functionId = column("function_id", JDBCType.BIGINT);
 
@@ -54,11 +46,11 @@ public final class FunctionDynamicSqlSupport {
 
         public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> ctime = column("ctime", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> mtime = column("mtime", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
 
-        public final SqlColumn<Integer> invalid = column("invalid", JDBCType.INTEGER);
+        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
 
         public Function() {
             super("bas_function", Function::new);

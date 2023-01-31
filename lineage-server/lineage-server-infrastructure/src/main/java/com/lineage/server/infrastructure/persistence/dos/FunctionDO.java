@@ -1,10 +1,10 @@
-package com.lineage.server.infrastructure.persistence.model;
+package com.lineage.server.infrastructure.persistence.dos;
 
 /**
  * @description: This class corresponds to the database table bas_function
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/01/28 23:03:46
+ * @date: 2023/01/30 21:19:17
  *
  * @mbg.generated
  */
@@ -25,11 +25,11 @@ public class FunctionDO {
 
     private Long modifyUserId;
 
-    private Long ctime;
+    private Long createTime;
 
-    private Long mtime;
+    private Long modifyTime;
 
-    private Integer invalid;
+    private Boolean invalid;
 
     public Long getFunctionId() {
         return functionId;
@@ -95,27 +95,27 @@ public class FunctionDO {
         this.modifyUserId = modifyUserId;
     }
 
-    public Long getCtime() {
-        return ctime;
+    public Long getCreateTime() {
+        return createTime;
     }
 
-    public void setCtime(Long ctime) {
-        this.ctime = ctime;
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
-    public Long getMtime() {
-        return mtime;
+    public Long getModifyTime() {
+        return modifyTime;
     }
 
-    public void setMtime(Long mtime) {
-        this.mtime = mtime;
+    public void setModifyTime(Long modifyTime) {
+        this.modifyTime = modifyTime;
     }
 
-    public Integer getInvalid() {
+    public Boolean getInvalid() {
         return invalid;
     }
 
-    public void setInvalid(Integer invalid) {
+    public void setInvalid(Boolean invalid) {
         this.invalid = invalid;
     }
 
@@ -139,8 +139,8 @@ public class FunctionDO {
             && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
             && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
             && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
-            && (this.getCtime() == null ? other.getCtime() == null : this.getCtime().equals(other.getCtime()))
-            && (this.getMtime() == null ? other.getMtime() == null : this.getMtime().equals(other.getMtime()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
             && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
     }
 
@@ -156,8 +156,8 @@ public class FunctionDO {
         result = prime * result + ((getDescr() == null) ? 0 : getDescr().hashCode());
         result = prime * result + ((getCreateUserId() == null) ? 0 : getCreateUserId().hashCode());
         result = prime * result + ((getModifyUserId() == null) ? 0 : getModifyUserId().hashCode());
-        result = prime * result + ((getCtime() == null) ? 0 : getCtime().hashCode());
-        result = prime * result + ((getMtime() == null) ? 0 : getMtime().hashCode());
+        result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
+        result = prime * result + ((getModifyTime() == null) ? 0 : getModifyTime().hashCode());
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
         return result;
     }
@@ -176,8 +176,8 @@ public class FunctionDO {
         sb.append(", descr=").append(descr);
         sb.append(", createUserId=").append(createUserId);
         sb.append(", modifyUserId=").append(modifyUserId);
-        sb.append(", ctime=").append(ctime);
-        sb.append(", mtime=").append(mtime);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", modifyTime=").append(modifyTime);
         sb.append(", invalid=").append(invalid);
         sb.append("]");
         return sb.toString();

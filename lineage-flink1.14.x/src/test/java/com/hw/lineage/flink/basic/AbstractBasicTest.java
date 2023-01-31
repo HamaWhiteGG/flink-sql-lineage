@@ -1,6 +1,6 @@
 package com.hw.lineage.flink.basic;
 
-import com.hw.lineage.common.LineageResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.catalog.hive.HiveTestUtils;
