@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  * @date: 2023/1/29 3:48 PM
  */
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 public class BasicDO {
 
     private Long createUserId;
@@ -20,4 +20,6 @@ public class BasicDO {
     private Long createTime;
 
     private Long modifyTime;
+
+    private Boolean invalid;
 }

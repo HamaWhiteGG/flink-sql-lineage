@@ -11,9 +11,8 @@ import lombok.experimental.Accessors;
  * @date: 2023/1/23 4:43 PM
  */
 @Data
-@Accessors(fluent = true)
+@Accessors(chain = true)
 public class Task extends BasicDO {
-
     private TaskId taskId;
 
     private String taskName;
@@ -25,5 +24,4 @@ public class Task extends BasicDO {
     private Long catalogId;
 
     private String source;
-
 }

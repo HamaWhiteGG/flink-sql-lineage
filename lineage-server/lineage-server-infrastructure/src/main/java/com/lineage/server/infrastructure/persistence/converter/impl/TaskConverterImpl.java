@@ -17,35 +17,36 @@ public class TaskConverterImpl implements TaskConverter {
     @Override
     public Task toTask(TaskDO taskDO) {
         Task task = new Task()
-                .taskId(new TaskId(taskDO.getTaskId()))
-                .taskName(taskDO.getTaskName())
-                .descr(taskDO.getDescr())
-                .pluginId(taskDO.getPluginId())
-                .catalogId(taskDO.getCatalogId())
-                .source(taskDO.getSource());
+                .setTaskId(new TaskId(taskDO.getTaskId()))
+                .setTaskName(taskDO.getTaskName())
+                .setDescr(taskDO.getDescr())
+                .setPluginId(taskDO.getPluginId())
+                .setCatalogId(taskDO.getCatalogId())
+                .setSource(taskDO.getSource());
 
-        task.createUserId(taskDO.getCreateUserId())
-                .modifyUserId(taskDO.getModifyUserId())
-                .createTime(taskDO.getCreateTime())
-                .modifyTime(taskDO.getModifyTime());
+        task.setCreateUserId(taskDO.getCreateUserId())
+                .setModifyUserId(taskDO.getModifyUserId())
+                .setCreateTime(taskDO.getCreateTime())
+                .setModifyTime(taskDO.getModifyTime())
+                .setInvalid(task.getInvalid());
         return task;
     }
 
     @Override
     public TaskDO fromTask(Task task) {
         TaskDO taskDO = new TaskDO();
-        if (task.taskId() != null) {
-            taskDO.setTaskId(task.taskId().getValue());
+        if (task.getTaskId() != null) {
+            taskDO.setTaskId(task.getTaskId().getValue());
         }
-        taskDO.setTaskName(task.taskName());
-        taskDO.setDescr(task.descr());
-        taskDO.setPluginId(task.pluginId());
-        taskDO.setCatalogId(task.catalogId());
-        taskDO.setSource(task.source());
-        taskDO.setCreateUserId(task.createUserId());
-        taskDO.setModifyUserId(task.modifyUserId());
-        taskDO.setCreateTime(task.createTime());
-        taskDO.setModifyTime(task.modifyTime());
+        taskDO.setTaskName(task.getTaskName());
+        taskDO.setDescr(task.getDescr());
+        taskDO.setPluginId(task.getPluginId());
+        taskDO.setCatalogId(task.getCatalogId());
+        taskDO.setSource(task.getSource());
+        taskDO.setCreateUserId(task.getCreateUserId());
+        taskDO.setModifyUserId(task.getModifyUserId());
+        taskDO.setCreateTime(task.getCreateTime());
+        taskDO.setModifyTime(task.getModifyTime());
         return taskDO;
     }
 }
