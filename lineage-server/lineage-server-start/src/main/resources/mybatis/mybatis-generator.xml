@@ -32,15 +32,23 @@
                 userId="${spring.datasource.username}"
                 password="${spring.datasource.password}" />
 
-        <javaModelGenerator targetPackage="com.lineage.server.infrastructure.persistence.model"
+        <javaModelGenerator targetPackage="com.lineage.server.infrastructure.persistence.dos"
                             targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
 
         <javaClientGenerator targetPackage="com.lineage.server.infrastructure.persistence.mapper"
                              targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
 
-        <table tableName="bas_task" domainObjectName="Task"/>
+        <table tableName="bas_task" domainObjectName="Task">
+            <generatedKey column="task_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
         <table tableName="bas_plugin" domainObjectName="Plugin"/>
-        <table tableName="bas_catalog" domainObjectName="Catalog"/>
+        <table tableName="bas_catalog" domainObjectName="Catalog">
+            <columnOverride
+                    column="catalog_type"
+                    javaType="com.hw.lineage.common.enums.CatalogType"
+                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
+        </table>
         <table tableName="bas_function" domainObjectName="Function"/>
 
     </context>

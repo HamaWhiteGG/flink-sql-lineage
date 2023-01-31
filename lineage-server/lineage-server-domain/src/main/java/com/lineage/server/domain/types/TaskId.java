@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class TaskId {
 
-    private Long value;
+    private final Long value;
 
     public TaskId(Long value) {
         this.value = value;

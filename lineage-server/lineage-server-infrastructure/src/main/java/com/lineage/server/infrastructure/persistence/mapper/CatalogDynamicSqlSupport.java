@@ -1,5 +1,6 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
+import com.hw.lineage.common.enums.CatalogType;
 import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
@@ -11,7 +12,7 @@ public final class CatalogDynamicSqlSupport {
 
     public static final SqlColumn<String> catalogName = catalog.catalogName;
 
-    public static final SqlColumn<Byte> catalogType = catalog.catalogType;
+    public static final SqlColumn<CatalogType> catalogType = catalog.catalogType;
 
     public static final SqlColumn<String> defaultDatabase = catalog.defaultDatabase;
 
@@ -21,26 +22,18 @@ public final class CatalogDynamicSqlSupport {
 
     public static final SqlColumn<Long> modifyUserId = catalog.modifyUserId;
 
-    public static final SqlColumn<Long> ctime = catalog.ctime;
+    public static final SqlColumn<Long> createTime = catalog.createTime;
 
-    public static final SqlColumn<Long> mtime = catalog.mtime;
+    public static final SqlColumn<Long> modifyTime = catalog.modifyTime;
 
-    public static final SqlColumn<Integer> invalid = catalog.invalid;
+    public static final SqlColumn<Boolean> invalid = catalog.invalid;
 
-    /**
-     * @description: This class corresponds to the database table bas_catalog
-     * @author: HamaWhite
-     * @version: 1.0.0
-     * @date: 2023/01/28 23:03:46
-     *
-     * @mbg.generated
-     */
     public static final class Catalog extends AliasableSqlTable<Catalog> {
         public final SqlColumn<Long> catalogId = column("catalog_id", JDBCType.BIGINT);
 
         public final SqlColumn<String> catalogName = column("catalog_name", JDBCType.VARCHAR);
 
-        public final SqlColumn<Byte> catalogType = column("catalog_type", JDBCType.TINYINT);
+        public final SqlColumn<CatalogType> catalogType = column("catalog_type", JDBCType.TINYINT, "com.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler");
 
         public final SqlColumn<String> defaultDatabase = column("default_database", JDBCType.VARCHAR);
 
@@ -50,11 +43,11 @@ public final class CatalogDynamicSqlSupport {
 
         public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> ctime = column("ctime", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> mtime = column("mtime", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
 
-        public final SqlColumn<Integer> invalid = column("invalid", JDBCType.INTEGER);
+        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
 
         public Catalog() {
             super("bas_catalog", Catalog::new);
