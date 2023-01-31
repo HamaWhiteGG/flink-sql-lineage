@@ -16,6 +16,6 @@ import org.mapstruct.factory.Mappers;
 public interface DtoAssembler {
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 
-    @Mapping(target = "taskId", source = "taskId.value")
+    @Mapping(target = "taskId", source = "task.taskId.value")
     TaskDTO fromTask(Task task);
 }

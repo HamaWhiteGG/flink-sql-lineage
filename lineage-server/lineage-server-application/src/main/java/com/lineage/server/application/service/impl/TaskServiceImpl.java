@@ -25,16 +25,17 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Long createTask(CreateTaskCmd createTaskCmd) {
         Task task = new Task()
-                .taskName(createTaskCmd.getTaskName())
-                .descr(createTaskCmd.getDescr())
-                .pluginId(createTaskCmd.getPluginId())
-                .catalogId(createTaskCmd.getCatalogId());
+                .setTaskName(createTaskCmd.getTaskName())
+                .setDescr(createTaskCmd.getDescr())
+                .setPluginId(createTaskCmd.getPluginId())
+                .setCatalogId(createTaskCmd.getCatalogId());
 
-        task.createTime(System.currentTimeMillis())
-                .modifyTime(System.currentTimeMillis());
+        task.setCreateTime(System.currentTimeMillis())
+                .setModifyTime(System.currentTimeMillis())
+                .setInvalid(false);
 
         task = repository.save(task);
-        return task.taskId().getValue();
+        return task.getTaskId().getValue();
     }
 
     @Override
