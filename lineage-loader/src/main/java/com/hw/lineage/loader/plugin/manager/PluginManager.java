@@ -19,9 +19,9 @@ public interface PluginManager {
      * in echo plugin known to this plugin manager instance.
      *
      * @param service the service interface (SPI) for which implementations are requested.
-     * @param <P> Type of the requested plugin service.
-     * @return Map<pluginId,iterator>
+     * @param <P>     Type of the requested plugin service.
+     * @return Map<pluginId, iterator>
      */
-    <P> Map<String,Iterator<P>> load(Class<P> service);
+    <P> Map<String, Iterator<P>> load(Class<P> service);
 
 }

@@ -1,7 +1,9 @@
 package com.lineage.server.interfaces.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
 import com.lineage.server.application.cqe.command.task.UpdateTaskCmd;
+import com.lineage.server.application.cqe.query.task.TaskQuery;
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
 import com.lineage.server.interfaces.result.Result;
@@ -9,7 +11,6 @@ import com.lineage.server.interfaces.result.ResultMessage;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @description: TaskController
@@ -31,8 +32,9 @@ public class TaskController {
     }
 
     @GetMapping("")
-    public List<TaskDTO> queryTasks() {
-        return null;
+    public Result<PageInfo<TaskDTO>> queryTasks(final TaskQuery taskQuery) {
+        PageInfo<TaskDTO> pageInfo = taskService.queryTasks(taskQuery);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 
     @PostMapping("")
@@ -42,13 +44,17 @@ public class TaskController {
     }
 
     @PutMapping("/{taskId}")
-    public TaskDTO updateTask(@PathVariable("taskId") final Long taskId,
-                              @RequestBody final UpdateTaskCmd updateTaskCmd) {
-        return null;
+    public Result<Boolean> updateTask(@PathVariable("taskId") final Long taskId,
+                                      @RequestBody final UpdateTaskCmd updateTaskCmd) {
+        updateTaskCmd.setTaskId(taskId);
+        Boolean result = taskService.updateTask(updateTaskCmd);
+        return Boolean.TRUE.equals(result) ? Result.success(ResultMessage.UPDATE_SUCCESS) : Result.error(ResultMessage.UPDATE_FAILED);
     }
 
     @DeleteMapping("/{taskId}")
-    public boolean deleteTask(@PathVariable("taskId") final Long taskId) {
-        return false;
+    public Result<Boolean> deleteTask(@PathVariable("taskId") final Long taskId) {
+        Boolean result = taskService.deleteTask(taskId);
+        return Boolean.TRUE.equals(result) ? Result.success(ResultMessage.DELETE_SUCCESS)
+                : Result.success(ResultMessage.DELETE_FAILED);
     }
 }
