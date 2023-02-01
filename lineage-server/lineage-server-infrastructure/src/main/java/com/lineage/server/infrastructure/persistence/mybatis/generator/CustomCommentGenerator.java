@@ -28,6 +28,7 @@ public class CustomCommentGenerator implements CommentGenerator {
     private SimpleDateFormat dateFormat;
 
     public CustomCommentGenerator() {
+        // do nothing
     }
 
     @Override

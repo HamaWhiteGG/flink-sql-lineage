@@ -10,5 +10,5 @@ import com.hw.lineage.common.plugin.Plugin;
  */
 public interface TestService extends Plugin {
 
-     String say(String name);
+    String say(String name);
 }

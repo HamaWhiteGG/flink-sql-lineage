@@ -41,15 +41,21 @@ import java.util.stream.Stream;
  * @version: 1.0.0
  * @date: 2023/1/16 10:29 PM
  */
-public class DirectoryBasedPluginFinder implements  PluginFinder{
+public class DirectoryBasedPluginFinder implements PluginFinder {
 
-    /** Pattern to match jar files in a directory. */
+    /**
+     * Pattern to match jar files in a directory.
+     */
     private static final String JAR_MATCHER_PATTERN = "glob:**.jar";
 
-    /** Root directory to the plugin folders. */
+    /**
+     * Root directory to the plugin folders.
+     */
     private final Path pluginsRootDir;
 
-    /** Matcher for jar files in the filesystem of the root folder. */
+    /**
+     * Matcher for jar files in the filesystem of the root folder.
+     */
     private final PathMatcher jarFileMatcher;
 
     public DirectoryBasedPluginFinder(Path pluginsRootDir) {

@@ -1,8 +1,9 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
-import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
+
+import java.sql.JDBCType;
 
 public final class FunctionDynamicSqlSupport {
     public static final Function function = new Function();

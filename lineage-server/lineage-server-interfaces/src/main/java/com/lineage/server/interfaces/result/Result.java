@@ -35,7 +35,7 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> success(final String msg) {
-        return success(msg, null);
+        return (Result<T>) success(msg, Boolean.TRUE);
     }
 
     public static <T> Result<T> success(final T data) {
@@ -51,7 +51,7 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> error(final int code, final String msg) {
-        return get(code, msg, null);
+        return (Result<T>) get(code, msg, Boolean.FALSE);
     }
 
     public static <T> Result<T> timeout(final String msg) {

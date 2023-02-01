@@ -26,7 +26,7 @@ import java.util.ServiceLoader;
  * @version: 1.0.0
  * @date: 2023/1/16 9:46 PM
  */
-public class PluginLoader implements AutoCloseable{
+public class PluginLoader implements AutoCloseable {
 
     private static final Logger LOG = LoggerFactory.getLogger(PluginLoader.class);
 
@@ -69,9 +69,9 @@ public class PluginLoader implements AutoCloseable{
      * for the plugin.
      *
      * @param service the service interface (SPI) for which implementations are requested.
-     * @param <P> Type of the requested plugin service.
+     * @param <P>     Type of the requested plugin service.
      * @return An iterator of all implementations of the given service interface that could be
-     *     loaded from the plugin.
+     * loaded from the plugin.
      */
     public <P> Iterator<P> load(Class<P> service) {
         try (TemporaryClassLoaderContext ignored =
