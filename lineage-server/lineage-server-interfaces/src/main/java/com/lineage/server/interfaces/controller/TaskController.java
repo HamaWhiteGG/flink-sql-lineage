@@ -48,7 +48,8 @@ public class TaskController {
                                       @RequestBody final UpdateTaskCmd updateTaskCmd) {
         updateTaskCmd.setTaskId(taskId);
         Boolean result = taskService.updateTask(updateTaskCmd);
-        return Boolean.TRUE.equals(result) ? Result.success(ResultMessage.UPDATE_SUCCESS) : Result.error(ResultMessage.UPDATE_FAILED);
+        return Boolean.TRUE.equals(result) ? Result.success(ResultMessage.UPDATE_SUCCESS)
+                : Result.error(ResultMessage.UPDATE_FAILED);
     }
 
     @DeleteMapping("/{taskId}")
