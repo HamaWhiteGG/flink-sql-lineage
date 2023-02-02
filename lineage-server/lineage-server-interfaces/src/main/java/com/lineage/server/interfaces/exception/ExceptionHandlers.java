@@ -38,9 +38,7 @@ public class ExceptionHandlers {
     @ExceptionHandler(Exception.class)
     protected Result<Boolean> handleExceptionHandler(final Exception exception) {
         LOG.error(exception.getMessage(), exception);
-        String message = exception instanceof LineageException ? exception.getMessage()
-                : "The system is busy, please try again later";
-        return Result.error(message);
+        return Result.error(exception.getMessage());
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
