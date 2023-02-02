@@ -74,30 +74,30 @@ public class DefaultPluginManagerTest extends PluginTestBase {
         Set<ClassLoader> classLoaders = Collections.newSetFromMap(new IdentityHashMap<>(4));
         classLoaders.add(PARENT_CLASS_LOADER);
 
-        List<TestService> testServiceListA=Lists.newArrayList(pluginIteratorMap.get(PLUGIN_A));
-        List<TestService> testServiceListB=Lists.newArrayList(pluginIteratorMap.get(PLUGIN_B));
-        Assert.assertEquals(1,  testServiceListA.size());
-        Assert.assertEquals(1,  testServiceListB.size());
+        List<TestService> testServiceListA = Lists.newArrayList(pluginIteratorMap.get(PLUGIN_A));
+        List<TestService> testServiceListB = Lists.newArrayList(pluginIteratorMap.get(PLUGIN_B));
+        Assert.assertEquals(1, testServiceListA.size());
+        Assert.assertEquals(1, testServiceListB.size());
 
-        TestService testServiceA=testServiceListA.get(0);
-        TestService testServiceB=testServiceListB.get(0);
+        TestService testServiceA = testServiceListA.get(0);
+        TestService testServiceB = testServiceListB.get(0);
 
-        Assert.assertEquals("A-hello-Dynamic-A-hello",testServiceA.say("hello"));
-        Assert.assertEquals("B-hello",testServiceB.say("hello"));
+        Assert.assertEquals("A-hello-Dynamic-A-hello", testServiceA.say("hello"));
+        Assert.assertEquals("B-hello", testServiceB.say("hello"));
 
         Assert.assertTrue(classLoaders.add(testServiceA.getClass().getClassLoader()));
         Assert.assertTrue(classLoaders.add(testServiceB.getClass().getClassLoader()));
 
         Map<String, Iterator<OtherTestService>> otherPluginIteratorMap = pluginManager.load(OtherTestService.class);
-        List<OtherTestService> otherTestServiceListA=Lists.newArrayList(otherPluginIteratorMap.get(PLUGIN_A));
-        List<OtherTestService> otherTestServiceListB=Lists.newArrayList(otherPluginIteratorMap.get(PLUGIN_B));
+        List<OtherTestService> otherTestServiceListA = Lists.newArrayList(otherPluginIteratorMap.get(PLUGIN_A));
+        List<OtherTestService> otherTestServiceListB = Lists.newArrayList(otherPluginIteratorMap.get(PLUGIN_B));
 
-        Assert.assertEquals(0,  otherTestServiceListA.size());
-        Assert.assertEquals(1,  otherTestServiceListB.size());
+        Assert.assertEquals(0, otherTestServiceListA.size());
+        Assert.assertEquals(1, otherTestServiceListB.size());
 
-        OtherTestService otherTestServiceB =otherTestServiceListB.get(0);
+        OtherTestService otherTestServiceB = otherTestServiceListB.get(0);
 
-        Assert.assertEquals("Other-B-hello",otherTestServiceB.otherSay("hello"));
+        Assert.assertEquals("Other-B-hello", otherTestServiceB.otherSay("hello"));
         Assert.assertTrue(classLoaders.add(otherTestServiceB.getClass().getClassLoader()));
     }
 }

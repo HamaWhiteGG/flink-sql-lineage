@@ -13,7 +13,7 @@ import java.util.*;
  * @date: 2023/1/16 10:22 PM
  */
 @ThreadSafe
-public class DefaultPluginManager implements PluginManager{
+public class DefaultPluginManager implements PluginManager {
 
     /**
      * Parent-classloader to all classloader that are used for plugin loading. We expect that this
@@ -21,10 +21,14 @@ public class DefaultPluginManager implements PluginManager{
      */
     private final ClassLoader parentClassLoader;
 
-    /** A collection of descriptions of all plugins known to this plugin manager. */
+    /**
+     * A collection of descriptions of all plugins known to this plugin manager.
+     */
     private final Collection<PluginDescriptor> pluginDescriptors;
 
-    /** List of patterns for classes that should always be resolved from the parent ClassLoader. */
+    /**
+     * List of patterns for classes that should always be resolved from the parent ClassLoader.
+     */
     private final String[] alwaysParentFirstPatterns;
 
     public DefaultPluginManager(
@@ -45,13 +49,13 @@ public class DefaultPluginManager implements PluginManager{
     }
 
     @Override
-    public <P> Map<String,Iterator<P>> load(Class<P> service) {
-        Map<String,Iterator<P>> pluginIteratorMap = new HashMap<>(pluginDescriptors.size());
+    public <P> Map<String, Iterator<P>> load(Class<P> service) {
+        Map<String, Iterator<P>> pluginIteratorMap = new HashMap<>(pluginDescriptors.size());
         for (PluginDescriptor pluginDescriptor : pluginDescriptors) {
             PluginLoader pluginLoader =
                     PluginLoader.create(
                             pluginDescriptor, parentClassLoader, alwaysParentFirstPatterns);
-            pluginIteratorMap.put(pluginDescriptor.getPluginId(),pluginLoader.load(service));
+            pluginIteratorMap.put(pluginDescriptor.getPluginId(), pluginLoader.load(service));
         }
         return pluginIteratorMap;
     }

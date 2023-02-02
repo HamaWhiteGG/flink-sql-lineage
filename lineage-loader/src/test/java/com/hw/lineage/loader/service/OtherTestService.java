@@ -10,5 +10,5 @@ import com.hw.lineage.common.plugin.Plugin;
  */
 public interface OtherTestService extends Plugin {
 
-     String otherSay(String name);
+    String otherSay(String name);
 }

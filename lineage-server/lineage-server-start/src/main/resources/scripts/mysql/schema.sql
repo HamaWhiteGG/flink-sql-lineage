@@ -9,8 +9,8 @@ CREATE TABLE `bas_task`
     `source`         longtext COMMENT 'Base64 encode',
     `create_user_id` bigint(20)   NOT NULL DEFAULT '0',
     `modify_user_id` bigint(20)   NOT NULL DEFAULT '0',
-    `create_time`          bigint(20)   NOT NULL,
-    `modify_time`          bigint(20)   NOT NULL,
+    `create_time`    bigint(20)   NOT NULL,
+    `modify_time`    bigint(20)   NOT NULL,
     `invalid`        tinyint(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`task_id`),
     KEY `task_name_idx` (`task_name`)
@@ -63,8 +63,8 @@ CREATE TABLE `bas_plugin`
     `descr`          varchar(255),
     `create_user_id` bigint(20)   NOT NULL DEFAULT '0',
     `modify_user_id` bigint(20)   NOT NULL DEFAULT '0',
-    `create_time`          bigint(20)   NOT NULL,
-    `modify_time`          bigint(20)   NOT NULL,
+    `create_time`    bigint(20)   NOT NULL,
+    `modify_time`    bigint(20)   NOT NULL,
     `invalid`        tinyint(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`plugin_id`),
     KEY `plugin_name_idx` (`plugin_name`)
@@ -82,8 +82,8 @@ CREATE TABLE `bas_catalog`
     `descr`            varchar(255),
     `create_user_id`   bigint(20)   NOT NULL DEFAULT '0',
     `modify_user_id`   bigint(20)   NOT NULL DEFAULT '0',
-    `create_time`          bigint(20)   NOT NULL,
-    `modify_time`          bigint(20)   NOT NULL,
+    `create_time`      bigint(20)   NOT NULL,
+    `modify_time`      bigint(20)   NOT NULL,
     `invalid`          tinyint(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`catalog_id`),
     KEY `catalog_name_idx` (`catalog_name`)
@@ -102,8 +102,8 @@ CREATE TABLE `bas_function`
     `descr`           varchar(255),
     `create_user_id`  bigint(20)    NOT NULL DEFAULT '0',
     `modify_user_id`  bigint(20)    NOT NULL DEFAULT '0',
-    `create_time`          bigint(20)   NOT NULL,
-    `modify_time`          bigint(20)   NOT NULL,
+    `create_time`     bigint(20)    NOT NULL,
+    `modify_time`     bigint(20)    NOT NULL,
     `invalid`         tinyint(1)    NOT NULL DEFAULT '0',
     PRIMARY KEY (`function_id`)
 ) ENGINE = InnoDB

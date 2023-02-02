@@ -210,7 +210,8 @@ public class ComponentClassLoader extends URLClassLoader {
     }
 
     private interface ResourceLoadingFunction
-            extends FunctionWithException<String, Enumeration<URL>, IOException> {}
+            extends FunctionWithException<String, Enumeration<URL>, IOException> {
+    }
 
     private Enumeration<URL> loadResourcesInOrder(
             String name,

@@ -7,6 +7,9 @@ package com.lineage.server.interfaces.result;
  * @date: 2023/1/30 10:05 PM
  */
 public class ResultMessage {
+    private ResultMessage() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static final String SUCCESS = "success";
 
@@ -20,9 +23,18 @@ public class ResultMessage {
 
     public static final String QUERY_FAILED = "query failed";
 
+    public static final String DELETE_FAILED = "delete failed";
+
+    public static final String UPDATE_FAILED = "update failed";
+
     public static final String DETAIL_SUCCESS = "detail success";
 
     public static final String DETAIL_FAILED = "detail failed";
 
     public static final String NOT_FOUND_EXCEPTION = "not found exception";
+
+    public static final String UNIQUE_INDEX_CONFLICT_ERROR = "unique index conflict, please enter again";
+
+    public static final String TOKEN_HAS_NO_PERMISSION = "token has no permission";
+
 }

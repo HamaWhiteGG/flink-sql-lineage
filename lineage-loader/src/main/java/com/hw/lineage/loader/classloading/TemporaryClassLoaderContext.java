@@ -26,7 +26,7 @@ package com.hw.lineage.loader.classloading;
  * @version: 1.0.0
  * @date: 2023/1/16 9:47 PM
  */
-public class TemporaryClassLoaderContext implements AutoCloseable{
+public class TemporaryClassLoaderContext implements AutoCloseable {
 
     /**
      * Sets the context class loader to the given ClassLoader and returns a resource that sets it

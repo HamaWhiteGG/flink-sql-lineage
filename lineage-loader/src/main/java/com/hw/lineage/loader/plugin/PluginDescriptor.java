@@ -11,7 +11,9 @@ import java.util.Arrays;
  */
 public class PluginDescriptor {
 
-    /** Unique identifier of the plugin. */
+    /**
+     * Unique identifier of the plugin.
+     */
     private final String pluginId;
 
     /**
