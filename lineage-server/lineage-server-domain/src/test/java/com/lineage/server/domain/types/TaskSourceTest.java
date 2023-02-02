@@ -100,6 +100,7 @@ public class TaskSourceTest {
                 "FROM t2;  -- second \n" +
                 "\n" +
                 "--\n" +
+                "----third\n" +
                 "SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
 
         TaskSource sixthTaskSource = new TaskSource(sixthSource);
