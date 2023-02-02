@@ -7,7 +7,7 @@ package com.hw.lineage.common.util;
  * @date: 2023/1/16 10:35 PM
  */
 public class ExceptionUtils {
-    
+
     private ExceptionUtils() {
     }
 

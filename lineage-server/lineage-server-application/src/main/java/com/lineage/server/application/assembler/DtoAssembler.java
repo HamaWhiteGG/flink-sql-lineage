@@ -6,6 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /**
  * @description: TaskAssembler
  * @author: HamaWhite
@@ -16,6 +18,8 @@ import org.mapstruct.factory.Mappers;
 public interface DtoAssembler {
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 
-    @Mapping(target = "taskId", source = "task.taskId.value")
+    @Mapping(source = "taskId.value", target = "taskId")
     TaskDTO fromTask(Task task);
+
+    List<TaskDTO> fromTaskList(List<Task> task);
 }

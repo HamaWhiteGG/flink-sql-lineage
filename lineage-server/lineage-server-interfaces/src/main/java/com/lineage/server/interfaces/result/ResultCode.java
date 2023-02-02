@@ -7,6 +7,9 @@ package com.lineage.server.interfaces.result;
  * @date: 2023/1/30 9:48 PM
  */
 public class ResultCode {
+    private ResultCode() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * The constant SUCCESSFUL.

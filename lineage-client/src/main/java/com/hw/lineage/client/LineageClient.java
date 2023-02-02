@@ -1,10 +1,10 @@
 package com.hw.lineage.client;
 
 import com.google.common.collect.Lists;
-import com.hw.lineage.common.result.LineageResult;
-import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.exception.LineageException;
+import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.loader.classloading.TemporaryClassLoaderContext;
 import com.hw.lineage.loader.plugin.PluginDescriptor;

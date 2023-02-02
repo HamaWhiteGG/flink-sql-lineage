@@ -1,7 +1,11 @@
 package com.lineage.server.application.service.impl;
 
+import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.application.assembler.DtoAssembler;
 import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
+import com.lineage.server.application.cqe.command.task.UpdateTaskCmd;
+import com.lineage.server.application.cqe.query.task.TaskQuery;
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
 import com.lineage.server.domain.entity.Task;
@@ -42,5 +46,29 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO queryTask(Long taskId) {
         Task task = repository.find(new TaskId(taskId));
         return DtoAssembler.INSTANCE.fromTask(task);
+    }
+
+    @Override
+    public PageInfo<TaskDTO> queryTasks(TaskQuery taskQuery) {
+        PageInfo<Task> pageInfo = repository.query(taskQuery.getPageNum(), taskQuery.getPageSize());
+        return PageUtils.convertPage(pageInfo, DtoAssembler.INSTANCE::fromTask);
+    }
+
+    @Override
+    public Boolean deleteTask(Long taskId) {
+        return repository.remove(new TaskId(taskId));
+    }
+
+    @Override
+    public Boolean updateTask(UpdateTaskCmd updateTaskCmd) {
+        Task task = new Task()
+                .setTaskId(new TaskId(updateTaskCmd.getTaskId()))
+                .setTaskName(updateTaskCmd.getTaskName())
+                .setDescr(updateTaskCmd.getDescr())
+                .setPluginId(updateTaskCmd.getPluginId())
+                .setCatalogId(updateTaskCmd.getCatalogId());
+
+        task.setModifyTime(System.currentTimeMillis());
+        return repository.update(task);
     }
 }

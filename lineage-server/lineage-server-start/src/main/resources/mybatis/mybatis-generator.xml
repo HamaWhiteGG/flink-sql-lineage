@@ -30,7 +30,7 @@
                 driverClass="${spring.datasource.driver-class-name}"
                 connectionURL="${spring.datasource.url}"
                 userId="${spring.datasource.username}"
-                password="${spring.datasource.password}" />
+                password="${spring.datasource.password}"/>
 
         <javaModelGenerator targetPackage="com.lineage.server.infrastructure.persistence.dos"
                             targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
@@ -42,14 +42,20 @@
             <generatedKey column="task_id" sqlStatement="Mysql" identity="true"/>
         </table>
 
-        <table tableName="bas_plugin" domainObjectName="Plugin"/>
+        <table tableName="bas_plugin" domainObjectName="Plugin">
+            <generatedKey column="plugin_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
         <table tableName="bas_catalog" domainObjectName="Catalog">
+            <generatedKey column="catalog_id" sqlStatement="Mysql" identity="true"/>
             <columnOverride
                     column="catalog_type"
                     javaType="com.hw.lineage.common.enums.CatalogType"
                     typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
         </table>
-        <table tableName="bas_function" domainObjectName="Function"/>
+        <table tableName="bas_function" domainObjectName="Function">
+            <generatedKey column="function_id" sqlStatement="Mysql" identity="true"/>
+        </table>
 
     </context>
 

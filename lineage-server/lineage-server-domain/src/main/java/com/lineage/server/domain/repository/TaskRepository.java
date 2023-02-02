@@ -1,5 +1,6 @@
 package com.lineage.server.domain.repository;
 
+import com.github.pagehelper.PageInfo;
 import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.types.TaskId;
 
@@ -15,5 +16,10 @@ public interface TaskRepository {
 
     Task save(Task task);
 
-    void remove(TaskId taskId);
+    Boolean update(Task task);
+
+    Boolean remove(TaskId taskId);
+
+    PageInfo<Task> query(Integer pageNum, Integer pageSize);
+
 }

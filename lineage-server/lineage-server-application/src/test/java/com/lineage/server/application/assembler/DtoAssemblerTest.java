@@ -36,7 +36,6 @@ public class DtoAssemblerTest {
         assertThat(taskDTO.getTaskId()).isEqualTo(1L);
         assertThat(taskDTO.getTaskName()).isEqualTo("task_0");
         assertThat(taskDTO.getDescr()).isEqualTo("first task");
-        assertThat(taskDTO.getTaskId()).isEqualTo(1L);
         assertThat(taskDTO.getPluginId()).isEqualTo(1L);
         assertThat(taskDTO.getCatalogId()).isEqualTo(1L);
         assertThat(taskDTO.getCreateUserId()).isZero();

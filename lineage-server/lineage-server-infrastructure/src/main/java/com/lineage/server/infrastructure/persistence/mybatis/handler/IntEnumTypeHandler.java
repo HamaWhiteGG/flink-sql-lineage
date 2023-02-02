@@ -23,7 +23,7 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 public abstract class IntEnumTypeHandler<E extends IntEnum> extends BaseTypeHandler<E> {
     private final Map<Integer, E> enumMap;
 
-    public IntEnumTypeHandler(Class<E> type) {
+    protected IntEnumTypeHandler(Class<E> type) {
         E[] enums = type.getEnumConstants();
         checkNotNull(enums, "%s does not represent an enum type.", type.getSimpleName());
         this.enumMap = Stream.of(enums).collect(Collectors.toMap(IntEnum::value, e -> e));

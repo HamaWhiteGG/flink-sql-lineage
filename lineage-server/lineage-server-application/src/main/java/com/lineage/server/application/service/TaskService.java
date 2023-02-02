@@ -1,6 +1,9 @@
 package com.lineage.server.application.service;
 
+import com.github.pagehelper.PageInfo;
 import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
+import com.lineage.server.application.cqe.command.task.UpdateTaskCmd;
+import com.lineage.server.application.cqe.query.task.TaskQuery;
 import com.lineage.server.application.dto.TaskDTO;
 
 /**
@@ -14,4 +17,10 @@ public interface TaskService {
     Long createTask(CreateTaskCmd createTaskCmd);
 
     TaskDTO queryTask(Long taskId);
+
+    PageInfo<TaskDTO> queryTasks(TaskQuery taskQuery);
+
+    Boolean deleteTask(Long taskId);
+
+    Boolean updateTask(UpdateTaskCmd updateTaskCmd);
 }
