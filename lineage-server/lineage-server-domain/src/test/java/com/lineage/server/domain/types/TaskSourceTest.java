@@ -14,60 +14,56 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class TaskSourceTest {
 
     /**
-     * semicolons enclosed by single quotes
+     * Semicolons enclosed by single quotes
      */
     @Test
     public void testFirstSplitSource() {
         String firstSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
         TaskSource firstTaskSource = new TaskSource(firstSource);
         String[] firstResults = firstTaskSource.splitSource();
-        assertThat(firstResults).isNotNull();
-        assertThat(firstResults).hasSize(3);
+        assertThat(firstResults).isNotNull().hasSize(3);
         assertThat(firstResults[0]).isEqualTo("SELECT * FROM t1");
         assertThat(firstResults[1]).isEqualTo("SELECT SPLIT_INDEX(str, ';', 0) FROM t2");
         assertThat(firstResults[2]).isEqualTo("SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3");
     }
 
     /**
-     * semicolons enclosed by double quotes
+     * Semicolons enclosed by double quotes
      */
     @Test
     public void testSecondSplitSource() {
         String secondSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str, \";\", 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
         TaskSource secondTaskSource = new TaskSource(secondSource);
         String[] secondResults = secondTaskSource.splitSource();
-        assertThat(secondResults).isNotNull();
-        assertThat(secondResults).hasSize(3);
+        assertThat(secondResults).isNotNull().hasSize(3);
         assertThat(secondResults[0]).isEqualTo("SELECT * FROM t1");
         assertThat(secondResults[1]).isEqualTo("SELECT SPLIT_INDEX(str, \";\", 0) FROM t2");
         assertThat(secondResults[2]).isEqualTo("SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3");
     }
 
     /**
-     * semicolons enclosed by both single quotes and double quotes
+     * Semicolons enclosed by both single quotes and double quotes
      */
     @Test
     public void testThirdSplitSource() {
         String thirdSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str,':', 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
         TaskSource thirdTaskSource = new TaskSource(thirdSource);
         String[] thirdResults = thirdTaskSource.splitSource();
-        assertThat(thirdResults).isNotNull();
-        assertThat(thirdResults).hasSize(3);
+        assertThat(thirdResults).isNotNull().hasSize(3);
         assertThat(thirdResults[0]).isEqualTo("SELECT * FROM t1");
         assertThat(thirdResults[1]).isEqualTo("SELECT SPLIT_INDEX(str,':', 0) FROM t2");
         assertThat(thirdResults[2]).isEqualTo("SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3");
     }
 
     /**
-     * source has a semicolon at the end
+     * Source has a semicolon at the end
      */
     @Test
     public void testFourthSplitSource() {
         String fourthSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str,':', 0) FROM t2;";
         TaskSource fourthTaskSource = new TaskSource(fourthSource);
         String[] fourthResults = fourthTaskSource.splitSource();
-        assertThat(fourthResults).isNotNull();
-        assertThat(fourthResults).hasSize(2);
+        assertThat(fourthResults).isNotNull().hasSize(2);
         assertThat(fourthResults[0]).isEqualTo("SELECT * FROM t1");
         assertThat(fourthResults[1]).isEqualTo("SELECT SPLIT_INDEX(str,':', 0) FROM t2");
     }
@@ -80,15 +76,14 @@ public class TaskSourceTest {
         String fifthSource = "SELECT * FROM t1;;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;;;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
         TaskSource fifthTaskSource = new TaskSource(fifthSource);
         String[] fifthResults = fifthTaskSource.splitSource();
-        assertThat(fifthResults).isNotNull();
-        assertThat(fifthResults).hasSize(3);
+        assertThat(fifthResults).isNotNull().hasSize(3);
         assertThat(fifthResults[0]).isEqualTo("SELECT * FROM t1");
         assertThat(fifthResults[1]).isEqualTo("SELECT SPLIT_INDEX(str, ';', 0) FROM t2");
         assertThat(fifthResults[2]).isEqualTo("SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3");
     }
 
     /**
-     * remove comments and line break
+     * Remove comments and line break
      */
     @Test
     public void testSixthSplitSource() {
@@ -105,8 +100,7 @@ public class TaskSourceTest {
 
         TaskSource sixthTaskSource = new TaskSource(sixthSource);
         String[] sixthResults = sixthTaskSource.splitSource();
-        assertThat(sixthResults).isNotNull();
-        assertThat(sixthResults).hasSize(3);
+        assertThat(sixthResults).isNotNull().hasSize(3);
         assertThat(sixthResults[0]).isEqualTo("SELECT * FROM t1");
         assertThat(sixthResults[1]).isEqualTo("SELECT SPLIT_INDEX(str, ';', 0) FROM t2");
         assertThat(sixthResults[2]).isEqualTo("SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3");
