@@ -2,7 +2,7 @@ package com.lineage.server.application.assembler;
 
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.TaskId;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

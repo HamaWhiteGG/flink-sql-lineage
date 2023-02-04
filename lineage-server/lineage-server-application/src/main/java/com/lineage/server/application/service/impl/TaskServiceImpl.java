@@ -9,11 +9,16 @@ import com.lineage.server.application.cqe.query.task.TaskQuery;
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
 import com.lineage.server.domain.entity.Task;
+import com.lineage.server.domain.entity.TaskLineage;
+import com.lineage.server.domain.entity.TaskSql;
+import com.lineage.server.domain.facade.LineageFacade;
 import com.lineage.server.domain.repository.TaskRepository;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.TaskId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @description: TaskServiceImpl
@@ -25,6 +30,9 @@ import javax.annotation.Resource;
 public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskRepository repository;
+
+    @Resource
+    private LineageFacade lineageFacade;
 
     @Override
     public Long createTask(CreateTaskCmd createTaskCmd) {
@@ -70,5 +78,25 @@ public class TaskServiceImpl implements TaskService {
 
         task.setModifyTime(System.currentTimeMillis());
         return repository.update(task);
+    }
+
+    @Override
+    public TaskDTO parseTaskLineage(Long taskId) {
+        Task task = repository.find(new TaskId(taskId));
+        if (task.getTaskSource() != null) {
+            String[] sqls=task.getTaskSource().splitSource();
+
+            Stream.of(sqls).forEach(sql->{
+                TaskSql taskSql=new TaskSql();
+                task.addTaskSql(taskSql);
+
+                // TODO add plugin code
+//                List<TaskLineage> taskLineage= lineageFacade.parseFieldLineage(task.getPluginId()+"",sql);
+
+
+            });
+        }
+
+        return null;
     }
 }

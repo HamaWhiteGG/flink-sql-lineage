@@ -23,4 +23,6 @@ public interface TaskService {
     Boolean deleteTask(Long taskId);
 
     Boolean updateTask(UpdateTaskCmd updateTaskCmd);
+
+    TaskDTO parseTaskLineage(Long taskId);
 }

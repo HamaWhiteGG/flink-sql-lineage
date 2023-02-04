@@ -6,11 +6,17 @@ import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.domain.entity.Task;
+import com.lineage.server.domain.entity.TaskLineage;
+import com.lineage.server.domain.entity.TaskSql;
 import com.lineage.server.domain.repository.TaskRepository;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.lineage.server.infrastructure.persistence.dos.TaskDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
+import com.lineage.server.infrastructure.persistence.mapper.TaskLineageMapper;
 import com.lineage.server.infrastructure.persistence.mapper.TaskMapper;
+import com.lineage.server.infrastructure.persistence.mapper.TaskSqlMapper;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +33,12 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Resource
     private TaskMapper taskMapper;
 
+    @Resource
+    private TaskSqlMapper taskSqlMapper;
+
+    @Resource
+    private TaskLineageMapper taskLineageMapper;
+
     @Override
     public Task find(TaskId taskId) {
         TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue())
@@ -37,13 +49,28 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public Task save(Task task) {
         TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
-        if (taskDO.getTaskId() == null) {
-            taskMapper.insertSelective(taskDO);
-        } else {
-            taskMapper.updateByPrimaryKeySelective(taskDO);
+        taskMapper.insertSelective(taskDO);
+        if (task.getTaskSqlList() != null) {
+            task.getTaskSqlList().forEach(this::save);
+        }
+        if (task.getTaskLineageList() != null) {
+            task.getTaskLineageList().forEach(this::save);
         }
         return DataConverter.INSTANCE.toTask(taskDO);
     }
+
+    public TaskSql save(TaskSql taskSql) {
+        TaskSqlDO taskSqlDO = DataConverter.INSTANCE.fromTaskSql(taskSql);
+        taskSqlMapper.insertSelective(taskSqlDO);
+        return DataConverter.INSTANCE.toTaskSql(taskSqlDO);
+    }
+
+    public TaskLineage save(TaskLineage taskLineage) {
+        TaskLineageDO taskLineageDO = DataConverter.INSTANCE.fromTaskLineage(taskLineage);
+        taskLineageMapper.insertSelective(taskLineageDO);
+        return DataConverter.INSTANCE.toTaskLineage(taskLineageDO);
+    }
+
 
     @Override
     public Boolean update(Task task) {
