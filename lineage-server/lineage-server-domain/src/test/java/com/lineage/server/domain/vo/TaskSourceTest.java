@@ -1,4 +1,4 @@
-package com.lineage.server.domain.types;
+package com.lineage.server.domain.vo;
 
 
 import org.junit.Test;

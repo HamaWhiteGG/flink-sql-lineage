@@ -29,6 +29,8 @@ public class ResultMessage {
 
     public static final String DETAIL_SUCCESS = "detail success";
 
+    public static final String PARSE_LINEAGE_SUCCESS = "parse lineage success";
+
     public static final String DETAIL_FAILED = "detail failed";
 
     public static final String NOT_FOUND_EXCEPTION = "not found exception";

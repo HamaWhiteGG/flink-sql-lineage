@@ -1,5 +1,6 @@
-package com.lineage.server.domain.types;
+package com.lineage.server.domain.vo;
 
+import com.lineage.server.domain.repository.basic.Identifier;
 import lombok.Data;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Data;
  * @date: 2023/1/23 10:21 PM
  */
 @Data
-public class TaskId {
+public class TaskId implements Identifier {
 
     private final Long value;
 

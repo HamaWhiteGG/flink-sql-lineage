@@ -6,7 +6,7 @@ CREATE TABLE `bas_task`
     `descr`          varchar(255),
     `plugin_id`      bigint(20)   NOT NULL,
     `catalog_id`     bigint(20)   NOT NULL,
-    `source`         longtext COMMENT 'Base64 encode',
+    `task_source`         longtext COMMENT 'Base64 encode',
     `create_user_id` bigint(20)   NOT NULL DEFAULT '0',
     `modify_user_id` bigint(20)   NOT NULL DEFAULT '0',
     `create_time`    bigint(20)   NOT NULL,
@@ -22,8 +22,8 @@ CREATE TABLE `rel_task_sql`
 (
     `sql_id`       bigint(20) AUTO_INCREMENT,
     `task_id`      bigint(20) NOT NULL,
-    `sql`          text COMMENT 'Base64 encode',
-    `parse_status` tinyint(3) NOT NULL,
+    `sql_code`     text COMMENT 'Base64 encode',
+    `parse_status` tinyint(8) NOT NULL,
     `parse_log`    text,
     `parse_time`   bigint(20) NOT NULL,
     `invalid`      tinyint(1) NOT NULL DEFAULT '0',
@@ -38,7 +38,7 @@ CREATE TABLE `rel_task_lineage`
 (
     `rid`             bigint(20) AUTO_INCREMENT,
     `task_id`         bigint(20)   NOT NULL,
-    `sql_id`          bigint(20)   NOT NULL,
+    `sql_id`          int(10)      NOT NULL,
     `source_catalog`  varchar(128) NOT NULL,
     `source_database` varchar(128) NOT NULL,
     `source_table`    varchar(128) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE `bas_catalog`
 (
     `catalog_id`       bigint(20) AUTO_INCREMENT,
     `catalog_name`     varchar(128) NOT NULL,
-    `catalog_type`     tinyint(3)   NOT NULL DEFAULT '0',
+    `catalog_type`     tinyint(8)   NOT NULL DEFAULT '0',
     `default_database` varchar(128) NOT NULL DEFAULT '',
     `descr`            varchar(255),
     `create_user_id`   bigint(20)   NOT NULL DEFAULT '0',

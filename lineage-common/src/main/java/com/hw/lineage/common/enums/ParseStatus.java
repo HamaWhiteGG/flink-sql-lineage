@@ -1,23 +1,24 @@
 package com.hw.lineage.common.enums;
 
-
 import com.hw.lineage.common.enums.basic.IntEnum;
 
 /**
- * @description: CatalogType
+ * @description: ParseStatus
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/29 9:51 AM
+ * @date: 2023/2/4 8:20 PM
  */
-public enum CatalogType implements IntEnum<CatalogType> {
+public enum ParseStatus implements IntEnum<ParseStatus> {
 
-    MEMORY(0),
-    HIVE(1),
-    JDBC(2);
+    UN_PARSE(0),
+    PARSING(1),
+    SUCCESS(3),
+    FAILED(4);
+
 
     private final int value;
 
-    CatalogType(int value) {
+    ParseStatus(int value) {
         this.value = value;
     }
 

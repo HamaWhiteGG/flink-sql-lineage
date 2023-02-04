@@ -19,6 +19,7 @@ public interface DtoAssembler {
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 
     @Mapping(source = "taskId.value", target = "taskId")
+    @Mapping(source = "taskSource.value", target = "taskSource")
     TaskDTO fromTask(Task task);
 
     List<TaskDTO> fromTaskList(List<Task> task);

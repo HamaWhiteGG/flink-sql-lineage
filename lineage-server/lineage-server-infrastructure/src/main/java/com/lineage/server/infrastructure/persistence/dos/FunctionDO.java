@@ -4,7 +4,8 @@ package com.lineage.server.infrastructure.persistence.dos;
  * @description: This class corresponds to the database table bas_function
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/01/30 21:19:17
+ * @date: 2023/02/04 23:32:34
+ *
  * @mbg.generated
  */
 public class FunctionDO {
@@ -131,16 +132,16 @@ public class FunctionDO {
         }
         FunctionDO other = (FunctionDO) that;
         return (this.getFunctionId() == null ? other.getFunctionId() == null : this.getFunctionId().equals(other.getFunctionId()))
-                && (this.getFunctionName() == null ? other.getFunctionName() == null : this.getFunctionName().equals(other.getFunctionName()))
-                && (this.getFunctionFormat() == null ? other.getFunctionFormat() == null : this.getFunctionFormat().equals(other.getFunctionFormat()))
-                && (this.getFunctionPath() == null ? other.getFunctionPath() == null : this.getFunctionPath().equals(other.getFunctionPath()))
-                && (this.getFunctionClass() == null ? other.getFunctionClass() == null : this.getFunctionClass().equals(other.getFunctionClass()))
-                && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
-                && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
-                && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
-                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-                && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
-                && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
+            && (this.getFunctionName() == null ? other.getFunctionName() == null : this.getFunctionName().equals(other.getFunctionName()))
+            && (this.getFunctionFormat() == null ? other.getFunctionFormat() == null : this.getFunctionFormat().equals(other.getFunctionFormat()))
+            && (this.getFunctionPath() == null ? other.getFunctionPath() == null : this.getFunctionPath().equals(other.getFunctionPath()))
+            && (this.getFunctionClass() == null ? other.getFunctionClass() == null : this.getFunctionClass().equals(other.getFunctionClass()))
+            && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
+            && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
+            && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
+            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.lineage.server.domain.types;
+package com.lineage.server.domain.vo;
 
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.stream.Stream;
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
  * @version: 1.0.0
  * @date: 2023/2/1 10:01 PM
  */
+@Data
 public class TaskSource {
 
     /**

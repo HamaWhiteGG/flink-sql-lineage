@@ -1,7 +1,7 @@
 package com.lineage.server.infrastructure.persistence.converter;
 
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.TaskId;
 import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import org.junit.Test;
 

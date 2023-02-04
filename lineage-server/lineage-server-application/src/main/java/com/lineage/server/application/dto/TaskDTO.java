@@ -22,7 +22,7 @@ public class TaskDTO implements Serializable {
 
     private Long catalogId;
 
-    private String source;
+    private String taskSource;
 
     private Long createUserId;
 
