@@ -20,7 +20,6 @@ public class TaskSource {
     private static final String REGEX = ";(?=([^\\'\\\"]*([\\'\\\"])[^\\'\\\"]*([\\'\\\"]))*+[^\\'\\\"]*$)";
 
     private final String value;
-
     public TaskSource(String value) {
         if (StringUtils.isEmpty(value)) {
             throw new IllegalArgumentException("source cannot be empty");
@@ -35,7 +34,7 @@ public class TaskSource {
      * Note that in order to avoid sonar S5998, + is added after the last *
      */
     public String[] splitSource() {
-        // remove comments and remove comments and line break
+        // remove comments and line break
         String tmp = value.replace("\u00A0", " ")
                 .replaceAll("--[^'\n]*('[^'\n]*')?[^'\n]*+", "")
                 .replaceAll("[\r\n]+", " ")
@@ -48,5 +47,4 @@ public class TaskSource {
                 .map(String::trim)
                 .toArray(String[]::new);
     }
-
 }
