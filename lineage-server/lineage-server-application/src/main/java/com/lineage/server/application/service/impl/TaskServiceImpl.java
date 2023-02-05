@@ -9,15 +9,15 @@ import com.lineage.server.application.cqe.query.task.TaskQuery;
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.domain.entity.TaskLineage;
 import com.lineage.server.domain.entity.TaskSql;
 import com.lineage.server.domain.facade.LineageFacade;
 import com.lineage.server.domain.repository.TaskRepository;
+import com.lineage.server.domain.vo.CatalogId;
+import com.lineage.server.domain.vo.PluginId;
 import com.lineage.server.domain.vo.TaskId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -39,8 +39,8 @@ public class TaskServiceImpl implements TaskService {
         Task task = new Task()
                 .setTaskName(createTaskCmd.getTaskName())
                 .setDescr(createTaskCmd.getDescr())
-                .setPluginId(createTaskCmd.getPluginId())
-                .setCatalogId(createTaskCmd.getCatalogId());
+                .setPluginId(new PluginId(createTaskCmd.getPluginId()))
+                .setCatalogId(new CatalogId(createTaskCmd.getCatalogId()));
 
         task.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -73,8 +73,8 @@ public class TaskServiceImpl implements TaskService {
                 .setTaskId(new TaskId(updateTaskCmd.getTaskId()))
                 .setTaskName(updateTaskCmd.getTaskName())
                 .setDescr(updateTaskCmd.getDescr())
-                .setPluginId(updateTaskCmd.getPluginId())
-                .setCatalogId(updateTaskCmd.getCatalogId());
+                .setPluginId(new PluginId(updateTaskCmd.getPluginId()))
+                .setCatalogId(new CatalogId(updateTaskCmd.getCatalogId()));
 
         task.setModifyTime(System.currentTimeMillis());
         return repository.update(task);
@@ -84,10 +84,10 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO parseTaskLineage(Long taskId) {
         Task task = repository.find(new TaskId(taskId));
         if (task.getTaskSource() != null) {
-            String[] sqls=task.getTaskSource().splitSource();
+            String[] sqls = task.getTaskSource().splitSource();
 
-            Stream.of(sqls).forEach(sql->{
-                TaskSql taskSql=new TaskSql();
+            Stream.of(sqls).forEach(sql -> {
+                TaskSql taskSql = new TaskSql();
                 task.addTaskSql(taskSql);
 
                 // TODO add plugin code

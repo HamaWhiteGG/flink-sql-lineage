@@ -2,6 +2,8 @@ package com.lineage.server.domain.entity;
 
 import com.lineage.server.domain.entity.basic.BasicEntity;
 import com.lineage.server.domain.repository.basic.Entity;
+import com.lineage.server.domain.vo.CatalogId;
+import com.lineage.server.domain.vo.PluginId;
 import com.lineage.server.domain.vo.TaskId;
 import com.lineage.server.domain.vo.TaskSource;
 import lombok.Data;
@@ -24,9 +26,9 @@ public class Task extends BasicEntity implements Entity {
 
     private String descr;
 
-    private Long pluginId;
+    private PluginId pluginId;
 
-    private Long catalogId;
+    private CatalogId catalogId;
 
     private TaskSource taskSource;
 
