@@ -1,4 +1,4 @@
-package com.lineage.server.infrastructure.persistence.dos;
+package com.lineage.server.infrastructure.persistence.dos.task;
 
 /**
  * @description: This class corresponds to the database table bas_task

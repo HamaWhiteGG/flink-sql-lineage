@@ -27,7 +27,7 @@ public interface Repository<T extends Entity, I extends Identifier> {
 
     T find(I id);
 
-    Task save(T aggregate);
+    T save(T aggregate);
 
     Boolean remove(I id);
 

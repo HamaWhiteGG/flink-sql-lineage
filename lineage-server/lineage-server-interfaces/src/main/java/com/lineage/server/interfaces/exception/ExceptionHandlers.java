@@ -1,6 +1,5 @@
 package com.lineage.server.interfaces.exception;
 
-import com.hw.lineage.common.exception.LineageException;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultCode;
 import com.lineage.server.interfaces.result.ResultMessage;

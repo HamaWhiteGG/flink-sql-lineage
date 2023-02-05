@@ -1,4 +1,4 @@
-package com.lineage.server.infrastructure.persistence.dos;
+package com.lineage.server.infrastructure.persistence.dos.task;
 
 import com.hw.lineage.common.enums.ParseStatus;
 
