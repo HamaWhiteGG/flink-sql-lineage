@@ -1,9 +1,8 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
+import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-
-import java.sql.JDBCType;
 
 public final class TaskDynamicSqlSupport {
     public static final Task task = new Task();

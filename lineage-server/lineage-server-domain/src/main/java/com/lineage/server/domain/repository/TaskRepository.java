@@ -13,7 +13,8 @@ import com.lineage.server.domain.vo.TaskId;
  */
 public interface TaskRepository extends Repository<Task, TaskId> {
 
+    PageInfo<Task> findAll(Integer pageNum, Integer pageSize);
 
-    PageInfo<Task> query(Integer pageNum, Integer pageSize);
+     void removeLineage(TaskId taskId);
 
 }

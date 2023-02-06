@@ -1,10 +1,9 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
 import com.hw.lineage.common.enums.ParseStatus;
+import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-
-import java.sql.JDBCType;
 
 public final class TaskSqlDynamicSqlSupport {
     public static final TaskSql taskSql = new TaskSql();

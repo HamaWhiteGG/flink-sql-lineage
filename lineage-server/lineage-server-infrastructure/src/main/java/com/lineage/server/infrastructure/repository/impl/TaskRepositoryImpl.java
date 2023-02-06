@@ -11,16 +11,16 @@ import com.lineage.server.domain.entity.TaskSql;
 import com.lineage.server.domain.repository.TaskRepository;
 import com.lineage.server.domain.vo.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
-import com.lineage.server.infrastructure.persistence.dos.task.TaskDO;
-import com.lineage.server.infrastructure.persistence.dos.task.TaskLineageDO;
-import com.lineage.server.infrastructure.persistence.dos.task.TaskSqlDO;
-import com.lineage.server.infrastructure.persistence.mapper.TaskLineageMapper;
-import com.lineage.server.infrastructure.persistence.mapper.TaskMapper;
-import com.lineage.server.infrastructure.persistence.mapper.TaskSqlMapper;
+import com.lineage.server.infrastructure.persistence.dos.TaskDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
+import com.lineage.server.infrastructure.persistence.mapper.*;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @description: TaskRepositoryImpl
@@ -50,12 +50,6 @@ public class TaskRepositoryImpl implements TaskRepository {
     public Task save(Task task) {
         TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
         taskMapper.insertSelective(taskDO);
-        if (task.getTaskSqlList() != null) {
-            task.getTaskSqlList().forEach(this::save);
-        }
-        if (task.getTaskLineageList() != null) {
-            task.getTaskLineageList().forEach(this::save);
-        }
         return DataConverter.INSTANCE.toTask(taskDO);
     }
 
@@ -75,6 +69,8 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public Boolean update(Task task) {
         TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
+        task.getTaskSqlList().forEach(this::save);
+        task.getTaskLineageList().forEach(this::save);
         return taskMapper.updateByPrimaryKeySelective(taskDO) > 0;
     }
 
@@ -84,7 +80,17 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public PageInfo<Task> query(Integer pageNum, Integer pageSize) {
+    public void removeLineage(TaskId taskId) {
+        taskSqlMapper.delete(completer ->
+                completer.where(TaskSqlDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
+        );
+        taskLineageMapper.delete(completer ->
+                completer.where(TaskLineageDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
+        );
+    }
+
+    @Override
+    public PageInfo<Task> findAll(Integer pageNum, Integer pageSize) {
         try (Page<TaskDO> page = PageMethod.startPage(pageNum, pageSize)) {
             PageInfo<TaskDO> pageInfo = page.doSelectPageInfo(() -> taskMapper.select(SelectDSLCompleter.allRows()));
             return PageUtils.convertPage(pageInfo, DataConverter.INSTANCE::toTask);

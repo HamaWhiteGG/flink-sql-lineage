@@ -9,6 +9,7 @@ import com.lineage.server.domain.vo.TaskSource;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,10 @@ public class Task extends BasicEntity implements Entity {
 
     private List<TaskLineage> taskLineageList;
 
+    public Task() {
+        this.taskSqlList = new ArrayList<>();
+        this.taskLineageList = new ArrayList<>();
+    }
 
     public boolean addTaskSql(TaskSql taskSql) {
         return this.taskSqlList.add(taskSql);

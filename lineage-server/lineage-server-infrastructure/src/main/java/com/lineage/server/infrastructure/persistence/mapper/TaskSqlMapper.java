@@ -1,8 +1,19 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
-import com.lineage.server.infrastructure.persistence.dos.task.TaskSqlDO;
+import static com.lineage.server.infrastructure.persistence.mapper.TaskSqlDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
+import com.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
 import com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler;
-import org.apache.ibatis.annotations.*;
+import java.util.List;
+import java.util.Optional;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -18,12 +29,6 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.lineage.server.infrastructure.persistence.mapper.TaskSqlDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 @Mapper
 public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
