@@ -1,11 +1,13 @@
 package com.lineage.server.infrastructure.facede.impl;
 
-import com.hw.lineage.common.enums.CatalogType;
-import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.client.LineageClient;
+import com.hw.lineage.common.enums.ParseStatus;
+import com.lineage.server.domain.entity.Catalog;
+import com.lineage.server.domain.entity.Task;
+import com.lineage.server.domain.entity.TaskLineage;
+import com.lineage.server.domain.entity.TaskSql;
 import com.lineage.server.domain.facade.LineageFacade;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @description: LineageFacadeImpl
@@ -15,18 +17,56 @@ import java.util.List;
  */
 @Service
 public class LineageFacadeImpl implements LineageFacade {
-    @Override
-    public void setCatalog(String pluginId, CatalogType catalogType, String catalogName) {
 
+    private LineageClient lineageClient;
+
+    public LineageFacadeImpl() {
+//        this.lineageClient = new LineageClient("target/plugins");
     }
 
     @Override
-    public List<LineageResult> parseFieldLineage(String pluginId, String singleSql) {
-        return null;
+    public void parseLineage(Task task, String pluginName, Catalog catalog) {
+        lineageClient.setCatalog(pluginName
+                , catalog.getCatalogType()
+                , catalog.getCatalogName()
+                , catalog.getDefaultDatabase()
+        );
+
+        for (TaskSql taskSql : task.getTaskSqlList()) {
+            switch (taskSql.getSqlType()) {
+                case CREATE:
+                    lineageClient.execute(pluginName, taskSql.getSqlCode());
+                    break;
+                case INSERT:
+                    parseFieldLineage(pluginName, task, taskSql);
+                    break;
+                default:
+            }
+        }
     }
 
-    @Override
-    public void execute(String pluginId, String singleSql) {
 
+    private void parseFieldLineage(String pluginName, Task task, TaskSql taskSql) {
+        taskSql.setParseStatus(ParseStatus.PARSING);
+        lineageClient.parseFieldLineage(pluginName, taskSql.getSqlCode()).forEach(lineageResult -> {
+            TaskLineage taskLineage = new TaskLineage()
+                    .setTaskId(task.getTaskId())
+                    .setSqlId(taskSql.getSqlId())
+                    .setSourceCatalog(lineageResult.getSourceCatalog())
+                    .setSourceDatabase(lineageResult.getSourceDatabase())
+                    .setSourceTable(lineageResult.getSourceTable())
+                    .setSourceColumn(lineageResult.getSourceColumn())
+                    .setTargetCatalog(lineageResult.getTargetCatalog())
+                    .setTargetDatabase(lineageResult.getTargetDatabase())
+                    .setTargetTable(lineageResult.getTargetTable())
+                    .setTargetColumn(lineageResult.getTargetColumn())
+                    .setTransform(lineageResult.getTransform())
+                    .setInvalid(false);
+
+            taskSql.setParseTime(System.currentTimeMillis());
+            taskSql.setParseStatus(ParseStatus.SUCCESS);
+            task.addTaskLineage(taskLineage);
+        });
     }
+
 }

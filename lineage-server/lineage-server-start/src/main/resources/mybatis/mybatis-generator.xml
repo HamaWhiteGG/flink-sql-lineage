@@ -60,6 +60,10 @@
         <table tableName="rel_task_sql" domainObjectName="TaskSql">
             <generatedKey column="sql_id" sqlStatement="Mysql" identity="true"/>
             <columnOverride
+                    column="sql_type"
+                    javaType="com.hw.lineage.common.enums.SqlType"
+                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler"/>
+            <columnOverride
                     column="parse_status"
                     javaType="com.hw.lineage.common.enums.ParseStatus"
                     typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler"/>

@@ -2,9 +2,6 @@ package com.lineage.server.infrastructure.persistence.converter;
 
 import com.lineage.server.domain.entity.*;
 import com.lineage.server.infrastructure.persistence.dos.*;
-import com.lineage.server.infrastructure.persistence.dos.task.TaskDO;
-import com.lineage.server.infrastructure.persistence.dos.task.TaskLineageDO;
-import com.lineage.server.infrastructure.persistence.dos.task.TaskSqlDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

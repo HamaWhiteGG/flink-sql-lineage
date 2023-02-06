@@ -1,9 +1,12 @@
 package com.lineage.server.domain.entity;
 
 import com.hw.lineage.common.enums.ParseStatus;
+import com.hw.lineage.common.enums.SqlType;
 import com.lineage.server.domain.vo.SqlId;
 import com.lineage.server.domain.vo.TaskId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -30,6 +33,8 @@ public class TaskSql {
      * Base64 encode
      */
     private String sqlCode;
+
+    private SqlType sqlType;
 
     private String parseLog;
 }

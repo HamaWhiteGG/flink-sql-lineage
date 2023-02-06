@@ -1,10 +1,9 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
 import com.hw.lineage.common.enums.CatalogType;
+import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-
-import java.sql.JDBCType;
 
 public final class CatalogDynamicSqlSupport {
     public static final Catalog catalog = new Catalog();

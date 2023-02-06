@@ -1,9 +1,8 @@
 package com.lineage.server.domain.facade;
 
-import com.hw.lineage.common.enums.CatalogType;
-import com.hw.lineage.common.result.LineageResult;
-
-import java.util.List;
+import com.lineage.server.domain.entity.Catalog;
+import com.lineage.server.domain.entity.Plugin;
+import com.lineage.server.domain.entity.Task;
 
 /**
  * @description: LineageService
@@ -13,9 +12,6 @@ import java.util.List;
  */
 public interface LineageFacade {
 
-    void setCatalog(String pluginId, CatalogType catalogType, String catalogName);
+    void parseLineage(Task task, String pluginName, Catalog catalog);
 
-    List<LineageResult> parseFieldLineage(String pluginId, String singleSql);
-
-    void execute(String pluginId, String singleSql);
 }

@@ -4,7 +4,7 @@ package com.lineage.server.infrastructure.persistence.dos;
  * @description: This class corresponds to the database table bas_function
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/02/04 23:32:34
+ * @date: 2023/02/06 20:52:04
  *
  * @mbg.generated
  */
