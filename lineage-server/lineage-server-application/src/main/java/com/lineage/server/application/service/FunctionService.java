@@ -16,7 +16,7 @@ public interface FunctionService {
 
     FunctionDTO queryFunction(Long functionId);
 
-    Boolean deleteFunction(Long functionId);
+    void deleteFunction(Long functionId);
 
-    Boolean updateFunction(UpdateFunctionCmd updateFunctionCmd);
+    void updateFunction(UpdateFunctionCmd updateFunctionCmd);
 }

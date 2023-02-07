@@ -62,7 +62,7 @@
             <columnOverride
                     column="sql_type"
                     javaType="com.hw.lineage.common.enums.SqlType"
-                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler"/>
+                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler"/>
             <columnOverride
                     column="parse_status"
                     javaType="com.hw.lineage.common.enums.ParseStatus"

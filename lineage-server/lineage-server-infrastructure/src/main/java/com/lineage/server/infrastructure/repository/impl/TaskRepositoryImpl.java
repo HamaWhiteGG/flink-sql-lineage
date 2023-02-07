@@ -20,6 +20,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
@@ -42,52 +45,65 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public Task find(TaskId taskId) {
         TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("taskId [%s] is not existed", taskId.getValue())));
+                .orElseThrow(() ->
+                        new LineageException(String.format("taskId [%s] is not existed", taskId.getValue()))
+                );
         return DataConverter.INSTANCE.toTask(taskDO);
     }
 
     @Override
     public Task save(Task task) {
         TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
-        taskMapper.insertSelective(taskDO);
+        if (taskDO.getTaskId() == null) {
+            taskMapper.insertSelective(taskDO);
+        } else {
+            taskMapper.updateByPrimaryKeySelective(taskDO);
+        }
         return DataConverter.INSTANCE.toTask(taskDO);
     }
 
-    public TaskSql save(TaskSql taskSql) {
-        TaskSqlDO taskSqlDO = DataConverter.INSTANCE.fromTaskSql(taskSql);
-        taskSqlMapper.insertSelective(taskSqlDO);
-        return DataConverter.INSTANCE.toTaskSql(taskSqlDO);
-    }
-
-    public TaskLineage save(TaskLineage taskLineage) {
-        TaskLineageDO taskLineageDO = DataConverter.INSTANCE.fromTaskLineage(taskLineage);
-        taskLineageMapper.insertSelective(taskLineageDO);
-        return DataConverter.INSTANCE.toTaskLineage(taskLineageDO);
+    @Override
+    public void saveTaskSql(Task task) {
+        List<TaskSql> taskSqlList = task.getTaskSqlList().stream().map(taskSql -> {
+                    TaskSqlDO taskSqlDO = DataConverter.INSTANCE.fromTaskSql(taskSql);
+                    taskSqlMapper.insertSelective(taskSqlDO);
+                    return DataConverter.INSTANCE.toTaskSql(taskSqlDO);
+                }
+        ).collect(Collectors.toList());
+        task.setTaskSqlList(taskSqlList);
     }
 
 
     @Override
-    public Boolean update(Task task) {
-        TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
-        task.getTaskSqlList().forEach(this::save);
-        task.getTaskLineageList().forEach(this::save);
-        return taskMapper.updateByPrimaryKeySelective(taskDO) > 0;
+    public void saveTaskLineage(Task task) {
+        List<TaskLineage> taskLineageList = task.getTaskLineageList().stream().map(taskLineage -> {
+                    TaskLineageDO taskLineageDO = DataConverter.INSTANCE.fromTaskLineage(taskLineage);
+                    taskLineageMapper.insertSelective(taskLineageDO);
+                    return DataConverter.INSTANCE.toTaskLineage(taskLineageDO);
+                }
+        ).collect(Collectors.toList());
+        task.setTaskLineageList(taskLineageList);
     }
 
     @Override
-    public Boolean remove(TaskId taskId) {
-        return taskMapper.deleteByPrimaryKey(taskId.getValue()) > 0;
-    }
-
-    @Override
-    public void removeLineage(TaskId taskId) {
+    public void removeTaskSql(TaskId taskId) {
         taskSqlMapper.delete(completer ->
                 completer.where(TaskSqlDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
         );
+    }
+
+    @Override
+    public void removeTaskLineage(TaskId taskId) {
         taskLineageMapper.delete(completer ->
                 completer.where(TaskLineageDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
         );
     }
+
+    @Override
+    public void remove(TaskId taskId) {
+        taskMapper.deleteByPrimaryKey(taskId.getValue());
+    }
+
 
     @Override
     public PageInfo<Task> findAll(Integer pageNum, Integer pageSize) {

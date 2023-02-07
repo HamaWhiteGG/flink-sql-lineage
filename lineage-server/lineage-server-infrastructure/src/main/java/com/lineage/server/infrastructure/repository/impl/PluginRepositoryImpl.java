@@ -2,14 +2,10 @@ package com.lineage.server.infrastructure.repository.impl;
 
 import com.hw.lineage.common.exception.LineageException;
 import com.lineage.server.domain.entity.Plugin;
-import com.lineage.server.domain.entity.Plugin;
-import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.repository.PluginRepository;
-import com.lineage.server.domain.vo.PluginId;
 import com.lineage.server.domain.vo.PluginId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.lineage.server.infrastructure.persistence.dos.PluginDO;
-import com.lineage.server.infrastructure.persistence.mapper.CatalogMapper;
 import com.lineage.server.infrastructure.persistence.mapper.PluginMapper;
 import org.springframework.stereotype.Repository;
 
@@ -37,18 +33,16 @@ public class PluginRepositoryImpl implements PluginRepository {
     @Override
     public Plugin save(Plugin plugin) {
         PluginDO pluginDO = DataConverter.INSTANCE.fromPlugin(plugin);
-        pluginMapper.insertSelective(pluginDO);
+        if (pluginDO.getPluginId() == null) {
+            pluginMapper.insertSelective(pluginDO);
+        } else {
+            pluginMapper.updateByPrimaryKeySelective(pluginDO);
+        }
         return DataConverter.INSTANCE.toPlugin(pluginDO);
     }
 
     @Override
-    public Boolean remove(PluginId pluginId) {
-        return pluginMapper.deleteByPrimaryKey(pluginId.getValue()) > 0;
-    }
-
-    @Override
-    public Boolean update(Plugin plugin) {
-        PluginDO pluginDO = DataConverter.INSTANCE.fromPlugin(plugin);
-        return pluginMapper.updateByPrimaryKeySelective(pluginDO) > 0;
+    public void remove(PluginId pluginId) {
+        pluginMapper.deleteByPrimaryKey(pluginId.getValue());
     }
 }

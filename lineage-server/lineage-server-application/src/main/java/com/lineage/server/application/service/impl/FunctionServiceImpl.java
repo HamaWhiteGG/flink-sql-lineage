@@ -5,11 +5,8 @@ import com.lineage.server.application.cqe.command.function.CreateFunctionCmd;
 import com.lineage.server.application.cqe.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
 import com.lineage.server.application.service.FunctionService;
-import com.lineage.server.domain.entity.Catalog;
 import com.lineage.server.domain.entity.Function;
-import com.lineage.server.domain.repository.CatalogRepository;
 import com.lineage.server.domain.repository.FunctionRepository;
-import com.lineage.server.domain.vo.CatalogId;
 import com.lineage.server.domain.vo.FunctionId;
 import org.springframework.stereotype.Service;
 
@@ -52,12 +49,12 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    public Boolean deleteFunction(Long functionId) {
-        return repository.remove(new FunctionId(functionId));
+    public void deleteFunction(Long functionId) {
+         repository.remove(new FunctionId(functionId));
     }
 
     @Override
-    public Boolean updateFunction(UpdateFunctionCmd updateFunctionCmd) {
+    public void updateFunction(UpdateFunctionCmd updateFunctionCmd) {
         Function function = new Function()
                 .setFunctionId(new FunctionId(updateFunctionCmd.getFunctionId()))
                 .setFunctionName(updateFunctionCmd.getFunctionName())
@@ -67,6 +64,6 @@ public class FunctionServiceImpl implements FunctionService {
                 .setDescr(updateFunctionCmd.getDescr());
 
         function.setModifyTime(System.currentTimeMillis());
-        return repository.update(function);
+         repository.save(function);
     }
 }

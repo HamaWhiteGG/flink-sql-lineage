@@ -2,6 +2,7 @@ package com.lineage.server.domain.service.impl;
 
 import com.hw.lineage.common.enums.ParseStatus;
 import com.hw.lineage.common.enums.SqlType;
+import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.common.util.EnumUtils;
 import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.entity.TaskSql;
@@ -12,8 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.hw.lineage.common.enums.SqlType.CREATE;
-import static com.hw.lineage.common.enums.SqlType.INSERT;
+import static com.hw.lineage.common.enums.SqlType.*;
 import static com.hw.lineage.common.util.Preconditions.checkArgument;
 
 /**
@@ -25,7 +25,7 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
 @Service
 public class TaskDomainServiceImpl implements TaskDomainService {
 
-    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, INSERT);
+    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, INSERT,DROP);
 
     @Override
     public void buildTaskSql(Task task) {
@@ -43,7 +43,7 @@ public class TaskDomainServiceImpl implements TaskDomainService {
                     .setTaskId(task.getTaskId())
                     .setParseStatus(ParseStatus.UN_PARSE)
                     .setParseTime(System.currentTimeMillis())
-                    .setSqlCode(singleSql)
+                    .setSqlCode(Base64Utils.encode(singleSql.getBytes()))
                     .setSqlType(sqlType)
                     .setInvalid(false);
             task.addTaskSql(taskSql);

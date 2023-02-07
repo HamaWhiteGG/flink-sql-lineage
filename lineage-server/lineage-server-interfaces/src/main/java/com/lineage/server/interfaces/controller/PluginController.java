@@ -28,7 +28,7 @@ public class PluginController {
         PluginDTO pluginDTO = pluginService.queryPlugin(pluginId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, pluginDTO);
     }
-    
+
     @PostMapping("")
     public Result<Long> createPlugin(@RequestBody final CreatePluginCmd createPluginCmd) {
         Long pluginId = pluginService.createPlugin(createPluginCmd);
@@ -37,20 +37,16 @@ public class PluginController {
 
     @PutMapping("/{pluginId}")
     public Result<Boolean> updatePlugin(@PathVariable("pluginId") final Long pluginId,
-                                      @RequestBody final UpdatePluginCmd updatePluginCmd) {
+                                        @RequestBody final UpdatePluginCmd updatePluginCmd) {
         updatePluginCmd.setPluginId(pluginId);
-        Boolean result = pluginService.updatePlugin(updatePluginCmd);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.UPDATE_SUCCESS)
-                : Result.error(ResultMessage.UPDATE_FAILED);
+        pluginService.updatePlugin(updatePluginCmd);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{pluginId}")
     public Result<Boolean> deletePlugin(@PathVariable("pluginId") final Long pluginId) {
-        Boolean result = pluginService.deletePlugin(pluginId);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.DELETE_SUCCESS)
-                : Result.success(ResultMessage.DELETE_FAILED);
+        pluginService.deletePlugin(pluginId);
+        return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
 }

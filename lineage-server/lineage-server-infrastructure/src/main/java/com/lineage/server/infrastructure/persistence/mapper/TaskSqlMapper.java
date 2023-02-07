@@ -1,19 +1,9 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
-import static com.lineage.server.infrastructure.persistence.mapper.TaskSqlDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-
 import com.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
 import com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler;
-import java.util.List;
-import java.util.Optional;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.SelectProvider;
+import com.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -30,9 +20,15 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
+import java.util.List;
+import java.util.Optional;
+
+import static com.lineage.server.infrastructure.persistence.mapper.TaskSqlDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
 @Mapper
 public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(sqlId, taskId, parseStatus, parseTime, invalid, sqlCode, parseLog);
+    BasicColumn[] selectList = BasicColumn.columnList(sqlId, taskId, sqlType, parseStatus, parseTime, invalid, sqlCode, parseLog);
 
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.sqlId", before=false, resultType=Long.class)
@@ -42,6 +38,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
     @Results(id="TaskSqlDOResult", value = {
         @Result(column="sql_id", property="sqlId", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.BIGINT),
+        @Result(column="sql_type", property="sqlType", typeHandler=SqlTypeHandler.class, jdbcType=JdbcType.TINYINT),
         @Result(column="parse_status", property="parseStatus", typeHandler=ParseStatusTypeHandler.class, jdbcType=JdbcType.TINYINT),
         @Result(column="parse_time", property="parseTime", jdbcType=JdbcType.BIGINT),
         @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT),
@@ -71,6 +68,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
     default int insert(TaskSqlDO row) {
         return MyBatis3Utils.insert(this::insert, row, taskSql, c ->
             c.map(taskId).toProperty("taskId")
+            .map(sqlType).toProperty("sqlType")
             .map(parseStatus).toProperty("parseStatus")
             .map(parseTime).toProperty("parseTime")
             .map(invalid).toProperty("invalid")
@@ -82,6 +80,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
     default int insertSelective(TaskSqlDO row) {
         return MyBatis3Utils.insert(this::insert, row, taskSql, c ->
             c.map(taskId).toPropertyWhenPresent("taskId", row::getTaskId)
+            .map(sqlType).toPropertyWhenPresent("sqlType", row::getSqlType)
             .map(parseStatus).toPropertyWhenPresent("parseStatus", row::getParseStatus)
             .map(parseTime).toPropertyWhenPresent("parseTime", row::getParseTime)
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
@@ -114,6 +113,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
 
     static UpdateDSL<UpdateModel> updateAllColumns(TaskSqlDO row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(taskId).equalTo(row::getTaskId)
+                .set(sqlType).equalTo(row::getSqlType)
                 .set(parseStatus).equalTo(row::getParseStatus)
                 .set(parseTime).equalTo(row::getParseTime)
                 .set(invalid).equalTo(row::getInvalid)
@@ -123,6 +123,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(TaskSqlDO row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(taskId).equalToWhenPresent(row::getTaskId)
+                .set(sqlType).equalToWhenPresent(row::getSqlType)
                 .set(parseStatus).equalToWhenPresent(row::getParseStatus)
                 .set(parseTime).equalToWhenPresent(row::getParseTime)
                 .set(invalid).equalToWhenPresent(row::getInvalid)
@@ -133,6 +134,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
     default int updateByPrimaryKey(TaskSqlDO row) {
         return update(c ->
             c.set(taskId).equalTo(row::getTaskId)
+            .set(sqlType).equalTo(row::getSqlType)
             .set(parseStatus).equalTo(row::getParseStatus)
             .set(parseTime).equalTo(row::getParseTime)
             .set(invalid).equalTo(row::getInvalid)
@@ -145,6 +147,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
     default int updateByPrimaryKeySelective(TaskSqlDO row) {
         return update(c ->
             c.set(taskId).equalToWhenPresent(row::getTaskId)
+            .set(sqlType).equalToWhenPresent(row::getSqlType)
             .set(parseStatus).equalToWhenPresent(row::getParseStatus)
             .set(parseTime).equalToWhenPresent(row::getParseTime)
             .set(invalid).equalToWhenPresent(row::getInvalid)

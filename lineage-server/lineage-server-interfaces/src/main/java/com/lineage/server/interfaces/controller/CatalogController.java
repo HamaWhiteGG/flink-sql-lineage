@@ -38,20 +38,15 @@ public class CatalogController {
 
     @PutMapping("/{catalogId}")
     public Result<Boolean> updateCatalog(@PathVariable("catalogId") final Long catalogId,
-                                      @RequestBody final UpdateCatalogCmd updateCatalogCmd) {
+                                         @RequestBody final UpdateCatalogCmd updateCatalogCmd) {
         updateCatalogCmd.setCatalogId(catalogId);
-        Boolean result = catalogService.updateCatalog(updateCatalogCmd);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.UPDATE_SUCCESS)
-                : Result.error(ResultMessage.UPDATE_FAILED);
+        catalogService.updateCatalog(updateCatalogCmd);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{catalogId}")
     public Result<Boolean> deleteCatalog(@PathVariable("catalogId") final Long catalogId) {
-        Boolean result = catalogService.deleteCatalog(catalogId);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.DELETE_SUCCESS)
-                : Result.success(ResultMessage.DELETE_FAILED);
+        catalogService.deleteCatalog(catalogId);
+        return Result.success(ResultMessage.DELETE_SUCCESS);
     }
-
 }

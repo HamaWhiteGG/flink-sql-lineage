@@ -47,18 +47,14 @@ public class TaskController {
     public Result<Boolean> updateTask(@PathVariable("taskId") final Long taskId,
                                       @RequestBody final UpdateTaskCmd updateTaskCmd) {
         updateTaskCmd.setTaskId(taskId);
-        Boolean result = taskService.updateTask(updateTaskCmd);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.UPDATE_SUCCESS)
-                : Result.error(ResultMessage.UPDATE_FAILED);
+        taskService.updateTask(updateTaskCmd);
+        return  Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{taskId}")
     public Result<Boolean> deleteTask(@PathVariable("taskId") final Long taskId) {
-        Boolean result = taskService.deleteTask(taskId);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.DELETE_SUCCESS)
-                : Result.success(ResultMessage.DELETE_FAILED);
+        taskService.deleteTask(taskId);
+        return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
     @PostMapping("/{taskId}/lineage")
