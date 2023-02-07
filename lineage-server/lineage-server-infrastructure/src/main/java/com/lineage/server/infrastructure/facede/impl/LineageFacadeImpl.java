@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
@@ -31,14 +32,20 @@ public class LineageFacadeImpl implements LineageFacade {
 
     private LineageClient lineageClient;
 
+    @PostConstruct
+    public void initLineageClient() {
+        LOG.info("start loading plugins, directory: {}", lineageConfig.getPluginDir());
+        this.lineageClient = new LineageClient(lineageConfig.getPluginDir());
+        LOG.info("finished loading plugins, directory: {}", lineageConfig.getPluginDir());
+    }
 
     @Override
     public void parseLineage(Task task, String pluginName, Catalog catalog) {
-        if (lineageClient == null) {
-            LOG.info("start loading plugins, directory: {}", lineageConfig.getPluginDir());
-            this.lineageClient = new LineageClient(lineageConfig.getPluginDir());
-            LOG.info("finished loading plugins, directory: {}", lineageConfig.getPluginDir());
-        }
+//        if (lineageClient == null) {
+//            LOG.info("start loading plugins, directory: {}", lineageConfig.getPluginDir());
+//            this.lineageClient = new LineageClient(lineageConfig.getPluginDir());
+//            LOG.info("finished loading plugins, directory: {}", lineageConfig.getPluginDir());
+//        }
 
         lineageClient.setCatalog(pluginName
                 , catalog.getCatalogType()
