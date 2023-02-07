@@ -15,6 +15,11 @@ public interface TaskRepository extends Repository<Task, TaskId> {
 
     PageInfo<Task> findAll(Integer pageNum, Integer pageSize);
 
-     void removeLineage(TaskId taskId);
+    void saveTaskSql(Task task);
 
+    void saveTaskLineage(Task task);
+
+    void removeTaskSql(TaskId taskId);
+
+    void removeTaskLineage(TaskId taskId);
 }

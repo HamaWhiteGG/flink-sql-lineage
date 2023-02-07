@@ -45,18 +45,18 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public Boolean deletePlugin(Long pluginId) {
-        return repository.remove(new PluginId(pluginId));
+    public void deletePlugin(Long pluginId) {
+        repository.remove(new PluginId(pluginId));
     }
 
     @Override
-    public Boolean updatePlugin(UpdatePluginCmd updatePluginCmd) {
+    public void updatePlugin(UpdatePluginCmd updatePluginCmd) {
         Plugin plugin = new Plugin()
                 .setPluginId(new PluginId(updatePluginCmd.getPluginId()))
                 .setPluginName(updatePluginCmd.getPluginName())
                 .setDescr(updatePluginCmd.getDescr());
 
         plugin.setModifyTime(System.currentTimeMillis());
-        return repository.update(plugin);
+        repository.save(plugin);
     }
 }

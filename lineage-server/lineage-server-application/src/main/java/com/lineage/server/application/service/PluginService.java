@@ -16,7 +16,7 @@ public interface PluginService {
 
     PluginDTO queryPlugin(Long pluginId);
 
-    Boolean deletePlugin(Long pluginId);
+    void deletePlugin(Long pluginId);
 
-    Boolean updatePlugin(UpdatePluginCmd updatePluginCmd);
+    void updatePlugin(UpdatePluginCmd updatePluginCmd);
 }

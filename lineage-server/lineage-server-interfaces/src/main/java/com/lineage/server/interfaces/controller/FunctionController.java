@@ -38,20 +38,16 @@ public class FunctionController {
 
     @PutMapping("/{functionId}")
     public Result<Boolean> updateFunction(@PathVariable("functionId") final Long functionId,
-                                      @RequestBody final UpdateFunctionCmd updateFunctionCmd) {
+                                          @RequestBody final UpdateFunctionCmd updateFunctionCmd) {
         updateFunctionCmd.setFunctionId(functionId);
-        Boolean result = functionService.updateFunction(updateFunctionCmd);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.UPDATE_SUCCESS)
-                : Result.error(ResultMessage.UPDATE_FAILED);
+        functionService.updateFunction(updateFunctionCmd);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{functionId}")
     public Result<Boolean> deleteFunction(@PathVariable("functionId") final Long functionId) {
-        Boolean result = functionService.deleteFunction(functionId);
-        return Boolean.TRUE.equals(result)
-                ? Result.success(ResultMessage.DELETE_SUCCESS)
-                : Result.success(ResultMessage.DELETE_FAILED);
+        functionService.deleteFunction(functionId);
+        return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
 }

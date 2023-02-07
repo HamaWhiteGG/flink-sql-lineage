@@ -27,25 +27,25 @@ public class FunctionRepositoryImpl implements FunctionRepository {
     @Override
     public Function find(FunctionId functionId) {
         FunctionDO functionDO = functionMapper.selectByPrimaryKey(functionId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("functionId [%s] is not existed", functionId.getValue())));
+                .orElseThrow(() ->
+                        new LineageException(String.format("functionId [%s] is not existed", functionId.getValue()))
+                );
         return DataConverter.INSTANCE.toFunction(functionDO);
     }
 
     @Override
     public Function save(Function function) {
         FunctionDO functionDO = DataConverter.INSTANCE.fromFunction(function);
-        functionMapper.insertSelective(functionDO);
+        if (functionDO.getFunctionId() == null) {
+            functionMapper.insertSelective(functionDO);
+        } else {
+            functionMapper.updateByPrimaryKeySelective(functionDO);
+        }
         return DataConverter.INSTANCE.toFunction(functionDO);
     }
 
     @Override
-    public Boolean remove(FunctionId functionId) {
-        return functionMapper.deleteByPrimaryKey(functionId.getValue()) > 0;
-    }
-
-    @Override
-    public Boolean update(Function function) {
-        FunctionDO functionDO = DataConverter.INSTANCE.fromFunction(function);
-        return functionMapper.updateByPrimaryKeySelective(functionDO) > 0;
+    public void remove(FunctionId functionId) {
+        functionMapper.deleteByPrimaryKey(functionId.getValue());
     }
 }

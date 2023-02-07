@@ -18,7 +18,7 @@ public class EnumUtils {
 
     public static SqlType getSqlTypeByValue(String value) {
         for (SqlType sqlType : SqlType.values()) {
-            if (value.equals(sqlType.value())) {
+            if (sqlType.value().equalsIgnoreCase(value)) {
                 return sqlType;
             }
         }

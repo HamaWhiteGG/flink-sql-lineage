@@ -1,7 +1,5 @@
 package com.lineage.server.domain.repository.basic;
 
-import com.lineage.server.domain.entity.Task;
-
 /**
  * @description: Basic Repository interface
  * @author: HamaWhite
@@ -13,7 +11,7 @@ public interface Repository<T extends Entity, I extends Identifier> {
     /**
      * Attach an Aggregate to a Repository to make it traceable
      */
-    default void attach(T aggregate) {
+    default void attach(T entity) {
         // TODO
     }
 
@@ -21,15 +19,14 @@ public interface Repository<T extends Entity, I extends Identifier> {
     /**
      * Detach an Aggregate
      */
-    default void detach(T aggregate) {
+    default void detach(T entity) {
         // TODO
     }
 
     T find(I id);
 
-    T save(T aggregate);
+    T save(T entity);
 
-    Boolean remove(I id);
+    void remove(I id);
 
-    Boolean update(T aggregate);
 }

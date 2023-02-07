@@ -26,25 +26,25 @@ public class CatalogRepositoryImpl implements CatalogRepository {
     @Override
     public Catalog find(CatalogId catalogId) {
         CatalogDO catalogDO = catalogMapper.selectByPrimaryKey(catalogId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue())));
+                .orElseThrow(() ->
+                        new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue()))
+                );
         return DataConverter.INSTANCE.toCatalog(catalogDO);
     }
 
     @Override
     public Catalog save(Catalog catalog) {
         CatalogDO catalogDO = DataConverter.INSTANCE.fromCatalog(catalog);
-        catalogMapper.insertSelective(catalogDO);
+        if (catalogDO.getCatalogId() == null) {
+            catalogMapper.insertSelective(catalogDO);
+        } else {
+            catalogMapper.updateByPrimaryKeySelective(catalogDO);
+        }
         return DataConverter.INSTANCE.toCatalog(catalogDO);
     }
 
     @Override
-    public Boolean remove(CatalogId catalogId) {
-        return catalogMapper.deleteByPrimaryKey(catalogId.getValue()) > 0;
-    }
-
-    @Override
-    public Boolean update(Catalog catalog) {
-        CatalogDO catalogDO = DataConverter.INSTANCE.fromCatalog(catalog);
-        return catalogMapper.updateByPrimaryKeySelective(catalogDO) > 0;
+    public void remove(CatalogId catalogId) {
+        catalogMapper.deleteByPrimaryKey(catalogId.getValue());
     }
 }

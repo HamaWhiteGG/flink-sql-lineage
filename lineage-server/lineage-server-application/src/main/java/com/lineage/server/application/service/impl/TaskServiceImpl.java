@@ -75,12 +75,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Boolean deleteTask(Long taskId) {
-        return taskRepository.remove(new TaskId(taskId));
+    public void deleteTask(Long taskId) {
+        taskRepository.remove(new TaskId(taskId));
     }
 
     @Override
-    public Boolean updateTask(UpdateTaskCmd updateTaskCmd) {
+    public void updateTask(UpdateTaskCmd updateTaskCmd) {
         Task task = new Task()
                 .setTaskId(new TaskId(updateTaskCmd.getTaskId()))
                 .setTaskName(updateTaskCmd.getTaskName())
@@ -89,7 +89,7 @@ public class TaskServiceImpl implements TaskService {
                 .setCatalogId(new CatalogId(updateTaskCmd.getCatalogId()));
 
         task.setModifyTime(System.currentTimeMillis());
-        return taskRepository.update(task);
+        taskRepository.save(task);
     }
 
     @Override
@@ -98,9 +98,14 @@ public class TaskServiceImpl implements TaskService {
         Plugin plugin = pluginRepository.find(task.getPluginId());
         Catalog catalog = catalogRepository.find(task.getCatalogId());
 
-        taskRepository.removeLineage(task.getTaskId());
+        taskRepository.removeTaskLineage(task.getTaskId());
+        taskRepository.removeTaskSql(task.getTaskId());
+
         taskDomainService.buildTaskSql(task);
+        taskRepository.saveTaskSql(task);
+
         lineageFacade.parseLineage(task, plugin.getPluginName(), catalog);
+        taskRepository.saveTaskLineage(task);
 
         return DtoAssembler.INSTANCE.fromTask(task);
     }

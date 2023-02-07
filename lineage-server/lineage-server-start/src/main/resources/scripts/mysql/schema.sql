@@ -21,13 +21,13 @@ DROP TABLE IF EXISTS `rel_task_sql`;
 CREATE TABLE `rel_task_sql`
 (
     `sql_id`       bigint(20) AUTO_INCREMENT,
-    `task_id`      bigint(20) NOT NULL,
+    `task_id`      bigint(20)  NOT NULL,
     `sql_code`     text COMMENT 'Base64 encode',
-    `parse_type`   tinyint(8) NOT NULL,
-    `parse_status` tinyint(8) NOT NULL,
+    `sql_type`     varchar(16) NOT NULL,
+    `parse_status` tinyint(8)  NOT NULL,
     `parse_log`    text,
-    `parse_time`   bigint(20) NOT NULL,
-    `invalid`      tinyint(1) NOT NULL DEFAULT '0',
+    `parse_time`   bigint(20)  NOT NULL,
+    `invalid`      tinyint(1)  NOT NULL DEFAULT '0',
     PRIMARY KEY (`sql_id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
@@ -48,7 +48,7 @@ CREATE TABLE `rel_task_lineage`
     `target_database` varchar(128) NOT NULL,
     `target_table`    varchar(128) NOT NULL,
     `target_column`   varchar(128) NOT NULL,
-    `transform`       varchar(128) NOT NULL,
+    `transform`       varchar(128) ,
     `invalid`         tinyint(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`rid`),
     KEY `task_id_idx` (`task_id`)

@@ -1,8 +1,6 @@
 package com.lineage.server.infrastructure.persistence.mybatis.handler.impl;
 
-import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.enums.SqlType;
-import com.lineage.server.infrastructure.persistence.mybatis.handler.IntEnumTypeHandler;
 import com.lineage.server.infrastructure.persistence.mybatis.handler.StringEnumTypeHandler;
 
 /**

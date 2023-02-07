@@ -1,17 +1,13 @@
 package com.lineage.server.application.service.impl;
 
-import com.hw.lineage.common.enums.CatalogType;
 import com.lineage.server.application.assembler.DtoAssembler;
 import com.lineage.server.application.cqe.command.catalog.CreateCatalogCmd;
 import com.lineage.server.application.cqe.command.catalog.UpdateCatalogCmd;
 import com.lineage.server.application.dto.CatalogDTO;
 import com.lineage.server.application.service.CatalogService;
 import com.lineage.server.domain.entity.Catalog;
-import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.repository.CatalogRepository;
-import com.lineage.server.domain.repository.TaskRepository;
 import com.lineage.server.domain.vo.CatalogId;
-import com.lineage.server.domain.vo.TaskId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,12 +48,12 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public Boolean deleteCatalog(Long catalogId) {
-        return repository.remove(new CatalogId(catalogId));
+    public void deleteCatalog(Long catalogId) {
+        repository.remove(new CatalogId(catalogId));
     }
 
     @Override
-    public Boolean updateCatalog(UpdateCatalogCmd updateCatalogCmd) {
+    public void updateCatalog(UpdateCatalogCmd updateCatalogCmd) {
         Catalog catalog = new Catalog()
                 .setCatalogId(new CatalogId(updateCatalogCmd.getCatalogId()))
                 .setCatalogName(updateCatalogCmd.getCatalogName())
@@ -65,6 +61,6 @@ public class CatalogServiceImpl implements CatalogService {
                 .setDescr(updateCatalogCmd.getDescr());
 
         catalog.setModifyTime(System.currentTimeMillis());
-        return repository.update(catalog);
+        repository.save(catalog);
     }
 }

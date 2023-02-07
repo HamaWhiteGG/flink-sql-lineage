@@ -12,6 +12,7 @@ public enum SqlType implements StringEnum<SqlType> {
     SELECT("select"),
     INSERT("insert"),
     CREATE("create"),
+    DROP("drop"),
     OTHER("other");
 
     private final String value;

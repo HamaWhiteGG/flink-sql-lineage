@@ -16,7 +16,7 @@ public interface CatalogService {
 
     CatalogDTO queryCatalog(Long catalogId);
 
-    Boolean deleteCatalog(Long catalogId);
+    void deleteCatalog(Long catalogId);
 
-    Boolean updateCatalog(UpdateCatalogCmd updateCatalogCmd);
+    void updateCatalog(UpdateCatalogCmd updateCatalogCmd);
 }
