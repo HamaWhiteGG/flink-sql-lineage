@@ -41,12 +41,6 @@ public class LineageFacadeImpl implements LineageFacade {
 
     @Override
     public void parseLineage(Task task, String pluginName, Catalog catalog) {
-//        if (lineageClient == null) {
-//            LOG.info("start loading plugins, directory: {}", lineageConfig.getPluginDir());
-//            this.lineageClient = new LineageClient(lineageConfig.getPluginDir());
-//            LOG.info("finished loading plugins, directory: {}", lineageConfig.getPluginDir());
-//        }
-
         lineageClient.setCatalog(pluginName
                 , catalog.getCatalogType()
                 , catalog.getCatalogName()

@@ -2,6 +2,8 @@ package com.lineage.server.application.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @description: TaskDto
  * @author: HamaWhite
@@ -21,4 +23,8 @@ public class TaskDTO extends BasicDTO {
     private Long catalogId;
 
     private String taskSource;
+
+    private List<TaskSqlDTO> taskSqlList;
+
+    private List<TaskLineageDTO> taskLineageList;
 }
