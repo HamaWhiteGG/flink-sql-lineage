@@ -71,7 +71,9 @@ public class LineageServiceImpl implements LineageService {
     }
 
     public void useCatalog(AbstractCatalog catalog) {
-        tableEnv.registerCatalog(catalog.getName(), catalog);
+        if (!tableEnv.getCatalog(catalog.getName()).isPresent()) {
+            tableEnv.registerCatalog(catalog.getName(), catalog);
+        }
         tableEnv.useCatalog(catalog.getName());
     }
 
