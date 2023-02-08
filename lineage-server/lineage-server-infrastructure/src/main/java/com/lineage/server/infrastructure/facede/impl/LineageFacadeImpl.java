@@ -65,25 +65,26 @@ public class LineageFacadeImpl implements LineageFacade {
 
     private void parseFieldLineage(String pluginName, Task task, TaskSql taskSql, String sqlCode) {
         taskSql.setParseStatus(ParseStatus.PARSING);
-        lineageClient.parseFieldLineage(pluginName, sqlCode).forEach(lineageResult -> {
-            TaskLineage taskLineage = new TaskLineage()
-                    .setTaskId(task.getTaskId())
-                    .setSqlId(taskSql.getSqlId())
-                    .setSourceCatalog(lineageResult.getSourceCatalog())
-                    .setSourceDatabase(lineageResult.getSourceDatabase())
-                    .setSourceTable(lineageResult.getSourceTable())
-                    .setSourceColumn(lineageResult.getSourceColumn())
-                    .setTargetCatalog(lineageResult.getTargetCatalog())
-                    .setTargetDatabase(lineageResult.getTargetDatabase())
-                    .setTargetTable(lineageResult.getTargetTable())
-                    .setTargetColumn(lineageResult.getTargetColumn())
-                    .setTransform(lineageResult.getTransform())
-                    .setInvalid(false);
+        lineageClient.parseFieldLineage(pluginName, sqlCode)
+                .forEach(lineageResult -> {
+                    TaskLineage taskLineage = new TaskLineage()
+                            .setTaskId(task.getTaskId())
+                            .setSqlId(taskSql.getSqlId())
+                            .setSourceCatalog(lineageResult.getSourceCatalog())
+                            .setSourceDatabase(lineageResult.getSourceDatabase())
+                            .setSourceTable(lineageResult.getSourceTable())
+                            .setSourceColumn(lineageResult.getSourceColumn())
+                            .setTargetCatalog(lineageResult.getTargetCatalog())
+                            .setTargetDatabase(lineageResult.getTargetDatabase())
+                            .setTargetTable(lineageResult.getTargetTable())
+                            .setTargetColumn(lineageResult.getTargetColumn())
+                            .setTransform(lineageResult.getTransform())
+                            .setInvalid(false);
 
-            taskSql.setParseTime(System.currentTimeMillis());
-            taskSql.setParseStatus(ParseStatus.SUCCESS);
-            task.addTaskLineage(taskLineage);
-        });
+                    taskSql.setParseTime(System.currentTimeMillis());
+                    taskSql.setParseStatus(ParseStatus.SUCCESS);
+                    task.addTaskLineage(taskLineage);
+                });
     }
 
 }

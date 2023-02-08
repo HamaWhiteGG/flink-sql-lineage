@@ -2,6 +2,8 @@ package com.lineage.server.application.cqe.command.function;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @description: UpdateFunctionCmd
  * @author: HamaWhite
@@ -11,6 +13,7 @@ import lombok.Data;
 @Data
 public class UpdateFunctionCmd {
 
+    @NotNull
     private Long functionId;
 
     private String functionName;
