@@ -2,6 +2,8 @@ package com.lineage.server.application.cqe.command.plugin;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @description: CreatePluginCmd
  * @author: HamaWhite
@@ -11,6 +13,7 @@ import lombok.Data;
 @Data
 public class CreatePluginCmd {
 
+    @NotBlank
     private String pluginName;
 
     private String descr;

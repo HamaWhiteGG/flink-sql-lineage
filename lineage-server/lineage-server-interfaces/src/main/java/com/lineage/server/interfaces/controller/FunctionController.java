@@ -9,6 +9,7 @@ import com.lineage.server.interfaces.result.ResultMessage;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @description: FunctionController
@@ -25,27 +26,27 @@ public class FunctionController {
 
 
     @GetMapping("/{functionId}")
-    public Result<FunctionDTO> queryFunction(@PathVariable("functionId") final Long functionId) {
+    public Result<FunctionDTO> queryFunction(@PathVariable("functionId") Long functionId) {
         FunctionDTO functionDTO = functionService.queryFunction(functionId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, functionDTO);
     }
 
     @PostMapping("")
-    public Result<Long> createFunction(@RequestBody final CreateFunctionCmd createFunctionCmd) {
+    public Result<Long> createFunction(@Valid @RequestBody CreateFunctionCmd createFunctionCmd) {
         Long functionId = functionService.createFunction(createFunctionCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, functionId);
     }
 
     @PutMapping("/{functionId}")
-    public Result<Boolean> updateFunction(@PathVariable("functionId") final Long functionId,
-                                          @RequestBody final UpdateFunctionCmd updateFunctionCmd) {
+    public Result<Boolean> updateFunction(@PathVariable("functionId") Long functionId,
+                                          @Valid @RequestBody UpdateFunctionCmd updateFunctionCmd) {
         updateFunctionCmd.setFunctionId(functionId);
         functionService.updateFunction(updateFunctionCmd);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{functionId}")
-    public Result<Boolean> deleteFunction(@PathVariable("functionId") final Long functionId) {
+    public Result<Boolean> deleteFunction(@PathVariable("functionId") Long functionId) {
         functionService.deleteFunction(functionId);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }

@@ -104,7 +104,6 @@ public class TaskRepositoryImpl implements TaskRepository {
         taskMapper.deleteByPrimaryKey(taskId.getValue());
     }
 
-
     @Override
     public PageInfo<Task> findAll(Integer pageNum, Integer pageSize) {
         try (Page<TaskDO> page = PageMethod.startPage(pageNum, pageSize)) {

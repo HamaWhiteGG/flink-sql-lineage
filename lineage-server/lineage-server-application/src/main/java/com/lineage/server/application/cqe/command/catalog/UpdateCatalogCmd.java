@@ -2,6 +2,8 @@ package com.lineage.server.application.cqe.command.catalog;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @description: UpdateCatalogCmd
  * @author: HamaWhite
@@ -11,6 +13,7 @@ import lombok.Data;
 @Data
 public class UpdateCatalogCmd {
 
+    @NotNull
     private Long catalogId;
 
     private String catalogName;

@@ -9,6 +9,7 @@ import com.lineage.server.interfaces.result.ResultMessage;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @description: CatalogController
@@ -25,27 +26,27 @@ public class CatalogController {
 
 
     @GetMapping("/{catalogId}")
-    public Result<CatalogDTO> queryCatalog(@PathVariable("catalogId") final Long catalogId) {
+    public Result<CatalogDTO> queryCatalog(@PathVariable("catalogId") Long catalogId) {
         CatalogDTO catalogDTO = catalogService.queryCatalog(catalogId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, catalogDTO);
     }
 
     @PostMapping("")
-    public Result<Long> createCatalog(@RequestBody final CreateCatalogCmd createCatalogCmd) {
+    public Result<Long> createCatalog(@Valid @RequestBody CreateCatalogCmd createCatalogCmd) {
         Long catalogId = catalogService.createCatalog(createCatalogCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, catalogId);
     }
 
     @PutMapping("/{catalogId}")
-    public Result<Boolean> updateCatalog(@PathVariable("catalogId") final Long catalogId,
-                                         @RequestBody final UpdateCatalogCmd updateCatalogCmd) {
+    public Result<Boolean> updateCatalog(@PathVariable("catalogId") Long catalogId,
+                                         @Valid @RequestBody UpdateCatalogCmd updateCatalogCmd) {
         updateCatalogCmd.setCatalogId(catalogId);
         catalogService.updateCatalog(updateCatalogCmd);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{catalogId}")
-    public Result<Boolean> deleteCatalog(@PathVariable("catalogId") final Long catalogId) {
+    public Result<Boolean> deleteCatalog(@PathVariable("catalogId") Long catalogId) {
         catalogService.deleteCatalog(catalogId);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
