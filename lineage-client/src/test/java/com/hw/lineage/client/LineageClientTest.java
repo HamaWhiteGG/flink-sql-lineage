@@ -22,7 +22,7 @@ public class LineageClientTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(LineageClientTest.class);
 
-    private static final String[] PLUGIN_IDS = {"flink1.14.x", "flink1.16.x"};
+    private static final String[] PLUGIN_NAMES = {"flink1.14.x", "flink1.16.x"};
 
     private static final String catalogName = "default";
 
@@ -34,21 +34,21 @@ public class LineageClientTest {
     public static void setup() {
         client = new LineageClient("target/plugins");
 
-        Stream.of(PLUGIN_IDS).forEach(pluginId -> {
-            client.setCatalog(pluginId, CatalogType.MEMORY, catalogName, defaultDatabase);
+        Stream.of(PLUGIN_NAMES).forEach(pluginName -> {
+            client.setCatalog(pluginName, CatalogType.MEMORY, catalogName, defaultDatabase);
             // create mysql cdc table ods_mysql_users
-            createTableOfOdsMysqlUsers(pluginId);
+            createTableOfOdsMysqlUsers(pluginName);
             // create hudi sink table dwd_hudi_users
-            createTableOfDwdHudiUsers(pluginId);
+            createTableOfDwdHudiUsers(pluginName);
         });
     }
 
     @Test
     public void testInsertSelect() {
-        Stream.of(PLUGIN_IDS).forEach(this::testInsertSelect);
+        Stream.of(PLUGIN_NAMES).forEach(this::testInsertSelect);
     }
 
-    private void testInsertSelect(String pluginId) {
+    private void testInsertSelect(String pluginName) {
         String sql = "INSERT INTO dwd_hudi_users " +
                 "SELECT " +
                 "   id ," +
@@ -69,11 +69,11 @@ public class LineageClientTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(pluginId, sql, expectedArray);
+        parseFieldLineage(pluginName, sql, expectedArray);
     }
 
-    private void parseFieldLineage(String pluginId, String sql, String[][] expectedArray) {
-        List<LineageResult> actualList = client.parseFieldLineage(pluginId, sql);
+    private void parseFieldLineage(String pluginName, String sql, String[][] expectedArray) {
+        List<LineageResult> actualList = client.parseFieldLineage(pluginName, sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 
@@ -84,10 +84,10 @@ public class LineageClientTest {
     /**
      * Create mysql cdc table ods_mysql_users
      */
-    private static void createTableOfOdsMysqlUsers(String pluginId) {
-        client.execute(pluginId, "DROP TABLE IF EXISTS ods_mysql_users ");
+    private static void createTableOfOdsMysqlUsers(String pluginName) {
+        client.execute(pluginName, "DROP TABLE IF EXISTS ods_mysql_users ");
 
-        client.execute(pluginId, "CREATE TABLE IF NOT EXISTS ods_mysql_users (" +
+        client.execute(pluginName, "CREATE TABLE IF NOT EXISTS ods_mysql_users (" +
                 "       id                  BIGINT PRIMARY KEY NOT ENFORCED ," +
                 "       name                STRING                          ," +
                 "       birthday            TIMESTAMP(3)                    ," +
@@ -109,10 +109,10 @@ public class LineageClientTest {
     /**
      * Create Hudi sink table dwd_hudi_users
      */
-    private static void createTableOfDwdHudiUsers(String pluginId) {
-        client.execute(pluginId, "DROP TABLE IF EXISTS dwd_hudi_users");
+    private static void createTableOfDwdHudiUsers(String pluginName) {
+        client.execute(pluginName, "DROP TABLE IF EXISTS dwd_hudi_users");
 
-        client.execute(pluginId, "CREATE TABLE IF NOT EXISTS  dwd_hudi_users ( " +
+        client.execute(pluginName, "CREATE TABLE IF NOT EXISTS  dwd_hudi_users ( " +
                 "       id                  BIGINT PRIMARY KEY NOT ENFORCED ," +
                 "       name                STRING                          ," +
                 "       company_name        STRING                          ," +

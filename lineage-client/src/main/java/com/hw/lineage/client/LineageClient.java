@@ -72,17 +72,17 @@ public class LineageClient {
     /**
      * Set the catalog information, the flink plugin defaults to GenericInMemoryCatalog
      */
-    public void setCatalog(String pluginId, CatalogType catalogType, String catalogName
+    public void setCatalog(String pluginName, CatalogType catalogType, String catalogName
             , String defaultDatabase, String... args) {
-        LineageService service = getLineageService(pluginId);
+        LineageService service = getLineageService(pluginName);
         service.setCatalog(catalogType, catalogName, defaultDatabase, args);
     }
 
     /**
      * Parse the field blood relationship of the input SQL
      */
-    public List<LineageResult> parseFieldLineage(String pluginId, String singleSql) {
-        LineageService service = getLineageService(pluginId);
+    public List<LineageResult> parseFieldLineage(String pluginName, String singleSql) {
+        LineageService service = getLineageService(pluginName);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             return service.parseFieldLineage(singleSql);
         }
@@ -91,16 +91,16 @@ public class LineageClient {
     /**
      * Execute the single sql
      */
-    public void execute(String pluginId, String singleSql) {
-        LineageService service = getLineageService(pluginId);
+    public void execute(String pluginName, String singleSql) {
+        LineageService service = getLineageService(pluginName);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(singleSql);
         }
     }
 
-    private LineageService getLineageService(String pluginId) {
-        LineageService lineageService = lineageServiceMap.get(pluginId);
-        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginId);
+    private LineageService getLineageService(String pluginName) {
+        LineageService lineageService = lineageServiceMap.get(pluginName);
+        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginName);
         return lineageService;
     }
 }

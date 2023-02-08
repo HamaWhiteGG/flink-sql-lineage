@@ -1,9 +1,8 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
+import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-
-import java.sql.JDBCType;
 
 public final class TaskDynamicSqlSupport {
     public static final Task task = new Task();
@@ -31,7 +30,7 @@ public final class TaskDynamicSqlSupport {
     /**
      * Base64 encode
      */
-    public static final SqlColumn<String> source = task.source;
+    public static final SqlColumn<String> taskSource = task.taskSource;
 
     public static final class Task extends AliasableSqlTable<Task> {
         public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
@@ -54,7 +53,7 @@ public final class TaskDynamicSqlSupport {
 
         public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
 
-        public final SqlColumn<String> source = column("source", JDBCType.LONGVARCHAR);
+        public final SqlColumn<String> taskSource = column("task_source", JDBCType.LONGVARCHAR);
 
         public Task() {
             super("bas_task", Task::new);

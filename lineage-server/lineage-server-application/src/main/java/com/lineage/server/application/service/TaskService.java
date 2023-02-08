@@ -20,7 +20,9 @@ public interface TaskService {
 
     PageInfo<TaskDTO> queryTasks(TaskQuery taskQuery);
 
-    Boolean deleteTask(Long taskId);
+    void deleteTask(Long taskId);
 
-    Boolean updateTask(UpdateTaskCmd updateTaskCmd);
+    void updateTask(UpdateTaskCmd updateTaskCmd);
+
+    TaskDTO parseTaskLineage(Long taskId);
 }

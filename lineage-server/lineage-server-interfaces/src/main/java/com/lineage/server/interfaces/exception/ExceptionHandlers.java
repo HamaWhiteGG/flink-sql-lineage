@@ -38,7 +38,10 @@ public class ExceptionHandlers {
     @ExceptionHandler(Exception.class)
     protected Result<Boolean> handleExceptionHandler(final Exception exception) {
         LOG.error(exception.getMessage(), exception);
-        return Result.error(exception.getMessage());
+        String message = exception instanceof LineageException
+                ? exception.getMessage()
+                : "system error, please check the log";
+        return Result.error(message);
     }
 
     @ExceptionHandler(DuplicateKeyException.class)

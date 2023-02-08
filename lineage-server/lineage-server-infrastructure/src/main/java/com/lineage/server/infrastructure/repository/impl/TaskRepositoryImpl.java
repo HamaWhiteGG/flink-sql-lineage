@@ -6,15 +6,24 @@ import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.domain.entity.Task;
+import com.lineage.server.domain.entity.TaskLineage;
+import com.lineage.server.domain.entity.TaskSql;
 import com.lineage.server.domain.repository.TaskRepository;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.lineage.server.infrastructure.persistence.dos.TaskDO;
-import com.lineage.server.infrastructure.persistence.mapper.TaskMapper;
+import com.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
+import com.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
+import com.lineage.server.infrastructure.persistence.mapper.*;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @description: TaskRepositoryImpl
@@ -27,10 +36,18 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Resource
     private TaskMapper taskMapper;
 
+    @Resource
+    private TaskSqlMapper taskSqlMapper;
+
+    @Resource
+    private TaskLineageMapper taskLineageMapper;
+
     @Override
     public Task find(TaskId taskId) {
         TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("taskId [%s] is not existed", taskId.getValue())));
+                .orElseThrow(() ->
+                        new LineageException(String.format("taskId [%s] is not existed", taskId.getValue()))
+                );
         return DataConverter.INSTANCE.toTask(taskDO);
     }
 
@@ -46,18 +63,49 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Boolean update(Task task) {
-        TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
-        return taskMapper.updateByPrimaryKeySelective(taskDO) > 0;
+    public void saveTaskSql(Task task) {
+        List<TaskSql> taskSqlList = task.getTaskSqlList().stream().map(taskSql -> {
+                    TaskSqlDO taskSqlDO = DataConverter.INSTANCE.fromTaskSql(taskSql);
+                    taskSqlMapper.insertSelective(taskSqlDO);
+                    return DataConverter.INSTANCE.toTaskSql(taskSqlDO);
+                }
+        ).collect(Collectors.toList());
+        task.setTaskSqlList(taskSqlList);
+    }
+
+
+    @Override
+    public void saveTaskLineage(Task task) {
+        List<TaskLineage> taskLineageList = task.getTaskLineageList().stream().map(taskLineage -> {
+                    TaskLineageDO taskLineageDO = DataConverter.INSTANCE.fromTaskLineage(taskLineage);
+                    taskLineageMapper.insertSelective(taskLineageDO);
+                    return DataConverter.INSTANCE.toTaskLineage(taskLineageDO);
+                }
+        ).collect(Collectors.toList());
+        task.setTaskLineageList(taskLineageList);
     }
 
     @Override
-    public Boolean remove(TaskId taskId) {
-        return taskMapper.deleteByPrimaryKey(taskId.getValue()) > 0;
+    public void removeTaskSql(TaskId taskId) {
+        taskSqlMapper.delete(completer ->
+                completer.where(TaskSqlDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
+        );
     }
 
     @Override
-    public PageInfo<Task> query(Integer pageNum, Integer pageSize) {
+    public void removeTaskLineage(TaskId taskId) {
+        taskLineageMapper.delete(completer ->
+                completer.where(TaskLineageDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
+        );
+    }
+
+    @Override
+    public void remove(TaskId taskId) {
+        taskMapper.deleteByPrimaryKey(taskId.getValue());
+    }
+
+    @Override
+    public PageInfo<Task> findAll(Integer pageNum, Integer pageSize) {
         try (Page<TaskDO> page = PageMethod.startPage(pageNum, pageSize)) {
             PageInfo<TaskDO> pageInfo = page.doSelectPageInfo(() -> taskMapper.select(SelectDSLCompleter.allRows()));
             return PageUtils.convertPage(pageInfo, DataConverter.INSTANCE::toTask);
