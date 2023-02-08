@@ -4,7 +4,8 @@ package com.lineage.server.infrastructure.persistence.dos;
  * @description: This class corresponds to the database table bas_task
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/01/30 21:19:17
+ * @date: 2023/02/07 10:34:51
+ *
  * @mbg.generated
  */
 public class TaskDO {
@@ -31,7 +32,7 @@ public class TaskDO {
     /**
      * Base64 encode
      */
-    private String source;
+    private String taskSource;
 
     public Long getTaskId() {
         return taskId;
@@ -113,12 +114,12 @@ public class TaskDO {
         this.invalid = invalid;
     }
 
-    public String getSource() {
-        return source;
+    public String getTaskSource() {
+        return taskSource;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setTaskSource(String taskSource) {
+        this.taskSource = taskSource;
     }
 
     @Override
@@ -134,16 +135,16 @@ public class TaskDO {
         }
         TaskDO other = (TaskDO) that;
         return (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
-                && (this.getTaskName() == null ? other.getTaskName() == null : this.getTaskName().equals(other.getTaskName()))
-                && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
-                && (this.getPluginId() == null ? other.getPluginId() == null : this.getPluginId().equals(other.getPluginId()))
-                && (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
-                && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
-                && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
-                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-                && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
-                && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
-                && (this.getSource() == null ? other.getSource() == null : this.getSource().equals(other.getSource()));
+            && (this.getTaskName() == null ? other.getTaskName() == null : this.getTaskName().equals(other.getTaskName()))
+            && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
+            && (this.getPluginId() == null ? other.getPluginId() == null : this.getPluginId().equals(other.getPluginId()))
+            && (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
+            && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
+            && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
+            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+            && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
+            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
+            && (this.getTaskSource() == null ? other.getTaskSource() == null : this.getTaskSource().equals(other.getTaskSource()));
     }
 
     @Override
@@ -160,7 +161,7 @@ public class TaskDO {
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getModifyTime() == null) ? 0 : getModifyTime().hashCode());
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
-        result = prime * result + ((getSource() == null) ? 0 : getSource().hashCode());
+        result = prime * result + ((getTaskSource() == null) ? 0 : getTaskSource().hashCode());
         return result;
     }
 
@@ -180,7 +181,7 @@ public class TaskDO {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifyTime=").append(modifyTime);
         sb.append(", invalid=").append(invalid);
-        sb.append(", source=").append(source);
+        sb.append(", taskSource=").append(taskSource);
         sb.append("]");
         return sb.toString();
     }

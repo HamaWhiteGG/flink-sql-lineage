@@ -2,6 +2,8 @@ package com.lineage.server.application.cqe.command.task;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @description: UpdateTaskCmd
  * @author: HamaWhite
@@ -11,6 +13,7 @@ import lombok.Data;
 @Data
 public class UpdateTaskCmd {
 
+    @NotNull
     private Long taskId;
 
     private String taskName;

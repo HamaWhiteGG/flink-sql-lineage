@@ -13,8 +13,7 @@ public enum CatalogType implements IntEnum<CatalogType> {
 
     MEMORY(0),
     HIVE(1),
-    JDBC(2),
-    ;
+    JDBC(2);
 
     private final int value;
 

@@ -11,6 +11,7 @@ import com.lineage.server.interfaces.result.ResultMessage;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @description: TaskController
@@ -26,36 +27,40 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("/{taskId}")
-    public Result<TaskDTO> queryTask(@PathVariable("taskId") final Long taskId) {
+    public Result<TaskDTO> queryTask(@PathVariable("taskId") Long taskId) {
         TaskDTO taskDTO = taskService.queryTask(taskId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, taskDTO);
     }
 
     @GetMapping("")
-    public Result<PageInfo<TaskDTO>> queryTasks(final TaskQuery taskQuery) {
+    public Result<PageInfo<TaskDTO>> queryTasks(TaskQuery taskQuery) {
         PageInfo<TaskDTO> pageInfo = taskService.queryTasks(taskQuery);
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 
     @PostMapping("")
-    public Result<Long> createTask(@RequestBody final CreateTaskCmd createTaskCmd) {
+    public Result<Long> createTask(@Valid @RequestBody CreateTaskCmd createTaskCmd) {
         Long taskId = taskService.createTask(createTaskCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, taskId);
     }
 
     @PutMapping("/{taskId}")
-    public Result<Boolean> updateTask(@PathVariable("taskId") final Long taskId,
-                                      @RequestBody final UpdateTaskCmd updateTaskCmd) {
+    public Result<Boolean> updateTask(@PathVariable("taskId") Long taskId,
+                                      @Valid @RequestBody UpdateTaskCmd updateTaskCmd) {
         updateTaskCmd.setTaskId(taskId);
-        Boolean result = taskService.updateTask(updateTaskCmd);
-        return Boolean.TRUE.equals(result) ? Result.success(ResultMessage.UPDATE_SUCCESS)
-                : Result.error(ResultMessage.UPDATE_FAILED);
+        taskService.updateTask(updateTaskCmd);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{taskId}")
-    public Result<Boolean> deleteTask(@PathVariable("taskId") final Long taskId) {
-        Boolean result = taskService.deleteTask(taskId);
-        return Boolean.TRUE.equals(result) ? Result.success(ResultMessage.DELETE_SUCCESS)
-                : Result.success(ResultMessage.DELETE_FAILED);
+    public Result<Boolean> deleteTask(@PathVariable("taskId") Long taskId) {
+        taskService.deleteTask(taskId);
+        return Result.success(ResultMessage.DELETE_SUCCESS);
+    }
+
+    @PostMapping("/{taskId}/lineage")
+    public Result<TaskDTO> parseTaskLineage(@PathVariable("taskId") Long taskId) {
+        TaskDTO taskDTO = taskService.parseTaskLineage(taskId);
+        return Result.success(ResultMessage.PARSE_LINEAGE_SUCCESS, taskDTO);
     }
 }

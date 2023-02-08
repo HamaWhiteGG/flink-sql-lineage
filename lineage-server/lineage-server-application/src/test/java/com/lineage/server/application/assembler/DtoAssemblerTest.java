@@ -2,7 +2,9 @@ package com.lineage.server.application.assembler;
 
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.CatalogId;
+import com.lineage.server.domain.vo.PluginId;
+import com.lineage.server.domain.vo.TaskId;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,8 +25,8 @@ public class DtoAssemblerTest {
         Task task = new Task().setTaskId(new TaskId(1L))
                 .setTaskName("task_0")
                 .setDescr("first task")
-                .setPluginId(1L)
-                .setCatalogId(1L);
+                .setPluginId(new PluginId(1L))
+                .setCatalogId(new CatalogId(1L));
         task.setCreateUserId(0L)
                 .setModifyUserId(0L)
                 .setCreateTime(time)

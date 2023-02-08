@@ -1,7 +1,10 @@
 package com.lineage.server.infrastructure.persistence.converter;
 
 import com.lineage.server.domain.entity.Task;
-import com.lineage.server.domain.types.TaskId;
+import com.lineage.server.domain.vo.CatalogId;
+import com.lineage.server.domain.vo.PluginId;
+import com.lineage.server.domain.vo.TaskId;
+import com.lineage.server.domain.vo.TaskSource;
 import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import org.junit.Test;
 
@@ -25,6 +28,7 @@ public class DataConverterTest {
         taskDO.setDescr("first task");
         taskDO.setPluginId(1L);
         taskDO.setCatalogId(1L);
+        taskDO.setTaskSource("SELECT 1");
         taskDO.setCreateUserId(0L);
         taskDO.setModifyUserId(0L);
         taskDO.setCreateTime(time);
@@ -36,7 +40,9 @@ public class DataConverterTest {
         assertThat(task.getTaskId()).isEqualTo(new TaskId(1L));
         assertThat(task.getTaskName()).isEqualTo("task_0");
         assertThat(task.getDescr()).isEqualTo("first task");
-        assertThat(task.getCatalogId()).isEqualTo(1L);
+        assertThat(task.getPluginId()).isEqualTo(new PluginId(1L));
+        assertThat(task.getCatalogId()).isEqualTo(new CatalogId(1L));
+        assertThat(task.getTaskSource()).isEqualTo(new TaskSource("SELECT 1"));
         assertThat(task.getCreateUserId()).isZero();
         assertThat(task.getModifyUserId()).isZero();
         assertThat(task.getCreateTime()).isEqualTo(time);
@@ -48,8 +54,8 @@ public class DataConverterTest {
 
         Task task = new Task().setTaskName("task_0")
                 .setDescr("first task")
-                .setPluginId(1L)
-                .setCatalogId(1L);
+                .setPluginId(new PluginId(1L))
+                .setCatalogId(new CatalogId(1L));
         task.setCreateUserId(0L)
                 .setModifyUserId(0L)
                 .setCreateTime(time)
