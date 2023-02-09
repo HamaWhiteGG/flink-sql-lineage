@@ -24,24 +24,27 @@ public class FunctionRepositoryImpl implements FunctionRepository {
     @Resource
     private FunctionMapper functionMapper;
 
+    @Resource
+    private DataConverter converter;
+
     @Override
     public Function find(FunctionId functionId) {
         FunctionDO functionDO = functionMapper.selectByPrimaryKey(functionId.getValue())
                 .orElseThrow(() ->
                         new LineageException(String.format("functionId [%s] is not existed", functionId.getValue()))
                 );
-        return DataConverter.INSTANCE.toFunction(functionDO);
+        return converter.toFunction(functionDO);
     }
 
     @Override
     public Function save(Function function) {
-        FunctionDO functionDO = DataConverter.INSTANCE.fromFunction(function);
+        FunctionDO functionDO = converter.fromFunction(function);
         if (functionDO.getFunctionId() == null) {
             functionMapper.insertSelective(functionDO);
         } else {
             functionMapper.updateByPrimaryKeySelective(functionDO);
         }
-        return DataConverter.INSTANCE.toFunction(functionDO);
+        return converter.toFunction(functionDO);
     }
 
     @Override

@@ -45,6 +45,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private LineageFacade lineageFacade;
+    
+    @Resource
+    private DtoAssembler assembler;
 
     @Override
     public Long createTask(CreateTaskCmd createTaskCmd) {
@@ -65,13 +68,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO queryTask(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
-        return DtoAssembler.INSTANCE.fromTask(task);
+        return assembler.fromTask(task);
     }
 
     @Override
     public PageInfo<TaskDTO> queryTasks(TaskQuery taskQuery) {
         PageInfo<Task> pageInfo = taskRepository.findAll(taskQuery.getPageNum(), taskQuery.getPageSize());
-        return PageUtils.convertPage(pageInfo, DtoAssembler.INSTANCE::fromTask);
+        return PageUtils.convertPage(pageInfo, assembler::fromTask);
     }
 
     @Override
@@ -107,6 +110,6 @@ public class TaskServiceImpl implements TaskService {
         lineageFacade.parseLineage(task, plugin.getPluginName(), catalog);
         taskRepository.saveTaskLineage(task);
 
-        return DtoAssembler.INSTANCE.fromTask(task);
+        return assembler.fromTask(task);
     }
 }

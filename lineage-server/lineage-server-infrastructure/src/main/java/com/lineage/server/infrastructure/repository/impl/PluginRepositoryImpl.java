@@ -23,22 +23,25 @@ public class PluginRepositoryImpl implements PluginRepository {
     @Resource
     private PluginMapper pluginMapper;
 
+    @Resource
+    private DataConverter converter;
+
     @Override
     public Plugin find(PluginId pluginId) {
         PluginDO pluginDO = pluginMapper.selectByPrimaryKey(pluginId.getValue())
                 .orElseThrow(() -> new LineageException(String.format("pluginId [%s] is not existed", pluginId.getValue())));
-        return DataConverter.INSTANCE.toPlugin(pluginDO);
+        return converter.toPlugin(pluginDO);
     }
 
     @Override
     public Plugin save(Plugin plugin) {
-        PluginDO pluginDO = DataConverter.INSTANCE.fromPlugin(plugin);
+        PluginDO pluginDO = converter.fromPlugin(plugin);
         if (pluginDO.getPluginId() == null) {
             pluginMapper.insertSelective(pluginDO);
         } else {
             pluginMapper.updateByPrimaryKeySelective(pluginDO);
         }
-        return DataConverter.INSTANCE.toPlugin(pluginDO);
+        return converter.toPlugin(pluginDO);
     }
 
     @Override

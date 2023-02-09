@@ -24,6 +24,9 @@ public class PluginServiceImpl implements PluginService {
     @Resource
     private PluginRepository repository;
 
+    @Resource
+    private DtoAssembler assembler;
+
     @Override
     public Long createPlugin(CreatePluginCmd createPluginCmd) {
         Plugin plugin = new Plugin()
@@ -41,7 +44,7 @@ public class PluginServiceImpl implements PluginService {
     @Override
     public PluginDTO queryPlugin(Long pluginId) {
         Plugin plugin = repository.find(new PluginId(pluginId));
-        return DtoAssembler.INSTANCE.fromPlugin(plugin);
+        return assembler.fromPlugin(plugin);
     }
 
     @Override

@@ -42,32 +42,35 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Resource
     private TaskLineageMapper taskLineageMapper;
 
+    @Resource
+    private DataConverter converter;
+
     @Override
     public Task find(TaskId taskId) {
         TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue())
                 .orElseThrow(() ->
                         new LineageException(String.format("taskId [%s] is not existed", taskId.getValue()))
                 );
-        return DataConverter.INSTANCE.toTask(taskDO);
+        return converter.toTask(taskDO);
     }
 
     @Override
     public Task save(Task task) {
-        TaskDO taskDO = DataConverter.INSTANCE.fromTask(task);
+        TaskDO taskDO = converter.fromTask(task);
         if (taskDO.getTaskId() == null) {
             taskMapper.insertSelective(taskDO);
         } else {
             taskMapper.updateByPrimaryKeySelective(taskDO);
         }
-        return DataConverter.INSTANCE.toTask(taskDO);
+        return converter.toTask(taskDO);
     }
 
     @Override
     public void saveTaskSql(Task task) {
         List<TaskSql> taskSqlList = task.getTaskSqlList().stream().map(taskSql -> {
-                    TaskSqlDO taskSqlDO = DataConverter.INSTANCE.fromTaskSql(taskSql);
+                    TaskSqlDO taskSqlDO = converter.fromTaskSql(taskSql);
                     taskSqlMapper.insertSelective(taskSqlDO);
-                    return DataConverter.INSTANCE.toTaskSql(taskSqlDO);
+                    return converter.toTaskSql(taskSqlDO);
                 }
         ).collect(Collectors.toList());
         task.setTaskSqlList(taskSqlList);
@@ -77,9 +80,9 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void saveTaskLineage(Task task) {
         List<TaskLineage> taskLineageList = task.getTaskLineageList().stream().map(taskLineage -> {
-                    TaskLineageDO taskLineageDO = DataConverter.INSTANCE.fromTaskLineage(taskLineage);
+                    TaskLineageDO taskLineageDO = converter.fromTaskLineage(taskLineage);
                     taskLineageMapper.insertSelective(taskLineageDO);
-                    return DataConverter.INSTANCE.toTaskLineage(taskLineageDO);
+                    return converter.toTaskLineage(taskLineageDO);
                 }
         ).collect(Collectors.toList());
         task.setTaskLineageList(taskLineageList);
@@ -108,7 +111,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     public PageInfo<Task> findAll(Integer pageNum, Integer pageSize) {
         try (Page<TaskDO> page = PageMethod.startPage(pageNum, pageSize)) {
             PageInfo<TaskDO> pageInfo = page.doSelectPageInfo(() -> taskMapper.select(SelectDSLCompleter.allRows()));
-            return PageUtils.convertPage(pageInfo, DataConverter.INSTANCE::toTask);
+            return PageUtils.convertPage(pageInfo, converter::toTask);
         }
     }
 }
