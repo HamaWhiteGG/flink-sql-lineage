@@ -18,13 +18,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @date: 2023/1/31 2:40 PM
  */
 public class DataConverterTest {
+
     private Long time = System.currentTimeMillis();
 
     @Test
     public void testToTask() {
         TaskDO taskDO = new TaskDO();
         taskDO.setTaskId(1L);
-        taskDO.setTaskName("task_0");
+        taskDO.setTaskName("task_1");
         taskDO.setDescr("first task");
         taskDO.setPluginId(1L);
         taskDO.setCatalogId(1L);
@@ -38,7 +39,7 @@ public class DataConverterTest {
 
         assertThat(task).isNotNull();
         assertThat(task.getTaskId()).isEqualTo(new TaskId(1L));
-        assertThat(task.getTaskName()).isEqualTo("task_0");
+        assertThat(task.getTaskName()).isEqualTo("task_1");
         assertThat(task.getDescr()).isEqualTo("first task");
         assertThat(task.getPluginId()).isEqualTo(new PluginId(1L));
         assertThat(task.getCatalogId()).isEqualTo(new CatalogId(1L));
@@ -52,7 +53,7 @@ public class DataConverterTest {
     @Test
     public void testFromTask() {
 
-        Task task = new Task().setTaskName("task_0")
+        Task task = new Task().setTaskName("task_1")
                 .setDescr("first task")
                 .setPluginId(new PluginId(1L))
                 .setCatalogId(new CatalogId(1L));
@@ -65,7 +66,7 @@ public class DataConverterTest {
 
         assertThat(taskDO).isNotNull();
         assertThat(taskDO.getTaskId()).isNull();
-        assertThat(taskDO.getTaskName()).isEqualTo("task_0");
+        assertThat(taskDO.getTaskName()).isEqualTo("task_1");
         assertThat(taskDO.getDescr()).isEqualTo("first task");
         assertThat(taskDO.getPluginId()).isEqualTo(1L);
         assertThat(taskDO.getCatalogId()).isEqualTo(1L);

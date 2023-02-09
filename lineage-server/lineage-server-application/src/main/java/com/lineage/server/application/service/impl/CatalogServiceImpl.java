@@ -24,6 +24,9 @@ public class CatalogServiceImpl implements CatalogService {
     @Resource
     private CatalogRepository repository;
 
+    @Resource
+    private DtoAssembler assembler;
+
     @Override
     public Long createCatalog(CreateCatalogCmd createCatalogCmd) {
         Catalog catalog = new Catalog()
@@ -44,7 +47,7 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public CatalogDTO queryCatalog(Long catalogId) {
         Catalog catalog = repository.find(new CatalogId(catalogId));
-        return DtoAssembler.INSTANCE.fromCatalog(catalog);
+        return assembler.fromCatalog(catalog);
     }
 
     @Override

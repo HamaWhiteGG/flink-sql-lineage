@@ -44,6 +44,7 @@ public class ExceptionHandlers {
         return Result.error(message);
     }
 
+
     @ExceptionHandler(DuplicateKeyException.class)
     protected Result<Boolean> handleDuplicateKeyException(final DuplicateKeyException exception) {
         LOG.error("duplicate key exception ", exception);

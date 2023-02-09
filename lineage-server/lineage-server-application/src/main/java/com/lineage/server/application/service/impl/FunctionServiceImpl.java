@@ -24,7 +24,9 @@ public class FunctionServiceImpl implements FunctionService {
     @Resource
     private FunctionRepository repository;
 
-
+    @Resource
+    private DtoAssembler assembler;
+    
     @Override
     public Long createFunction(CreateFunctionCmd createFunctionCmd) {
         Function function = new Function()
@@ -45,7 +47,7 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public FunctionDTO queryFunction(Long functionId) {
         Function function = repository.find(new FunctionId(functionId));
-        return DtoAssembler.INSTANCE.fromFunction(function);
+        return assembler.fromFunction(function);
     }
 
     @Override

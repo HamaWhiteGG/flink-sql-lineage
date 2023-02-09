@@ -23,24 +23,27 @@ public class CatalogRepositoryImpl implements CatalogRepository {
     @Resource
     private CatalogMapper catalogMapper;
 
+    @Resource
+    private DataConverter converter;
+
     @Override
     public Catalog find(CatalogId catalogId) {
         CatalogDO catalogDO = catalogMapper.selectByPrimaryKey(catalogId.getValue())
                 .orElseThrow(() ->
                         new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue()))
                 );
-        return DataConverter.INSTANCE.toCatalog(catalogDO);
+        return converter.toCatalog(catalogDO);
     }
 
     @Override
     public Catalog save(Catalog catalog) {
-        CatalogDO catalogDO = DataConverter.INSTANCE.fromCatalog(catalog);
+        CatalogDO catalogDO = converter.fromCatalog(catalog);
         if (catalogDO.getCatalogId() == null) {
             catalogMapper.insertSelective(catalogDO);
         } else {
             catalogMapper.updateByPrimaryKeySelective(catalogDO);
         }
-        return DataConverter.INSTANCE.toCatalog(catalogDO);
+        return converter.toCatalog(catalogDO);
     }
 
     @Override

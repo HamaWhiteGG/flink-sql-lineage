@@ -25,9 +25,6 @@ public class TaskSource {
     private final String value;
 
     public TaskSource(String value) {
-        if (StringUtils.isEmpty(value)) {
-            throw new IllegalArgumentException("source cannot be empty");
-        }
         this.value = value;
     }
 
@@ -38,6 +35,9 @@ public class TaskSource {
      * Note that in order to avoid sonar S5998, + is added after the last *
      */
     public String[] splitSource() {
+        if (StringUtils.isEmpty(value)) {
+            return new String[0];
+        }
         // base64 decode
         String source = Base64Utils.decode(value);
         // remove comments and line break
