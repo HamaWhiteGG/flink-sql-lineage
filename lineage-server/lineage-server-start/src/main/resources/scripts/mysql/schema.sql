@@ -48,7 +48,7 @@ CREATE TABLE `rel_task_lineage`
     `target_database` varchar(128) NOT NULL,
     `target_table`    varchar(128) NOT NULL,
     `target_column`   varchar(128) NOT NULL,
-    `transform`       varchar(128) ,
+    `transform`       varchar(128),
     `invalid`         tinyint(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`rid`),
     KEY `task_id_idx` (`task_id`)

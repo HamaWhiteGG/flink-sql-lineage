@@ -10,7 +10,7 @@ import lombok.Data;
  * @date: 2023/2/5 12:17 PM
  */
 @Data
-public class CatalogId  implements Identifier {
+public class CatalogId implements Identifier {
 
     private final Long value;
 

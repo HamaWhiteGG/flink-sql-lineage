@@ -7,7 +7,6 @@ import com.hw.lineage.common.enums.CatalogType;
  * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2023/02/07 10:34:51
- *
  * @mbg.generated
  */
 public class CatalogDO {
@@ -124,15 +123,15 @@ public class CatalogDO {
         }
         CatalogDO other = (CatalogDO) that;
         return (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
-            && (this.getCatalogName() == null ? other.getCatalogName() == null : this.getCatalogName().equals(other.getCatalogName()))
-            && (this.getCatalogType() == null ? other.getCatalogType() == null : this.getCatalogType().equals(other.getCatalogType()))
-            && (this.getDefaultDatabase() == null ? other.getDefaultDatabase() == null : this.getDefaultDatabase().equals(other.getDefaultDatabase()))
-            && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
-            && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
-            && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
-            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
+                && (this.getCatalogName() == null ? other.getCatalogName() == null : this.getCatalogName().equals(other.getCatalogName()))
+                && (this.getCatalogType() == null ? other.getCatalogType() == null : this.getCatalogType().equals(other.getCatalogType()))
+                && (this.getDefaultDatabase() == null ? other.getDefaultDatabase() == null : this.getDefaultDatabase().equals(other.getDefaultDatabase()))
+                && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
+                && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
+                && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
+                && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
     }
 
     @Override

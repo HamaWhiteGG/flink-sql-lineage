@@ -100,7 +100,6 @@ public class ExceptionHandlers {
 
     /**
      * Thrown after @Valid failure on @RequestParam is ConstraintViolationException
-     *
      */
     @ExceptionHandler(ConstraintViolationException.class)
     protected Result<Boolean> handleConstraintViolationException(final ConstraintViolationException e) {

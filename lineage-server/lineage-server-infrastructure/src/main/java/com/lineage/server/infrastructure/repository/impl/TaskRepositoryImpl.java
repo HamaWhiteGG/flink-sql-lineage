@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
 /**
  * @description: TaskRepositoryImpl

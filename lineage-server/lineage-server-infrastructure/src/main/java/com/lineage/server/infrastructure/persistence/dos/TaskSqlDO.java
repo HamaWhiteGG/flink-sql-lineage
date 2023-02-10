@@ -8,7 +8,6 @@ import com.hw.lineage.common.enums.SqlType;
  * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2023/02/07 10:34:51
- *
  * @mbg.generated
  */
 public class TaskSqlDO {
@@ -108,13 +107,13 @@ public class TaskSqlDO {
         }
         TaskSqlDO other = (TaskSqlDO) that;
         return (this.getSqlId() == null ? other.getSqlId() == null : this.getSqlId().equals(other.getSqlId()))
-            && (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
-            && (this.getSqlType() == null ? other.getSqlType() == null : this.getSqlType().equals(other.getSqlType()))
-            && (this.getParseStatus() == null ? other.getParseStatus() == null : this.getParseStatus().equals(other.getParseStatus()))
-            && (this.getParseTime() == null ? other.getParseTime() == null : this.getParseTime().equals(other.getParseTime()))
-            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
-            && (this.getSqlCode() == null ? other.getSqlCode() == null : this.getSqlCode().equals(other.getSqlCode()))
-            && (this.getParseLog() == null ? other.getParseLog() == null : this.getParseLog().equals(other.getParseLog()));
+                && (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
+                && (this.getSqlType() == null ? other.getSqlType() == null : this.getSqlType().equals(other.getSqlType()))
+                && (this.getParseStatus() == null ? other.getParseStatus() == null : this.getParseStatus().equals(other.getParseStatus()))
+                && (this.getParseTime() == null ? other.getParseTime() == null : this.getParseTime().equals(other.getParseTime()))
+                && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
+                && (this.getSqlCode() == null ? other.getSqlCode() == null : this.getSqlCode().equals(other.getSqlCode()))
+                && (this.getParseLog() == null ? other.getParseLog() == null : this.getParseLog().equals(other.getParseLog()));
     }
 
     @Override

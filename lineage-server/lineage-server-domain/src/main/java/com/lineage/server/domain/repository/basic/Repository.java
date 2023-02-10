@@ -25,6 +25,6 @@ public interface Repository<T extends Entity, ID extends Identifier> {
     T save(T entity);
 
     void remove(ID id);
-    
+
     boolean find(String name);
 }

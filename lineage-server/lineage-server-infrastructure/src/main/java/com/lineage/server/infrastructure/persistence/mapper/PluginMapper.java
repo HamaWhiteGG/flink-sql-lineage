@@ -1,18 +1,7 @@
 package com.lineage.server.infrastructure.persistence.mapper;
 
-import static com.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-
 import com.lineage.server.infrastructure.persistence.dos.PluginDO;
-import java.util.List;
-import java.util.Optional;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -29,28 +18,34 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
+import java.util.List;
+import java.util.Optional;
+
+import static com.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
 @Mapper
 public interface PluginMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
     BasicColumn[] selectList = BasicColumn.columnList(pluginId, pluginName, descr, createUserId, modifyUserId, createTime, modifyTime, invalid);
 
-    @InsertProvider(type=SqlProviderAdapter.class, method="insert")
-    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.pluginId", before=false, resultType=Long.class)
+    @InsertProvider(type = SqlProviderAdapter.class, method = "insert")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "row.pluginId", before = false, resultType = Long.class)
     int insert(InsertStatementProvider<PluginDO> insertStatement);
 
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @Results(id="PluginDOResult", value = {
-        @Result(column="plugin_id", property="pluginId", jdbcType=JdbcType.BIGINT, id=true),
-        @Result(column="plugin_name", property="pluginName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
-        @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),
-        @Result(column="modify_user_id", property="modifyUserId", jdbcType=JdbcType.BIGINT),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
-        @Result(column="modify_time", property="modifyTime", jdbcType=JdbcType.BIGINT),
-        @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT)
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
+    @Results(id = "PluginDOResult", value = {
+            @Result(column = "plugin_id", property = "pluginId", jdbcType = JdbcType.BIGINT, id = true),
+            @Result(column = "plugin_name", property = "pluginName", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "descr", property = "descr", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "create_user_id", property = "createUserId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "modify_user_id", property = "modifyUserId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.BIGINT),
+            @Result(column = "modify_time", property = "modifyTime", jdbcType = JdbcType.BIGINT),
+            @Result(column = "invalid", property = "invalid", jdbcType = JdbcType.BIT)
     })
     List<PluginDO> selectMany(SelectStatementProvider selectStatement);
 
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
     @ResultMap("PluginDOResult")
     Optional<PluginDO> selectOne(SelectStatementProvider selectStatement);
 
@@ -63,32 +58,32 @@ public interface PluginMapper extends CommonCountMapper, CommonDeleteMapper, Com
     }
 
     default int deleteByPrimaryKey(Long pluginId_) {
-        return delete(c -> 
-            c.where(pluginId, isEqualTo(pluginId_))
+        return delete(c ->
+                c.where(pluginId, isEqualTo(pluginId_))
         );
     }
 
     default int insert(PluginDO row) {
         return MyBatis3Utils.insert(this::insert, row, plugin, c ->
-            c.map(pluginName).toProperty("pluginName")
-            .map(descr).toProperty("descr")
-            .map(createUserId).toProperty("createUserId")
-            .map(modifyUserId).toProperty("modifyUserId")
-            .map(createTime).toProperty("createTime")
-            .map(modifyTime).toProperty("modifyTime")
-            .map(invalid).toProperty("invalid")
+                c.map(pluginName).toProperty("pluginName")
+                        .map(descr).toProperty("descr")
+                        .map(createUserId).toProperty("createUserId")
+                        .map(modifyUserId).toProperty("modifyUserId")
+                        .map(createTime).toProperty("createTime")
+                        .map(modifyTime).toProperty("modifyTime")
+                        .map(invalid).toProperty("invalid")
         );
     }
 
     default int insertSelective(PluginDO row) {
         return MyBatis3Utils.insert(this::insert, row, plugin, c ->
-            c.map(pluginName).toPropertyWhenPresent("pluginName", row::getPluginName)
-            .map(descr).toPropertyWhenPresent("descr", row::getDescr)
-            .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
-            .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
-            .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
-            .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
-            .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
+                c.map(pluginName).toPropertyWhenPresent("pluginName", row::getPluginName)
+                        .map(descr).toPropertyWhenPresent("descr", row::getDescr)
+                        .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
+                        .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
+                        .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
+                        .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
+                        .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
         );
     }
 
@@ -106,7 +101,7 @@ public interface PluginMapper extends CommonCountMapper, CommonDeleteMapper, Com
 
     default Optional<PluginDO> selectByPrimaryKey(Long pluginId_) {
         return selectOne(c ->
-            c.where(pluginId, isEqualTo(pluginId_))
+                c.where(pluginId, isEqualTo(pluginId_))
         );
     }
 
@@ -136,27 +131,27 @@ public interface PluginMapper extends CommonCountMapper, CommonDeleteMapper, Com
 
     default int updateByPrimaryKey(PluginDO row) {
         return update(c ->
-            c.set(pluginName).equalTo(row::getPluginName)
-            .set(descr).equalTo(row::getDescr)
-            .set(createUserId).equalTo(row::getCreateUserId)
-            .set(modifyUserId).equalTo(row::getModifyUserId)
-            .set(createTime).equalTo(row::getCreateTime)
-            .set(modifyTime).equalTo(row::getModifyTime)
-            .set(invalid).equalTo(row::getInvalid)
-            .where(pluginId, isEqualTo(row::getPluginId))
+                c.set(pluginName).equalTo(row::getPluginName)
+                        .set(descr).equalTo(row::getDescr)
+                        .set(createUserId).equalTo(row::getCreateUserId)
+                        .set(modifyUserId).equalTo(row::getModifyUserId)
+                        .set(createTime).equalTo(row::getCreateTime)
+                        .set(modifyTime).equalTo(row::getModifyTime)
+                        .set(invalid).equalTo(row::getInvalid)
+                        .where(pluginId, isEqualTo(row::getPluginId))
         );
     }
 
     default int updateByPrimaryKeySelective(PluginDO row) {
         return update(c ->
-            c.set(pluginName).equalToWhenPresent(row::getPluginName)
-            .set(descr).equalToWhenPresent(row::getDescr)
-            .set(createUserId).equalToWhenPresent(row::getCreateUserId)
-            .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
-            .set(createTime).equalToWhenPresent(row::getCreateTime)
-            .set(modifyTime).equalToWhenPresent(row::getModifyTime)
-            .set(invalid).equalToWhenPresent(row::getInvalid)
-            .where(pluginId, isEqualTo(row::getPluginId))
+                c.set(pluginName).equalToWhenPresent(row::getPluginName)
+                        .set(descr).equalToWhenPresent(row::getDescr)
+                        .set(createUserId).equalToWhenPresent(row::getCreateUserId)
+                        .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
+                        .set(createTime).equalToWhenPresent(row::getCreateTime)
+                        .set(modifyTime).equalToWhenPresent(row::getModifyTime)
+                        .set(invalid).equalToWhenPresent(row::getInvalid)
+                        .where(pluginId, isEqualTo(row::getPluginId))
         );
     }
 }

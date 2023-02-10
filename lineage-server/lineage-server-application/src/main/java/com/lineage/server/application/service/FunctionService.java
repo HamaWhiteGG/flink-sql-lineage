@@ -15,7 +15,7 @@ import com.lineage.server.domain.query.function.FunctionQuery;
  * @date: 2023/2/5 12:26 PM
  */
 public interface FunctionService {
-    
+
     Long createFunction(CreateFunctionCmd createFunctionCmd);
 
     FunctionDTO queryFunction(Long functionId);

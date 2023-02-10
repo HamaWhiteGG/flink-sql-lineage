@@ -3,9 +3,9 @@ package com.lineage.server.application.service;
 import com.github.pagehelper.PageInfo;
 import com.lineage.server.application.command.task.CreateTaskCmd;
 import com.lineage.server.application.command.task.UpdateTaskCmd;
+import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.domain.query.task.TaskCheck;
 import com.lineage.server.domain.query.task.TaskQuery;
-import com.lineage.server.application.dto.TaskDTO;
 
 /**
  * @description: TaskService

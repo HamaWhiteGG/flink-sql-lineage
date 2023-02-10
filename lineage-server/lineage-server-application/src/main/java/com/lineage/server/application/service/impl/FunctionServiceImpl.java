@@ -8,7 +8,6 @@ import com.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
 import com.lineage.server.application.service.FunctionService;
 import com.lineage.server.domain.entity.Function;
-import com.lineage.server.domain.entity.Plugin;
 import com.lineage.server.domain.query.function.FunctionCheck;
 import com.lineage.server.domain.query.function.FunctionQuery;
 import com.lineage.server.domain.repository.FunctionRepository;
@@ -31,7 +30,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Resource
     private DtoAssembler assembler;
-    
+
     @Override
     public Long createFunction(CreateFunctionCmd createFunctionCmd) {
         Function function = new Function()
@@ -68,7 +67,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public void deleteFunction(Long functionId) {
-         repository.remove(new FunctionId(functionId));
+        repository.remove(new FunctionId(functionId));
     }
 
     @Override
@@ -82,6 +81,6 @@ public class FunctionServiceImpl implements FunctionService {
                 .setDescr(updateFunctionCmd.getDescr());
 
         function.setModifyTime(System.currentTimeMillis());
-         repository.save(function);
+        repository.save(function);
     }
 }
