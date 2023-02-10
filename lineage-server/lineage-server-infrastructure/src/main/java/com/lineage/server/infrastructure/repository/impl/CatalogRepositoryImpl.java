@@ -1,7 +1,12 @@
 package com.lineage.server.infrastructure.repository.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
+import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.domain.entity.Catalog;
+import com.lineage.server.domain.query.catalog.CatalogQuery;
 import com.lineage.server.domain.repository.CatalogRepository;
 import com.lineage.server.domain.vo.CatalogId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
@@ -11,6 +16,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+import static com.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalogName;
+import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+
 /**
  * @description: CatalogRepositoryImpl
  * @author: HamaWhite
@@ -18,7 +28,7 @@ import javax.annotation.Resource;
  * @date: 2023/2/5 12:19 PM
  */
 @Repository
-public class CatalogRepositoryImpl implements CatalogRepository {
+public class CatalogRepositoryImpl extends AbstractBasicRepository implements CatalogRepository {
 
     @Resource
     private CatalogMapper catalogMapper;
@@ -36,6 +46,11 @@ public class CatalogRepositoryImpl implements CatalogRepository {
     }
 
     @Override
+    public boolean find(String name) {
+        return !catalogMapper.select(completer -> completer.where(catalogName, isEqualTo(name))).isEmpty();
+    }
+
+    @Override
     public Catalog save(Catalog catalog) {
         CatalogDO catalogDO = converter.fromCatalog(catalog);
         if (catalogDO.getCatalogId() == null) {
@@ -49,5 +64,18 @@ public class CatalogRepositoryImpl implements CatalogRepository {
     @Override
     public void remove(CatalogId catalogId) {
         catalogMapper.deleteByPrimaryKey(catalogId.getValue());
+    }
+
+    @Override
+    public PageInfo<Catalog> findAll(CatalogQuery catalogQuery) {
+        try (Page<CatalogDO> page = PageMethod.startPage(catalogQuery.getPageNum(), catalogQuery.getPageSize())) {
+            PageInfo<CatalogDO> pageInfo = page.doSelectPageInfo(() ->
+                    catalogMapper.select(completer ->
+                            completer.where(taskName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
+                                    .orderBy(buildSortSpecification(catalogQuery))
+                    )
+            );
+            return PageUtils.convertPage(pageInfo, converter::toCatalog);
+        }
     }
 }

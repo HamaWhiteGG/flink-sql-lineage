@@ -1,7 +1,12 @@
 package com.lineage.server.infrastructure.repository.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
+import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.domain.entity.Function;
+import com.lineage.server.domain.query.function.FunctionQuery;
 import com.lineage.server.domain.repository.FunctionRepository;
 import com.lineage.server.domain.vo.FunctionId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
@@ -11,6 +16,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+import static com.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport.functionName;
+import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+
 
 /**
  * @description: FunctionRepositoryImpl
@@ -19,7 +29,7 @@ import javax.annotation.Resource;
  * @date: 2023/2/5 12:23 PM
  */
 @Repository
-public class FunctionRepositoryImpl implements FunctionRepository {
+public class FunctionRepositoryImpl extends AbstractBasicRepository implements FunctionRepository {
 
     @Resource
     private FunctionMapper functionMapper;
@@ -37,6 +47,11 @@ public class FunctionRepositoryImpl implements FunctionRepository {
     }
 
     @Override
+    public boolean find(String name) {
+        return !functionMapper.select(completer -> completer.where(functionName, isEqualTo(name))).isEmpty();
+    }
+
+    @Override
     public Function save(Function function) {
         FunctionDO functionDO = converter.fromFunction(function);
         if (functionDO.getFunctionId() == null) {
@@ -50,5 +65,18 @@ public class FunctionRepositoryImpl implements FunctionRepository {
     @Override
     public void remove(FunctionId functionId) {
         functionMapper.deleteByPrimaryKey(functionId.getValue());
+    }
+
+    @Override
+    public PageInfo<Function> findAll(FunctionQuery functionQuery) {
+        try (Page<FunctionDO> page = PageMethod.startPage(functionQuery.getPageNum(), functionQuery.getPageSize())) {
+            PageInfo<FunctionDO> pageInfo = page.doSelectPageInfo(() ->
+                    functionMapper.select(completer ->
+                            completer.where(taskName, isLike(buildLikeValue(functionQuery.getFunctionName())))
+                                    .orderBy(buildSortSpecification(functionQuery))
+                    )
+            );
+            return PageUtils.convertPage(pageInfo, converter::toFunction);
+        }
     }
 }

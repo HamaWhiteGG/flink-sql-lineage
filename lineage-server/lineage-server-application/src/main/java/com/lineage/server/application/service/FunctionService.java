@@ -1,8 +1,12 @@
 package com.lineage.server.application.service;
 
-import com.lineage.server.application.cqe.command.function.CreateFunctionCmd;
-import com.lineage.server.application.cqe.command.function.UpdateFunctionCmd;
+import com.github.pagehelper.PageInfo;
+import com.lineage.server.application.command.function.CreateFunctionCmd;
+import com.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
+import com.lineage.server.domain.query.function.FunctionCheck;
+import com.lineage.server.domain.query.function.FunctionQuery;
+
 
 /**
  * @description: FunctionService
@@ -15,6 +19,10 @@ public interface FunctionService {
     Long createFunction(CreateFunctionCmd createFunctionCmd);
 
     FunctionDTO queryFunction(Long functionId);
+
+    Boolean checkFunctionExist(FunctionCheck functionCheck);
+
+    PageInfo<FunctionDTO> queryFunctions(FunctionQuery functionQuery);
 
     void deleteFunction(Long functionId);
 

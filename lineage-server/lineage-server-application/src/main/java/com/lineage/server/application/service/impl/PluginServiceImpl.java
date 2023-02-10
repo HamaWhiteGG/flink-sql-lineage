@@ -1,11 +1,15 @@
 package com.lineage.server.application.service.impl;
 
+import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.application.assembler.DtoAssembler;
-import com.lineage.server.application.cqe.command.plugin.CreatePluginCmd;
-import com.lineage.server.application.cqe.command.plugin.UpdatePluginCmd;
+import com.lineage.server.application.command.plugin.CreatePluginCmd;
+import com.lineage.server.application.command.plugin.UpdatePluginCmd;
 import com.lineage.server.application.dto.PluginDTO;
 import com.lineage.server.application.service.PluginService;
 import com.lineage.server.domain.entity.Plugin;
+import com.lineage.server.domain.query.plugin.PluginCheck;
+import com.lineage.server.domain.query.plugin.PluginQuery;
 import com.lineage.server.domain.repository.PluginRepository;
 import com.lineage.server.domain.vo.PluginId;
 import org.springframework.stereotype.Service;
@@ -45,6 +49,17 @@ public class PluginServiceImpl implements PluginService {
     public PluginDTO queryPlugin(Long pluginId) {
         Plugin plugin = repository.find(new PluginId(pluginId));
         return assembler.fromPlugin(plugin);
+    }
+
+    @Override
+    public Boolean checkPluginExist(PluginCheck pluginCheck) {
+        return repository.find(pluginCheck.getPluginName());
+    }
+
+    @Override
+    public PageInfo<PluginDTO> queryPlugins(PluginQuery pluginQuery) {
+        PageInfo<Plugin> pageInfo = repository.findAll(pluginQuery);
+        return PageUtils.convertPage(pageInfo, assembler::fromPlugin);
     }
 
     @Override
