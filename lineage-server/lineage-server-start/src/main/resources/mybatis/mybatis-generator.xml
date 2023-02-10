@@ -22,7 +22,7 @@
             <property name="suppressAllComments" value="false"/>
             <property name="addRemarkComments" value="true"/>
             <property name="author" value="HamaWhite"/>
-            <property name="version" value="${application.version}"/>
+            <property name="version" value="${spring.application.version}"/>
             <property name="dateFormat" value="yyyy/MM/dd HH:mm:ss"/>
         </commentGenerator>
 

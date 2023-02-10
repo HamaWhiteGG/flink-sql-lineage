@@ -49,6 +49,7 @@
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
         <mybatis-generator-maven-plugin.version>1.4.1</mybatis-generator-maven-plugin.version>
 
@@ -272,6 +273,16 @@
                     </executions>
                     <configuration>
                         <scalaVersion>${scala.binary.version}</scalaVersion>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <useDefaultDelimiters>true</useDefaultDelimiters>
                     </configuration>
                 </plugin>
 
