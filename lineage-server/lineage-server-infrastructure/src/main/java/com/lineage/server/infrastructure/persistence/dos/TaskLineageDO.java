@@ -5,7 +5,6 @@ package com.lineage.server.infrastructure.persistence.dos;
  * @author: HamaWhite
  * @version: 1.0.0
  * @date: 2023/02/07 10:34:51
- *
  * @mbg.generated
  */
 public class TaskLineageDO {
@@ -152,18 +151,18 @@ public class TaskLineageDO {
         }
         TaskLineageDO other = (TaskLineageDO) that;
         return (this.getRid() == null ? other.getRid() == null : this.getRid().equals(other.getRid()))
-            && (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
-            && (this.getSqlId() == null ? other.getSqlId() == null : this.getSqlId().equals(other.getSqlId()))
-            && (this.getSourceCatalog() == null ? other.getSourceCatalog() == null : this.getSourceCatalog().equals(other.getSourceCatalog()))
-            && (this.getSourceDatabase() == null ? other.getSourceDatabase() == null : this.getSourceDatabase().equals(other.getSourceDatabase()))
-            && (this.getSourceTable() == null ? other.getSourceTable() == null : this.getSourceTable().equals(other.getSourceTable()))
-            && (this.getSourceColumn() == null ? other.getSourceColumn() == null : this.getSourceColumn().equals(other.getSourceColumn()))
-            && (this.getTargetCatalog() == null ? other.getTargetCatalog() == null : this.getTargetCatalog().equals(other.getTargetCatalog()))
-            && (this.getTargetDatabase() == null ? other.getTargetDatabase() == null : this.getTargetDatabase().equals(other.getTargetDatabase()))
-            && (this.getTargetTable() == null ? other.getTargetTable() == null : this.getTargetTable().equals(other.getTargetTable()))
-            && (this.getTargetColumn() == null ? other.getTargetColumn() == null : this.getTargetColumn().equals(other.getTargetColumn()))
-            && (this.getTransform() == null ? other.getTransform() == null : this.getTransform().equals(other.getTransform()))
-            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
+                && (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
+                && (this.getSqlId() == null ? other.getSqlId() == null : this.getSqlId().equals(other.getSqlId()))
+                && (this.getSourceCatalog() == null ? other.getSourceCatalog() == null : this.getSourceCatalog().equals(other.getSourceCatalog()))
+                && (this.getSourceDatabase() == null ? other.getSourceDatabase() == null : this.getSourceDatabase().equals(other.getSourceDatabase()))
+                && (this.getSourceTable() == null ? other.getSourceTable() == null : this.getSourceTable().equals(other.getSourceTable()))
+                && (this.getSourceColumn() == null ? other.getSourceColumn() == null : this.getSourceColumn().equals(other.getSourceColumn()))
+                && (this.getTargetCatalog() == null ? other.getTargetCatalog() == null : this.getTargetCatalog().equals(other.getTargetCatalog()))
+                && (this.getTargetDatabase() == null ? other.getTargetDatabase() == null : this.getTargetDatabase().equals(other.getTargetDatabase()))
+                && (this.getTargetTable() == null ? other.getTargetTable() == null : this.getTargetTable().equals(other.getTargetTable()))
+                && (this.getTargetColumn() == null ? other.getTargetColumn() == null : this.getTargetColumn().equals(other.getTargetColumn()))
+                && (this.getTransform() == null ? other.getTransform() == null : this.getTransform().equals(other.getTransform()))
+                && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
     }
 
     @Override

@@ -12,7 +12,6 @@ import java.io.Serializable;
  */
 @Data
 public abstract class BasicDTO implements Serializable {
-
     private Long createUserId;
 
     private Long modifyUserId;

@@ -1,7 +1,6 @@
 package com.lineage.server.domain.facade;
 
 import com.lineage.server.domain.entity.Catalog;
-import com.lineage.server.domain.entity.Plugin;
 import com.lineage.server.domain.entity.Task;
 
 /**

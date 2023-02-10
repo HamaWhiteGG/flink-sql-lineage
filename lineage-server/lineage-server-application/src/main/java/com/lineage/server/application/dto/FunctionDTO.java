@@ -1,6 +1,5 @@
 package com.lineage.server.application.dto;
 
-import com.lineage.server.domain.vo.FunctionId;
 import lombok.Data;
 
 /**
@@ -10,7 +9,7 @@ import lombok.Data;
  * @date: 2023/2/5 9:31 PM
  */
 @Data
-public class FunctionDTO extends BasicDTO{
+public class FunctionDTO extends BasicDTO {
 
     private Long functionId;
 
