@@ -7,6 +7,7 @@ import com.lineage.server.interfaces.result.ResultMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,8 +17,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -68,6 +72,22 @@ public class ExceptionHandlers {
         return Result.error(sb.toString());
     }
 
+    /**
+     * Thrown after the request entity verification fails in the Get request using @Valid to verify the path
+     */
+    @ExceptionHandler(BindException.class)
+    public Result<Boolean> handleBindExceptionHandler(BindException e) {
+        LOG.warn("bind exception", e);
+        BindingResult bindingResult = e.getBindingResult();
+        String errorMsg = bindingResult.getFieldErrors().stream()
+                .map(f -> f.getField().concat(": ").concat(Optional.ofNullable(f.getDefaultMessage()).orElse("")))
+                .collect(Collectors.joining("| "));
+        return Result.error(errorMsg);
+    }
+
+    /**
+     * Thrown after @Valid failure on @RequestBody is MethodArgumentNotValidException
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected Result<Boolean> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
         LOG.warn("method argument not valid", e);
@@ -75,7 +95,20 @@ public class ExceptionHandlers {
         String errorMsg = bindingResult.getFieldErrors().stream()
                 .map(f -> f.getField().concat(": ").concat(Optional.ofNullable(f.getDefaultMessage()).orElse("")))
                 .collect(Collectors.joining("| "));
-        return Result.error(String.format("Request error! invalid argument [%s]", errorMsg));
+        return Result.error(errorMsg);
+    }
+
+    /**
+     * Thrown after @Valid failure on @RequestParam is ConstraintViolationException
+     *
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected Result<Boolean> handleConstraintViolationException(final ConstraintViolationException e) {
+        LOG.warn("constraint violation exception", e);
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        return Result.error(violations.stream()
+                .map(v -> v.getPropertyPath().toString().concat(": ").concat(v.getMessage()))
+                .collect(Collectors.joining("| ")));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)

@@ -49,7 +49,7 @@ public class SwaggerConfig {
 
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
-                .title("FlinkSQL Lineage Restful API")
+                .title("FlinkSQL Lineage API")
                 .version("1.0.0")
                 .contact(new Contact("HamaWhite",
                         "https://github.com/HamaWhiteGG/flink-sql-lineage",

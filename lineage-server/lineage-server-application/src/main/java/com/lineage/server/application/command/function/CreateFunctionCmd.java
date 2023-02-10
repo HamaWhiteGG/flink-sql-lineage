@@ -1,27 +1,28 @@
-package com.lineage.server.application.cqe.command.function;
+package com.lineage.server.application.command.function;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
- * @description: UpdateFunctionCmd
+ * @description: CreateFunctionCmd
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 9:38 PM
+ * @date: 2023/2/5 9:37 PM
  */
 @Data
-public class UpdateFunctionCmd {
+public class
+CreateFunctionCmd {
 
-    @NotNull
-    private Long functionId;
-
+    @NotBlank
     private String functionName;
 
     private String functionFormat;
 
+    @NotBlank
     private String functionPath;
 
+    @NotBlank
     private String functionClass;
 
     private String descr;

@@ -2,6 +2,7 @@ package com.lineage.server.domain.repository;
 
 import com.github.pagehelper.PageInfo;
 import com.lineage.server.domain.entity.Task;
+import com.lineage.server.domain.query.task.TaskQuery;
 import com.lineage.server.domain.repository.basic.Repository;
 import com.lineage.server.domain.vo.TaskId;
 
@@ -13,7 +14,7 @@ import com.lineage.server.domain.vo.TaskId;
  */
 public interface TaskRepository extends Repository<Task, TaskId> {
 
-    PageInfo<Task> findAll(Integer pageNum, Integer pageSize);
+    PageInfo<Task> findAll(TaskQuery taskQuery);
 
     void saveTaskSql(Task task);
 

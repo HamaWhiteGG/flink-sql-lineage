@@ -1,6 +1,8 @@
 package com.lineage.server.domain.repository;
 
+import com.github.pagehelper.PageInfo;
 import com.lineage.server.domain.entity.Catalog;
+import com.lineage.server.domain.query.catalog.CatalogQuery;
 import com.lineage.server.domain.repository.basic.Repository;
 import com.lineage.server.domain.vo.CatalogId;
 
@@ -11,5 +13,6 @@ import com.lineage.server.domain.vo.CatalogId;
  * @date: 2023/2/5 12:17 PM
  */
 public interface CatalogRepository extends Repository<Catalog, CatalogId> {
+    PageInfo<Catalog> findAll(CatalogQuery catalogQuery);
 }
 

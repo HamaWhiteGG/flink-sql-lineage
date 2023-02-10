@@ -21,6 +21,8 @@ public class ResultMessage {
 
     public static final String QUERY_SUCCESS = "query success";
 
+    public static final String CHECK_SUCCESS = "check success";
+
     public static final String QUERY_FAILED = "query failed";
 
     public static final String DELETE_FAILED = "delete failed";

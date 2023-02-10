@@ -1,11 +1,16 @@
 package com.lineage.server.application.service.impl;
 
+import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.application.assembler.DtoAssembler;
-import com.lineage.server.application.cqe.command.function.CreateFunctionCmd;
-import com.lineage.server.application.cqe.command.function.UpdateFunctionCmd;
+import com.lineage.server.application.command.function.CreateFunctionCmd;
+import com.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
 import com.lineage.server.application.service.FunctionService;
 import com.lineage.server.domain.entity.Function;
+import com.lineage.server.domain.entity.Plugin;
+import com.lineage.server.domain.query.function.FunctionCheck;
+import com.lineage.server.domain.query.function.FunctionQuery;
 import com.lineage.server.domain.repository.FunctionRepository;
 import com.lineage.server.domain.vo.FunctionId;
 import org.springframework.stereotype.Service;
@@ -48,6 +53,17 @@ public class FunctionServiceImpl implements FunctionService {
     public FunctionDTO queryFunction(Long functionId) {
         Function function = repository.find(new FunctionId(functionId));
         return assembler.fromFunction(function);
+    }
+
+    @Override
+    public Boolean checkFunctionExist(FunctionCheck functionCheck) {
+        return repository.find(functionCheck.getFunctionName());
+    }
+
+    @Override
+    public PageInfo<FunctionDTO> queryFunctions(FunctionQuery functionQuery) {
+        PageInfo<Function> pageInfo = repository.findAll(functionQuery);
+        return PageUtils.convertPage(pageInfo, assembler::fromFunction);
     }
 
     @Override

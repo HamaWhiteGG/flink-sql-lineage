@@ -3,9 +3,10 @@ package com.lineage.server.application.service.impl;
 import com.github.pagehelper.PageInfo;
 import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.application.assembler.DtoAssembler;
-import com.lineage.server.application.cqe.command.task.CreateTaskCmd;
-import com.lineage.server.application.cqe.command.task.UpdateTaskCmd;
-import com.lineage.server.application.cqe.query.task.TaskQuery;
+import com.lineage.server.application.command.task.CreateTaskCmd;
+import com.lineage.server.application.command.task.UpdateTaskCmd;
+import com.lineage.server.domain.query.task.TaskCheck;
+import com.lineage.server.domain.query.task.TaskQuery;
 import com.lineage.server.application.dto.TaskDTO;
 import com.lineage.server.application.service.TaskService;
 import com.lineage.server.domain.entity.Catalog;
@@ -72,8 +73,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Boolean checkTaskExist(TaskCheck taskCheck) {
+        return taskRepository.find(taskCheck.getTaskName());
+    }
+
+    @Override
     public PageInfo<TaskDTO> queryTasks(TaskQuery taskQuery) {
-        PageInfo<Task> pageInfo = taskRepository.findAll(taskQuery.getPageNum(), taskQuery.getPageSize());
+        PageInfo<Task> pageInfo = taskRepository.findAll(taskQuery);
         return PageUtils.convertPage(pageInfo, assembler::fromTask);
     }
 

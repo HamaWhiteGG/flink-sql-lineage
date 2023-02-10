@@ -8,6 +8,7 @@ import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.domain.entity.Task;
 import com.lineage.server.domain.entity.TaskLineage;
 import com.lineage.server.domain.entity.TaskSql;
+import com.lineage.server.domain.query.task.TaskQuery;
 import com.lineage.server.domain.repository.TaskRepository;
 import com.lineage.server.domain.vo.TaskId;
 import com.lineage.server.infrastructure.persistence.converter.DataConverter;
@@ -15,15 +16,14 @@ import com.lineage.server.infrastructure.persistence.dos.TaskDO;
 import com.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
 import com.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
 import com.lineage.server.infrastructure.persistence.mapper.*;
-import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 /**
  * @description: TaskRepositoryImpl
@@ -32,7 +32,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  * @date: 2023/1/23 10:27 PM
  */
 @Repository
-public class TaskRepositoryImpl implements TaskRepository {
+public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskRepository {
     @Resource
     private TaskMapper taskMapper;
 
@@ -52,6 +52,12 @@ public class TaskRepositoryImpl implements TaskRepository {
                         new LineageException(String.format("taskId [%s] is not existed", taskId.getValue()))
                 );
         return converter.toTask(taskDO);
+    }
+
+
+    @Override
+    public boolean find(String name) {
+        return !taskMapper.select(completer -> completer.where(taskName, isEqualTo(name))).isEmpty();
     }
 
     @Override
@@ -108,9 +114,14 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public PageInfo<Task> findAll(Integer pageNum, Integer pageSize) {
-        try (Page<TaskDO> page = PageMethod.startPage(pageNum, pageSize)) {
-            PageInfo<TaskDO> pageInfo = page.doSelectPageInfo(() -> taskMapper.select(SelectDSLCompleter.allRows()));
+    public PageInfo<Task> findAll(TaskQuery taskQuery) {
+        try (Page<TaskDO> page = PageMethod.startPage(taskQuery.getPageNum(), taskQuery.getPageSize())) {
+            PageInfo<TaskDO> pageInfo = page.doSelectPageInfo(() ->
+                    taskMapper.select(completer ->
+                            completer.where(taskName, isLike(buildLikeValue(taskQuery.getTaskName())))
+                                    .orderBy(buildSortSpecification(taskQuery))
+                    )
+            );
             return PageUtils.convertPage(pageInfo, converter::toTask);
         }
     }

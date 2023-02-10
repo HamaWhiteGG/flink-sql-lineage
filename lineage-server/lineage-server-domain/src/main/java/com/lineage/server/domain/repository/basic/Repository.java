@@ -6,27 +6,25 @@ package com.lineage.server.domain.repository.basic;
  * @version: 1.0.0
  * @date: 2023/2/4 10:04 PM
  */
-public interface Repository<T extends Entity, I extends Identifier> {
+public interface Repository<T extends Entity, ID extends Identifier> {
 
     /**
-     * Attach an Aggregate to a Repository to make it traceable
+     * Attach an aggregate to a repository to make it traceable
      */
     default void attach(T entity) {
-        // TODO
     }
-
 
     /**
-     * Detach an Aggregate
+     * Detach an aggregate
      */
     default void detach(T entity) {
-        // TODO
     }
 
-    T find(I id);
+    T find(ID id);
 
     T save(T entity);
 
-    void remove(I id);
-
+    void remove(ID id);
+    
+    boolean find(String name);
 }

@@ -1,9 +1,12 @@
 package com.lineage.server.interfaces.controller;
 
-import com.lineage.server.application.cqe.command.catalog.CreateCatalogCmd;
-import com.lineage.server.application.cqe.command.catalog.UpdateCatalogCmd;
+import com.github.pagehelper.PageInfo;
+import com.lineage.server.application.command.catalog.CreateCatalogCmd;
+import com.lineage.server.application.command.catalog.UpdateCatalogCmd;
 import com.lineage.server.application.dto.CatalogDTO;
 import com.lineage.server.application.service.CatalogService;
+import com.lineage.server.domain.query.catalog.CatalogCheck;
+import com.lineage.server.domain.query.catalog.CatalogQuery;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultMessage;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import javax.validation.Valid;
  * @version: 1.0.0
  * @date: 2023/2/5 12:29 PM
  */
+
 @RestController
 @RequestMapping("/catalogs")
 public class CatalogController {
@@ -31,10 +35,21 @@ public class CatalogController {
         return Result.success(ResultMessage.DETAIL_SUCCESS, catalogDTO);
     }
 
+    @GetMapping("")
+    public Result<PageInfo<CatalogDTO>> queryCatalogs(CatalogQuery catalogQuery) {
+        PageInfo<CatalogDTO> pageInfo = catalogService.queryCatalogs(catalogQuery);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
+    }
+
     @PostMapping("")
     public Result<Long> createCatalog(@Valid @RequestBody CreateCatalogCmd createCatalogCmd) {
         Long catalogId = catalogService.createCatalog(createCatalogCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, catalogId);
+    }
+
+    @GetMapping("/exist")
+    public Result<Boolean> checkCatalogExist(@Valid CatalogCheck catalogCheck) {
+        return Result.success(ResultMessage.CHECK_SUCCESS, catalogService.checkCatalogExist(catalogCheck));
     }
 
     @PutMapping("/{catalogId}")
