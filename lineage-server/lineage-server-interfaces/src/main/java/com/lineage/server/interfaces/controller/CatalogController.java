@@ -9,6 +9,7 @@ import com.lineage.server.domain.query.catalog.CatalogCheck;
 import com.lineage.server.domain.query.catalog.CatalogQuery;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,14 +21,13 @@ import javax.validation.Valid;
  * @version: 1.0.0
  * @date: 2023/2/5 12:29 PM
  */
-
 @RestController
+@Api(tags = "Catalogs API")
 @RequestMapping("/catalogs")
 public class CatalogController {
 
     @Resource
     private CatalogService catalogService;
-
 
     @GetMapping("/{catalogId}")
     public Result<CatalogDTO> queryCatalog(@PathVariable("catalogId") Long catalogId) {

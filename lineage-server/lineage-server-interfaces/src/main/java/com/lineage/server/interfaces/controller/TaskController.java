@@ -9,6 +9,7 @@ import com.lineage.server.domain.query.task.TaskCheck;
 import com.lineage.server.domain.query.task.TaskQuery;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
  * @date: 2023/1/23 8:06 PM
  */
 @RestController
+@Api(tags = "Tasks API")
 @RequestMapping("/tasks")
 public class TaskController {
 

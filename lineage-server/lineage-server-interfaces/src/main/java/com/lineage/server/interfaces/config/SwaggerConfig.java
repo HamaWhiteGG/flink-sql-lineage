@@ -8,6 +8,7 @@ import org.springframework.boot.actuate.endpoint.web.*;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
 import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointsSupplier;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -21,6 +22,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +37,9 @@ import java.util.List;
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {
+
+    @Resource
+    private ServerProperties serverProperties;
 
     @Bean
     public Docket createRestApi() {
@@ -53,6 +58,8 @@ public class SwaggerConfig {
                 .contact(new Contact("HamaWhite",
                         "https://github.com/HamaWhiteGG/flink-sql-lineage",
                         "baisongxx@gmail.com"))
+                .license("Apache License 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0.html")
                 .description("Do something together team")
                 .build();
     }
