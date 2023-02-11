@@ -10,8 +10,36 @@
 
     <fileSets>
         <fileSet>
+            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
+            <outputDirectory>${assembly.name}/lineage-server/</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-sources.jar</exclude>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target/classes/</directory>
+            <outputDirectory>${assembly.name}/lineage-server/conf/</outputDirectory>
+            <includes>
+                <include>application.properties</include>
+                <include>application-${profile.active}.properties</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/src/main/resources/</directory>
+            <outputDirectory>${assembly.name}/lineage-server/</outputDirectory>
+            <includes>
+                <include>scripts/mysql/*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
             <directory>${project.parent.basedir}/lineage-client/target</directory>
-            <outputDirectory>${assembly.name}/</outputDirectory>
+            <outputDirectory>${assembly.name}/lineage-client/</outputDirectory>
             <includes>
                 <include>*.jar</include>
             </includes>
@@ -22,7 +50,7 @@
 
         <fileSet>
             <directory>${project.parent.basedir}/lineage-client/target/lib</directory>
-            <outputDirectory>${assembly.name}/lib/</outputDirectory>
+            <outputDirectory>${assembly.name}/lineage-client/lib/</outputDirectory>
             <includes>
                 <include>*</include>
             </includes>

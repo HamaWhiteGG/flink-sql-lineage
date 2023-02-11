@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>lineage-server-start</artifactId>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.hw.lineage</groupId>
@@ -20,36 +20,15 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <profile.active>dev</profile.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <profile.active>test</profile.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <profile.active>prod</profile.active>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
+        <finalName>lineage-server-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>application*.properties</exclude>
+                    <exclude>mybatis/**</exclude>
+                    <exclude>scripts/**</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -63,6 +42,15 @@
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/MybatisGenerator.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
