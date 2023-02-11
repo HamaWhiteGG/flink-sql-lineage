@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 import static com.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalogName;
-import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
@@ -71,7 +70,7 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
         try (Page<CatalogDO> page = PageMethod.startPage(catalogQuery.getPageNum(), catalogQuery.getPageSize())) {
             PageInfo<CatalogDO> pageInfo = page.doSelectPageInfo(() ->
                     catalogMapper.select(completer ->
-                            completer.where(taskName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
+                            completer.where(catalogName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
                                     .orderBy(buildSortSpecification(catalogQuery))
                     )
             );

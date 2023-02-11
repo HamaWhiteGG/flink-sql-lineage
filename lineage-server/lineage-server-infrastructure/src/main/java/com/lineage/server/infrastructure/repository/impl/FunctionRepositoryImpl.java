@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 import static com.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport.functionName;
-import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
@@ -72,7 +71,7 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
         try (Page<FunctionDO> page = PageMethod.startPage(functionQuery.getPageNum(), functionQuery.getPageSize())) {
             PageInfo<FunctionDO> pageInfo = page.doSelectPageInfo(() ->
                     functionMapper.select(completer ->
-                            completer.where(taskName, isLike(buildLikeValue(functionQuery.getFunctionName())))
+                            completer.where(functionName, isLike(buildLikeValue(functionQuery.getFunctionName())))
                                     .orderBy(buildSortSpecification(functionQuery))
                     )
             );
