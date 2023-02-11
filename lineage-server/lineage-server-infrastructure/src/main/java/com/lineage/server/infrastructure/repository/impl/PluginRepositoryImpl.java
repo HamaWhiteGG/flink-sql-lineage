@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 import static com.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.pluginName;
-import static com.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
@@ -69,7 +68,7 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
         try (Page<PluginDO> page = PageMethod.startPage(pluginQuery.getPageNum(), pluginQuery.getPageSize())) {
             PageInfo<PluginDO> pageInfo = page.doSelectPageInfo(() ->
                     pluginMapper.select(completer ->
-                            completer.where(taskName, isLike(buildLikeValue(pluginQuery.getPluginName())))
+                            completer.where(pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
                                     .orderBy(buildSortSpecification(pluginQuery))
                     )
             );
