@@ -3,7 +3,8 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="application.properties"/>
+    <!-- read the configuration in the dev environment to generate code -->
+    <properties resource="application-dev.properties"/>
 
     <context id="dsql" targetRuntime="MyBatis3DynamicSql" defaultModelType="flat">
         <property name="javaFileEncoding" value="UTF-8"/>

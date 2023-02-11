@@ -4,7 +4,7 @@ package com.lineage.server.infrastructure.persistence.dos;
  * @description: This class corresponds to the database table rel_task_lineage
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/02/11 00:39:34
+ * @date: 2023/02/11 21:16:44
  *
  * @mbg.generated
  */
