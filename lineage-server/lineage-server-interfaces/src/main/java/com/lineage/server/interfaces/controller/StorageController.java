@@ -1,6 +1,7 @@
 package com.lineage.server.interfaces.controller;
 
 import com.lineage.server.application.service.StorageService;
+import com.lineage.server.interfaces.aspect.SkipAspect;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
@@ -27,19 +28,20 @@ public class StorageController {
     @javax.annotation.Resource
     private StorageService storageService;
 
+    @SkipAspect
     @PostMapping("")
     public Result<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String filePath = storageService.uploadFile(file);
         return Result.success(ResultMessage.UPLOAD_SUCCESS, filePath);
     }
 
+    @SkipAspect
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName) throws MalformedURLException {
         Resource file = storageService.downloadFile(fileName);
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=" + file.getFilename())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getFilename())
                 .body(file);
     }
 
