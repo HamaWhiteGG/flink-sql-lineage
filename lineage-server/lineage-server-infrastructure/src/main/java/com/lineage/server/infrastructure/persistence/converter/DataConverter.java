@@ -14,7 +14,7 @@ import java.util.List;
  * @version: 1.0.0
  * @date: 2023/1/31 2:33 PM
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DataConverter {
     DataConverter INSTANCE = Mappers.getMapper(DataConverter.class);
 

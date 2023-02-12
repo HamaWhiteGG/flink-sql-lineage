@@ -1,11 +1,15 @@
 package com.lineage.server.application.service.impl;
 
+import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.application.assembler.DtoAssembler;
-import com.lineage.server.application.cqe.command.catalog.CreateCatalogCmd;
-import com.lineage.server.application.cqe.command.catalog.UpdateCatalogCmd;
+import com.lineage.server.application.command.catalog.CreateCatalogCmd;
+import com.lineage.server.application.command.catalog.UpdateCatalogCmd;
 import com.lineage.server.application.dto.CatalogDTO;
 import com.lineage.server.application.service.CatalogService;
 import com.lineage.server.domain.entity.Catalog;
+import com.lineage.server.domain.query.catalog.CatalogCheck;
+import com.lineage.server.domain.query.catalog.CatalogQuery;
 import com.lineage.server.domain.repository.CatalogRepository;
 import com.lineage.server.domain.vo.CatalogId;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,9 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Resource
     private CatalogRepository repository;
+
+    @Resource
+    private DtoAssembler assembler;
 
     @Override
     public Long createCatalog(CreateCatalogCmd createCatalogCmd) {
@@ -44,7 +51,18 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public CatalogDTO queryCatalog(Long catalogId) {
         Catalog catalog = repository.find(new CatalogId(catalogId));
-        return DtoAssembler.INSTANCE.fromCatalog(catalog);
+        return assembler.fromCatalog(catalog);
+    }
+
+    @Override
+    public Boolean checkCatalogExist(CatalogCheck catalogCheck) {
+        return repository.find(catalogCheck.getCatalogName());
+    }
+
+    @Override
+    public PageInfo<CatalogDTO> queryCatalogs(CatalogQuery catalogQuery) {
+        PageInfo<Catalog> pageInfo = repository.findAll(catalogQuery);
+        return PageUtils.convertPage(pageInfo, assembler::fromCatalog);
     }
 
     @Override

@@ -1,6 +1,6 @@
-package com.lineage.server.application.cqe.query.task;
+package com.lineage.server.domain.query.task;
 
-import com.lineage.server.application.cqe.query.PageQuery;
+import com.lineage.server.domain.query.PageOrderCriteria;
 import lombok.Data;
 
 /**
@@ -10,7 +10,7 @@ import lombok.Data;
  * @date: 2023/1/29 11:50 AM
  */
 @Data
-public class TaskQuery extends PageQuery {
+public class TaskQuery extends PageOrderCriteria {
 
     private String taskName;
 }

@@ -1,4 +1,4 @@
-package com.lineage.server.application.cqe.command.catalog;
+package com.lineage.server.application.command.catalog;
 
 import com.hw.lineage.common.enums.CatalogType;
 import lombok.Data;

@@ -1,11 +1,15 @@
 package com.lineage.server.interfaces.controller;
 
-import com.lineage.server.application.cqe.command.function.CreateFunctionCmd;
-import com.lineage.server.application.cqe.command.function.UpdateFunctionCmd;
+import com.github.pagehelper.PageInfo;
+import com.lineage.server.application.command.function.CreateFunctionCmd;
+import com.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
 import com.lineage.server.application.service.FunctionService;
+import com.lineage.server.domain.query.function.FunctionCheck;
+import com.lineage.server.domain.query.function.FunctionQuery;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +22,7 @@ import javax.validation.Valid;
  * @date: 2023/2/5 12:28 PM
  */
 @RestController
+@Api(tags = "Functions API")
 @RequestMapping("/functions")
 public class FunctionController {
 
@@ -31,10 +36,21 @@ public class FunctionController {
         return Result.success(ResultMessage.DETAIL_SUCCESS, functionDTO);
     }
 
+    @GetMapping("")
+    public Result<PageInfo<FunctionDTO>> queryFunctions(FunctionQuery functionQuery) {
+        PageInfo<FunctionDTO> pageInfo = functionService.queryFunctions(functionQuery);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
+    }
+
     @PostMapping("")
     public Result<Long> createFunction(@Valid @RequestBody CreateFunctionCmd createFunctionCmd) {
         Long functionId = functionService.createFunction(createFunctionCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, functionId);
+    }
+
+    @GetMapping("/exist")
+    public Result<Boolean> checkFunctionExist(@Valid FunctionCheck functionCheck) {
+        return Result.success(ResultMessage.CHECK_SUCCESS, functionService.checkFunctionExist(functionCheck));
     }
 
     @PutMapping("/{functionId}")

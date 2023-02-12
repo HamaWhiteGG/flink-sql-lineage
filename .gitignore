@@ -56,3 +56,5 @@ node_modules
 package-lock.json
 
 data/tmp
+data/storage
+data/logs
