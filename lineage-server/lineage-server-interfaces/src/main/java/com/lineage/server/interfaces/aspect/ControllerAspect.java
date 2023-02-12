@@ -7,6 +7,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 /**
  * @description: ControllerAspect
@@ -21,17 +22,22 @@ public class ControllerAspect {
 
     @Around("execution(* com.lineage.server.interfaces.controller..*.*(..)) ")
     public Object interceptor(ProceedingJoinPoint pjp) throws Throwable {
-        long beginTime = System.currentTimeMillis();
         MethodSignature signature = (MethodSignature) pjp.getSignature();
 
         if (signature.getMethod().getAnnotation(SkipAspect.class) != null) {
             return pjp.proceed();
         }
-        String method = signature.getMethod().getName();
+
+        String methodName = signature.getName();
+        String method = signature.getDeclaringType().getSimpleName() + "." + methodName;
+
+        // measure method execution time
+        StopWatch stopWatch = new StopWatch(method);
         LOG.info("method: {}, param: {}", method, pjp.getArgs());
+        stopWatch.start(methodName);
         Object result = pjp.proceed();
-        long time = System.currentTimeMillis() - beginTime;
-        LOG.info("method: {}, param: {}, result: {}, time: {} ms", method, pjp.getArgs(), result, time);
+        stopWatch.stop();
+        LOG.info("method: {}, time: {} ms, param: {}, result: {}", method, stopWatch.getTotalTimeMillis(), pjp.getArgs(), result);
         return result;
     }
 }
