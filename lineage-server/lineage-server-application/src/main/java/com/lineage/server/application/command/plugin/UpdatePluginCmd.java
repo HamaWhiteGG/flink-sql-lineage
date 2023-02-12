@@ -1,4 +1,4 @@
-package com.lineage.server.application.cqe.command.plugin;
+package com.lineage.server.application.command.plugin;
 
 import lombok.Data;
 

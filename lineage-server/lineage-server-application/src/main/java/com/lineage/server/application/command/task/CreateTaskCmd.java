@@ -1,29 +1,28 @@
-package com.lineage.server.application.cqe.command.task;
+package com.lineage.server.application.command.task;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * @description: UpdateTaskCmd
+ * @description: CreateTaskCmd
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/29 11:49 AM
+ * @date: 2023/1/29 11:40 AM
  */
 @Data
-public class UpdateTaskCmd {
+public class CreateTaskCmd {
 
-    @NotNull
-    private Long taskId;
-
+    @NotBlank
     private String taskName;
 
     private String descr;
 
+    @NotNull
     private Long pluginId;
 
+    @NotNull
     private Long catalogId;
-
-    private String source;
 
 }

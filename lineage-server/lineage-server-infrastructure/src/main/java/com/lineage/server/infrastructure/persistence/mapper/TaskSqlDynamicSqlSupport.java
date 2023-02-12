@@ -2,10 +2,9 @@ package com.lineage.server.infrastructure.persistence.mapper;
 
 import com.hw.lineage.common.enums.ParseStatus;
 import com.hw.lineage.common.enums.SqlType;
+import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
-
-import java.sql.JDBCType;
 
 public final class TaskSqlDynamicSqlSupport {
     public static final TaskSql taskSql = new TaskSql();
@@ -34,7 +33,7 @@ public final class TaskSqlDynamicSqlSupport {
 
         public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
 
-        public final SqlColumn<SqlType> sqlType = column("sql_type", JDBCType.TINYINT, "com.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler");
+        public final SqlColumn<SqlType> sqlType = column("sql_type", JDBCType.VARCHAR, "com.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler");
 
         public final SqlColumn<ParseStatus> parseStatus = column("parse_status", JDBCType.TINYINT, "com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler");
 

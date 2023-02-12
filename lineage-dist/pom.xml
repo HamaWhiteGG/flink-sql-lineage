@@ -13,7 +13,7 @@
 
 
     <properties>
-        <assembly.name>lineage-client-${project.version}</assembly.name>
+        <assembly.name>flink-sql-lineage-${project.version}</assembly.name>
     </properties>
 
     <dependencies>
@@ -34,6 +34,13 @@
             <artifactId>lineage-flink1.16.x</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.hw.lineage</groupId>
+            <artifactId>lineage-server-start</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

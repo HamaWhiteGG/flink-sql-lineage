@@ -14,7 +14,7 @@ import java.util.List;
  * @version: 1.0.0
  * @date: 2023/1/29 5:06 PM
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DtoAssembler {
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 

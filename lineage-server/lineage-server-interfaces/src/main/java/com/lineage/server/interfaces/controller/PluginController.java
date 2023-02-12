@@ -1,11 +1,15 @@
 package com.lineage.server.interfaces.controller;
 
-import com.lineage.server.application.cqe.command.plugin.CreatePluginCmd;
-import com.lineage.server.application.cqe.command.plugin.UpdatePluginCmd;
+import com.github.pagehelper.PageInfo;
+import com.lineage.server.application.command.plugin.CreatePluginCmd;
+import com.lineage.server.application.command.plugin.UpdatePluginCmd;
 import com.lineage.server.application.dto.PluginDTO;
 import com.lineage.server.application.service.PluginService;
+import com.lineage.server.domain.query.plugin.PluginCheck;
+import com.lineage.server.domain.query.plugin.PluginQuery;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +22,7 @@ import javax.validation.Valid;
  * @date: 2023/2/5 12:28 PM
  */
 @RestController
+@Api(tags = "Plugins API")
 @RequestMapping("/plugins")
 public class PluginController {
 
@@ -30,10 +35,21 @@ public class PluginController {
         return Result.success(ResultMessage.DETAIL_SUCCESS, pluginDTO);
     }
 
+    @GetMapping("")
+    public Result<PageInfo<PluginDTO>> queryPlugins(PluginQuery pluginQuery) {
+        PageInfo<PluginDTO> pageInfo = pluginService.queryPlugins(pluginQuery);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
+    }
+
     @PostMapping("")
     public Result<Long> createPlugin(@Valid @RequestBody CreatePluginCmd createPluginCmd) {
         Long pluginId = pluginService.createPlugin(createPluginCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, pluginId);
+    }
+
+    @GetMapping("/exist")
+    public Result<Boolean> checkPluginExist(@Valid PluginCheck pluginCheck) {
+        return Result.success(ResultMessage.CHECK_SUCCESS, pluginService.checkPluginExist(pluginCheck));
     }
 
     @PutMapping("/{pluginId}")

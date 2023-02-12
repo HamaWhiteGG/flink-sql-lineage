@@ -25,7 +25,7 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
 @Service
 public class TaskDomainServiceImpl implements TaskDomainService {
 
-    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, INSERT,DROP);
+    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, INSERT, DROP);
 
     @Override
     public void buildTaskSql(Task task) {

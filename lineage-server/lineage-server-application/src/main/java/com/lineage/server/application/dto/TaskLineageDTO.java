@@ -2,6 +2,8 @@ package com.lineage.server.application.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @description: TaskLineageDTO
  * @author: HamaWhite
@@ -9,8 +11,7 @@ import lombok.Data;
  * @date: 2023/2/7 11:55 PM
  */
 @Data
-public class TaskLineageDTO {
-
+public class TaskLineageDTO implements Serializable {
     private Long taskId;
 
     private Integer sqlId;

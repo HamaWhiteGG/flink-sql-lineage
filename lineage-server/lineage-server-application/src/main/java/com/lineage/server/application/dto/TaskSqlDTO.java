@@ -4,6 +4,8 @@ import com.hw.lineage.common.enums.ParseStatus;
 import com.hw.lineage.common.enums.SqlType;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @description: TaskSqlDTO
  * @author: HamaWhite
@@ -11,8 +13,7 @@ import lombok.Data;
  * @date: 2023/2/7 11:55 PM
  */
 @Data
-public class TaskSqlDTO {
-
+public class TaskSqlDTO implements Serializable {
     private Long taskId;
 
     private Integer sqlId;

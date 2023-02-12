@@ -10,7 +10,7 @@ import lombok.Data;
  * @date: 2023/2/5 9:30 PM
  */
 @Data
-public class CatalogDTO  extends BasicDTO{
+public class CatalogDTO extends BasicDTO {
 
     private Long catalogId;
 
