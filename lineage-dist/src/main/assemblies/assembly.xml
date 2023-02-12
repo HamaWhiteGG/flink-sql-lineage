@@ -24,6 +24,7 @@
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target/classes/</directory>
             <outputDirectory>${assembly.name}/lineage-server/conf/</outputDirectory>
             <includes>
+                <include>logback-spring.xml</include>
                 <include>application.properties</include>
                 <include>application-${profile.active}.properties</include>
             </includes>
