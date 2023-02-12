@@ -28,15 +28,15 @@ public class LineageFacadeImpl implements LineageFacade {
     private static final Logger LOG = LoggerFactory.getLogger(LineageFacadeImpl.class);
 
     @Resource
-    private LineageConfig lineageConfig;
+    private LineageConfig config;
 
     private LineageClient lineageClient;
 
     @PostConstruct
     public void initLineageClient() {
-        LOG.info("start loading plugins, directory: {}", lineageConfig.getPluginDir());
-        this.lineageClient = new LineageClient(lineageConfig.getPluginDir());
-        LOG.info("finished loading plugins, directory: {}", lineageConfig.getPluginDir());
+        LOG.info("start loading plugins, directory: {}", config.getPluginDir());
+        this.lineageClient = new LineageClient(config.getPluginDir());
+        LOG.info("finished loading plugins, directory: {}", config.getPluginDir());
     }
 
     @Override

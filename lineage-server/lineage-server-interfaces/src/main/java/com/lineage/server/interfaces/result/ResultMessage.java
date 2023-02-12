@@ -23,6 +23,8 @@ public class ResultMessage {
 
     public static final String CHECK_SUCCESS = "check success";
 
+    public static final String UPLOAD_SUCCESS = "upload success";
+
     public static final String QUERY_FAILED = "query failed";
 
     public static final String DELETE_FAILED = "delete failed";

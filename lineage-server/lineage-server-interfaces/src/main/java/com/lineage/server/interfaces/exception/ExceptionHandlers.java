@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -48,6 +49,12 @@ public class ExceptionHandlers {
         return Result.error(message);
     }
 
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected Result<Boolean> handleIllegalArgumentException(final IllegalArgumentException exception) {
+        LOG.error("illegal argument exception", exception);
+        return Result.error(exception.getMessage());
+    }
 
     @ExceptionHandler(DuplicateKeyException.class)
     protected Result<Boolean> handleDuplicateKeyException(final DuplicateKeyException exception) {
@@ -114,6 +121,12 @@ public class ExceptionHandlers {
     protected Result<Boolean> handleMissingServletRequestParameterException(final MissingServletRequestParameterException e) {
         LOG.warn("missing servlet request parameter", e);
         return Result.error(String.format("%s parameter is missing", e.getParameterName()));
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    protected Result<Boolean> handleMissingServletRequestPartException(final MissingServletRequestPartException e) {
+        LOG.warn("missing servlet request part", e);
+        return Result.error(String.format("%s part is missing", e.getRequestPartName()));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

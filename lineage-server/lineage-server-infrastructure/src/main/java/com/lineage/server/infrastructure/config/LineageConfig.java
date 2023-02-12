@@ -17,4 +17,7 @@ public class LineageConfig {
 
     @Value("${lineage.plugin.dir}")
     private String pluginDir;
+
+    @Value("${lineage.storage.dir}")
+    private String storageDir;
 }
