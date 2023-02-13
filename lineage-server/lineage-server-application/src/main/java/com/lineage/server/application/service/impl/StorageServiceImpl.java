@@ -2,6 +2,7 @@ package com.lineage.server.application.service.impl;
 
 import com.lineage.server.application.service.StorageService;
 import com.lineage.server.domain.facade.StorageFacade;
+import com.lineage.server.domain.vo.Storage;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,10 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-
-import static com.hw.lineage.common.util.Constant.FILE_TYPE_JAR;
-import static com.hw.lineage.common.util.Preconditions.checkArgument;
-import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 
 /**
  * @description: StorageServiceImpl
@@ -33,30 +30,20 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String uploadFile(MultipartFile file) throws IOException {
-        checkArgument(!file.isEmpty(), "failed to store empty file.");
-
-        String fileName = file.getOriginalFilename();
-        // for sonar check
-        if (fileName != null) {
-            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            checkArgument(suffix.equalsIgnoreCase(FILE_TYPE_JAR),
-                    "file type is %s, only support %s", suffix, FILE_TYPE_JAR);
-        }
-
-        checkNotNull(fileName, "fileName cannot be null");
+        Storage storage = new Storage(file.getOriginalFilename());
         // store file
         try (InputStream inputStream = file.getInputStream()) {
-            return storageFacade.store(fileName, inputStream);
+            return storageFacade.store(storage, inputStream);
         }
     }
 
     @Override
     public void deleteFile(String fileName) throws IOException {
-        storageFacade.delete(fileName);
+        storageFacade.delete(new Storage(fileName));
     }
 
     @Override
     public Resource downloadFile(String fileName) throws MalformedURLException {
-        return storageFacade.loadAsResource(fileName);
+        return storageFacade.loadAsResource(new Storage(fileName));
     }
 }

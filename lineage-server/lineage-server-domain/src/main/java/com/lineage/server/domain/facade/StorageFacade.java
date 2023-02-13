@@ -1,5 +1,6 @@
 package com.lineage.server.domain.facade;
 
+import com.lineage.server.domain.vo.Storage;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -15,9 +16,9 @@ import java.net.MalformedURLException;
 public interface StorageFacade {
     void init() throws IOException;
 
-    String store(String fileName, InputStream inputStream) throws IOException ;
+    String store(Storage storage, InputStream inputStream) throws IOException ;
 
-    void delete(String fileName) throws IOException;
+    void delete(Storage storage) throws IOException;
 
-     Resource loadAsResource(String fileName) throws MalformedURLException;
+     Resource loadAsResource(Storage storage) throws MalformedURLException;
 }
