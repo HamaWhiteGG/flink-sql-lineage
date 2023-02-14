@@ -14,5 +14,4 @@ public class Constant {
 
     public static final String DELIMITER = ".";
 
-    public static String FILE_TYPE_JAR = "jar";
 }

@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import static com.hw.lineage.common.util.Preconditions.checkArgument;
+
 /**
  * @description: StorageController
  * @author: HamaWhite
@@ -31,6 +33,7 @@ public class StorageController {
     @SkipAspect
     @PostMapping("")
     public Result<String> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        checkArgument(!file.isEmpty(), "failed to store empty file.");
         String filePath = storageService.uploadFile(file);
         return Result.success(ResultMessage.UPLOAD_SUCCESS, filePath);
     }

@@ -2,6 +2,7 @@ package com.lineage.server.infrastructure.facede.impl;
 
 import com.hw.lineage.common.exception.LineageException;
 import com.lineage.server.domain.facade.StorageFacade;
+import com.lineage.server.domain.vo.Storage;
 import com.lineage.server.infrastructure.config.LineageConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,8 @@ public class StorageFacadeImpl implements StorageFacade {
     }
 
     @Override
-    public String store(String fileName, InputStream inputStream) throws IOException {
-        Path destPath = rootLocation.resolve(fileName);
+    public String store(Storage storage, InputStream inputStream) throws IOException {
+        Path destPath = buildPath(storage);
         if (Files.exists(destPath)) {
             LOG.warn("destPath {} already exists and will be replaced", destPath);
         }
@@ -53,17 +54,22 @@ public class StorageFacadeImpl implements StorageFacade {
     }
 
     @Override
-    public void delete(String fileName) throws IOException {
-        Files.deleteIfExists(rootLocation.resolve(fileName));
+    public void delete(Storage storage) throws IOException {
+        Files.deleteIfExists(buildPath(storage));
     }
 
     @Override
-    public Resource loadAsResource(String fileName) throws MalformedURLException {
-        Resource resource = new UrlResource(rootLocation.resolve(fileName).toUri());
+    public Resource loadAsResource(Storage storage) throws MalformedURLException {
+        Resource resource = new UrlResource(buildPath(storage).toUri());
         if (resource.exists() || resource.isReadable()) {
             return resource;
         } else {
-            throw new LineageException("could not read file: " + fileName);
+            throw new LineageException("could not read file: " + storage.getFileName());
         }
     }
+
+    private Path buildPath(Storage storage) {
+        return rootLocation.resolve(storage.getFileName());
+    }
+
 }
