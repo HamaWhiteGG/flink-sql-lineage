@@ -3,6 +3,7 @@ package com.hw.lineage.client;
 import com.google.common.collect.Lists;
 import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.exception.LineageException;
+import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.util.Preconditions;
@@ -97,6 +98,14 @@ public class LineageClient {
             service.execute(singleSql);
         }
     }
+
+    public List<FunctionResult> parseFunction(String pluginName, File file) throws IOException, ClassNotFoundException {
+        LineageService service = getLineageService(pluginName);
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
+            return service.parseFunction(file);
+        }
+    }
+
 
     private LineageService getLineageService(String pluginName) {
         LineageService lineageService = lineageServiceMap.get(pluginName);

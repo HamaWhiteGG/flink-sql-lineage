@@ -1,7 +1,9 @@
 package com.lineage.server.interfaces.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.result.FunctionResult;
 import com.lineage.server.application.command.function.CreateFunctionCmd;
+import com.lineage.server.application.command.function.ParseFunctionCmd;
 import com.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
 import com.lineage.server.application.service.FunctionService;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @description: FunctionController
@@ -67,4 +71,10 @@ public class FunctionController {
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
+    @PostMapping("/parse")
+    public Result<List<FunctionResult>> parseFunction(@Valid @RequestBody ParseFunctionCmd parseFunctionCmd)
+            throws IOException, ClassNotFoundException {
+        List<FunctionResult> functionDTOList = functionService.parseFunction(parseFunctionCmd);
+        return Result.success(ResultMessage.PARSE_FUNCTION_SUCCESS, functionDTOList);
+    }
 }

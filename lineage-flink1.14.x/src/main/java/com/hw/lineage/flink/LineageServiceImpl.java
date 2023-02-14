@@ -2,6 +2,7 @@ package com.hw.lineage.flink;
 
 
 import com.hw.lineage.common.enums.CatalogType;
+import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.service.LineageService;
 import org.apache.calcite.plan.RelOptTable;
@@ -15,7 +16,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.connector.jdbc.catalog.JdbcCatalog;
+import org.apache.flink.shaded.guava30.com.google.common.base.CaseFormat;
+import org.apache.flink.shaded.guava30.com.google.common.collect.ImmutableMap;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.annotation.FunctionHint;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableConfig;
 import org.apache.flink.table.api.TableException;
@@ -27,6 +31,10 @@ import org.apache.flink.table.catalog.CatalogManager;
 import org.apache.flink.table.catalog.FunctionCatalog;
 import org.apache.flink.table.catalog.GenericInMemoryCatalog;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
+import org.apache.flink.table.functions.AggregateFunction;
+import org.apache.flink.table.functions.ScalarFunction;
+import org.apache.flink.table.functions.TableAggregateFunction;
+import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.table.operations.CatalogSinkModifyOperation;
 import org.apache.flink.table.operations.Operation;
 import org.apache.flink.table.planner.calcite.FlinkRelBuilder;
@@ -41,9 +49,16 @@ import org.apache.flink.table.planner.plan.trait.MiniBatchInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Constant.DELIMITER;
 
@@ -55,6 +70,14 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  */
 public class LineageServiceImpl implements LineageService {
     private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);
+
+    private static final Map<String, String> FUNCTION_SUFFIX_MAP = ImmutableMap.of(
+            ScalarFunction.class.getName(), "udf",
+            TableFunction.class.getName(), "udtf",
+            AggregateFunction.class.getName(), "udaf",
+            TableAggregateFunction.class.getName(), "udtaf"
+    );
+
     private TableEnvironmentImpl tableEnv;
     private FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
@@ -102,13 +125,11 @@ public class LineageServiceImpl implements LineageService {
         tableEnv.executeSql(singleSql);
     }
 
-
     @Override
     public List<LineageResult> parseFieldLineage(String singleSql) {
         /**
          * Since TableEnvironment is not thread-safe, add this sentence to solve it.
          * Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
-         *
          * http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
          */
         RelMetadataQueryBase.THREAD_PROVIDERS.set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
@@ -279,4 +300,77 @@ public class LineageServiceImpl implements LineageService {
                             sinkTable, queryFieldList, sinkFieldList));
         }
     }
+
+
+    @Override
+    public List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException {
+        List<FunctionResult> resultList = new ArrayList<>();
+        URL url = file.toURI().toURL();
+
+        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url},getClass().getClassLoader());
+             JarFile jarFile = new JarFile(file)) {
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                String entryName = entries.nextElement().getName();
+                if (entryName.endsWith(".class")) {
+                    String className = entryName.replace("/", ".").substring(0, entryName.length() - 6);
+                    // filter commons-compress.jar because of asm and org.apache.flink.table.functions.python.PythonScalarFunction
+                    if (!className.startsWith("org.apache.commons.compress.harmony")
+                            && !className.startsWith("org.apache.flink.table.functions")) {
+                        Class<?> clazz = classLoader.loadClass(className);
+                        if (clazz.getSuperclass() != null && FUNCTION_SUFFIX_MAP.containsKey(clazz.getSuperclass().getName())) {
+                            resultList.add(parseUserDefinedFunction(clazz));
+                        }
+                    }
+                }
+            }
+        }
+        return resultList;
+    }
+
+    public FunctionResult parseUserDefinedFunction(Class<?> clazz) {
+        String functionClass = clazz.getName();
+        String className = searchClassName(functionClass);
+        String functionName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, className);
+        // replace function with udf
+        functionName = functionName.replace("function", FUNCTION_SUFFIX_MAP.get(clazz.getSuperclass().getName()));
+        // consider only the case of one eval function
+        Optional<Method> methodOptional = Arrays.stream(clazz.getDeclaredMethods())
+                .filter(e -> "eval".equals(e.getName()))
+                .findFirst();
+
+        FunctionResult result = new FunctionResult();
+        result.setFunctionClass(functionClass);
+        result.setFunctionName(functionName);
+
+        if (methodOptional.isPresent()) {
+            Method method = methodOptional.get();
+            AtomicInteger atomicInteger = new AtomicInteger(1);
+            String parameters = Arrays.stream(method.getParameters())
+                    .map(parameter -> searchClassName(parameter.getType().getName() + atomicInteger.getAndIncrement()))
+                    .collect(Collectors.joining(","));
+
+            // set functionFormat
+            result.setFunctionFormat(String.format("%s(%s)", functionName, parameters));
+
+            // use function return type as description
+            result.setDescr(buildFunctionReturnType(clazz, method));
+        }
+        return result;
+    }
+
+    private String buildFunctionReturnType(Class<?> clazz, Method method) {
+        if (clazz.getSuperclass().isAssignableFrom(TableFunction.class)
+                && clazz.isAnnotationPresent(FunctionHint.class)) {
+            return "return " + clazz.getAnnotation(FunctionHint.class).output().value();
+        }
+        return "return " + searchClassName(method.getReturnType().getName());
+    }
+
+
+    private String searchClassName(String value) {
+        return value.contains(".") ? value.substring(value.lastIndexOf(".") + 1) : value;
+    }
+
+
 }

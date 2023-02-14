@@ -35,6 +35,8 @@ public class ResultMessage {
 
     public static final String PARSE_LINEAGE_SUCCESS = "parse lineage success";
 
+    public static final String PARSE_FUNCTION_SUCCESS = "parse function success";
+
     public static final String DETAIL_FAILED = "detail failed";
 
     public static final String NOT_FOUND_EXCEPTION = "not found exception";

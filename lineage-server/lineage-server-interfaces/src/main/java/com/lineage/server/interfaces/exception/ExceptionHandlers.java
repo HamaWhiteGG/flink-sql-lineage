@@ -1,6 +1,5 @@
 package com.lineage.server.interfaces.exception;
 
-import com.hw.lineage.common.exception.LineageException;
 import com.lineage.server.interfaces.result.Result;
 import com.lineage.server.interfaces.result.ResultCode;
 import com.lineage.server.interfaces.result.ResultMessage;
@@ -43,12 +42,8 @@ public class ExceptionHandlers {
     @ExceptionHandler(Exception.class)
     protected Result<Boolean> handleExceptionHandler(final Exception exception) {
         LOG.error(exception.getMessage(), exception);
-        String message = exception instanceof LineageException
-                ? exception.getMessage()
-                : "system error, please check the log";
-        return Result.error(message);
+        return Result.error(exception.getMessage());
     }
-
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected Result<Boolean> handleIllegalArgumentException(final IllegalArgumentException exception) {

@@ -1,20 +1,31 @@
 package com.lineage.server.application.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.util.PageUtils;
 import com.lineage.server.application.assembler.DtoAssembler;
 import com.lineage.server.application.command.function.CreateFunctionCmd;
+import com.lineage.server.application.command.function.ParseFunctionCmd;
 import com.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.lineage.server.application.dto.FunctionDTO;
 import com.lineage.server.application.service.FunctionService;
 import com.lineage.server.domain.entity.Function;
+import com.lineage.server.domain.entity.Plugin;
+import com.lineage.server.domain.facade.LineageFacade;
+import com.lineage.server.domain.facade.StorageFacade;
 import com.lineage.server.domain.query.function.FunctionCheck;
 import com.lineage.server.domain.query.function.FunctionQuery;
 import com.lineage.server.domain.repository.FunctionRepository;
+import com.lineage.server.domain.repository.PluginRepository;
 import com.lineage.server.domain.vo.FunctionId;
+import com.lineage.server.domain.vo.PluginId;
+import com.lineage.server.domain.vo.Storage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @description: FunctionServiceImpl
@@ -26,7 +37,16 @@ import javax.annotation.Resource;
 public class FunctionServiceImpl implements FunctionService {
 
     @Resource
-    private FunctionRepository repository;
+    private FunctionRepository functionRepository;
+
+    @Resource
+    private PluginRepository pluginRepository;
+
+    @Resource
+    private StorageFacade storageFacade;
+
+    @Resource
+    private LineageFacade lineageFacade;
 
     @Resource
     private DtoAssembler assembler;
@@ -44,30 +64,30 @@ public class FunctionServiceImpl implements FunctionService {
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
 
-        function = repository.save(function);
+        function = functionRepository.save(function);
         return function.getFunctionId().getValue();
     }
 
     @Override
     public FunctionDTO queryFunction(Long functionId) {
-        Function function = repository.find(new FunctionId(functionId));
+        Function function = functionRepository.find(new FunctionId(functionId));
         return assembler.fromFunction(function);
     }
 
     @Override
     public Boolean checkFunctionExist(FunctionCheck functionCheck) {
-        return repository.find(functionCheck.getFunctionName());
+        return functionRepository.find(functionCheck.getFunctionName());
     }
 
     @Override
     public PageInfo<FunctionDTO> queryFunctions(FunctionQuery functionQuery) {
-        PageInfo<Function> pageInfo = repository.findAll(functionQuery);
+        PageInfo<Function> pageInfo = functionRepository.findAll(functionQuery);
         return PageUtils.convertPage(pageInfo, assembler::fromFunction);
     }
 
     @Override
     public void deleteFunction(Long functionId) {
-        repository.remove(new FunctionId(functionId));
+        functionRepository.remove(new FunctionId(functionId));
     }
 
     @Override
@@ -81,6 +101,16 @@ public class FunctionServiceImpl implements FunctionService {
                 .setDescr(updateFunctionCmd.getDescr());
 
         function.setModifyTime(System.currentTimeMillis());
-        repository.save(function);
+        functionRepository.save(function);
+    }
+
+    @Override
+    public List<FunctionResult> parseFunction(ParseFunctionCmd parseFunctionCmd) throws IOException,ClassNotFoundException{
+        String fileName=parseFunctionCmd.getFileName();
+        File file = storageFacade.loadAsResource(new Storage(fileName)).getFile();
+        Plugin plugin=pluginRepository.find(new PluginId(parseFunctionCmd.getPluginId()));
+        // parse function info
+       return lineageFacade.parseFunction(plugin.getPluginName(),file);
+
     }
 }
