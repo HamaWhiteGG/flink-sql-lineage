@@ -113,7 +113,7 @@ public class TaskServiceImpl implements TaskService {
         taskDomainService.buildTaskSql(task);
         taskRepository.saveTaskSql(task);
 
-        lineageFacade.parseLineage(task, plugin.getPluginName(), catalog);
+        lineageFacade.parseLineage(plugin.getPluginName(), task, catalog);
         taskRepository.saveTaskLineage(task);
 
         return assembler.fromTask(task);
