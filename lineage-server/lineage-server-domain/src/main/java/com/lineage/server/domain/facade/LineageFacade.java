@@ -1,7 +1,13 @@
 package com.lineage.server.domain.facade;
 
+import com.hw.lineage.common.result.FunctionResult;
 import com.lineage.server.domain.entity.Catalog;
+import com.lineage.server.domain.entity.Function;
 import com.lineage.server.domain.entity.Task;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @description: LineageService
@@ -11,6 +17,7 @@ import com.lineage.server.domain.entity.Task;
  */
 public interface LineageFacade {
 
-    void parseLineage(Task task, String pluginName, Catalog catalog);
+    void parseLineage(String pluginName,Task task,Catalog catalog);
 
+    List<FunctionResult> parseFunction(String pluginName, File file) throws IOException, ClassNotFoundException;
 }

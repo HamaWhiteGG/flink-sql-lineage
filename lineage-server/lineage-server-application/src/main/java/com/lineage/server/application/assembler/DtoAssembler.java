@@ -33,7 +33,7 @@ public interface DtoAssembler {
     @Mapping(source = "pluginId.value", target = "pluginId")
     PluginDTO fromPlugin(Plugin plugin);
 
-    List<TaskDTO> fromTaskList(List<Task> task);
+    List<TaskDTO> fromTaskList(List<Task> taskList);
 
     @Mapping(source = "taskId.value", target = "taskId")
     @Mapping(source = "sqlId.value", target = "sqlId")
@@ -42,4 +42,6 @@ public interface DtoAssembler {
     @Mapping(source = "taskId.value", target = "taskId")
     @Mapping(source = "sqlId.value", target = "sqlId")
     TaskLineageDTO fromTaskLineage(TaskLineage taskLineage);
+
+    List<FunctionDTO> fromFunctionList(List<Function> functionList);
 }

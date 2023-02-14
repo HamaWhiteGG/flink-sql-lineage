@@ -2,8 +2,11 @@ package com.hw.lineage.common.service;
 
 import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.plugin.Plugin;
+import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,4 +31,9 @@ public interface LineageService extends Plugin {
      * Execute the single sql
      */
     void execute(String singleSql);
+
+    /**
+     * Parse the function name, function format, function main class and description from the jar file
+     */
+    List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException;
 }
