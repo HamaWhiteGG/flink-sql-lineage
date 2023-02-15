@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
  * @description: CreateCatalogCmd
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 9:32 PM
  */
 @Data
 public class CreateCatalogCmd {

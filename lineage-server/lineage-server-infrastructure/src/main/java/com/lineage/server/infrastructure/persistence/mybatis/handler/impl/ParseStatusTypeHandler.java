@@ -7,7 +7,6 @@ import com.lineage.server.infrastructure.persistence.mybatis.handler.IntEnumType
  * @description: ParseStatusTypeHandler
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/4 9:15 PM
  */
 public class ParseStatusTypeHandler extends IntEnumTypeHandler<ParseStatus> {
     public ParseStatusTypeHandler() {

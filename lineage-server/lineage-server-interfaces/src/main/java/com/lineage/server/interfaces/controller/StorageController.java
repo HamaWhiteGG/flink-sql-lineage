@@ -20,7 +20,6 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
  * @description: StorageController
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/12 2:49 PM
  */
 @RestController
 @Api(tags = "Storages API")

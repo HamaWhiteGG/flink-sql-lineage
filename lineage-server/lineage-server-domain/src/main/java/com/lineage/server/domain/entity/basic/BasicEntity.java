@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
  * @description: BasicEntity
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/29 3:48 PM
  */
 @Data
 @Accessors(chain = true)

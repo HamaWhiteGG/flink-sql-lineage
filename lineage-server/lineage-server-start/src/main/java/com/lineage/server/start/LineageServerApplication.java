@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
  * @description: LineageServerApplication
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/23 8:35 PM
  */
 @SpringBootApplication(scanBasePackages = {"com.lineage.server.*"})
 public class LineageServerApplication {

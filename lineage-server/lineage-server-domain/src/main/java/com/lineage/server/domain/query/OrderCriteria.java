@@ -6,7 +6,6 @@ import lombok.Data;
  * @description: OrderCriteria
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/10 10:52 AM
  */
 @Data
 public class OrderCriteria {

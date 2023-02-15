@@ -30,7 +30,6 @@ import org.apache.calcite.plan.RelOptTable;
  * output column produced by a relational expression.
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/01/03 7:47 PM
  */
 public class RelColumnOrigin {
     //~ Instance fields --------------------------------------------------------

@@ -11,7 +11,6 @@ import java.net.URL;
  * Provides access to some common test resources.
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/17 12:31 AM
  */
 public abstract class PluginTestBase extends TestLogger {
 

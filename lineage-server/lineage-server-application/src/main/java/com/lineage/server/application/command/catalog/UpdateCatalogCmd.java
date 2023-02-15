@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
  * @description: UpdateCatalogCmd
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 9:34 PM
  */
 @Data
 public class UpdateCatalogCmd {

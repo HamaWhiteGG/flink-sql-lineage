@@ -20,7 +20,6 @@ import javax.annotation.Resource;
  * @description: CatalogServiceImpl
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:26 PM
  */
 @Service
 public class CatalogServiceImpl implements CatalogService {

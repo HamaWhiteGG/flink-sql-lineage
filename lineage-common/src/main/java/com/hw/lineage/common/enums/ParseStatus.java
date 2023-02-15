@@ -6,7 +6,6 @@ import com.hw.lineage.common.enums.basic.IntEnum;
  * @description: ParseStatus
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/4 8:20 PM
  */
 public enum ParseStatus implements IntEnum<ParseStatus> {
 

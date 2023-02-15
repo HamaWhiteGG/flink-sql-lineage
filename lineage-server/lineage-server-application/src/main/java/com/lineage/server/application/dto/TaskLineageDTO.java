@@ -8,7 +8,6 @@ import java.io.Serializable;
  * @description: TaskLineageDTO
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/7 11:55 PM
  */
 @Data
 public class TaskLineageDTO implements Serializable {

@@ -4,7 +4,6 @@ package com.lineage.server.interfaces.result;
  * @description: ResultCode
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/30 9:48 PM
  */
 public class ResultCode {
     private ResultCode() {

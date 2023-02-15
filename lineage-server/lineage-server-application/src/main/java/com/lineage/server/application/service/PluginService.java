@@ -11,7 +11,6 @@ import com.lineage.server.domain.query.plugin.PluginQuery;
  * @description: PluginService
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:26 PM
  */
 public interface PluginService {
 

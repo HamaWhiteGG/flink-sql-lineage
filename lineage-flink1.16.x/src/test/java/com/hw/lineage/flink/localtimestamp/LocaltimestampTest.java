@@ -8,7 +8,6 @@ import org.junit.Test;
  * @description: LocaltimestampTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2022/11/24 6:08 PM
  */
 public class LocaltimestampTest extends AbstractBasicTest {
 

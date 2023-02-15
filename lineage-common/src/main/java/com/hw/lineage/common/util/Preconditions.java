@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutionException;
  * @description: Preconditions
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 9:32 PM
  */
 public class Preconditions {
 

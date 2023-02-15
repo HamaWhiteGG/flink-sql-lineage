@@ -9,7 +9,6 @@ import com.hw.lineage.loader.service.TestService;
  * @description: DynamicClassA
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 11:53 PM
  */
 public class DynamicClassA implements TestService {
     @Override

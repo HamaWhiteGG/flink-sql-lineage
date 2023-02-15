@@ -19,7 +19,6 @@ import javax.validation.Valid;
  * @description: CatalogController
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:29 PM
  */
 @RestController
 @Api(tags = "Catalogs API")
