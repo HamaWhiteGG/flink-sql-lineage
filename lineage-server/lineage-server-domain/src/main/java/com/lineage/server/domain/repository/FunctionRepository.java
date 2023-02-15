@@ -10,7 +10,6 @@ import com.lineage.server.domain.vo.FunctionId;
  * @description: FunctionRepository
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:21 PM
  */
 public interface FunctionRepository extends Repository<Function, FunctionId> {
     PageInfo<Function> findAll(FunctionQuery functionQuery);

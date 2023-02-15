@@ -21,7 +21,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * @description: LineageFacadeImplTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/14 11:46 PM
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LineageServerApplication.class)

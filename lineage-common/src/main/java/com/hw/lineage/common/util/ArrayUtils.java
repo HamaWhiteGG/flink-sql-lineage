@@ -4,7 +4,6 @@ package com.hw.lineage.common.util;
  * @description: Utility class for Java arrays.
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 9:45 PM
  */
 public class ArrayUtils {
     private ArrayUtils() {

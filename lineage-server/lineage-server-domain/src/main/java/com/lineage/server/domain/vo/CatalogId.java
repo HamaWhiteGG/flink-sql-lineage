@@ -7,7 +7,6 @@ import lombok.Data;
  * @description: CatalogId
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:17 PM
  */
 @Data
 public class CatalogId implements Identifier {

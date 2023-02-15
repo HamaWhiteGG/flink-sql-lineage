@@ -8,7 +8,6 @@ import org.junit.Test;
  * @description: LookupJoinTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2022/11/24 8:03 PM
  */
 public class LookupJoinTest extends AbstractBasicTest {
 

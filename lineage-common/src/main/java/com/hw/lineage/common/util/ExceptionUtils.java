@@ -4,7 +4,6 @@ package com.hw.lineage.common.util;
  * @description: A collection of utility functions for dealing with exceptions and exception workflows.
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 10:35 PM
  */
 public class ExceptionUtils {
 

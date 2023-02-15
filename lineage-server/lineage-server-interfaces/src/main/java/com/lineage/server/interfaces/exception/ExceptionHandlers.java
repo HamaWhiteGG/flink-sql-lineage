@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
  * @description: ExceptionHandlers
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/1 4:31 PM
  */
 @ResponseBody
 @ControllerAdvice

@@ -6,7 +6,6 @@ import lombok.Data;
  * @description: SqlId
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/4 9:47 PM
  */
 @Data
 public class SqlId {

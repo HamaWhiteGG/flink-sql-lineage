@@ -9,7 +9,6 @@ import java.util.List;
  * @description: RenameDomainPlugin
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/27 11:41 PM
  */
 public class RenameDoPlugin extends PluginAdapter {
 

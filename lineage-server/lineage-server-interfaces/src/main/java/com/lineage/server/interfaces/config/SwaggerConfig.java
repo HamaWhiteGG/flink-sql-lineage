@@ -32,7 +32,6 @@ import java.util.List;
  * @description: SwaggerConfig
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/8 11:21 PM
  */
 @Configuration
 @EnableOpenApi

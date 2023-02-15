@@ -24,7 +24,6 @@ package com.hw.lineage.loader.classloading;
  * @description: TemporaryClassLoaderContext
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 9:47 PM
  */
 public class TemporaryClassLoaderContext implements AutoCloseable {
 

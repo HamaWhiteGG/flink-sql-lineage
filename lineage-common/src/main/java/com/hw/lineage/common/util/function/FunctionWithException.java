@@ -9,7 +9,6 @@ package com.hw.lineage.common.util.function;
  * @description: FunctionWithException
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 10:15 PM
  */
 @FunctionalInterface
 public interface FunctionWithException<T, R, E extends Throwable> {

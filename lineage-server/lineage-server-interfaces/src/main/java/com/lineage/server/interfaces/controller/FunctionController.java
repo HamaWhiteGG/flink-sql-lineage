@@ -23,7 +23,6 @@ import java.util.List;
  * @description: FunctionController
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:28 PM
  */
 @RestController
 @Api(tags = "Functions API")

@@ -9,7 +9,6 @@ import java.io.Serializable;
  * @description: ServerResult
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/30 9:44 PM
  */
 @Data
 public class Result<T> implements Serializable {

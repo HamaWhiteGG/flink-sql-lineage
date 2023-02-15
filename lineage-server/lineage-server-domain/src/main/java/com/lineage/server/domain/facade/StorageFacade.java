@@ -11,7 +11,6 @@ import java.net.MalformedURLException;
  * @description: StorageFacade
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/12 3:20 PM
  */
 public interface StorageFacade {
     void init() throws IOException;
