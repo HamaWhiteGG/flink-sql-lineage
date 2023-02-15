@@ -24,7 +24,6 @@ import java.util.List;
  * @description: LineageFacadeImpl
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/23 4:52 PM
  */
 @Service
 public class LineageFacadeImpl implements LineageFacade {
@@ -71,14 +70,6 @@ public class LineageFacadeImpl implements LineageFacade {
         return lineageClient.parseFunction(pluginName, file);
     }
 
-
-    private String functionName;
-
-    private String functionFormat;
-
-    private String functionClass;
-
-    private String descr;
 
     private void parseFieldLineage(String pluginName, Task task, TaskSql taskSql, String sqlCode) {
         taskSql.setParseStatus(ParseStatus.PARSING);

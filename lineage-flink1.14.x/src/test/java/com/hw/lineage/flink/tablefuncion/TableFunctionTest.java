@@ -10,7 +10,6 @@ import org.junit.Test;
  * @description: TableFunctionTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2022/11/23 11:27 AM
  */
 public class TableFunctionTest extends AbstractBasicTest {
 

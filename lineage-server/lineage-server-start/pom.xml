@@ -12,11 +12,39 @@
 
     <artifactId>lineage-server-start</artifactId>
 
+    <properties>
+        <!--for test-->
+        <flink.version>1.16.0</flink.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.hw.lineage</groupId>
             <artifactId>lineage-server-interfaces</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-common</artifactId>
+            <version>${flink.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -59,6 +87,43 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test-function-a</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>function-a</finalName>
+                            <attach>false</attach>
+                            <descriptors>
+                                <descriptor>src/test/assemblies/test-function-a-assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-function-b</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>function-b</finalName>
+                            <attach>false</attach>
+                            <descriptors>
+                                <descriptor>src/test/assemblies/test-function-b-assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

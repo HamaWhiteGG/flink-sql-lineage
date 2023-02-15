@@ -39,7 +39,6 @@ import java.util.stream.Stream;
  * @description: DirectoryBasedPluginFinder
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 10:29 PM
  */
 public class DirectoryBasedPluginFinder implements PluginFinder {
 

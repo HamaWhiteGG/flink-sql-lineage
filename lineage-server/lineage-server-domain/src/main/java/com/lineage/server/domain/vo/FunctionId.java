@@ -7,7 +7,6 @@ import lombok.Data;
  * @description: FunctionId
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:20 PM
  */
 @Data
 public class FunctionId implements Identifier {

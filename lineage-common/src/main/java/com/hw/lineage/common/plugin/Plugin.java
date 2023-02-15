@@ -9,7 +9,6 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
  * @description: Plugin
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 9:28 PM
  */
 public interface Plugin {
 

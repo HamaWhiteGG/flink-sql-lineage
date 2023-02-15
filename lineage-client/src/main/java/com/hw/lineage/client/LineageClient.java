@@ -29,7 +29,6 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
  * @description: LineageClient
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/17 9:06 PM
  */
 public class LineageClient {
     private final Map<String, LineageService> lineageServiceMap;

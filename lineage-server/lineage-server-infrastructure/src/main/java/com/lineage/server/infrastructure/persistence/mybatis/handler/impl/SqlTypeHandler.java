@@ -7,7 +7,6 @@ import com.lineage.server.infrastructure.persistence.mybatis.handler.StringEnumT
  * @description: SqlTypeHandler
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/6 8:50 PM
  */
 public class SqlTypeHandler extends StringEnumTypeHandler<SqlType> {
     public SqlTypeHandler() {

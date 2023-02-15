@@ -18,7 +18,6 @@ import java.util.Set;
  * @description: CustomCommentGenerator
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/28 10:03 AM
  */
 public class CustomCommentGenerator implements CommentGenerator {
     private final Properties properties = new Properties();

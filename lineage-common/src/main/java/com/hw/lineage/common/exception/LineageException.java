@@ -4,7 +4,6 @@ package com.hw.lineage.common.exception;
  * @description: LineageRuntimeException
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/17 9:21 PM
  */
 public class LineageException extends RuntimeException {
 

@@ -11,14 +11,8 @@ import java.net.URL;
  * Provides access to some common test resources.
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/17 12:31 AM
  */
 public abstract class PluginTestBase extends TestLogger {
-
-    /**
-     * Optional prefix to the jar folder if run from an IDE.
-     */
-    private static final String OPT_PREFIX = "target/";
 
     public static final String PLUGIN_A = "plugin-a";
     public static final String PLUGIN_B = "plugin-b";
@@ -34,10 +28,14 @@ public abstract class PluginTestBase extends TestLogger {
     public static File locateJarFile(String fileString) {
         File file = new File(fileString);
         if (!file.exists()) {
-            file = new File(OPT_PREFIX + fileString);
+            // for maven test
+            file = new File("target/" + fileString);
         }
-        Preconditions.checkState(
-                file.exists(), "Unable to locate jar file for test: " + fileString);
+        if (!file.exists()) {
+            // for idea test
+            file = new File("lineage-loader/target/" + fileString);
+        }
+        Preconditions.checkState(file.exists(), "Unable to locate jar file for test: " + fileString);
         return file;
     }
 }

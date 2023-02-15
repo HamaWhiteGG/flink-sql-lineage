@@ -11,7 +11,6 @@ import java.util.Locale;
  * @description: LocaleValidatorConfig
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/8 10:39 PM
  */
 @Configuration
 public class LocaleValidatorConfig {

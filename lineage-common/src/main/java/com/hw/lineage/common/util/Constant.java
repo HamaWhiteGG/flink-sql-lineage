@@ -4,7 +4,6 @@ package com.hw.lineage.common.util;
  * @description: Constant
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 9:10 PM
  */
 public class Constant {
 
