@@ -72,14 +72,6 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
 
-    private String functionName;
-
-    private String functionFormat;
-
-    private String functionClass;
-
-    private String descr;
-
     private void parseFieldLineage(String pluginName, Task task, TaskSql taskSql, String sqlCode) {
         taskSql.setParseStatus(ParseStatus.PARSING);
         lineageClient.parseFieldLineage(pluginName, sqlCode)

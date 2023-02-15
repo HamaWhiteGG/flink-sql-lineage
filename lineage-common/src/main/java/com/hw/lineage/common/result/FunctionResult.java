@@ -2,6 +2,7 @@ package com.hw.lineage.common.result;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * @description: FunctionResult
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@Accessors(chain = true)
 public class FunctionResult {
 
     private String functionName;
