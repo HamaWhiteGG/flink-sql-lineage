@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @description: DtoAssemblerTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/31 9:41 AM
  */
 public class DtoAssemblerTest {
 

@@ -7,7 +7,6 @@ import com.hw.lineage.common.enums.basic.IntEnum;
  * @description: CatalogType
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/29 9:51 AM
  */
 public enum CatalogType implements IntEnum<CatalogType> {
 

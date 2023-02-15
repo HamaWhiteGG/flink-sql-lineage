@@ -10,7 +10,6 @@ import com.lineage.server.domain.vo.TaskId;
  * @description: TaskRepository
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/23 4:21 PM
  */
 public interface TaskRepository extends Repository<Task, TaskId> {
 

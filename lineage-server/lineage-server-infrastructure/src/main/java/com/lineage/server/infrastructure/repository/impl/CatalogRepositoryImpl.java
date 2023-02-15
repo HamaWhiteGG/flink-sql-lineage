@@ -24,7 +24,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
  * @description: CatalogRepositoryImpl
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:19 PM
  */
 @Repository
 public class CatalogRepositoryImpl extends AbstractBasicRepository implements CatalogRepository {

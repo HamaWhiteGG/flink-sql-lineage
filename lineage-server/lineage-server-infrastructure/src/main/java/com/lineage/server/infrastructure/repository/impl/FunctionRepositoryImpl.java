@@ -25,7 +25,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
  * @description: FunctionRepositoryImpl
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:23 PM
  */
 @Repository
 public class FunctionRepositoryImpl extends AbstractBasicRepository implements FunctionRepository {

@@ -4,7 +4,6 @@ package com.lineage.server.domain.repository.basic;
  * @description: Basic Repository interface
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/4 10:04 PM
  */
 public interface Repository<T extends Entity, ID extends Identifier> {
 

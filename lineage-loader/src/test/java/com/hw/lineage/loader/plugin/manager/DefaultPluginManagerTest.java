@@ -24,7 +24,6 @@ import java.util.*;
  * @description: DefaultPluginManagerTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/17 12:23 AM
  */
 public class DefaultPluginManagerTest extends PluginTestBase {
 

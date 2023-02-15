@@ -7,7 +7,6 @@ import lombok.Data;
  * @description: PluginId
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/5 12:16 PM
  */
 @Data
 public class PluginId implements Identifier {

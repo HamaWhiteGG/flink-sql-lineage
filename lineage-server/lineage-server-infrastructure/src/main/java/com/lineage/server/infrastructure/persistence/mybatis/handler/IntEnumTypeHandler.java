@@ -18,7 +18,6 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
  * @description: IntEnumTypeHandler
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/29 10:32 AM
  */
 public abstract class IntEnumTypeHandler<E extends IntEnum> extends BaseTypeHandler<E> {
     private final Map<Integer, E> enumMap;

@@ -34,7 +34,6 @@ import java.util.*;
  * @description: ComponentClassLoader
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/16 9:25 PM
  */
 public class ComponentClassLoader extends URLClassLoader {
     private static final ClassLoader PLATFORM_OR_BOOTSTRAP_LOADER;

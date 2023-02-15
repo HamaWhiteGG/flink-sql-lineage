@@ -67,7 +67,6 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  * @description: LineageContext
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2022/8/6 11:06 AM
  */
 public class LineageServiceImpl implements LineageService {
     private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);

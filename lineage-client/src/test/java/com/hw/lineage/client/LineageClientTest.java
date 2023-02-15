@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
  * @description: LineageClientTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/1/17 9:49 PM
  */
 public class LineageClientTest {
 

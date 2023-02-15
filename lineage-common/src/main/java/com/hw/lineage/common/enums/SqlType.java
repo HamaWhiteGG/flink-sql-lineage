@@ -6,7 +6,6 @@ import com.hw.lineage.common.enums.basic.StringEnum;
  * @description: SqlType
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2023/2/6 7:57 PM
  */
 public enum SqlType implements StringEnum<SqlType> {
     SELECT("select"),

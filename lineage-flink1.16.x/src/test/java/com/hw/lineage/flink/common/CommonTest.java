@@ -9,7 +9,6 @@ import org.junit.Test;
  * @description: CommonTest
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2022/8/12 12:27 PM
  */
 public class CommonTest extends AbstractBasicTest {
 

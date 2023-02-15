@@ -15,7 +15,6 @@ import org.apache.flink.table.planner.plan.rules.FlinkStreamRuleSets
  * @description: delete time_indicator, physical and physical_rewrite
  * @author: HamaWhite
  * @version: 1.0.0
- * @date: 2022/8/6 10:58 PM
  */
 
 object FlinkStreamProgramWithoutPhysical {
