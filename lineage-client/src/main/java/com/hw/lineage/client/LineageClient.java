@@ -49,6 +49,10 @@ public class LineageClient {
 
     private Map<String, Iterator<LineageService>> loadPlugins(String path) {
         File pluginRootFolder = new File(path);
+        if (!pluginRootFolder.exists()) {
+            // for lineage-server-start maven test, user.dir is lineage-server/lineage-server-start, so go back two levels of directories
+            pluginRootFolder = new File("../../" + path);
+        }
         Path pluginRootFolderPath = pluginRootFolder.toPath();
 
         PluginFinder descriptorsFactory = new DirectoryBasedPluginFinder(pluginRootFolderPath);

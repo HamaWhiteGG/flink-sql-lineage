@@ -16,9 +16,9 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin">
             <property name="useToStringFromRoot" value="true"/>
         </plugin>
-        <plugin type="com.lineage.server.infrastructure.persistence.mybatis.plugin.RenameDoPlugin"/>
+        <plugin type="com.hw.lineage.server.infrastructure.persistence.mybatis.plugin.RenameDoPlugin"/>
 
-        <commentGenerator type="com.lineage.server.infrastructure.persistence.mybatis.generator.CustomCommentGenerator">
+        <commentGenerator type="com.hw.lineage.server.infrastructure.persistence.mybatis.generator.CustomCommentGenerator">
             <property name="suppressDate" value="false"/>
             <property name="suppressAllComments" value="false"/>
             <property name="addRemarkComments" value="true"/>
@@ -33,10 +33,10 @@
                 userId="${spring.datasource.username}"
                 password="${spring.datasource.password}"/>
 
-        <javaModelGenerator targetPackage="com.lineage.server.infrastructure.persistence.dos"
+        <javaModelGenerator targetPackage="com.hw.lineage.server.infrastructure.persistence.dos"
                             targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
 
-        <javaClientGenerator targetPackage="com.lineage.server.infrastructure.persistence.mapper"
+        <javaClientGenerator targetPackage="com.hw.lineage.server.infrastructure.persistence.mapper"
                              targetProject="lineage-server/lineage-server-infrastructure/src/main/java"/>
 
         <table tableName="bas_task" domainObjectName="Task">
@@ -52,7 +52,7 @@
             <columnOverride
                     column="catalog_type"
                     javaType="com.hw.lineage.common.enums.CatalogType"
-                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
         </table>
         <table tableName="bas_function" domainObjectName="Function">
             <generatedKey column="function_id" sqlStatement="Mysql" identity="true"/>
@@ -63,11 +63,11 @@
             <columnOverride
                     column="sql_type"
                     javaType="com.hw.lineage.common.enums.SqlType"
-                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler"/>
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler"/>
             <columnOverride
                     column="parse_status"
                     javaType="com.hw.lineage.common.enums.ParseStatus"
-                    typeHandler="com.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler"/>
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler"/>
         </table>
 
         <table tableName="rel_task_lineage" domainObjectName="TaskLineage"/>

@@ -12,7 +12,7 @@
             <directory>${project.build.testOutputDirectory}</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>com/lineage/flink/table/udf/functiona/FlinkSuffixFunction.class</include>
+                <include>com/hw/lineage/flink/table/udf/functiona/FlinkSuffixFunction.class</include>
             </includes>
         </fileSet>
     </fileSets>
