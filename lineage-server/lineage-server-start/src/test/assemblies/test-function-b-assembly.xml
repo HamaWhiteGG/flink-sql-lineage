@@ -12,8 +12,8 @@
             <directory>${project.build.testOutputDirectory}</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>com/lineage/flink/table/udf/functionb/FlinkPrefixFunction.class</include>
-                <include>com/lineage/flink/table/udf/functionb/FlinkSplitFunction.class</include>
+                <include>com/hw/lineage/flink/table/udf/functionb/FlinkPrefixFunction.class</include>
+                <include>com/hw/lineage/flink/table/udf/functionb/FlinkSplitFunction.class</include>
             </includes>
         </fileSet>
     </fileSets>
