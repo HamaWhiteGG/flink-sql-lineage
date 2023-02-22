@@ -1,4 +1,4 @@
-package com.hw.lineage.server.domain.query.function;
+package com.hw.lineage.server.domain.query.user;
 
 import com.hw.lineage.server.domain.query.PageOrderCriteria;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Data;
  * @version: 1.0.0
  */
 @Data
-public class FunctionQuery extends PageOrderCriteria {
+public class UserQuery extends PageOrderCriteria {
 
-    private String functionName;
+    private String username;
 }

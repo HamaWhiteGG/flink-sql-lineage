@@ -33,9 +33,9 @@ public final class TaskSqlDynamicSqlSupport {
 
         public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
 
-        public final SqlColumn<SqlType> sqlType = column("sql_type", JDBCType.VARCHAR, "impl.handler.mybatis.persistence.com.hw.lineage.server.infrastructure.SqlTypeHandler");
+        public final SqlColumn<SqlType> sqlType = column("sql_type", JDBCType.VARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler");
 
-        public final SqlColumn<ParseStatus> parseStatus = column("parse_status", JDBCType.TINYINT, "impl.handler.mybatis.persistence.com.hw.lineage.server.infrastructure.ParseStatusTypeHandler");
+        public final SqlColumn<ParseStatus> parseStatus = column("parse_status", JDBCType.TINYINT, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler");
 
         public final SqlColumn<Long> parseTime = column("parse_time", JDBCType.BIGINT);
 

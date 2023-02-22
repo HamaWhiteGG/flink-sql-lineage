@@ -75,7 +75,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public Boolean checkFunctionExist(FunctionCheck functionCheck) {
-        return functionRepository.find(functionCheck.getFunctionName());
+        return functionRepository.check(functionCheck.getFunctionName());
     }
 
     @Override

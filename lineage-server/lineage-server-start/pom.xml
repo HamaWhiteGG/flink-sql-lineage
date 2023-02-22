@@ -61,7 +61,6 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>application*.properties</exclude>
-                    <exclude>mybatis/**</exclude>
                     <exclude>scripts/**</exclude>
                 </excludes>
             </resource>
