@@ -55,7 +55,7 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
 
 
     @Override
-    public boolean find(String name) {
+    public boolean check(String name) {
         return !taskMapper.select(completer -> completer.where(TaskDynamicSqlSupport.taskName, isEqualTo(name))).isEmpty();
     }
 

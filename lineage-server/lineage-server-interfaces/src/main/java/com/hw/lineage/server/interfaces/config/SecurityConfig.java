@@ -1,18 +1,17 @@
 package com.hw.lineage.server.interfaces.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hw.lineage.server.application.service.UserService;
 import com.hw.lineage.server.interfaces.result.Result;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,20 +42,14 @@ public class SecurityConfig {
             "/storages/**"
     };
 
+    @Resource
+    private UserService userService;
+
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user")
-                .password("{noop}123")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withUsername("admin")
-                .password("{noop}123")
-                .roles("ADMIN", "USER")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
+    public UserDetailsService userDetailsServiceBean()  {
+        return userService;
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

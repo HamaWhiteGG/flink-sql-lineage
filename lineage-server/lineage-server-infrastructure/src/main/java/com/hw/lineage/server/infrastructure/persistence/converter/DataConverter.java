@@ -66,4 +66,10 @@ public interface DataConverter {
     @Mapping(source = "functionId.value", target = "functionId")
     FunctionDO fromFunction(Function function);
 
+    @Mapping(source = "userId", target = "userId.value")
+    User toUser(UserDO userDO);
+
+    @Mapping(source = "userId.value", target = "userId")
+    UserDO fromUser(User user);
+
 }

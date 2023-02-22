@@ -1,6 +1,7 @@
 package com.hw.lineage.server.application.dto;
 
 import com.hw.lineage.common.enums.CatalogType;
+import com.hw.lineage.server.application.dto.basic.BasicDTO;
 import lombok.Data;
 
 /**

@@ -43,4 +43,7 @@ public interface DtoAssembler {
     TaskLineageDTO fromTaskLineage(TaskLineage taskLineage);
 
     List<FunctionDTO> fromFunctionList(List<Function> functionList);
+
+    @Mapping(source = "userId.value", target = "userId")
+    UserDTO fromUser(User user);
 }

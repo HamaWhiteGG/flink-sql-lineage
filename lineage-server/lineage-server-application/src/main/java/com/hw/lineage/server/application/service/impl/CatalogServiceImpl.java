@@ -55,7 +55,7 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public Boolean checkCatalogExist(CatalogCheck catalogCheck) {
-        return repository.find(catalogCheck.getCatalogName());
+        return repository.check(catalogCheck.getCatalogName());
     }
 
     @Override

@@ -54,6 +54,7 @@
                     javaType="com.hw.lineage.common.enums.CatalogType"
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
         </table>
+
         <table tableName="bas_function" domainObjectName="Function">
             <generatedKey column="function_id" sqlStatement="Mysql" identity="true"/>
         </table>
@@ -71,6 +72,22 @@
         </table>
 
         <table tableName="rel_task_lineage" domainObjectName="TaskLineage"/>
+
+        <table tableName="bas_user" domainObjectName="User">
+            <generatedKey column="user_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="bas_role" domainObjectName="Role">
+            <generatedKey column="role_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="rel_role_user" domainObjectName="RoleUser"/>
+
+        <table tableName="bas_permission" domainObjectName="Permission">
+            <generatedKey column="permission_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
+        <table tableName="rel_role_permission" domainObjectName="RolePermission"/>
     </context>
 
 </generatorConfiguration>
