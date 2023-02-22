@@ -1,5 +1,6 @@
 package com.hw.lineage.server.interfaces.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -17,15 +18,13 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -33,6 +32,7 @@ import java.util.List;
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@EnableKnife4j
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {
@@ -47,6 +47,26 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.hw.lineage.server.interfaces.controller"))
                 .paths(PathSelectors.any())
+                .build()
+                .securitySchemes(securitySchemes())
+                .securityContexts(Collections.singletonList((securityContext())));
+    }
+
+    private List<SecurityScheme> securitySchemes() {
+        return Collections.singletonList(HttpAuthenticationScheme.BASIC_AUTH_BUILDER.name("basic").build());
+    }
+
+    private List<SecurityReference> securityReferences() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Collections.singletonList(new SecurityReference("basic", authorizationScopes));
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(securityReferences())
+                .operationSelector(operationContext -> true)
                 .build();
     }
 

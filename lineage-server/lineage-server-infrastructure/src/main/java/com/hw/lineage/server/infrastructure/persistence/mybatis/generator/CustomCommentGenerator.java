@@ -50,7 +50,7 @@ public class CustomCommentGenerator implements CommentGenerator {
             topLevelClass.addJavaDocLine(" * @description: " + description);
             topLevelClass.addJavaDocLine(" * @author: " + properties.getProperty("author"));
             topLevelClass.addJavaDocLine(" * @version: " + properties.getProperty("version"));
-            topLevelClass.addJavaDocLine(" * @date: " + getDateString());
+            // topLevelClass.addJavaDocLine(" * @date: " + getDateString());
             // add @mbg.generated
             addJavadocTag(topLevelClass);
             topLevelClass.addJavaDocLine(" */");
