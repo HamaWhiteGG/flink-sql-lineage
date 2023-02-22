@@ -15,6 +15,7 @@ CREATE TABLE `bas_task`
     PRIMARY KEY (`task_id`),
     KEY `task_name_idx` (`task_name`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
 DROP TABLE IF EXISTS `rel_task_sql`;
@@ -70,6 +71,7 @@ CREATE TABLE `bas_plugin`
     PRIMARY KEY (`plugin_id`),
     KEY `plugin_name_idx` (`plugin_name`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
 
@@ -89,6 +91,7 @@ CREATE TABLE `bas_catalog`
     PRIMARY KEY (`catalog_id`),
     KEY `catalog_name_idx` (`catalog_name`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
 
@@ -108,4 +111,75 @@ CREATE TABLE `bas_function`
     `invalid`         tinyint(1)    NOT NULL DEFAULT '0',
     PRIMARY KEY (`function_id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `bas_permission`;
+CREATE TABLE `bas_permission`
+(
+    `permission_id`   bigint(20) AUTO_INCREMENT,
+    `permission_name` varchar(128) NOT NULL,
+    `permission_code` varchar(128) NOT NULL,
+    `create_time`     bigint(20)   NOT NULL,
+    `modify_time`     bigint(20)   NOT NULL,
+    `invalid`         tinyint(1)   NOT NULL DEFAULT '0',
+    PRIMARY KEY (`permission_id`),
+    KEY `permission_name_idx` (`permission_name`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+
+DROP TABLE IF EXISTS `bas_role`;
+CREATE TABLE `bas_role`
+(
+    `role_id`     bigint(20) AUTO_INCREMENT,
+    `role_name`   varchar(128) NOT NULL,
+    `create_time` bigint(20)   NOT NULL,
+    `modify_time` bigint(20)   NOT NULL,
+    `invalid`     tinyint(1)   NOT NULL DEFAULT '0',
+    PRIMARY KEY (`role_id`),
+    KEY `role_name_idx` (`role_name`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `rel_role_permission`;
+CREATE TABLE `rel_role_permission`
+(
+    `rid`           bigint(20) AUTO_INCREMENT,
+    `role_id`       bigint(20) NOT NULL,
+    `permission_id` bigint(20) NOT NULL,
+    `invalid`       tinyint(1) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`rid`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+
+DROP TABLE IF EXISTS `bas_user`;
+CREATE TABLE `bas_user`
+(
+    `user_id`     bigint(20) AUTO_INCREMENT,
+    `username`    varchar(128) NOT NULL,
+    `password`    varchar(128) NOT NULL,
+    `locked`      tinyint(1)   NOT NULL DEFAULT '0',
+    `create_time` bigint(20)   NOT NULL,
+    `modify_time` bigint(20)   NOT NULL,
+    `invalid`     tinyint(1)   NOT NULL DEFAULT '0',
+    PRIMARY KEY (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `rel_role_user`;
+CREATE TABLE `rel_role_user`
+(
+    `rid`     bigint(20) AUTO_INCREMENT,
+    `role_id` bigint(20) NOT NULL,
+    `user_id` bigint(20) NOT NULL,
+    `invalid` tinyint(1) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`rid`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
