@@ -27,6 +27,14 @@ public class Preconditions {
     //  Null checks
     // ------------------------------------------------------------------------
 
+    public static <T> T checkNotNull(@Nullable T reference, RuntimeException exception) {
+        if (reference == null) {
+            throw exception;
+        }
+        return reference;
+    }
+
+
     /**
      * Ensures that the given object reference is not null. Upon violation, a {@code
      * NullPointerException} with no message is thrown.

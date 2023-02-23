@@ -84,4 +84,6 @@ public interface DataConverter {
     @Mapping(source = "permissionId.value", target = "permissionId")
     PermissionDO fromPermission(Permission permission);
 
+    List<Permission> toPermissionList(List<PermissionDO> permissionDOList);
+
 }

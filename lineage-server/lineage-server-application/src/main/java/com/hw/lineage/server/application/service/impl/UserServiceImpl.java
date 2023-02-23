@@ -7,6 +7,8 @@ import com.hw.lineage.server.application.command.user.CreateUserCmd;
 import com.hw.lineage.server.application.command.user.UpdateUserCmd;
 import com.hw.lineage.server.application.dto.UserDTO;
 import com.hw.lineage.server.application.service.UserService;
+import com.hw.lineage.server.domain.entity.Permission;
+import com.hw.lineage.server.domain.entity.Role;
 import com.hw.lineage.server.domain.entity.User;
 import com.hw.lineage.server.domain.query.user.UserCheck;
 import com.hw.lineage.server.domain.query.user.UserQuery;
@@ -17,6 +19,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+
+import static com.hw.lineage.common.util.Preconditions.checkNotNull;
+
 
 /**
  * @description: UserServiceImpl
@@ -35,7 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repository.find(username);
-        return assembler.fromUser(user);
+        checkNotNull(user, new UsernameNotFoundException(username));
+
+        List<Permission> permissionList = repository.findPermissions(user.getUserId());
+        return assembler.fromUserPermissions(user, permissionList);
     }
 
     @Override
@@ -55,7 +64,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO queryUser(Long userId) {
         User user = repository.find(new UserId(userId));
-        return assembler.fromUser(user);
+        List<Role> roleList = repository.findRoles(user.getUserId());
+        return assembler.fromUserRoles(user, roleList);
     }
 
     @Override

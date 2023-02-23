@@ -24,6 +24,7 @@ insert into rel_role_permission (rid, role_id, permission_id, invalid) values (2
 insert into rel_role_permission (rid, role_id, permission_id, invalid) values (3, 2, 2, 0);
 insert into rel_role_permission (rid, role_id, permission_id, invalid) values (4, 2, 3, 0);
 insert into rel_role_permission (rid, role_id, permission_id, invalid) values (5, 2, 4, 0);
+insert into rel_role_permission (rid, role_id, permission_id, invalid) values (6, 2, 5, 0);
 
 insert into bas_plugin (plugin_id, plugin_name, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) values (1, 'flink1.14.x', 'Field lineage plugin for flink1.14', 2, 2, 1674565178000, 1674565178000, 0);
 insert into bas_plugin (plugin_id, plugin_name, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) values (2, 'flink1.16.x', 'Field lineage plugin for flink1.16', 2, 2, 1674565178000, 1674565178000, 0);
