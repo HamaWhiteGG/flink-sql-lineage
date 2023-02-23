@@ -69,7 +69,7 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
     public User find(String username) {
         UserDO userDO = userMapper.selectOne(completer -> completer.where(UserDynamicSqlSupport.username, isEqualTo(username)))
                 .orElseThrow(() ->
-                        new LineageException(String.format("username [%s] is not existed", username))
+                        new LineageException("user account or password error")
                 );
         return converter.toUser(userDO);
     }

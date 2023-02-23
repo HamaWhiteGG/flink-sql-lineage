@@ -4,7 +4,7 @@ import com.hw.lineage.server.domain.query.PageOrderCriteria;
 import lombok.Data;
 
 /**
- * @description: UserQuery
+ * @description: FunctionQuery
  * @author: HamaWhite
  * @version: 1.0.0
  */

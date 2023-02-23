@@ -25,5 +25,7 @@ public interface Repository<T extends Entity, ID extends Identifier> {
 
     void remove(ID id);
 
-    boolean check(String name);
+    default boolean check(String name) {
+        return false;
+    }
 }

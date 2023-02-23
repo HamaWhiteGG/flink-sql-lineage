@@ -1,13 +1,16 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
-import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
+
+import java.sql.JDBCType;
 
 public final class PermissionDynamicSqlSupport {
     public static final Permission permission = new Permission();
 
     public static final SqlColumn<Long> permissionId = permission.permissionId;
+
+    public static final SqlColumn<String> permissionGroup = permission.permissionGroup;
 
     public static final SqlColumn<String> permissionName = permission.permissionName;
 
@@ -21,6 +24,8 @@ public final class PermissionDynamicSqlSupport {
 
     public static final class Permission extends AliasableSqlTable<Permission> {
         public final SqlColumn<Long> permissionId = column("permission_id", JDBCType.BIGINT);
+
+        public final SqlColumn<String> permissionGroup = column("permission_group", JDBCType.VARCHAR);
 
         public final SqlColumn<String> permissionName = column("permission_name", JDBCType.VARCHAR);
 

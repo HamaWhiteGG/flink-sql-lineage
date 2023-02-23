@@ -84,4 +84,6 @@
         <appender-ref ref="ASYNC_FILE"/>
         <appender-ref ref="ASYNC_ERROR_FILE"/>
     </root>
+
+    <logger name="com.hw.lineage.server.infrastructure.persistence.mapper" level="DEBUG" />
 </configuration>

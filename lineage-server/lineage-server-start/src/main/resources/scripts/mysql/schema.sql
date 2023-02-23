@@ -44,6 +44,7 @@ DROP TABLE IF EXISTS `bas_permission`;
 CREATE TABLE `bas_permission`
 (
     `permission_id`   bigint(20) AUTO_INCREMENT,
+    `permission_group` varchar(128) NOT NULL,
     `permission_name` varchar(128) NOT NULL,
     `permission_code` varchar(128) NOT NULL,
     `create_time`     bigint(20)   NOT NULL,
