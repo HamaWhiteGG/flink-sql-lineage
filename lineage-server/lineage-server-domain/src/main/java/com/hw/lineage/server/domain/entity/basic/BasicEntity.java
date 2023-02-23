@@ -10,15 +10,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public abstract class BasicEntity {
+public abstract class BasicEntity extends RootEntity{
 
     private Long createUserId;
 
     private Long modifyUserId;
-
-    private Long createTime;
-
-    private Long modifyTime;
-
-    private Boolean invalid;
 }

@@ -11,8 +11,8 @@ public enum ParseStatus implements IntEnum<ParseStatus> {
 
     UN_PARSE(0),
     PARSING(1),
-    SUCCESS(3),
-    FAILED(4);
+    SUCCESS( 2),
+    FAILED(3);
 
 
     private final int value;

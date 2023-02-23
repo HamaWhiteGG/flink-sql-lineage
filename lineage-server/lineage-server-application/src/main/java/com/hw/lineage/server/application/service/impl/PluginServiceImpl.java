@@ -52,7 +52,7 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public Boolean checkPluginExist(PluginCheck pluginCheck) {
-        return repository.find(pluginCheck.getPluginName());
+        return repository.check(pluginCheck.getPluginName());
     }
 
     @Override

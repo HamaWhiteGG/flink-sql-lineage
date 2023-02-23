@@ -3,9 +3,8 @@ package com.hw.lineage.server.infrastructure.persistence.mapper;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
-import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler;
 import com.hw.lineage.server.infrastructure.persistence.dos.CatalogDO;
-
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -43,7 +42,7 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
     @Results(id="CatalogDOResult", value = {
         @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="catalog_name", property="catalogName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="catalog_type", property="catalogType", typeHandler= CatalogTypeHandler.class, jdbcType=JdbcType.TINYINT),
+        @Result(column="catalog_type", property="catalogType", typeHandler=CatalogTypeHandler.class, jdbcType=JdbcType.TINYINT),
         @Result(column="default_database", property="defaultDatabase", jdbcType=JdbcType.VARCHAR),
         @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),

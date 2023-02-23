@@ -33,7 +33,7 @@ public final class CatalogDynamicSqlSupport {
 
         public final SqlColumn<String> catalogName = column("catalog_name", JDBCType.VARCHAR);
 
-        public final SqlColumn<CatalogType> catalogType = column("catalog_type", JDBCType.TINYINT, "impl.handler.mybatis.persistence.com.hw.lineage.server.infrastructure.CatalogTypeHandler");
+        public final SqlColumn<CatalogType> catalogType = column("catalog_type", JDBCType.TINYINT, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler");
 
         public final SqlColumn<String> defaultDatabase = column("default_database", JDBCType.VARCHAR);
 
