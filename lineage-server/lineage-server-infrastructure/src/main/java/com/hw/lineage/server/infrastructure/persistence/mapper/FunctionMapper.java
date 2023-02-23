@@ -1,5 +1,6 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.hw.lineage.server.infrastructure.persistence.dos.FunctionDO;
@@ -30,7 +31,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(FunctionDynamicSqlSupport.functionId, FunctionDynamicSqlSupport.functionName, FunctionDynamicSqlSupport.functionFormat, FunctionDynamicSqlSupport.functionPath, FunctionDynamicSqlSupport.functionClass, FunctionDynamicSqlSupport.descr, FunctionDynamicSqlSupport.createUserId, FunctionDynamicSqlSupport.modifyUserId, FunctionDynamicSqlSupport.createTime, FunctionDynamicSqlSupport.modifyTime, FunctionDynamicSqlSupport.invalid);
+    BasicColumn[] selectList = BasicColumn.columnList(functionId, functionName, functionFormat, functionPath, functionClass, descr, createUserId, modifyUserId, createTime, modifyTime, invalid);
 
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.functionId", before=false, resultType=Long.class)
@@ -57,126 +58,126 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
     Optional<FunctionDO> selectOne(SelectStatementProvider selectStatement);
 
     default long count(CountDSLCompleter completer) {
-        return MyBatis3Utils.countFrom(this::count, FunctionDynamicSqlSupport.function, completer);
+        return MyBatis3Utils.countFrom(this::count, function, completer);
     }
 
     default int delete(DeleteDSLCompleter completer) {
-        return MyBatis3Utils.deleteFrom(this::delete, FunctionDynamicSqlSupport.function, completer);
+        return MyBatis3Utils.deleteFrom(this::delete, function, completer);
     }
 
     default int deleteByPrimaryKey(Long functionId_) {
         return delete(c -> 
-            c.where(FunctionDynamicSqlSupport.functionId, isEqualTo(functionId_))
+            c.where(functionId, isEqualTo(functionId_))
         );
     }
 
     default int insert(FunctionDO row) {
-        return MyBatis3Utils.insert(this::insert, row, FunctionDynamicSqlSupport.function, c ->
-            c.map(FunctionDynamicSqlSupport.functionName).toProperty("functionName")
-            .map(FunctionDynamicSqlSupport.functionFormat).toProperty("functionFormat")
-            .map(FunctionDynamicSqlSupport.functionPath).toProperty("functionPath")
-            .map(FunctionDynamicSqlSupport.functionClass).toProperty("functionClass")
-            .map(FunctionDynamicSqlSupport.descr).toProperty("descr")
-            .map(FunctionDynamicSqlSupport.createUserId).toProperty("createUserId")
-            .map(FunctionDynamicSqlSupport.modifyUserId).toProperty("modifyUserId")
-            .map(FunctionDynamicSqlSupport.createTime).toProperty("createTime")
-            .map(FunctionDynamicSqlSupport.modifyTime).toProperty("modifyTime")
-            .map(FunctionDynamicSqlSupport.invalid).toProperty("invalid")
+        return MyBatis3Utils.insert(this::insert, row, function, c ->
+            c.map(functionName).toProperty("functionName")
+            .map(functionFormat).toProperty("functionFormat")
+            .map(functionPath).toProperty("functionPath")
+            .map(functionClass).toProperty("functionClass")
+            .map(descr).toProperty("descr")
+            .map(createUserId).toProperty("createUserId")
+            .map(modifyUserId).toProperty("modifyUserId")
+            .map(createTime).toProperty("createTime")
+            .map(modifyTime).toProperty("modifyTime")
+            .map(invalid).toProperty("invalid")
         );
     }
 
     default int insertSelective(FunctionDO row) {
-        return MyBatis3Utils.insert(this::insert, row, FunctionDynamicSqlSupport.function, c ->
-            c.map(FunctionDynamicSqlSupport.functionName).toPropertyWhenPresent("functionName", row::getFunctionName)
-            .map(FunctionDynamicSqlSupport.functionFormat).toPropertyWhenPresent("functionFormat", row::getFunctionFormat)
-            .map(FunctionDynamicSqlSupport.functionPath).toPropertyWhenPresent("functionPath", row::getFunctionPath)
-            .map(FunctionDynamicSqlSupport.functionClass).toPropertyWhenPresent("functionClass", row::getFunctionClass)
-            .map(FunctionDynamicSqlSupport.descr).toPropertyWhenPresent("descr", row::getDescr)
-            .map(FunctionDynamicSqlSupport.createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
-            .map(FunctionDynamicSqlSupport.modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
-            .map(FunctionDynamicSqlSupport.createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
-            .map(FunctionDynamicSqlSupport.modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
-            .map(FunctionDynamicSqlSupport.invalid).toPropertyWhenPresent("invalid", row::getInvalid)
+        return MyBatis3Utils.insert(this::insert, row, function, c ->
+            c.map(functionName).toPropertyWhenPresent("functionName", row::getFunctionName)
+            .map(functionFormat).toPropertyWhenPresent("functionFormat", row::getFunctionFormat)
+            .map(functionPath).toPropertyWhenPresent("functionPath", row::getFunctionPath)
+            .map(functionClass).toPropertyWhenPresent("functionClass", row::getFunctionClass)
+            .map(descr).toPropertyWhenPresent("descr", row::getDescr)
+            .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
+            .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
+            .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
+            .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
+            .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
         );
     }
 
     default Optional<FunctionDO> selectOne(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectOne(this::selectOne, selectList, FunctionDynamicSqlSupport.function, completer);
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, function, completer);
     }
 
     default List<FunctionDO> select(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectList(this::selectMany, selectList, FunctionDynamicSqlSupport.function, completer);
+        return MyBatis3Utils.selectList(this::selectMany, selectList, function, completer);
     }
 
     default List<FunctionDO> selectDistinct(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, FunctionDynamicSqlSupport.function, completer);
+        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, function, completer);
     }
 
     default Optional<FunctionDO> selectByPrimaryKey(Long functionId_) {
         return selectOne(c ->
-            c.where(FunctionDynamicSqlSupport.functionId, isEqualTo(functionId_))
+            c.where(functionId, isEqualTo(functionId_))
         );
     }
 
     default int update(UpdateDSLCompleter completer) {
-        return MyBatis3Utils.update(this::update, FunctionDynamicSqlSupport.function, completer);
+        return MyBatis3Utils.update(this::update, function, completer);
     }
 
     static UpdateDSL<UpdateModel> updateAllColumns(FunctionDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(FunctionDynamicSqlSupport.functionName).equalTo(row::getFunctionName)
-                .set(FunctionDynamicSqlSupport.functionFormat).equalTo(row::getFunctionFormat)
-                .set(FunctionDynamicSqlSupport.functionPath).equalTo(row::getFunctionPath)
-                .set(FunctionDynamicSqlSupport.functionClass).equalTo(row::getFunctionClass)
-                .set(FunctionDynamicSqlSupport.descr).equalTo(row::getDescr)
-                .set(FunctionDynamicSqlSupport.createUserId).equalTo(row::getCreateUserId)
-                .set(FunctionDynamicSqlSupport.modifyUserId).equalTo(row::getModifyUserId)
-                .set(FunctionDynamicSqlSupport.createTime).equalTo(row::getCreateTime)
-                .set(FunctionDynamicSqlSupport.modifyTime).equalTo(row::getModifyTime)
-                .set(FunctionDynamicSqlSupport.invalid).equalTo(row::getInvalid);
+        return dsl.set(functionName).equalTo(row::getFunctionName)
+                .set(functionFormat).equalTo(row::getFunctionFormat)
+                .set(functionPath).equalTo(row::getFunctionPath)
+                .set(functionClass).equalTo(row::getFunctionClass)
+                .set(descr).equalTo(row::getDescr)
+                .set(createUserId).equalTo(row::getCreateUserId)
+                .set(modifyUserId).equalTo(row::getModifyUserId)
+                .set(createTime).equalTo(row::getCreateTime)
+                .set(modifyTime).equalTo(row::getModifyTime)
+                .set(invalid).equalTo(row::getInvalid);
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(FunctionDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(FunctionDynamicSqlSupport.functionName).equalToWhenPresent(row::getFunctionName)
-                .set(FunctionDynamicSqlSupport.functionFormat).equalToWhenPresent(row::getFunctionFormat)
-                .set(FunctionDynamicSqlSupport.functionPath).equalToWhenPresent(row::getFunctionPath)
-                .set(FunctionDynamicSqlSupport.functionClass).equalToWhenPresent(row::getFunctionClass)
-                .set(FunctionDynamicSqlSupport.descr).equalToWhenPresent(row::getDescr)
-                .set(FunctionDynamicSqlSupport.createUserId).equalToWhenPresent(row::getCreateUserId)
-                .set(FunctionDynamicSqlSupport.modifyUserId).equalToWhenPresent(row::getModifyUserId)
-                .set(FunctionDynamicSqlSupport.createTime).equalToWhenPresent(row::getCreateTime)
-                .set(FunctionDynamicSqlSupport.modifyTime).equalToWhenPresent(row::getModifyTime)
-                .set(FunctionDynamicSqlSupport.invalid).equalToWhenPresent(row::getInvalid);
+        return dsl.set(functionName).equalToWhenPresent(row::getFunctionName)
+                .set(functionFormat).equalToWhenPresent(row::getFunctionFormat)
+                .set(functionPath).equalToWhenPresent(row::getFunctionPath)
+                .set(functionClass).equalToWhenPresent(row::getFunctionClass)
+                .set(descr).equalToWhenPresent(row::getDescr)
+                .set(createUserId).equalToWhenPresent(row::getCreateUserId)
+                .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
+                .set(createTime).equalToWhenPresent(row::getCreateTime)
+                .set(modifyTime).equalToWhenPresent(row::getModifyTime)
+                .set(invalid).equalToWhenPresent(row::getInvalid);
     }
 
     default int updateByPrimaryKey(FunctionDO row) {
         return update(c ->
-            c.set(FunctionDynamicSqlSupport.functionName).equalTo(row::getFunctionName)
-            .set(FunctionDynamicSqlSupport.functionFormat).equalTo(row::getFunctionFormat)
-            .set(FunctionDynamicSqlSupport.functionPath).equalTo(row::getFunctionPath)
-            .set(FunctionDynamicSqlSupport.functionClass).equalTo(row::getFunctionClass)
-            .set(FunctionDynamicSqlSupport.descr).equalTo(row::getDescr)
-            .set(FunctionDynamicSqlSupport.createUserId).equalTo(row::getCreateUserId)
-            .set(FunctionDynamicSqlSupport.modifyUserId).equalTo(row::getModifyUserId)
-            .set(FunctionDynamicSqlSupport.createTime).equalTo(row::getCreateTime)
-            .set(FunctionDynamicSqlSupport.modifyTime).equalTo(row::getModifyTime)
-            .set(FunctionDynamicSqlSupport.invalid).equalTo(row::getInvalid)
-            .where(FunctionDynamicSqlSupport.functionId, isEqualTo(row::getFunctionId))
+            c.set(functionName).equalTo(row::getFunctionName)
+            .set(functionFormat).equalTo(row::getFunctionFormat)
+            .set(functionPath).equalTo(row::getFunctionPath)
+            .set(functionClass).equalTo(row::getFunctionClass)
+            .set(descr).equalTo(row::getDescr)
+            .set(createUserId).equalTo(row::getCreateUserId)
+            .set(modifyUserId).equalTo(row::getModifyUserId)
+            .set(createTime).equalTo(row::getCreateTime)
+            .set(modifyTime).equalTo(row::getModifyTime)
+            .set(invalid).equalTo(row::getInvalid)
+            .where(functionId, isEqualTo(row::getFunctionId))
         );
     }
 
     default int updateByPrimaryKeySelective(FunctionDO row) {
         return update(c ->
-            c.set(FunctionDynamicSqlSupport.functionName).equalToWhenPresent(row::getFunctionName)
-            .set(FunctionDynamicSqlSupport.functionFormat).equalToWhenPresent(row::getFunctionFormat)
-            .set(FunctionDynamicSqlSupport.functionPath).equalToWhenPresent(row::getFunctionPath)
-            .set(FunctionDynamicSqlSupport.functionClass).equalToWhenPresent(row::getFunctionClass)
-            .set(FunctionDynamicSqlSupport.descr).equalToWhenPresent(row::getDescr)
-            .set(FunctionDynamicSqlSupport.createUserId).equalToWhenPresent(row::getCreateUserId)
-            .set(FunctionDynamicSqlSupport.modifyUserId).equalToWhenPresent(row::getModifyUserId)
-            .set(FunctionDynamicSqlSupport.createTime).equalToWhenPresent(row::getCreateTime)
-            .set(FunctionDynamicSqlSupport.modifyTime).equalToWhenPresent(row::getModifyTime)
-            .set(FunctionDynamicSqlSupport.invalid).equalToWhenPresent(row::getInvalid)
-            .where(FunctionDynamicSqlSupport.functionId, isEqualTo(row::getFunctionId))
+            c.set(functionName).equalToWhenPresent(row::getFunctionName)
+            .set(functionFormat).equalToWhenPresent(row::getFunctionFormat)
+            .set(functionPath).equalToWhenPresent(row::getFunctionPath)
+            .set(functionClass).equalToWhenPresent(row::getFunctionClass)
+            .set(descr).equalToWhenPresent(row::getDescr)
+            .set(createUserId).equalToWhenPresent(row::getCreateUserId)
+            .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
+            .set(createTime).equalToWhenPresent(row::getCreateTime)
+            .set(modifyTime).equalToWhenPresent(row::getModifyTime)
+            .set(invalid).equalToWhenPresent(row::getInvalid)
+            .where(functionId, isEqualTo(row::getFunctionId))
         );
     }
 }

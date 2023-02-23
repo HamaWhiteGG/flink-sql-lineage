@@ -45,7 +45,7 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
     }
 
     @Override
-    public boolean find(String name) {
+    public boolean check(String name) {
         return !functionMapper.select(completer -> completer.where(FunctionDynamicSqlSupport.functionName, isEqualTo(name))).isEmpty();
     }
 

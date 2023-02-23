@@ -1,5 +1,6 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskLineageDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
@@ -29,7 +30,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface TaskLineageMapper extends CommonCountMapper, CommonDeleteMapper, CommonInsertMapper<TaskLineageDO>, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(TaskLineageDynamicSqlSupport.rid, TaskLineageDynamicSqlSupport.taskId, TaskLineageDynamicSqlSupport.sqlId, TaskLineageDynamicSqlSupport.sourceCatalog, TaskLineageDynamicSqlSupport.sourceDatabase, TaskLineageDynamicSqlSupport.sourceTable, TaskLineageDynamicSqlSupport.sourceColumn, TaskLineageDynamicSqlSupport.targetCatalog, TaskLineageDynamicSqlSupport.targetDatabase, TaskLineageDynamicSqlSupport.targetTable, TaskLineageDynamicSqlSupport.targetColumn, TaskLineageDynamicSqlSupport.transform, TaskLineageDynamicSqlSupport.invalid);
+    BasicColumn[] selectList = BasicColumn.columnList(rid, taskId, sqlId, sourceCatalog, sourceDatabase, sourceTable, sourceColumn, targetCatalog, targetDatabase, targetTable, targetColumn, transform, invalid);
 
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="TaskLineageDOResult", value = {
@@ -54,160 +55,160 @@ public interface TaskLineageMapper extends CommonCountMapper, CommonDeleteMapper
     Optional<TaskLineageDO> selectOne(SelectStatementProvider selectStatement);
 
     default long count(CountDSLCompleter completer) {
-        return MyBatis3Utils.countFrom(this::count, TaskLineageDynamicSqlSupport.taskLineage, completer);
+        return MyBatis3Utils.countFrom(this::count, taskLineage, completer);
     }
 
     default int delete(DeleteDSLCompleter completer) {
-        return MyBatis3Utils.deleteFrom(this::delete, TaskLineageDynamicSqlSupport.taskLineage, completer);
+        return MyBatis3Utils.deleteFrom(this::delete, taskLineage, completer);
     }
 
     default int deleteByPrimaryKey(Long rid_) {
         return delete(c -> 
-            c.where(TaskLineageDynamicSqlSupport.rid, isEqualTo(rid_))
+            c.where(rid, isEqualTo(rid_))
         );
     }
 
     default int insert(TaskLineageDO row) {
-        return MyBatis3Utils.insert(this::insert, row, TaskLineageDynamicSqlSupport.taskLineage, c ->
-            c.map(TaskLineageDynamicSqlSupport.rid).toProperty("rid")
-            .map(TaskLineageDynamicSqlSupport.taskId).toProperty("taskId")
-            .map(TaskLineageDynamicSqlSupport.sqlId).toProperty("sqlId")
-            .map(TaskLineageDynamicSqlSupport.sourceCatalog).toProperty("sourceCatalog")
-            .map(TaskLineageDynamicSqlSupport.sourceDatabase).toProperty("sourceDatabase")
-            .map(TaskLineageDynamicSqlSupport.sourceTable).toProperty("sourceTable")
-            .map(TaskLineageDynamicSqlSupport.sourceColumn).toProperty("sourceColumn")
-            .map(TaskLineageDynamicSqlSupport.targetCatalog).toProperty("targetCatalog")
-            .map(TaskLineageDynamicSqlSupport.targetDatabase).toProperty("targetDatabase")
-            .map(TaskLineageDynamicSqlSupport.targetTable).toProperty("targetTable")
-            .map(TaskLineageDynamicSqlSupport.targetColumn).toProperty("targetColumn")
-            .map(TaskLineageDynamicSqlSupport.transform).toProperty("transform")
-            .map(TaskLineageDynamicSqlSupport.invalid).toProperty("invalid")
+        return MyBatis3Utils.insert(this::insert, row, taskLineage, c ->
+            c.map(rid).toProperty("rid")
+            .map(taskId).toProperty("taskId")
+            .map(sqlId).toProperty("sqlId")
+            .map(sourceCatalog).toProperty("sourceCatalog")
+            .map(sourceDatabase).toProperty("sourceDatabase")
+            .map(sourceTable).toProperty("sourceTable")
+            .map(sourceColumn).toProperty("sourceColumn")
+            .map(targetCatalog).toProperty("targetCatalog")
+            .map(targetDatabase).toProperty("targetDatabase")
+            .map(targetTable).toProperty("targetTable")
+            .map(targetColumn).toProperty("targetColumn")
+            .map(transform).toProperty("transform")
+            .map(invalid).toProperty("invalid")
         );
     }
 
     default int insertMultiple(Collection<TaskLineageDO> records) {
-        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, TaskLineageDynamicSqlSupport.taskLineage, c ->
-            c.map(TaskLineageDynamicSqlSupport.rid).toProperty("rid")
-            .map(TaskLineageDynamicSqlSupport.taskId).toProperty("taskId")
-            .map(TaskLineageDynamicSqlSupport.sqlId).toProperty("sqlId")
-            .map(TaskLineageDynamicSqlSupport.sourceCatalog).toProperty("sourceCatalog")
-            .map(TaskLineageDynamicSqlSupport.sourceDatabase).toProperty("sourceDatabase")
-            .map(TaskLineageDynamicSqlSupport.sourceTable).toProperty("sourceTable")
-            .map(TaskLineageDynamicSqlSupport.sourceColumn).toProperty("sourceColumn")
-            .map(TaskLineageDynamicSqlSupport.targetCatalog).toProperty("targetCatalog")
-            .map(TaskLineageDynamicSqlSupport.targetDatabase).toProperty("targetDatabase")
-            .map(TaskLineageDynamicSqlSupport.targetTable).toProperty("targetTable")
-            .map(TaskLineageDynamicSqlSupport.targetColumn).toProperty("targetColumn")
-            .map(TaskLineageDynamicSqlSupport.transform).toProperty("transform")
-            .map(TaskLineageDynamicSqlSupport.invalid).toProperty("invalid")
+        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, taskLineage, c ->
+            c.map(rid).toProperty("rid")
+            .map(taskId).toProperty("taskId")
+            .map(sqlId).toProperty("sqlId")
+            .map(sourceCatalog).toProperty("sourceCatalog")
+            .map(sourceDatabase).toProperty("sourceDatabase")
+            .map(sourceTable).toProperty("sourceTable")
+            .map(sourceColumn).toProperty("sourceColumn")
+            .map(targetCatalog).toProperty("targetCatalog")
+            .map(targetDatabase).toProperty("targetDatabase")
+            .map(targetTable).toProperty("targetTable")
+            .map(targetColumn).toProperty("targetColumn")
+            .map(transform).toProperty("transform")
+            .map(invalid).toProperty("invalid")
         );
     }
 
     default int insertSelective(TaskLineageDO row) {
-        return MyBatis3Utils.insert(this::insert, row, TaskLineageDynamicSqlSupport.taskLineage, c ->
-            c.map(TaskLineageDynamicSqlSupport.rid).toPropertyWhenPresent("rid", row::getRid)
-            .map(TaskLineageDynamicSqlSupport.taskId).toPropertyWhenPresent("taskId", row::getTaskId)
-            .map(TaskLineageDynamicSqlSupport.sqlId).toPropertyWhenPresent("sqlId", row::getSqlId)
-            .map(TaskLineageDynamicSqlSupport.sourceCatalog).toPropertyWhenPresent("sourceCatalog", row::getSourceCatalog)
-            .map(TaskLineageDynamicSqlSupport.sourceDatabase).toPropertyWhenPresent("sourceDatabase", row::getSourceDatabase)
-            .map(TaskLineageDynamicSqlSupport.sourceTable).toPropertyWhenPresent("sourceTable", row::getSourceTable)
-            .map(TaskLineageDynamicSqlSupport.sourceColumn).toPropertyWhenPresent("sourceColumn", row::getSourceColumn)
-            .map(TaskLineageDynamicSqlSupport.targetCatalog).toPropertyWhenPresent("targetCatalog", row::getTargetCatalog)
-            .map(TaskLineageDynamicSqlSupport.targetDatabase).toPropertyWhenPresent("targetDatabase", row::getTargetDatabase)
-            .map(TaskLineageDynamicSqlSupport.targetTable).toPropertyWhenPresent("targetTable", row::getTargetTable)
-            .map(TaskLineageDynamicSqlSupport.targetColumn).toPropertyWhenPresent("targetColumn", row::getTargetColumn)
-            .map(TaskLineageDynamicSqlSupport.transform).toPropertyWhenPresent("transform", row::getTransform)
-            .map(TaskLineageDynamicSqlSupport.invalid).toPropertyWhenPresent("invalid", row::getInvalid)
+        return MyBatis3Utils.insert(this::insert, row, taskLineage, c ->
+            c.map(rid).toPropertyWhenPresent("rid", row::getRid)
+            .map(taskId).toPropertyWhenPresent("taskId", row::getTaskId)
+            .map(sqlId).toPropertyWhenPresent("sqlId", row::getSqlId)
+            .map(sourceCatalog).toPropertyWhenPresent("sourceCatalog", row::getSourceCatalog)
+            .map(sourceDatabase).toPropertyWhenPresent("sourceDatabase", row::getSourceDatabase)
+            .map(sourceTable).toPropertyWhenPresent("sourceTable", row::getSourceTable)
+            .map(sourceColumn).toPropertyWhenPresent("sourceColumn", row::getSourceColumn)
+            .map(targetCatalog).toPropertyWhenPresent("targetCatalog", row::getTargetCatalog)
+            .map(targetDatabase).toPropertyWhenPresent("targetDatabase", row::getTargetDatabase)
+            .map(targetTable).toPropertyWhenPresent("targetTable", row::getTargetTable)
+            .map(targetColumn).toPropertyWhenPresent("targetColumn", row::getTargetColumn)
+            .map(transform).toPropertyWhenPresent("transform", row::getTransform)
+            .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
         );
     }
 
     default Optional<TaskLineageDO> selectOne(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectOne(this::selectOne, selectList, TaskLineageDynamicSqlSupport.taskLineage, completer);
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, taskLineage, completer);
     }
 
     default List<TaskLineageDO> select(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectList(this::selectMany, selectList, TaskLineageDynamicSqlSupport.taskLineage, completer);
+        return MyBatis3Utils.selectList(this::selectMany, selectList, taskLineage, completer);
     }
 
     default List<TaskLineageDO> selectDistinct(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, TaskLineageDynamicSqlSupport.taskLineage, completer);
+        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, taskLineage, completer);
     }
 
     default Optional<TaskLineageDO> selectByPrimaryKey(Long rid_) {
         return selectOne(c ->
-            c.where(TaskLineageDynamicSqlSupport.rid, isEqualTo(rid_))
+            c.where(rid, isEqualTo(rid_))
         );
     }
 
     default int update(UpdateDSLCompleter completer) {
-        return MyBatis3Utils.update(this::update, TaskLineageDynamicSqlSupport.taskLineage, completer);
+        return MyBatis3Utils.update(this::update, taskLineage, completer);
     }
 
     static UpdateDSL<UpdateModel> updateAllColumns(TaskLineageDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(TaskLineageDynamicSqlSupport.rid).equalTo(row::getRid)
-                .set(TaskLineageDynamicSqlSupport.taskId).equalTo(row::getTaskId)
-                .set(TaskLineageDynamicSqlSupport.sqlId).equalTo(row::getSqlId)
-                .set(TaskLineageDynamicSqlSupport.sourceCatalog).equalTo(row::getSourceCatalog)
-                .set(TaskLineageDynamicSqlSupport.sourceDatabase).equalTo(row::getSourceDatabase)
-                .set(TaskLineageDynamicSqlSupport.sourceTable).equalTo(row::getSourceTable)
-                .set(TaskLineageDynamicSqlSupport.sourceColumn).equalTo(row::getSourceColumn)
-                .set(TaskLineageDynamicSqlSupport.targetCatalog).equalTo(row::getTargetCatalog)
-                .set(TaskLineageDynamicSqlSupport.targetDatabase).equalTo(row::getTargetDatabase)
-                .set(TaskLineageDynamicSqlSupport.targetTable).equalTo(row::getTargetTable)
-                .set(TaskLineageDynamicSqlSupport.targetColumn).equalTo(row::getTargetColumn)
-                .set(TaskLineageDynamicSqlSupport.transform).equalTo(row::getTransform)
-                .set(TaskLineageDynamicSqlSupport.invalid).equalTo(row::getInvalid);
+        return dsl.set(rid).equalTo(row::getRid)
+                .set(taskId).equalTo(row::getTaskId)
+                .set(sqlId).equalTo(row::getSqlId)
+                .set(sourceCatalog).equalTo(row::getSourceCatalog)
+                .set(sourceDatabase).equalTo(row::getSourceDatabase)
+                .set(sourceTable).equalTo(row::getSourceTable)
+                .set(sourceColumn).equalTo(row::getSourceColumn)
+                .set(targetCatalog).equalTo(row::getTargetCatalog)
+                .set(targetDatabase).equalTo(row::getTargetDatabase)
+                .set(targetTable).equalTo(row::getTargetTable)
+                .set(targetColumn).equalTo(row::getTargetColumn)
+                .set(transform).equalTo(row::getTransform)
+                .set(invalid).equalTo(row::getInvalid);
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(TaskLineageDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(TaskLineageDynamicSqlSupport.rid).equalToWhenPresent(row::getRid)
-                .set(TaskLineageDynamicSqlSupport.taskId).equalToWhenPresent(row::getTaskId)
-                .set(TaskLineageDynamicSqlSupport.sqlId).equalToWhenPresent(row::getSqlId)
-                .set(TaskLineageDynamicSqlSupport.sourceCatalog).equalToWhenPresent(row::getSourceCatalog)
-                .set(TaskLineageDynamicSqlSupport.sourceDatabase).equalToWhenPresent(row::getSourceDatabase)
-                .set(TaskLineageDynamicSqlSupport.sourceTable).equalToWhenPresent(row::getSourceTable)
-                .set(TaskLineageDynamicSqlSupport.sourceColumn).equalToWhenPresent(row::getSourceColumn)
-                .set(TaskLineageDynamicSqlSupport.targetCatalog).equalToWhenPresent(row::getTargetCatalog)
-                .set(TaskLineageDynamicSqlSupport.targetDatabase).equalToWhenPresent(row::getTargetDatabase)
-                .set(TaskLineageDynamicSqlSupport.targetTable).equalToWhenPresent(row::getTargetTable)
-                .set(TaskLineageDynamicSqlSupport.targetColumn).equalToWhenPresent(row::getTargetColumn)
-                .set(TaskLineageDynamicSqlSupport.transform).equalToWhenPresent(row::getTransform)
-                .set(TaskLineageDynamicSqlSupport.invalid).equalToWhenPresent(row::getInvalid);
+        return dsl.set(rid).equalToWhenPresent(row::getRid)
+                .set(taskId).equalToWhenPresent(row::getTaskId)
+                .set(sqlId).equalToWhenPresent(row::getSqlId)
+                .set(sourceCatalog).equalToWhenPresent(row::getSourceCatalog)
+                .set(sourceDatabase).equalToWhenPresent(row::getSourceDatabase)
+                .set(sourceTable).equalToWhenPresent(row::getSourceTable)
+                .set(sourceColumn).equalToWhenPresent(row::getSourceColumn)
+                .set(targetCatalog).equalToWhenPresent(row::getTargetCatalog)
+                .set(targetDatabase).equalToWhenPresent(row::getTargetDatabase)
+                .set(targetTable).equalToWhenPresent(row::getTargetTable)
+                .set(targetColumn).equalToWhenPresent(row::getTargetColumn)
+                .set(transform).equalToWhenPresent(row::getTransform)
+                .set(invalid).equalToWhenPresent(row::getInvalid);
     }
 
     default int updateByPrimaryKey(TaskLineageDO row) {
         return update(c ->
-            c.set(TaskLineageDynamicSqlSupport.taskId).equalTo(row::getTaskId)
-            .set(TaskLineageDynamicSqlSupport.sqlId).equalTo(row::getSqlId)
-            .set(TaskLineageDynamicSqlSupport.sourceCatalog).equalTo(row::getSourceCatalog)
-            .set(TaskLineageDynamicSqlSupport.sourceDatabase).equalTo(row::getSourceDatabase)
-            .set(TaskLineageDynamicSqlSupport.sourceTable).equalTo(row::getSourceTable)
-            .set(TaskLineageDynamicSqlSupport.sourceColumn).equalTo(row::getSourceColumn)
-            .set(TaskLineageDynamicSqlSupport.targetCatalog).equalTo(row::getTargetCatalog)
-            .set(TaskLineageDynamicSqlSupport.targetDatabase).equalTo(row::getTargetDatabase)
-            .set(TaskLineageDynamicSqlSupport.targetTable).equalTo(row::getTargetTable)
-            .set(TaskLineageDynamicSqlSupport.targetColumn).equalTo(row::getTargetColumn)
-            .set(TaskLineageDynamicSqlSupport.transform).equalTo(row::getTransform)
-            .set(TaskLineageDynamicSqlSupport.invalid).equalTo(row::getInvalid)
-            .where(TaskLineageDynamicSqlSupport.rid, isEqualTo(row::getRid))
+            c.set(taskId).equalTo(row::getTaskId)
+            .set(sqlId).equalTo(row::getSqlId)
+            .set(sourceCatalog).equalTo(row::getSourceCatalog)
+            .set(sourceDatabase).equalTo(row::getSourceDatabase)
+            .set(sourceTable).equalTo(row::getSourceTable)
+            .set(sourceColumn).equalTo(row::getSourceColumn)
+            .set(targetCatalog).equalTo(row::getTargetCatalog)
+            .set(targetDatabase).equalTo(row::getTargetDatabase)
+            .set(targetTable).equalTo(row::getTargetTable)
+            .set(targetColumn).equalTo(row::getTargetColumn)
+            .set(transform).equalTo(row::getTransform)
+            .set(invalid).equalTo(row::getInvalid)
+            .where(rid, isEqualTo(row::getRid))
         );
     }
 
     default int updateByPrimaryKeySelective(TaskLineageDO row) {
         return update(c ->
-            c.set(TaskLineageDynamicSqlSupport.taskId).equalToWhenPresent(row::getTaskId)
-            .set(TaskLineageDynamicSqlSupport.sqlId).equalToWhenPresent(row::getSqlId)
-            .set(TaskLineageDynamicSqlSupport.sourceCatalog).equalToWhenPresent(row::getSourceCatalog)
-            .set(TaskLineageDynamicSqlSupport.sourceDatabase).equalToWhenPresent(row::getSourceDatabase)
-            .set(TaskLineageDynamicSqlSupport.sourceTable).equalToWhenPresent(row::getSourceTable)
-            .set(TaskLineageDynamicSqlSupport.sourceColumn).equalToWhenPresent(row::getSourceColumn)
-            .set(TaskLineageDynamicSqlSupport.targetCatalog).equalToWhenPresent(row::getTargetCatalog)
-            .set(TaskLineageDynamicSqlSupport.targetDatabase).equalToWhenPresent(row::getTargetDatabase)
-            .set(TaskLineageDynamicSqlSupport.targetTable).equalToWhenPresent(row::getTargetTable)
-            .set(TaskLineageDynamicSqlSupport.targetColumn).equalToWhenPresent(row::getTargetColumn)
-            .set(TaskLineageDynamicSqlSupport.transform).equalToWhenPresent(row::getTransform)
-            .set(TaskLineageDynamicSqlSupport.invalid).equalToWhenPresent(row::getInvalid)
-            .where(TaskLineageDynamicSqlSupport.rid, isEqualTo(row::getRid))
+            c.set(taskId).equalToWhenPresent(row::getTaskId)
+            .set(sqlId).equalToWhenPresent(row::getSqlId)
+            .set(sourceCatalog).equalToWhenPresent(row::getSourceCatalog)
+            .set(sourceDatabase).equalToWhenPresent(row::getSourceDatabase)
+            .set(sourceTable).equalToWhenPresent(row::getSourceTable)
+            .set(sourceColumn).equalToWhenPresent(row::getSourceColumn)
+            .set(targetCatalog).equalToWhenPresent(row::getTargetCatalog)
+            .set(targetDatabase).equalToWhenPresent(row::getTargetDatabase)
+            .set(targetTable).equalToWhenPresent(row::getTargetTable)
+            .set(targetColumn).equalToWhenPresent(row::getTargetColumn)
+            .set(transform).equalToWhenPresent(row::getTransform)
+            .set(invalid).equalToWhenPresent(row::getInvalid)
+            .where(rid, isEqualTo(row::getRid))
         );
     }
 }

@@ -43,4 +43,20 @@ public interface DtoAssembler {
     TaskLineageDTO fromTaskLineage(TaskLineage taskLineage);
 
     List<FunctionDTO> fromFunctionList(List<Function> functionList);
+
+    @Mapping(source = "userId.value", target = "userId")
+    UserDTO fromUser(User user);
+
+    @Mapping(source = "user.userId.value", target = "userId")
+    UserDTO fromUserPermissions(User user, List<Permission> permissionList);
+
+    @Mapping(source = "user.userId.value", target = "userId")
+    UserDTO fromUserRoles(User user, List<Role> roleList);
+
+
+    @Mapping(source = "roleId.value", target = "roleId")
+    RoleDTO fromRole(Role role);
+
+    @Mapping(source = "permissionId.value", target = "permissionId")
+    PermissionDTO fromPermission(Permission permission);
 }

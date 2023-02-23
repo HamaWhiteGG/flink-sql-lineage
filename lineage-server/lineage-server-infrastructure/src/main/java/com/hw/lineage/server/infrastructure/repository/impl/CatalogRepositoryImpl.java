@@ -44,7 +44,7 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
     }
 
     @Override
-    public boolean find(String name) {
+    public boolean check(String name) {
         return !catalogMapper.select(completer -> completer.where(CatalogDynamicSqlSupport.catalogName, isEqualTo(name))).isEmpty();
     }
 

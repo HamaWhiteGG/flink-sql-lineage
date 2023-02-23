@@ -40,6 +40,7 @@
         <mybatis-dynamic-sql.version>1.4.1</mybatis-dynamic-sql.version>
         <mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
         <pagehelper-spring-boot-starter.version>1.4.6</pagehelper-spring-boot-starter.version>
+        <knife4j-spring-boot-starter.version>3.0.3</knife4j-spring-boot-starter.version>
         <pagehelper.version>5.3.2</pagehelper.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
 
@@ -158,6 +159,12 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-boot-starter</artifactId>
                 <version>${springfox-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j-spring-boot-starter.version}</version>
             </dependency>
 
             <dependency>

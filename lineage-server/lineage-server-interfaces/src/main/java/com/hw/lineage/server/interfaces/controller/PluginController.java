@@ -10,6 +10,7 @@ import com.hw.lineage.server.domain.query.plugin.PluginQuery;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,12 +36,14 @@ public class PluginController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('system:plugin:list')")
     public Result<PageInfo<PluginDTO>> queryPlugins(PluginQuery pluginQuery) {
         PageInfo<PluginDTO> pageInfo = pluginService.queryPlugins(pluginQuery);
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAuthority('system:plugin:add')")
     public Result<Long> createPlugin(@Valid @RequestBody CreatePluginCmd createPluginCmd) {
         Long pluginId = pluginService.createPlugin(createPluginCmd);
         return Result.success(ResultMessage.CREATE_SUCCESS, pluginId);
@@ -52,6 +55,7 @@ public class PluginController {
     }
 
     @PutMapping("/{pluginId}")
+    @PreAuthorize("hasAuthority('system:plugin:edit')")
     public Result<Boolean> updatePlugin(@PathVariable("pluginId") Long pluginId,
                                         @Valid @RequestBody UpdatePluginCmd updatePluginCmd) {
         updatePluginCmd.setPluginId(pluginId);
@@ -60,6 +64,7 @@ public class PluginController {
     }
 
     @DeleteMapping("/{pluginId}")
+    @PreAuthorize("hasAuthority('system:plugin:delete')")
     public Result<Boolean> deletePlugin(@PathVariable("pluginId") Long pluginId) {
         pluginService.deletePlugin(pluginId);
         return Result.success(ResultMessage.DELETE_SUCCESS);

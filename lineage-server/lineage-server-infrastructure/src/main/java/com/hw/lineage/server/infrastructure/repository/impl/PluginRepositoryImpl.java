@@ -42,7 +42,7 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
     }
 
     @Override
-    public boolean find(String name) {
+    public boolean check(String name) {
         return !pluginMapper.select(completer -> completer.where(PluginDynamicSqlSupport.pluginName, isEqualTo(name))).isEmpty();
     }
 

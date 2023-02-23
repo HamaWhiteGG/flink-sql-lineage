@@ -73,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Boolean checkTaskExist(TaskCheck taskCheck) {
-        return taskRepository.find(taskCheck.getTaskName());
+        return taskRepository.check(taskCheck.getTaskName());
     }
 
     @Override
