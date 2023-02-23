@@ -86,4 +86,8 @@ public interface DataConverter {
 
     List<Permission> toPermissionList(List<PermissionDO> permissionDOList);
 
+    List<Role> toRoleList(List<RoleDO> roleDOList);
+
+    List<User> toUserList(List<UserDO> userDOList);
+
 }
