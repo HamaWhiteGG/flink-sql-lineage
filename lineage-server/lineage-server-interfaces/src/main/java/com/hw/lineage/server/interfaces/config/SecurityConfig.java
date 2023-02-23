@@ -5,10 +5,11 @@ import com.hw.lineage.server.application.service.UserService;
 import com.hw.lineage.server.interfaces.result.Result;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.annotation.Resource;
@@ -35,11 +36,14 @@ public class SecurityConfig {
             // for knife4j
             "/doc.html",
             "/webjars/**",
-            // for lineage
+            // for lineage, currently only APIs under plugins require login and authentication
             "/tasks/**",
             "/catalogs/**",
             "/functions/**",
-            "/storages/**"
+            "/storages/**",
+            "/users/**",
+            "/roles/**",
+            "/permissions/**"
     };
 
     @Resource
@@ -47,16 +51,30 @@ public class SecurityConfig {
 
 
     @Bean
-    public UserDetailsService userDetailsServiceBean()  {
-        return userService;
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        // override the default UserDetailsService
+        authenticationProvider.setUserDetailsService(userService);
+        authenticationProvider.setPasswordEncoder(new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                // unencrypted password
+                return rawPassword.toString();
+            }
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return rawPassword.toString().equalsIgnoreCase(encodedPassword);
+            }
+        });
+        return authenticationProvider;
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITE_LIST).permitAll()
-                .antMatchers("/plugins/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()

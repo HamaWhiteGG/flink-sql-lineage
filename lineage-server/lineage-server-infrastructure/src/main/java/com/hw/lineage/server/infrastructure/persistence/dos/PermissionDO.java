@@ -10,6 +10,8 @@ package com.hw.lineage.server.infrastructure.persistence.dos;
 public class PermissionDO {
     private Long permissionId;
 
+    private String permissionGroup;
+
     private String permissionName;
 
     private String permissionCode;
@@ -26,6 +28,14 @@ public class PermissionDO {
 
     public void setPermissionId(Long permissionId) {
         this.permissionId = permissionId;
+    }
+
+    public String getPermissionGroup() {
+        return permissionGroup;
+    }
+
+    public void setPermissionGroup(String permissionGroup) {
+        this.permissionGroup = permissionGroup;
     }
 
     public String getPermissionName() {
@@ -81,6 +91,7 @@ public class PermissionDO {
         }
         PermissionDO other = (PermissionDO) that;
         return (this.getPermissionId() == null ? other.getPermissionId() == null : this.getPermissionId().equals(other.getPermissionId()))
+            && (this.getPermissionGroup() == null ? other.getPermissionGroup() == null : this.getPermissionGroup().equals(other.getPermissionGroup()))
             && (this.getPermissionName() == null ? other.getPermissionName() == null : this.getPermissionName().equals(other.getPermissionName()))
             && (this.getPermissionCode() == null ? other.getPermissionCode() == null : this.getPermissionCode().equals(other.getPermissionCode()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -93,6 +104,7 @@ public class PermissionDO {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getPermissionId() == null) ? 0 : getPermissionId().hashCode());
+        result = prime * result + ((getPermissionGroup() == null) ? 0 : getPermissionGroup().hashCode());
         result = prime * result + ((getPermissionName() == null) ? 0 : getPermissionName().hashCode());
         result = prime * result + ((getPermissionCode() == null) ? 0 : getPermissionCode().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -108,6 +120,7 @@ public class PermissionDO {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", permissionId=").append(permissionId);
+        sb.append(", permissionGroup=").append(permissionGroup);
         sb.append(", permissionName=").append(permissionName);
         sb.append(", permissionCode=").append(permissionCode);
         sb.append(", createTime=").append(createTime);

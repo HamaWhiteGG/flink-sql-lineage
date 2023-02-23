@@ -72,4 +72,16 @@ public interface DataConverter {
     @Mapping(source = "userId.value", target = "userId")
     UserDO fromUser(User user);
 
+    @Mapping(source = "roleId", target = "roleId.value")
+    Role toRole(RoleDO roleDO);
+
+    @Mapping(source = "roleId.value", target = "roleId")
+    RoleDO fromRole(Role role);
+
+    @Mapping(source = "permissionId", target = "permissionId.value")
+    Permission toPermission(PermissionDO permissionDO);
+
+    @Mapping(source = "permissionId.value", target = "permissionId")
+    PermissionDO fromPermission(Permission permission);
+
 }

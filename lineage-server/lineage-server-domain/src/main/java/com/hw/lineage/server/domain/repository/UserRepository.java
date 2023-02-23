@@ -14,5 +14,6 @@ import com.hw.lineage.server.domain.vo.UserId;
 public interface UserRepository extends Repository<User, UserId> {
 
     User find(String username);
+
     PageInfo<User> findAll(UserQuery userQuery);
 }

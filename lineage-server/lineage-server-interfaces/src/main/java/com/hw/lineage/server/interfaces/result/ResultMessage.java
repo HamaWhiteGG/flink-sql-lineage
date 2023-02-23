@@ -40,7 +40,7 @@ public class ResultMessage {
 
     public static final String LOGOUT_SUCCESS = "logout success";
 
-    public static final String NOT_LOGGED_IN = "not logged in, please log in first";
+    public static final String NOT_LOGGED_IN = "please log in first";
 
     public static final String USER_ACCOUNT_EXPIRED= "user account expired";
 

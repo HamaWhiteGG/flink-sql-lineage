@@ -13,11 +13,11 @@ insert into lineage.rel_role_user (rid, role_id, user_id, invalid) values (3, 1,
 insert into lineage.rel_role_user (rid, role_id, user_id, invalid) values (4, 1, 4, 0);
 insert into lineage.rel_role_user (rid, role_id, user_id, invalid) values (5, 1, 5, 0);
 
-insert into lineage.bas_permission (permission_id, permission_name, permission_code, create_time, modify_time, invalid) values (1, 'system:plugin:add', 'system:plugin:add', 1674565178000, 1674565178000, 0);
-insert into lineage.bas_permission (permission_id, permission_name, permission_code, create_time, modify_time, invalid) values (2, 'system:plugin:edit', 'system:plugin:edit', 1674565178000, 1674565178000, 0);
-insert into lineage.bas_permission (permission_id, permission_name, permission_code, create_time, modify_time, invalid) values (3, 'system:plugin:delete', 'system:plugin:delete', 1674565178000, 1674565178000, 0);
-insert into lineage.bas_permission (permission_id, permission_name, permission_code, create_time, modify_time, invalid) values (4, 'system:plugin:disable', 'system:plugin:disable', 1674565178000, 1674565178000, 0);
-insert into lineage.bas_permission (permission_id, permission_name, permission_code, create_time, modify_time, invalid) values (5, 'system:plugin:list', 'system:plugin:list', 1674565178000, 1674565178000, 0);
+insert into lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) values (1, 'plugins', 'add plugin', 'system:plugin:add', 1674565178000, 1674565178000, 0);
+insert into lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) values (2, 'plugins', 'edit plugin', 'system:plugin:edit', 1674565178000, 1674565178000, 0);
+insert into lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) values (3, 'plugins', 'delete plugin', 'system:plugin:delete', 1674565178000, 1674565178000, 0);
+insert into lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) values (4, 'plugins', 'disable plugin', 'system:plugin:disable', 1674565178000, 1674565178000, 0);
+insert into lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) values (5, 'plugins', 'list plugin', 'system:plugin:list', 1674565178000, 1674565178000, 0);
 
 insert into lineage.rel_role_permission (rid, role_id, permission_id, invalid) values (1, 1, 5, 0);
 insert into lineage.rel_role_permission (rid, role_id, permission_id, invalid) values (2, 2, 1, 0);
