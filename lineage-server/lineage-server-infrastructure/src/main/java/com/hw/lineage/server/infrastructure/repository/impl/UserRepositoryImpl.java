@@ -5,20 +5,25 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
+import com.hw.lineage.server.domain.entity.Permission;
+import com.hw.lineage.server.domain.entity.Role;
 import com.hw.lineage.server.domain.entity.User;
 import com.hw.lineage.server.domain.query.user.UserQuery;
 import com.hw.lineage.server.domain.repository.UserRepository;
 import com.hw.lineage.server.domain.vo.UserId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
+import com.hw.lineage.server.infrastructure.persistence.dos.PermissionDO;
 import com.hw.lineage.server.infrastructure.persistence.dos.UserDO;
-import com.hw.lineage.server.infrastructure.persistence.mapper.UserDynamicSqlSupport;
-import com.hw.lineage.server.infrastructure.persistence.mapper.UserMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.*;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.PermissionDynamicSqlSupport.permission;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.RolePermissionDynamicSqlSupport.rolePermission;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.RoleUserDynamicSqlSupport.roleUser;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 
 /**
@@ -31,6 +36,9 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private PermissionMapper permissionMapper;
 
     @Resource
     private DataConverter converter;
@@ -72,6 +80,21 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
                         new LineageException("user account or password error")
                 );
         return converter.toUser(userDO);
+    }
+
+    @Override
+    public List<Role> findRoles(UserId userId) {
+        return null;
+    }
+
+    @Override
+    public List<Permission> findPermissions(UserId userId) {
+        List<PermissionDO> permissionDOList = permissionMapper.select(completer ->
+                completer.join(rolePermission).on(permission.permissionId, equalTo(rolePermission.permissionId))
+                        .join(roleUser).on(rolePermission.roleId, equalTo(roleUser.roleId))
+                        .where(roleUser.userId, isEqualTo(userId.getValue()))
+        );
+        return converter.toPermissionList(permissionDOList);
     }
 
     @Override

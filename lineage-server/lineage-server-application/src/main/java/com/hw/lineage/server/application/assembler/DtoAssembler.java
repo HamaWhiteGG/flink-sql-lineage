@@ -47,6 +47,13 @@ public interface DtoAssembler {
     @Mapping(source = "userId.value", target = "userId")
     UserDTO fromUser(User user);
 
+    @Mapping(source = "user.userId.value", target = "userId")
+    UserDTO fromUserPermissions(User user, List<Permission> permissionList);
+
+    @Mapping(source = "user.userId.value", target = "userId")
+    UserDTO fromUserRoles(User user, List<Role> roleList);
+
+
     @Mapping(source = "roleId.value", target = "roleId")
     RoleDTO fromRole(Role role);
 

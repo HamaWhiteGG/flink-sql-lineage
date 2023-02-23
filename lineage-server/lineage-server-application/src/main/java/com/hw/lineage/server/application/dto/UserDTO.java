@@ -3,9 +3,12 @@ package com.hw.lineage.server.application.dto;
 import com.hw.lineage.server.application.dto.basic.RootDTO;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description: UserDTO
@@ -23,9 +26,15 @@ public class UserDTO extends RootDTO implements UserDetails {
 
     private Boolean locked;
 
+    private List<RoleDTO> roleList;
+
+    private List<PermissionDTO> permissionList;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return permissionList.stream()
+                .map(e -> new SimpleGrantedAuthority(e.getPermissionCode()))
+                .collect(Collectors.toSet());
     }
 
     @Override
