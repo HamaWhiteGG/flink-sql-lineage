@@ -13,14 +13,19 @@ import com.hw.lineage.server.domain.repository.UserRepository;
 import com.hw.lineage.server.domain.vo.UserId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.PermissionDO;
+import com.hw.lineage.server.infrastructure.persistence.dos.RoleDO;
 import com.hw.lineage.server.infrastructure.persistence.dos.UserDO;
-import com.hw.lineage.server.infrastructure.persistence.mapper.*;
+import com.hw.lineage.server.infrastructure.persistence.mapper.PermissionMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.RoleMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.UserDynamicSqlSupport;
+import com.hw.lineage.server.infrastructure.persistence.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 import static com.hw.lineage.server.infrastructure.persistence.mapper.PermissionDynamicSqlSupport.permission;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.RoleDynamicSqlSupport.role;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.RolePermissionDynamicSqlSupport.rolePermission;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.RoleUserDynamicSqlSupport.roleUser;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
@@ -36,6 +41,9 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private RoleMapper roleMapper;
 
     @Resource
     private PermissionMapper permissionMapper;
@@ -84,7 +92,11 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
 
     @Override
     public List<Role> findRoles(UserId userId) {
-        return null;
+        List<RoleDO> roleDOList = roleMapper.select(completer ->
+                completer.join(roleUser).on(role.roleId, equalTo(roleUser.roleId))
+                        .where(roleUser.userId, isEqualTo(userId.getValue()))
+        );
+        return converter.toRoleList(roleDOList);
     }
 
     @Override
