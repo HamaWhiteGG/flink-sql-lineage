@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS `bas_user`;
 CREATE TABLE `bas_user`
 (
     `user_id`     bigint(20) AUTO_INCREMENT,
-    `username`    varchar(128) NOT NULL,
-    `password`    varchar(128) NOT NULL,
+    `username`    varchar(32) NOT NULL,
+    `password`    varchar(32) NOT NULL,
     `locked`      tinyint(1)   NOT NULL DEFAULT '0',
     `create_time` bigint(20)   NOT NULL,
     `modify_time` bigint(20)   NOT NULL,
@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS `bas_role`;
 CREATE TABLE `bas_role`
 (
     `role_id`     bigint(20) AUTO_INCREMENT,
-    `role_name`   varchar(128) NOT NULL,
+    `role_name`   varchar(32) NOT NULL,
     `create_time` bigint(20)   NOT NULL,
     `modify_time` bigint(20)   NOT NULL,
     `invalid`     tinyint(1)   NOT NULL DEFAULT '0',
@@ -44,9 +44,9 @@ DROP TABLE IF EXISTS `bas_permission`;
 CREATE TABLE `bas_permission`
 (
     `permission_id`   bigint(20) AUTO_INCREMENT,
-    `permission_group` varchar(128) NOT NULL,
-    `permission_name` varchar(128) NOT NULL,
-    `permission_code` varchar(128) NOT NULL,
+    `permission_group` varchar(32) NOT NULL,
+    `permission_name` varchar(32) NOT NULL,
+    `permission_code` varchar(32) NOT NULL,
     `create_time`     bigint(20)   NOT NULL,
     `modify_time`     bigint(20)   NOT NULL,
     `invalid`         tinyint(1)   NOT NULL DEFAULT '0',
@@ -72,8 +72,8 @@ DROP TABLE IF EXISTS `bas_task`;
 CREATE TABLE `bas_task`
 (
     `task_id`        bigint(20) AUTO_INCREMENT,
-    `task_name`      varchar(128) NOT NULL,
-    `descr`          varchar(255),
+    `task_name`      varchar(32) NOT NULL,
+    `descr`          varchar(256),
     `plugin_id`      bigint(20)   NOT NULL,
     `catalog_id`     bigint(20)   NOT NULL,
     `task_source`    longtext COMMENT 'Base64 encode',
@@ -109,16 +109,16 @@ CREATE TABLE `rel_task_lineage`
 (
     `rid`             bigint(20) AUTO_INCREMENT,
     `task_id`         bigint(20)   NOT NULL,
-    `sql_id`          int(10)      NOT NULL,
-    `source_catalog`  varchar(128) NOT NULL,
-    `source_database` varchar(128) NOT NULL,
-    `source_table`    varchar(128) NOT NULL,
-    `source_column`   varchar(128) NOT NULL,
-    `target_catalog`  varchar(128) NOT NULL,
-    `target_database` varchar(128) NOT NULL,
-    `target_table`    varchar(128) NOT NULL,
-    `target_column`   varchar(128) NOT NULL,
-    `transform`       varchar(128),
+    `sql_id`          bigint(10)   NOT NULL,
+    `source_catalog`  varchar(32) NOT NULL,
+    `source_database` varchar(32) NOT NULL,
+    `source_table`    varchar(32) NOT NULL,
+    `source_column`   varchar(32) NOT NULL,
+    `target_catalog`  varchar(32) NOT NULL,
+    `target_database` varchar(32) NOT NULL,
+    `target_table`    varchar(32) NOT NULL,
+    `target_column`   varchar(32) NOT NULL,
+    `transform`       varchar(256),
     `invalid`         tinyint(1)   NOT NULL DEFAULT '0',
     PRIMARY KEY (`rid`),
     KEY `task_id_idx` (`task_id`)
@@ -130,8 +130,8 @@ DROP TABLE IF EXISTS `bas_plugin`;
 CREATE TABLE `bas_plugin`
 (
     `plugin_id`      bigint(20) AUTO_INCREMENT,
-    `plugin_name`    varchar(128) NOT NULL,
-    `descr`          varchar(255),
+    `plugin_name`    varchar(32) NOT NULL,
+    `descr`          varchar(256),
     `create_user_id` bigint(20)   NOT NULL DEFAULT '0',
     `modify_user_id` bigint(20)   NOT NULL DEFAULT '0',
     `create_time`    bigint(20)   NOT NULL,
@@ -147,10 +147,10 @@ DROP TABLE IF EXISTS `bas_catalog`;
 CREATE TABLE `bas_catalog`
 (
     `catalog_id`       bigint(20) AUTO_INCREMENT,
-    `catalog_name`     varchar(128) NOT NULL,
+    `catalog_name`     varchar(32) NOT NULL,
     `catalog_type`     tinyint(8)   NOT NULL DEFAULT '0',
-    `default_database` varchar(128) NOT NULL DEFAULT '',
-    `descr`            varchar(255),
+    `default_database` varchar(32) NOT NULL DEFAULT '',
+    `descr`            varchar(256),
     `create_user_id`   bigint(20)   NOT NULL DEFAULT '0',
     `modify_user_id`   bigint(20)   NOT NULL DEFAULT '0',
     `create_time`      bigint(20)   NOT NULL,
@@ -166,11 +166,11 @@ DROP TABLE IF EXISTS `bas_function`;
 CREATE TABLE `bas_function`
 (
     `function_id`     bigint(20) AUTO_INCREMENT,
-    `function_name`   varchar(128)  NOT NULL,
-    `function_format` varchar(128)  NOT NULL,
+    `function_name`   varchar(32)  NOT NULL,
+    `function_format` varchar(32)  NOT NULL,
     `function_path`   varchar(1024) NOT NULL,
-    `function_class`  varchar(128)  NOT NULL,
-    `descr`           varchar(255),
+    `function_class`  varchar(32)  NOT NULL,
+    `descr`           varchar(256),
     `create_user_id`  bigint(20)    NOT NULL DEFAULT '0',
     `modify_user_id`  bigint(20)    NOT NULL DEFAULT '0',
     `create_time`     bigint(20)    NOT NULL,

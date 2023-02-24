@@ -37,7 +37,7 @@ public class StorageFacadeImpl implements StorageFacade {
     @Override
     public void init() throws IOException {
         if (Files.notExists(rootLocation)) {
-            Files.createDirectory(rootLocation);
+            Files.createDirectories(rootLocation);
             LOG.info("created storageDir: {}", rootLocation.toAbsolutePath());
         }
     }
