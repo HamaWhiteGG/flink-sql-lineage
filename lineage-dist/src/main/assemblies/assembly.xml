@@ -13,7 +13,7 @@
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
             <outputDirectory>${assembly.name}/lineage-server/</outputDirectory>
             <includes>
-                <include>*.jar</include>
+                <include>lineage-server-*.jar</include>
             </includes>
             <excludes>
                 <exclude>*-sources.jar</exclude>
@@ -32,7 +32,7 @@
 
         <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/src/main/resources/</directory>
-            <outputDirectory>${assembly.name}/lineage-server/</outputDirectory>
+            <outputDirectory>${assembly.name}/</outputDirectory>
             <includes>
                 <include>scripts/mysql/*</include>
             </includes>
@@ -92,6 +92,15 @@
             <outputDirectory>${assembly.name}/plugins/flink1.16.x/lib/</outputDirectory>
             <includes>
                 <include>*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/sbin</directory>
+            <outputDirectory>${assembly.name}/sbin</outputDirectory>
+            <includes>
+                <include>start.sh</include>
+                <include>stop.sh</include>
             </includes>
         </fileSet>
     </fileSets>
