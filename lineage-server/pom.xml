@@ -15,5 +15,6 @@
         <module>lineage-server-domain</module>
         <module>lineage-server-infrastructure</module>
         <module>lineage-server-interfaces</module>
+        <module>lineage-server-start</module>
     </modules>
 </project>

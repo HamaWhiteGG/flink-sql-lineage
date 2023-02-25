@@ -38,7 +38,13 @@ public class SecurityConfig {
             // for knife4j
             "/doc.html",
             "/webjars/**",
-            // for lineage, currently only APIs under plugins require login and authentication
+            // fow lineage web
+            "/index.html",
+            "/static/**",
+            "/favicon.ico",
+            "/manifest.json",
+            "/logo192.png",
+            // for lineage server, currently only APIs under plugins require login and authentication
             "/tasks/**",
             "/catalogs/**",
             "/functions/**",
