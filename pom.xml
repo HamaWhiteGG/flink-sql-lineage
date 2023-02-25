@@ -18,7 +18,6 @@
         <module>lineage-web</module>
         <module>lineage-server</module>
         <module>lineage-dist</module>
-        <module>lineage-server/lineage-server-start</module>
     </modules>
 
     <properties>
@@ -30,6 +29,9 @@
         <lombok.version>1.18.20</lombok.version>
         <slf4j-api.version>1.7.32</slf4j-api.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+
+        <node.version>v18.11.0</node.version>
+        <yarn.version>v1.19.1</yarn.version>
 
         <scala.binary.version>2.12</scala.binary.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
@@ -43,13 +45,14 @@
         <knife4j-spring-boot-starter.version>3.0.3</knife4j-spring-boot-starter.version>
         <pagehelper.version>5.3.2</pagehelper.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-
         <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
+        <maven-clean-plugin.verion>3.1.0</maven-clean-plugin.verion>
         <scala-maven-plugin.version>3.3.1</scala-maven-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <frontend-maven-plugin.version>1.8.0</frontend-maven-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
         <mybatis-generator-maven-plugin.version>1.4.1</mybatis-generator-maven-plugin.version>
@@ -316,6 +319,28 @@
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <useDefaultDelimiters>true</useDefaultDelimiters>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <id>copy lineage-web</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>src/main/resources/static</outputDirectory>
+                                <overwrite>true</overwrite>
+                                <resources>
+                                    <resource>
+                                        <!--suppress UnresolvedMavenProperty -->
+                                        <directory>${project.parent.basedir}/lineage-web/build</directory>
+                                        <includes>
+                                            <include>**</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
@@ -341,6 +366,63 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${frontend-maven-plugin.version}</version>
+                    <configuration>
+                        <nodeVersion>${node.version}</nodeVersion>
+                        <yarnVersion>${yarn.version}</yarnVersion>
+                        <workingDirectory>${project.parent.basedir}/lineage-web</workingDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and yarn</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>install-node-and-yarn</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>yarn install</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>yarn</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>yarn build</id>
+                            <goals>
+                                <goal>yarn</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>build</arguments>
+                            </configuration>
+                            <phase>generate-sources</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.verion}</version>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <directory>src/main/resources/static</directory>
+                            </fileset>
+                            <fileset>
+                                <!--suppress UnresolvedMavenProperty -->
+                                <directory>${project.parent.basedir}/lineage-web/build</directory>
+                            </fileset>
+                        </filesets>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

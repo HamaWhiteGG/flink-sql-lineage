@@ -57,3 +57,7 @@ package-lock.json
 data/tmp
 data/storage
 data/logs
+
+lineage-web/build/
+lineage-web/node/
+static
