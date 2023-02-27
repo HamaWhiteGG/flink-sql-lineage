@@ -40,8 +40,8 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
                     .asList()
                     .hasSize(1)
                     .contains(new FunctionResult().setFunctionName("flink_suffix_udf")
-                            .setFunctionFormat("flink_suffix_udf(String1)")
-                            .setFunctionClass("com.hw.lineage.flink.table.udf.functiona.FlinkSuffixFunction")
+                            .setInvocation("flink_suffix_udf(String1)")
+                            .setClassName("com.hw.lineage.flink.table.udf.functiona.FlinkSuffixFunction")
                             .setDescr("return String")
                     );
         });
@@ -61,12 +61,12 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
                     .asList()
                     .hasSize(2)
                     .contains(new FunctionResult().setFunctionName("flink_prefix_udf")
-                                    .setFunctionFormat("flink_prefix_udf(String1,Integer2)")
-                                    .setFunctionClass("com.hw.lineage.flink.table.udf.functionb.FlinkPrefixFunction")
+                                    .setInvocation("flink_prefix_udf(String1,Integer2)")
+                                    .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkPrefixFunction")
                                     .setDescr("return String"),
                             new FunctionResult().setFunctionName("flink_split_udtf")
-                                    .setFunctionFormat("flink_split_udtf(String1)")
-                                    .setFunctionClass("com.hw.lineage.flink.table.udf.functionb.FlinkSplitFunction")
+                                    .setInvocation("flink_split_udtf(String1)")
+                                    .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkSplitFunction")
                                     .setDescr("return ROW<word STRING, length INT>")
                     );
         });

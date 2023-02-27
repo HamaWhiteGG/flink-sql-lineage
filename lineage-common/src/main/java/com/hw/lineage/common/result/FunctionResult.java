@@ -16,9 +16,9 @@ public class FunctionResult {
 
     private String functionName;
 
-    private String functionFormat;
+    private String invocation;
 
-    private String functionClass;
+    private String className;
 
     private String descr;
 

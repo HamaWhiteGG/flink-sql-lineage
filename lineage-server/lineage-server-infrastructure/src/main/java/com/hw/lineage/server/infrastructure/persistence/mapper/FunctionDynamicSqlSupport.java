@@ -9,13 +9,17 @@ public final class FunctionDynamicSqlSupport {
 
     public static final SqlColumn<Long> functionId = function.functionId;
 
+    public static final SqlColumn<Long> catalogId = function.catalogId;
+
     public static final SqlColumn<String> functionName = function.functionName;
 
-    public static final SqlColumn<String> functionFormat = function.functionFormat;
+    public static final SqlColumn<String> database = function.database;
+
+    public static final SqlColumn<String> invocation = function.invocation;
 
     public static final SqlColumn<String> functionPath = function.functionPath;
 
-    public static final SqlColumn<String> functionClass = function.functionClass;
+    public static final SqlColumn<String> className = function.className;
 
     public static final SqlColumn<String> descr = function.descr;
 
@@ -32,13 +36,17 @@ public final class FunctionDynamicSqlSupport {
     public static final class Function extends AliasableSqlTable<Function> {
         public final SqlColumn<Long> functionId = column("function_id", JDBCType.BIGINT);
 
+        public final SqlColumn<Long> catalogId = column("catalog_id", JDBCType.BIGINT);
+
         public final SqlColumn<String> functionName = column("function_name", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> functionFormat = column("function_format", JDBCType.VARCHAR);
+        public final SqlColumn<String> database = column("database", JDBCType.VARCHAR);
+
+        public final SqlColumn<String> invocation = column("invocation", JDBCType.VARCHAR);
 
         public final SqlColumn<String> functionPath = column("function_path", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> functionClass = column("function_class", JDBCType.VARCHAR);
+        public final SqlColumn<String> className = column("class_name", JDBCType.VARCHAR);
 
         public final SqlColumn<String> descr = column("descr", JDBCType.VARCHAR);
 

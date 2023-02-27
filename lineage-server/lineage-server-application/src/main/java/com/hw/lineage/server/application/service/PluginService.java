@@ -25,4 +25,6 @@ public interface PluginService {
     void deletePlugin(Long pluginId);
 
     void updatePlugin(UpdatePluginCmd updatePluginCmd);
+
+    void defaultPlugin(Long pluginId);
 }

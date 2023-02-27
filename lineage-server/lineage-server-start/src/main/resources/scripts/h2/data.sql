@@ -1,3 +1,5 @@
+-- copy it from the mysql script, remember to replace all 'lineage.' with an empty string
+
 insert into bas_user (user_id, username, password, locked, create_time, modify_time, invalid) values (1, 'demo', 'demo', 0, 1674565178000, 1674565178000, 0);
 insert into bas_user (user_id, username, password, locked, create_time, modify_time, invalid) values (2, 'admin', 'admin', 0, 1674565178000, 1674565178000, 0);
 insert into bas_user (user_id, username, password, locked, create_time, modify_time, invalid) values (3, 'HamaWhite', '123456', 0, 1674565178000, 1674565178000, 0);

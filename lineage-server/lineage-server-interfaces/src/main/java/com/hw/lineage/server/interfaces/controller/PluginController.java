@@ -63,6 +63,12 @@ public class PluginController {
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
+    @PutMapping("/{pluginId}/default")
+    public Result<Boolean> defaultPlugin(@PathVariable("pluginId") Long pluginId) {
+        pluginService.defaultPlugin(pluginId);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
+    }
+
     @DeleteMapping("/{pluginId}")
     @PreAuthorize("hasAuthority('system:plugin:delete')")
     public Result<Boolean> deletePlugin(@PathVariable("pluginId") Long pluginId) {
