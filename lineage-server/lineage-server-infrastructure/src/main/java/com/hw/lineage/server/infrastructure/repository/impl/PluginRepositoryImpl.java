@@ -17,8 +17,13 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+
+import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
+
 
 /**
  * @description: PluginRepositoryImpl
@@ -73,5 +78,15 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
             );
             return PageUtils.convertPage(pageInfo, converter::toPlugin);
         }
+    }
+
+    @Override
+    public void setDefault(PluginId pluginId) {
+        pluginMapper.update(completer ->
+                completer.set(plugin.defaultPlugin).equalTo(FALSE).where(plugin.defaultPlugin, isEqualTo(TRUE))
+        );
+        pluginMapper.update(completer ->
+                completer.set(plugin.defaultPlugin).equalTo(TRUE).where(plugin.pluginId, isEqualTo(pluginId.getValue()))
+        );
     }
 }

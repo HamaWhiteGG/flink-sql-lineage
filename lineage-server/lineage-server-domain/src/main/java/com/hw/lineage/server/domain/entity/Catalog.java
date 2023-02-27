@@ -1,9 +1,11 @@
 package com.hw.lineage.server.domain.entity;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.server.domain.entity.basic.BasicEntity;
 import com.hw.lineage.server.domain.repository.basic.Entity;
 import com.hw.lineage.server.domain.vo.CatalogId;
+import com.hw.lineage.server.domain.vo.PluginId;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,6 +20,8 @@ public class Catalog extends BasicEntity implements Entity {
 
     private CatalogId catalogId;
 
+    private PluginId pluginId;
+
     private String catalogName;
 
     private CatalogType catalogType;
@@ -25,4 +29,8 @@ public class Catalog extends BasicEntity implements Entity {
     private String defaultDatabase;
 
     private String descr;
+
+    private JSONObject catalogProperties;
+
+    private Boolean defaultCatalog;
 }

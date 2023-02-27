@@ -1,6 +1,6 @@
 package com.hw.lineage.server.domain.service.impl;
 
-import com.hw.lineage.common.enums.ParseStatus;
+import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.common.util.EnumUtils;
@@ -40,7 +40,7 @@ public class TaskDomainServiceImpl implements TaskDomainService {
 
             TaskSql taskSql = new TaskSql()
                     .setTaskId(task.getTaskId())
-                    .setParseStatus(ParseStatus.UN_PARSE)
+                    .setParseStatus(SqlStatus.UN_PARSE)
                     .setParseTime(System.currentTimeMillis())
                     .setSqlCode(Base64Utils.encode(singleSql.getBytes()))
                     .setSqlType(sqlType)

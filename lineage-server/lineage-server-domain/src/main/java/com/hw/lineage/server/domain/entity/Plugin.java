@@ -19,5 +19,9 @@ public class Plugin extends BasicEntity implements Entity {
 
     private String pluginName;
 
+    private String pluginCode;
+
     private String descr;
+
+    private Boolean defaultPlugin;
 }

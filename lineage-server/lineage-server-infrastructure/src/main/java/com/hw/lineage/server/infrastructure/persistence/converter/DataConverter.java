@@ -18,13 +18,11 @@ public interface DataConverter {
     DataConverter INSTANCE = Mappers.getMapper(DataConverter.class);
 
     @Mapping(source = "taskId", target = "taskId.value")
-    @Mapping(source = "pluginId", target = "pluginId.value")
     @Mapping(source = "catalogId", target = "catalogId.value")
     @Mapping(source = "taskSource", target = "taskSource.value")
     Task toTask(TaskDO taskDO);
 
     @Mapping(source = "taskId.value", target = "taskId")
-    @Mapping(source = "pluginId.value", target = "pluginId")
     @Mapping(source = "catalogId.value", target = "catalogId")
     @Mapping(source = "taskSource.value", target = "taskSource")
     TaskDO fromTask(Task task);
@@ -55,9 +53,11 @@ public interface DataConverter {
     PluginDO fromPlugin(Plugin plugin);
 
     @Mapping(source = "catalogId", target = "catalogId.value")
+    @Mapping(source = "pluginId", target = "pluginId.value")
     Catalog toCatalog(CatalogDO catalogDO);
 
     @Mapping(source = "catalogId.value", target = "catalogId")
+    @Mapping(source = "pluginId.value", target = "pluginId")
     CatalogDO fromCatalog(Catalog catalog);
 
     @Mapping(source = "functionId", target = "functionId.value")

@@ -10,13 +10,17 @@ package com.hw.lineage.server.infrastructure.persistence.dos;
 public class FunctionDO {
     private Long functionId;
 
+    private Long catalogId;
+
     private String functionName;
 
-    private String functionFormat;
+    private String database;
+
+    private String invocation;
 
     private String functionPath;
 
-    private String functionClass;
+    private String className;
 
     private String descr;
 
@@ -38,6 +42,14 @@ public class FunctionDO {
         this.functionId = functionId;
     }
 
+    public Long getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(Long catalogId) {
+        this.catalogId = catalogId;
+    }
+
     public String getFunctionName() {
         return functionName;
     }
@@ -46,12 +58,20 @@ public class FunctionDO {
         this.functionName = functionName;
     }
 
-    public String getFunctionFormat() {
-        return functionFormat;
+    public String getDatabase() {
+        return database;
     }
 
-    public void setFunctionFormat(String functionFormat) {
-        this.functionFormat = functionFormat;
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public String getInvocation() {
+        return invocation;
+    }
+
+    public void setInvocation(String invocation) {
+        this.invocation = invocation;
     }
 
     public String getFunctionPath() {
@@ -62,12 +82,12 @@ public class FunctionDO {
         this.functionPath = functionPath;
     }
 
-    public String getFunctionClass() {
-        return functionClass;
+    public String getClassName() {
+        return className;
     }
 
-    public void setFunctionClass(String functionClass) {
-        this.functionClass = functionClass;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String getDescr() {
@@ -131,10 +151,12 @@ public class FunctionDO {
         }
         FunctionDO other = (FunctionDO) that;
         return (this.getFunctionId() == null ? other.getFunctionId() == null : this.getFunctionId().equals(other.getFunctionId()))
+            && (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
             && (this.getFunctionName() == null ? other.getFunctionName() == null : this.getFunctionName().equals(other.getFunctionName()))
-            && (this.getFunctionFormat() == null ? other.getFunctionFormat() == null : this.getFunctionFormat().equals(other.getFunctionFormat()))
+            && (this.getDatabase() == null ? other.getDatabase() == null : this.getDatabase().equals(other.getDatabase()))
+            && (this.getInvocation() == null ? other.getInvocation() == null : this.getInvocation().equals(other.getInvocation()))
             && (this.getFunctionPath() == null ? other.getFunctionPath() == null : this.getFunctionPath().equals(other.getFunctionPath()))
-            && (this.getFunctionClass() == null ? other.getFunctionClass() == null : this.getFunctionClass().equals(other.getFunctionClass()))
+            && (this.getClassName() == null ? other.getClassName() == null : this.getClassName().equals(other.getClassName()))
             && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
             && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
             && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
@@ -148,10 +170,12 @@ public class FunctionDO {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getFunctionId() == null) ? 0 : getFunctionId().hashCode());
+        result = prime * result + ((getCatalogId() == null) ? 0 : getCatalogId().hashCode());
         result = prime * result + ((getFunctionName() == null) ? 0 : getFunctionName().hashCode());
-        result = prime * result + ((getFunctionFormat() == null) ? 0 : getFunctionFormat().hashCode());
+        result = prime * result + ((getDatabase() == null) ? 0 : getDatabase().hashCode());
+        result = prime * result + ((getInvocation() == null) ? 0 : getInvocation().hashCode());
         result = prime * result + ((getFunctionPath() == null) ? 0 : getFunctionPath().hashCode());
-        result = prime * result + ((getFunctionClass() == null) ? 0 : getFunctionClass().hashCode());
+        result = prime * result + ((getClassName() == null) ? 0 : getClassName().hashCode());
         result = prime * result + ((getDescr() == null) ? 0 : getDescr().hashCode());
         result = prime * result + ((getCreateUserId() == null) ? 0 : getCreateUserId().hashCode());
         result = prime * result + ((getModifyUserId() == null) ? 0 : getModifyUserId().hashCode());
@@ -168,10 +192,12 @@ public class FunctionDO {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", functionId=").append(functionId);
+        sb.append(", catalogId=").append(catalogId);
         sb.append(", functionName=").append(functionName);
-        sb.append(", functionFormat=").append(functionFormat);
+        sb.append(", database=").append(database);
+        sb.append(", invocation=").append(invocation);
         sb.append(", functionPath=").append(functionPath);
-        sb.append(", functionClass=").append(functionClass);
+        sb.append(", className=").append(className);
         sb.append(", descr=").append(descr);
         sb.append(", createUserId=").append(createUserId);
         sb.append(", modifyUserId=").append(modifyUserId);

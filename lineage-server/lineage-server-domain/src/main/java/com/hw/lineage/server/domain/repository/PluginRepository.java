@@ -15,4 +15,6 @@ public interface PluginRepository extends Repository<Plugin, PluginId> {
 
     PageInfo<Plugin> findAll(PluginQuery pluginQuery);
 
+    void setDefault(PluginId pluginId);
+
 }

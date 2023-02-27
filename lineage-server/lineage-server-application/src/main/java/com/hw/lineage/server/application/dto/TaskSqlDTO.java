@@ -1,6 +1,6 @@
 package com.hw.lineage.server.application.dto;
 
-import com.hw.lineage.common.enums.ParseStatus;
+import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
 import lombok.Data;
 
@@ -17,7 +17,7 @@ public class TaskSqlDTO implements Serializable {
 
     private Integer sqlId;
 
-    private ParseStatus parseStatus;
+    private SqlStatus parseStatus;
 
     private Long parseTime;
 

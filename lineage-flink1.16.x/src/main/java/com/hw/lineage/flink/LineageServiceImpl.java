@@ -345,7 +345,7 @@ public class LineageServiceImpl implements LineageService {
                 .findFirst();
 
         FunctionResult result = new FunctionResult();
-        result.setFunctionClass(functionClass);
+        result.setClassName(functionClass);
         result.setFunctionName(functionName);
 
         if (methodOptional.isPresent()) {
@@ -356,7 +356,7 @@ public class LineageServiceImpl implements LineageService {
                     .collect(Collectors.joining(","));
 
             // set functionFormat
-            result.setFunctionFormat(String.format("%s(%s)", functionName, parameters));
+            result.setInvocation(String.format("%s(%s)", functionName, parameters));
 
             // use function return type as description
             result.setDescr(buildFunctionReturnType(clazz, method));

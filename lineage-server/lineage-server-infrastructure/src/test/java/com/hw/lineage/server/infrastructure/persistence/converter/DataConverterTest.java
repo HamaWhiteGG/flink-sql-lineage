@@ -26,7 +26,6 @@ public class DataConverterTest {
         taskDO.setTaskId(1L);
         taskDO.setTaskName("task_1");
         taskDO.setDescr("first task");
-        taskDO.setPluginId(1L);
         taskDO.setCatalogId(1L);
         taskDO.setTaskSource("SELECT 1");
         taskDO.setCreateUserId(0L);
@@ -67,7 +66,6 @@ public class DataConverterTest {
         assertThat(taskDO.getTaskId()).isNull();
         assertThat(taskDO.getTaskName()).isEqualTo("task_1");
         assertThat(taskDO.getDescr()).isEqualTo("first task");
-        assertThat(taskDO.getPluginId()).isEqualTo(1L);
         assertThat(taskDO.getCatalogId()).isEqualTo(1L);
         assertThat(taskDO.getCreateUserId()).isZero();
         assertThat(taskDO.getModifyUserId()).isZero();

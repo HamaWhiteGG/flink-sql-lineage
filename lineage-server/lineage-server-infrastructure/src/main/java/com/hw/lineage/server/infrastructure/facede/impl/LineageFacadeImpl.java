@@ -1,7 +1,7 @@
 package com.hw.lineage.server.infrastructure.facede.impl;
 
 import com.hw.lineage.client.LineageClient;
-import com.hw.lineage.common.enums.ParseStatus;
+import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.server.domain.entity.Catalog;
@@ -73,7 +73,7 @@ public class LineageFacadeImpl implements LineageFacade {
 
 
     private void parseFieldLineage(String pluginName, Task task, TaskSql taskSql, String sqlCode) {
-        taskSql.setParseStatus(ParseStatus.PARSING);
+        taskSql.setParseStatus(SqlStatus.PARSING);
         lineageClient.parseFieldLineage(pluginName, sqlCode)
                 .forEach(e -> {
                     TaskLineage taskLineage = new TaskLineage()
@@ -91,7 +91,7 @@ public class LineageFacadeImpl implements LineageFacade {
                             .setInvalid(false);
 
                     taskSql.setParseTime(System.currentTimeMillis());
-                    taskSql.setParseStatus(ParseStatus.SUCCESS);
+                    taskSql.setParseStatus(SqlStatus.SUCCESS);
                     task.addTaskLineage(taskLineage);
                 });
     }

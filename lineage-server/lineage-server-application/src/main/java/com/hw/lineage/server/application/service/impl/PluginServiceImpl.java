@@ -76,4 +76,9 @@ public class PluginServiceImpl implements PluginService {
         plugin.setModifyTime(System.currentTimeMillis());
         repository.save(plugin);
     }
+
+    @Override
+    public void defaultPlugin(Long pluginId) {
+        repository.setDefault(new PluginId(pluginId));
+    }
 }

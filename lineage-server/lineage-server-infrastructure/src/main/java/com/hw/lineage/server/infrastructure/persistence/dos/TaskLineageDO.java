@@ -12,7 +12,7 @@ public class TaskLineageDO {
 
     private Long taskId;
 
-    private Integer sqlId;
+    private Long sqlId;
 
     private String sourceCatalog;
 
@@ -50,11 +50,11 @@ public class TaskLineageDO {
         this.taskId = taskId;
     }
 
-    public Integer getSqlId() {
+    public Long getSqlId() {
         return sqlId;
     }
 
-    public void setSqlId(Integer sqlId) {
+    public void setSqlId(Long sqlId) {
         this.sqlId = sqlId;
     }
 

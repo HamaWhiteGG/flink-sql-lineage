@@ -1,6 +1,5 @@
 package com.hw.lineage.server.infrastructure.persistence.dos;
 
-import com.hw.lineage.common.enums.ParseStatus;
 import com.hw.lineage.common.enums.SqlType;
 
 /**
@@ -17,18 +16,16 @@ public class TaskSqlDO {
 
     private SqlType sqlType;
 
-    private ParseStatus parseStatus;
+    private Long startLineNumber;
 
-    private Long parseTime;
+    private Byte sqlStatus;
 
     private Boolean invalid;
 
     /**
      * Base64 encode
      */
-    private String sqlCode;
-
-    private String parseLog;
+    private String sqlSource;
 
     public Long getSqlId() {
         return sqlId;
@@ -54,20 +51,20 @@ public class TaskSqlDO {
         this.sqlType = sqlType;
     }
 
-    public ParseStatus getParseStatus() {
-        return parseStatus;
+    public Long getStartLineNumber() {
+        return startLineNumber;
     }
 
-    public void setParseStatus(ParseStatus parseStatus) {
-        this.parseStatus = parseStatus;
+    public void setStartLineNumber(Long startLineNumber) {
+        this.startLineNumber = startLineNumber;
     }
 
-    public Long getParseTime() {
-        return parseTime;
+    public Byte getSqlStatus() {
+        return sqlStatus;
     }
 
-    public void setParseTime(Long parseTime) {
-        this.parseTime = parseTime;
+    public void setSqlStatus(Byte sqlStatus) {
+        this.sqlStatus = sqlStatus;
     }
 
     public Boolean getInvalid() {
@@ -78,20 +75,12 @@ public class TaskSqlDO {
         this.invalid = invalid;
     }
 
-    public String getSqlCode() {
-        return sqlCode;
+    public String getSqlSource() {
+        return sqlSource;
     }
 
-    public void setSqlCode(String sqlCode) {
-        this.sqlCode = sqlCode;
-    }
-
-    public String getParseLog() {
-        return parseLog;
-    }
-
-    public void setParseLog(String parseLog) {
-        this.parseLog = parseLog;
+    public void setSqlSource(String sqlSource) {
+        this.sqlSource = sqlSource;
     }
 
     @Override
@@ -109,11 +98,10 @@ public class TaskSqlDO {
         return (this.getSqlId() == null ? other.getSqlId() == null : this.getSqlId().equals(other.getSqlId()))
             && (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
             && (this.getSqlType() == null ? other.getSqlType() == null : this.getSqlType().equals(other.getSqlType()))
-            && (this.getParseStatus() == null ? other.getParseStatus() == null : this.getParseStatus().equals(other.getParseStatus()))
-            && (this.getParseTime() == null ? other.getParseTime() == null : this.getParseTime().equals(other.getParseTime()))
+            && (this.getStartLineNumber() == null ? other.getStartLineNumber() == null : this.getStartLineNumber().equals(other.getStartLineNumber()))
+            && (this.getSqlStatus() == null ? other.getSqlStatus() == null : this.getSqlStatus().equals(other.getSqlStatus()))
             && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
-            && (this.getSqlCode() == null ? other.getSqlCode() == null : this.getSqlCode().equals(other.getSqlCode()))
-            && (this.getParseLog() == null ? other.getParseLog() == null : this.getParseLog().equals(other.getParseLog()));
+            && (this.getSqlSource() == null ? other.getSqlSource() == null : this.getSqlSource().equals(other.getSqlSource()));
     }
 
     @Override
@@ -123,11 +111,10 @@ public class TaskSqlDO {
         result = prime * result + ((getSqlId() == null) ? 0 : getSqlId().hashCode());
         result = prime * result + ((getTaskId() == null) ? 0 : getTaskId().hashCode());
         result = prime * result + ((getSqlType() == null) ? 0 : getSqlType().hashCode());
-        result = prime * result + ((getParseStatus() == null) ? 0 : getParseStatus().hashCode());
-        result = prime * result + ((getParseTime() == null) ? 0 : getParseTime().hashCode());
+        result = prime * result + ((getStartLineNumber() == null) ? 0 : getStartLineNumber().hashCode());
+        result = prime * result + ((getSqlStatus() == null) ? 0 : getSqlStatus().hashCode());
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
-        result = prime * result + ((getSqlCode() == null) ? 0 : getSqlCode().hashCode());
-        result = prime * result + ((getParseLog() == null) ? 0 : getParseLog().hashCode());
+        result = prime * result + ((getSqlSource() == null) ? 0 : getSqlSource().hashCode());
         return result;
     }
 
@@ -140,11 +127,10 @@ public class TaskSqlDO {
         sb.append(", sqlId=").append(sqlId);
         sb.append(", taskId=").append(taskId);
         sb.append(", sqlType=").append(sqlType);
-        sb.append(", parseStatus=").append(parseStatus);
-        sb.append(", parseTime=").append(parseTime);
+        sb.append(", startLineNumber=").append(startLineNumber);
+        sb.append(", sqlStatus=").append(sqlStatus);
         sb.append(", invalid=").append(invalid);
-        sb.append(", sqlCode=").append(sqlCode);
-        sb.append(", parseLog=").append(parseLog);
+        sb.append(", sqlSource=").append(sqlSource);
         sb.append("]");
         return sb.toString();
     }
