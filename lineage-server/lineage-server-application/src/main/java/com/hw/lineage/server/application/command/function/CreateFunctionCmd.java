@@ -3,6 +3,7 @@ package com.hw.lineage.server.application.command.function;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @description: CreateFunctionCmd
@@ -10,19 +11,22 @@ import javax.validation.constraints.NotBlank;
  * @version: 1.0.0
  */
 @Data
-public class
-CreateFunctionCmd {
+public class CreateFunctionCmd {
+    @NotNull
+    private Long catalogId;
 
     @NotBlank
     private String functionName;
 
-    private String functionFormat;
+    private String database;
+
+    private String invocation;
 
     @NotBlank
     private String functionPath;
 
     @NotBlank
-    private String functionClass;
+    private String className;
 
     private String descr;
 }

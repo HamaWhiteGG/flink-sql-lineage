@@ -1,5 +1,6 @@
 package com.hw.lineage.server.application.command.catalog;
 
+import com.alibaba.fastjson2.JSONObject;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -20,4 +21,7 @@ public class UpdateCatalogCmd {
     private String defaultDatabase;
 
     private String descr;
+
+    private JSONObject catalogProperties;
+
 }

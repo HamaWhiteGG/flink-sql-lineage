@@ -61,9 +61,11 @@ public interface DataConverter {
     CatalogDO fromCatalog(Catalog catalog);
 
     @Mapping(source = "functionId", target = "functionId.value")
+    @Mapping(source = "catalogId", target = "catalogId.value")
     Function toFunction(FunctionDO pluginDO);
 
     @Mapping(source = "functionId.value", target = "functionId")
+    @Mapping(source = "catalogId.value", target = "catalogId")
     FunctionDO fromFunction(Function function);
 
     @Mapping(source = "userId", target = "userId.value")

@@ -34,7 +34,8 @@ public class PluginServiceImpl implements PluginService {
     public Long createPlugin(CreatePluginCmd createPluginCmd) {
         Plugin plugin = new Plugin()
                 .setPluginName(createPluginCmd.getPluginName())
-                .setDescr(createPluginCmd.getDescr());
+                .setDescr(createPluginCmd.getDescr())
+                .setDefaultPlugin(createPluginCmd.getDefaultPlugin());
 
         plugin.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())

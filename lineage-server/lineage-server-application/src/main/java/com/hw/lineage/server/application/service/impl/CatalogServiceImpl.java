@@ -12,6 +12,7 @@ import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
+import com.hw.lineage.server.domain.vo.PluginId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,11 +34,13 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public Long createCatalog(CreateCatalogCmd createCatalogCmd) {
         Catalog catalog = new Catalog()
+                .setPluginId(new PluginId(createCatalogCmd.getPluginId()))
                 .setCatalogName(createCatalogCmd.getCatalogName())
                 .setCatalogType(createCatalogCmd.getCatalogType())
                 .setDefaultDatabase(createCatalogCmd.getDefaultDatabase())
-                .setDescr(createCatalogCmd.getDescr());
-
+                .setDescr(createCatalogCmd.getDescr())
+                .setCatalogProperties(createCatalogCmd.getCatalogProperties())
+                .setDefaultCatalog(createCatalogCmd.getDefaultCatalog());
 
         catalog.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -75,9 +78,15 @@ public class CatalogServiceImpl implements CatalogService {
                 .setCatalogId(new CatalogId(updateCatalogCmd.getCatalogId()))
                 .setCatalogName(updateCatalogCmd.getCatalogName())
                 .setDefaultDatabase(updateCatalogCmd.getDefaultDatabase())
-                .setDescr(updateCatalogCmd.getDescr());
+                .setDescr(updateCatalogCmd.getDescr())
+                .setCatalogProperties(updateCatalogCmd.getCatalogProperties());
 
         catalog.setModifyTime(System.currentTimeMillis());
         repository.save(catalog);
+    }
+
+    @Override
+    public void defaultCatalog(Long catalogId) {
+        repository.setDefault(new CatalogId(catalogId));
     }
 }

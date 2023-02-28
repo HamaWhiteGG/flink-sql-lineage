@@ -26,4 +26,6 @@ public interface CatalogService {
     void deleteCatalog(Long catalogId);
 
     void updateCatalog(UpdateCatalogCmd updateCatalogCmd);
+
+    void defaultCatalog(Long catalogId);
 }
