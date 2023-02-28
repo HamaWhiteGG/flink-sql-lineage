@@ -15,13 +15,7 @@ public class UpdateFunctionCmd {
     @NotNull
     private Long functionId;
 
-    private String functionName;
-
-    private String functionFormat;
-
-    private String functionPath;
-
-    private String functionClass;
+    private String invocation;
 
     private String descr;
 }

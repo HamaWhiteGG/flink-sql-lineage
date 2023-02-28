@@ -35,4 +35,32 @@ public interface LineageService extends Plugin {
      * Parse the function name, function format, function main class and description from the jar file
      */
     List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException;
+
+//    /**
+//     * Get the names of all databases in this catalog.
+//     *
+//     * @return a list of the names of all databases
+//     */
+//    List<String> listDatabases() throws RuntimeException;
+//
+//    /**
+//     * Get names of all tables and views under this database. An empty list is returned if none
+//     * exists.
+//     *
+//     * @return a list of the names of all tables and views in this database
+//     */
+//    List<String> listTables(String databaseName) throws Exception;
+//
+//    /**
+//     * Get names of all views under this database. An empty list is returned if none exists.
+//     *
+//     * @param databaseName the name of the given database
+//     * @return a list of the names of all views in the given database
+//     */
+//    List<String> listViews(String databaseName) throws Exception;
+//
+//    /**
+//     * Reads a registered table and returns the tableResult.
+//     */
+//    TableResult getTable(String catalogName,String database,String tableName);
 }

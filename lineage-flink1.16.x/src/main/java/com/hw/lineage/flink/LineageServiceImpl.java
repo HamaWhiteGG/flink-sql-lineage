@@ -26,10 +26,7 @@ import org.apache.flink.table.api.TableException;
 import org.apache.flink.table.api.ValidationException;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
-import org.apache.flink.table.catalog.AbstractCatalog;
-import org.apache.flink.table.catalog.CatalogManager;
-import org.apache.flink.table.catalog.FunctionCatalog;
-import org.apache.flink.table.catalog.GenericInMemoryCatalog;
+import org.apache.flink.table.catalog.*;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.table.functions.ScalarFunction;
@@ -77,6 +74,7 @@ public class LineageServiceImpl implements LineageService {
             AggregateFunction.class.getName(), "udaf",
             TableAggregateFunction.class.getName(), "udtaf"
     );
+
 
     private TableEnvironmentImpl tableEnv;
     private FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
@@ -304,13 +302,24 @@ public class LineageServiceImpl implements LineageService {
         }
     }
 
+
+    public Catalog getCatalog(String catalogName) {
+        return tableEnv.getCatalog(catalogName).orElseThrow(() ->
+                new ValidationException(String.format("Catalog %s does not exist", catalogName))
+        );
+    }
+
+    public TableEnvironmentImpl getTableEnv() {
+       return tableEnv;
+    }
+
     @Override
     public List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException {
-        LOG.info("starting parse function from jar {}",file.getPath());
+        LOG.info("starting parse function from jar {}", file.getPath());
         List<FunctionResult> resultList = new ArrayList<>();
         URL url = file.toURI().toURL();
 
-        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url},getClass().getClassLoader());
+        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url}, getClass().getClassLoader());
              JarFile jarFile = new JarFile(file)) {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
@@ -376,6 +385,4 @@ public class LineageServiceImpl implements LineageService {
     private String searchClassName(String value) {
         return value.contains(".") ? value.substring(value.lastIndexOf(".") + 1) : value;
     }
-
-
 }

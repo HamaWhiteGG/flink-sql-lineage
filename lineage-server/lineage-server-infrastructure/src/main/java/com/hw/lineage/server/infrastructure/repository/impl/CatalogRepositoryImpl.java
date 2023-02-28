@@ -17,6 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
@@ -75,5 +78,15 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
             );
             return PageUtils.convertPage(pageInfo, converter::toCatalog);
         }
+    }
+
+    @Override
+    public void setDefault(CatalogId catalogId) {
+        catalogMapper.update(completer ->
+                completer.set(catalog.defaultCatalog).equalTo(FALSE).where(catalog.defaultCatalog, isEqualTo(TRUE))
+        );
+        catalogMapper.update(completer ->
+                completer.set(catalog.defaultCatalog).equalTo(TRUE).where(catalog.catalogId, isEqualTo(catalogId.getValue()))
+        );
     }
 }

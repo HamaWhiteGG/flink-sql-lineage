@@ -16,4 +16,6 @@ public class CreatePluginCmd {
     private String pluginName;
 
     private String descr;
+
+    private Boolean defaultPlugin;
 }

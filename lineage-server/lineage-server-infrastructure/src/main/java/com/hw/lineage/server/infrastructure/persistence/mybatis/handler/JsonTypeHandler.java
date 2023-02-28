@@ -18,6 +18,9 @@ public class JsonTypeHandler<E extends Object> extends BaseTypeHandler<E> {
 
     private Class<E> clazz;
 
+    public JsonTypeHandler() {
+    }
+
     protected JsonTypeHandler(Class<E> clazz) {
         this.clazz = clazz;
     }

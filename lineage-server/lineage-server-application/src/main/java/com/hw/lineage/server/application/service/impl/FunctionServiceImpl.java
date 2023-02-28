@@ -17,6 +17,7 @@ import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.domain.repository.FunctionRepository;
 import com.hw.lineage.server.domain.repository.PluginRepository;
+import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.FunctionId;
 import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.domain.vo.Storage;
@@ -53,10 +54,12 @@ public class FunctionServiceImpl implements FunctionService {
     @Override
     public Long createFunction(CreateFunctionCmd createFunctionCmd) {
         Function function = new Function()
+                .setCatalogId(new CatalogId(createFunctionCmd.getCatalogId()))
                 .setFunctionName(createFunctionCmd.getFunctionName())
-                .setFunctionFormat(createFunctionCmd.getFunctionFormat())
+                .setDatabase(createFunctionCmd.getDatabase())
+                .setInvocation(createFunctionCmd.getInvocation())
                 .setFunctionPath(createFunctionCmd.getFunctionPath())
-                .setFunctionClass(createFunctionCmd.getFunctionClass())
+                .setClassName(createFunctionCmd.getClassName())
                 .setDescr(createFunctionCmd.getDescr());
 
         function.setCreateTime(System.currentTimeMillis())
@@ -93,10 +96,7 @@ public class FunctionServiceImpl implements FunctionService {
     public void updateFunction(UpdateFunctionCmd updateFunctionCmd) {
         Function function = new Function()
                 .setFunctionId(new FunctionId(updateFunctionCmd.getFunctionId()))
-                .setFunctionName(updateFunctionCmd.getFunctionName())
-                .setFunctionFormat(updateFunctionCmd.getFunctionFormat())
-                .setFunctionPath(updateFunctionCmd.getFunctionPath())
-                .setFunctionClass(updateFunctionCmd.getFunctionClass())
+                .setInvocation(updateFunctionCmd.getInvocation())
                 .setDescr(updateFunctionCmd.getDescr());
 
         function.setModifyTime(System.currentTimeMillis());

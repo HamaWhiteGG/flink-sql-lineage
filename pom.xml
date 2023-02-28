@@ -30,6 +30,7 @@
         <fastjson2.version>2.0.24</fastjson2.version>
         <slf4j-api.version>1.7.32</slf4j-api.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
 
         <node.version>v18.11.0</node.version>
         <yarn.version>v1.19.1</yarn.version>
@@ -157,6 +158,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
             </dependency>
 
             <dependency>

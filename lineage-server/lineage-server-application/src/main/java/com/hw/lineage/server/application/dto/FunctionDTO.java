@@ -13,13 +13,17 @@ public class FunctionDTO extends BasicDTO {
 
     private Long functionId;
 
+    private Long catalogId;
+
     private String functionName;
 
-    private String functionFormat;
+    private String database;
+
+    private String invocation;
 
     private String functionPath;
 
-    private String functionClass;
+    private String className;
 
     private String descr;
 }

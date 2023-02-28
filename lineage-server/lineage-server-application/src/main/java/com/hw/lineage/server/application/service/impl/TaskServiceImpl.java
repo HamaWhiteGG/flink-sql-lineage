@@ -8,7 +8,6 @@ import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
 import com.hw.lineage.server.application.service.TaskService;
 import com.hw.lineage.server.domain.entity.Catalog;
-import com.hw.lineage.server.domain.entity.Plugin;
 import com.hw.lineage.server.domain.entity.Task;
 import com.hw.lineage.server.domain.facade.LineageFacade;
 import com.hw.lineage.server.domain.query.task.TaskCheck;
@@ -18,7 +17,6 @@ import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.service.TaskDomainService;
 import com.hw.lineage.server.domain.vo.CatalogId;
-import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.domain.vo.TaskId;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +52,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = new Task()
                 .setTaskName(createTaskCmd.getTaskName())
                 .setDescr(createTaskCmd.getDescr())
-                .setPluginId(new PluginId(createTaskCmd.getPluginId()))
                 .setCatalogId(new CatalogId(createTaskCmd.getCatalogId()));
 
         task.setCreateTime(System.currentTimeMillis())
@@ -93,7 +90,6 @@ public class TaskServiceImpl implements TaskService {
                 .setTaskId(new TaskId(updateTaskCmd.getTaskId()))
                 .setTaskName(updateTaskCmd.getTaskName())
                 .setDescr(updateTaskCmd.getDescr())
-                .setPluginId(new PluginId(updateTaskCmd.getPluginId()))
                 .setCatalogId(new CatalogId(updateTaskCmd.getCatalogId()));
 
         task.setModifyTime(System.currentTimeMillis());
@@ -103,7 +99,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO parseTaskLineage(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
-        Plugin plugin = pluginRepository.find(task.getPluginId());
         Catalog catalog = catalogRepository.find(task.getCatalogId());
 
         taskRepository.removeTaskLineage(task.getTaskId());
@@ -111,8 +106,8 @@ public class TaskServiceImpl implements TaskService {
 
         taskDomainService.buildTaskSql(task);
         taskRepository.saveTaskSql(task);
-
-        lineageFacade.parseLineage(plugin.getPluginName(), task, catalog);
+        // TODO
+        lineageFacade.parseLineage("", task, catalog);
         taskRepository.saveTaskLineage(task);
 
         return assembler.fromTask(task);

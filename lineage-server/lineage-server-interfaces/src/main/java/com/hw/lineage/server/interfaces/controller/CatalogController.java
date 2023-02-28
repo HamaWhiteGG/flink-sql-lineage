@@ -59,6 +59,12 @@ public class CatalogController {
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
+    @PutMapping("/{catalogId}/default")
+    public Result<Boolean> defaultPlugin(@PathVariable("catalogId") Long catalogId) {
+        catalogService.defaultCatalog(catalogId);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
+    }
+
     @DeleteMapping("/{catalogId}")
     public Result<Boolean> deleteCatalog(@PathVariable("catalogId") Long catalogId) {
         catalogService.deleteCatalog(catalogId);
