@@ -1,22 +1,20 @@
 package com.hw.lineage.common.enums;
 
-
 import com.hw.lineage.common.enums.basic.StringEnum;
 
 /**
- * @description: CatalogType
+ * @description: TableKind
  * @author: HamaWhite
  * @version: 1.0.0
  */
-public enum CatalogType implements StringEnum<CatalogType> {
+public enum TableKind implements StringEnum<TableKind> {
 
-    MEMORY("generic_in_memory"),
-    HIVE("hive"),
-    JDBC("jdbc");
+    TABLE("table"),
+    VIEW("view");
 
     private final String value;
 
-    CatalogType(String value) {
+    TableKind(String value) {
         this.value = value;
     }
 
