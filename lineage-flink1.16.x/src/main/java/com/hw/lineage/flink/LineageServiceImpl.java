@@ -2,8 +2,11 @@ package com.hw.lineage.flink;
 
 
 import com.hw.lineage.common.enums.CatalogType;
+import com.hw.lineage.common.enums.TableKind;
+import com.hw.lineage.common.result.ColumnResult;
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.common.service.LineageService;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
@@ -20,10 +23,7 @@ import org.apache.flink.shaded.guava30.com.google.common.base.CaseFormat;
 import org.apache.flink.shaded.guava30.com.google.common.collect.ImmutableMap;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.annotation.FunctionHint;
-import org.apache.flink.table.api.EnvironmentSettings;
-import org.apache.flink.table.api.TableConfig;
-import org.apache.flink.table.api.TableException;
-import org.apache.flink.table.api.ValidationException;
+import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.*;
@@ -302,17 +302,6 @@ public class LineageServiceImpl implements LineageService {
         }
     }
 
-
-    public Catalog getCatalog(String catalogName) {
-        return tableEnv.getCatalog(catalogName).orElseThrow(() ->
-                new ValidationException(String.format("Catalog %s does not exist", catalogName))
-        );
-    }
-
-    public TableEnvironmentImpl getTableEnv() {
-       return tableEnv;
-    }
-
     @Override
     public List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException {
         LOG.info("starting parse function from jar {}", file.getPath());
@@ -340,7 +329,6 @@ public class LineageServiceImpl implements LineageService {
         LOG.info("finished parse function from jar {}, resultList: {}", file.getPath(), resultList);
         return resultList;
     }
-
 
     public FunctionResult parseUserDefinedFunction(Class<?> clazz) {
         String functionClass = clazz.getName();
@@ -381,8 +369,96 @@ public class LineageServiceImpl implements LineageService {
         return "return " + searchClassName(method.getReturnType().getName());
     }
 
-
     private String searchClassName(String value) {
         return value.contains(".") ? value.substring(value.lastIndexOf(".") + 1) : value;
+    }
+
+    private Catalog getCatalog(String catalogName) {
+        return tableEnv.getCatalog(catalogName).orElseThrow(() ->
+                new ValidationException(String.format("Catalog %s does not exist", catalogName))
+        );
+    }
+
+    @Override
+    public List<String> listDatabases(String catalogName) throws Exception {
+        return getCatalog(catalogName).listDatabases();
+    }
+
+    @Override
+    public List<String> listTables(String catalogName, String databaseName) throws Exception {
+        return getCatalog(catalogName).listTables(databaseName);
+    }
+
+    @Override
+    public List<String> listViews(String catalogName, String databaseName) throws Exception {
+        return getCatalog(catalogName).listViews(databaseName);
+    }
+
+    @Override
+    public TableResult getTable(String catalogName, String database, String tableName) throws Exception {
+        ObjectPath objectPath = new ObjectPath(database, tableName);
+        CatalogBaseTable table = getCatalog(catalogName).getTable(objectPath);
+
+        LOG.info("table.comment: {}", table.getComment());
+        LOG.info("table.options: {}", table.getOptions());
+        LOG.info("table.kind: {}", table.getTableKind());
+        LOG.info("table.schema: {}", table.getUnresolvedSchema());
+
+        Schema schema = table.getUnresolvedSchema();
+        List<String> primaryKeyList = new ArrayList<>();
+        schema.getPrimaryKey()
+                .ifPresent(pk ->
+                        primaryKeyList.addAll(pk.getColumnNames())
+                );
+
+        List<ColumnResult> columnList = schema.getColumns()
+                .stream()
+                .map(column -> {
+                    ColumnResult columnResult = new ColumnResult()
+                            .setColumnName(column.getName())
+                            .setColumnType(processColumnType(column))
+                            .setComment(column.getComment().orElse(""));
+                    if (primaryKeyList.contains(column.getName())) {
+                        columnResult.setPrimaryKey(true);
+                    }
+                    return columnResult;
+                })
+                .collect(Collectors.toList());
+
+        List<String> watermarkSpecList = schema.getWatermarkSpecs().
+                stream()
+                .map(Schema.UnresolvedWatermarkSpec::toString)
+                .collect(Collectors.toList());
+
+        return new TableResult()
+                .setTableName(tableName)
+                .setTableKind(TableKind.valueOf(table.getTableKind().name()))
+                .setComment(table.getComment())
+                .setColumnList(columnList)
+                .setWatermarkSpecList(watermarkSpecList)
+                .setPropertiesMap(table.getOptions());
+    }
+
+    private String processColumnType(Schema.UnresolvedColumn column) {
+        if (column instanceof Schema.UnresolvedComputedColumn) {
+            return ((Schema.UnresolvedComputedColumn) column)
+                    .getExpression()
+                    .getChildren()
+                    .stream()
+                    .map(e->e.asSummaryString())
+                    .collect(Collectors.joining(","));
+        } else if (column instanceof Schema.UnresolvedPhysicalColumn) {
+            return ((Schema.UnresolvedPhysicalColumn) column).getDataType()
+                    .toString()
+                    .replace("NOT NULL","")
+                    .trim();
+        } else if (column instanceof Schema.UnresolvedMetadataColumn) {
+            return ((Schema.UnresolvedMetadataColumn) column).getDataType().toString();
+        }
+        return "unknown";
+    }
+
+    public String getCurrentCatalog() {
+        return tableEnv.getCurrentCatalog();
     }
 }
