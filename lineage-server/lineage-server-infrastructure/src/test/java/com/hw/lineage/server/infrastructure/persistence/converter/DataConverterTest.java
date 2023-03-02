@@ -2,7 +2,6 @@ package com.hw.lineage.server.infrastructure.persistence.converter;
 
 import com.hw.lineage.server.domain.entity.Task;
 import com.hw.lineage.server.domain.vo.CatalogId;
-import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.domain.vo.TaskId;
 import com.hw.lineage.server.domain.vo.TaskSource;
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
@@ -39,7 +38,6 @@ public class DataConverterTest {
         assertThat(task.getTaskId()).isEqualTo(new TaskId(1L));
         assertThat(task.getTaskName()).isEqualTo("task_1");
         assertThat(task.getDescr()).isEqualTo("first task");
-        assertThat(task.getPluginId()).isEqualTo(new PluginId(1L));
         assertThat(task.getCatalogId()).isEqualTo(new CatalogId(1L));
         assertThat(task.getTaskSource()).isEqualTo(new TaskSource("SELECT 1"));
         assertThat(task.getCreateUserId()).isZero();
@@ -53,7 +51,6 @@ public class DataConverterTest {
 
         Task task = new Task().setTaskName("task_1")
                 .setDescr("first task")
-                .setPluginId(new PluginId(1L))
                 .setCatalogId(new CatalogId(1L));
         task.setCreateUserId(0L)
                 .setModifyUserId(0L)

@@ -46,8 +46,8 @@ public class FunctionController {
     }
 
     @PostMapping("")
-    public Result<Long> createFunction(@Valid @RequestBody CreateFunctionCmd createFunctionCmd) {
-        Long functionId = functionService.createFunction(createFunctionCmd);
+    public Result<Long> createFunction(@Valid @RequestBody CreateFunctionCmd command) {
+        Long functionId = functionService.createFunction(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, functionId);
     }
 
@@ -58,9 +58,9 @@ public class FunctionController {
 
     @PutMapping("/{functionId}")
     public Result<Boolean> updateFunction(@PathVariable("functionId") Long functionId,
-                                          @Valid @RequestBody UpdateFunctionCmd updateFunctionCmd) {
-        updateFunctionCmd.setFunctionId(functionId);
-        functionService.updateFunction(updateFunctionCmd);
+                                          @Valid @RequestBody UpdateFunctionCmd command) {
+        command.setFunctionId(functionId);
+        functionService.updateFunction(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
@@ -71,9 +71,9 @@ public class FunctionController {
     }
 
     @PostMapping("/parse")
-    public Result<List<FunctionResult>> parseFunction(@Valid @RequestBody ParseFunctionCmd parseFunctionCmd)
+    public Result<List<FunctionResult>> parseFunction(@Valid @RequestBody ParseFunctionCmd command)
             throws IOException, ClassNotFoundException {
-        List<FunctionResult> functionDTOList = functionService.parseFunction(parseFunctionCmd);
+        List<FunctionResult> functionDTOList = functionService.parseFunction(command);
         return Result.success(ResultMessage.PARSE_FUNCTION_SUCCESS, functionDTOList);
     }
 }

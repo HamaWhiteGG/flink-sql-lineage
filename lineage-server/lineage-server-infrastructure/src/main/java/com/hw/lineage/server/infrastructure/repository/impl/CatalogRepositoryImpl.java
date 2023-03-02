@@ -6,6 +6,7 @@ import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.domain.entity.Catalog;
+import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
@@ -88,5 +89,10 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
         catalogMapper.update(completer ->
                 completer.set(catalog.defaultCatalog).equalTo(TRUE).where(catalog.catalogId, isEqualTo(catalogId.getValue()))
         );
+    }
+
+    @Override
+    public CatalogEntry findEntry(CatalogId catalogId) {
+        return null;
     }
 }

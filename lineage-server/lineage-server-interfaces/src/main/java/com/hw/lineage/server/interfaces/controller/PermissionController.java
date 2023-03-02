@@ -41,8 +41,8 @@ public class PermissionController {
     }
 
     @PostMapping("")
-    public Result<Long> createPermission(@Valid @RequestBody CreatePermissionCmd createPermissionCmd) {
-        Long permissionId = permissionService.createPermission(createPermissionCmd);
+    public Result<Long> createPermission(@Valid @RequestBody CreatePermissionCmd command) {
+        Long permissionId = permissionService.createPermission(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, permissionId);
     }
 
@@ -53,9 +53,9 @@ public class PermissionController {
 
     @PutMapping("/{permissionId}")
     public Result<Boolean> updatePermission(@PathVariable("permissionId") Long permissionId,
-                                        @Valid @RequestBody UpdatePermissionCmd updatePermissionCmd) {
-        updatePermissionCmd.setPermissionId(permissionId);
-        permissionService.updatePermission(updatePermissionCmd);
+                                        @Valid @RequestBody UpdatePermissionCmd command) {
+        command.setPermissionId(permissionId);
+        permissionService.updatePermission(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

@@ -14,7 +14,7 @@ import com.hw.lineage.server.domain.query.plugin.PluginQuery;
  */
 public interface PluginService {
 
-    Long createPlugin(CreatePluginCmd createPluginCmd);
+    Long createPlugin(CreatePluginCmd command);
 
     PluginDTO queryPlugin(Long pluginId);
 
@@ -24,7 +24,7 @@ public interface PluginService {
 
     void deletePlugin(Long pluginId);
 
-    void updatePlugin(UpdatePluginCmd updatePluginCmd);
+    void updatePlugin(UpdatePluginCmd command);
 
     void defaultPlugin(Long pluginId);
 }

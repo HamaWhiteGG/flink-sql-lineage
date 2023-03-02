@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateRoleCmd {
 
-    @NotNull
     private Long roleId;
 
     private String roleName;

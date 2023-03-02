@@ -7,7 +7,7 @@ import com.hw.lineage.common.result.ColumnResult;
 import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.flink.LineageServiceImpl;
 import com.hw.lineage.flink.basic.AbstractBasicTest;
-import org.apache.flink.table.api.TableException;
+import org.apache.flink.table.api.ValidationException;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,13 +24,12 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This unit test depends on the external Hive and Mysql environment,
- * if not, please comment out this unit test class(add @Ignore)
+ * if not, please comment out this unit test (add @Ignore)
  * @author: HamaWhite
  * @version: 1.0.0
  */
 public class CatalogTest {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractBasicTest.class);
-
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -56,11 +55,11 @@ public class CatalogTest {
     }
 
     @Test
-    @Ignore
     public void testJdbcCatalog() {
         String catalogName = "jdbc_catalog";
+        expectedException.expect(ValidationException.class);
+        expectedException.expectMessage(String.format("Unable to create catalog '%s'.", catalogName));
         useJdbcCatalog(catalogName);
-        assertThat(context.getCurrentCatalog(), is(catalogName));
     }
 
 
@@ -102,18 +101,6 @@ public class CatalogTest {
     public void testQueryMemoryCatalogInfo() throws Exception {
         String catalogName = "memory_catalog";
         useMemoryCatalog(catalogName);
-        checkQueryCatalogInfo(catalogName);
-    }
-
-    @Test
-    @Ignore
-    public void testQueryJdbcCatalogInfo() throws Exception {
-        String catalogName = "jdbc_catalog";
-        useJdbcCatalog(catalogName);
-        expectedException.expect(TableException.class);
-        expectedException.expectMessage(String.format("Could not execute CreateTable in path `%s`.`%s`.`%s`"
-                , catalogName, database, tableName)
-        );
         checkQueryCatalogInfo(catalogName);
     }
 

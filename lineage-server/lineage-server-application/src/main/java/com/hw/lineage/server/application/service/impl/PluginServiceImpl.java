@@ -31,11 +31,11 @@ public class PluginServiceImpl implements PluginService {
     private DtoAssembler assembler;
 
     @Override
-    public Long createPlugin(CreatePluginCmd createPluginCmd) {
+    public Long createPlugin(CreatePluginCmd command) {
         Plugin plugin = new Plugin()
-                .setPluginName(createPluginCmd.getPluginName())
-                .setDescr(createPluginCmd.getDescr())
-                .setDefaultPlugin(createPluginCmd.getDefaultPlugin());
+                .setPluginName(command.getPluginName())
+                .setDescr(command.getDescr())
+                .setDefaultPlugin(command.getDefaultPlugin());
 
         plugin.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -68,11 +68,11 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public void updatePlugin(UpdatePluginCmd updatePluginCmd) {
+    public void updatePlugin(UpdatePluginCmd command) {
         Plugin plugin = new Plugin()
-                .setPluginId(new PluginId(updatePluginCmd.getPluginId()))
-                .setPluginName(updatePluginCmd.getPluginName())
-                .setDescr(updatePluginCmd.getDescr());
+                .setPluginId(new PluginId(command.getPluginId()))
+                .setPluginName(command.getPluginName())
+                .setDescr(command.getDescr());
 
         plugin.setModifyTime(System.currentTimeMillis());
         repository.save(plugin);

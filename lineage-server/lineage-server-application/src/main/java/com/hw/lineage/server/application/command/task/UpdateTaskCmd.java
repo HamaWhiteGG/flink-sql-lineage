@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateTaskCmd {
 
-    @NotNull
     private Long taskId;
 
     private String taskName;

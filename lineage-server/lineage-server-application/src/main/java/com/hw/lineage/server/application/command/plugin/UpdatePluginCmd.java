@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdatePluginCmd {
 
-    @NotNull
     private Long pluginId;
 
     private String pluginName;
