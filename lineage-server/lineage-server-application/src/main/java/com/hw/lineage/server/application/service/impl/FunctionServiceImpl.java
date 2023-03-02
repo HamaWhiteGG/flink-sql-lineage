@@ -13,8 +13,10 @@ import com.hw.lineage.server.domain.entity.Function;
 import com.hw.lineage.server.domain.entity.Plugin;
 import com.hw.lineage.server.domain.facade.LineageFacade;
 import com.hw.lineage.server.domain.facade.StorageFacade;
+import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
+import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.repository.FunctionRepository;
 import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
@@ -43,6 +45,9 @@ public class FunctionServiceImpl implements FunctionService {
     private PluginRepository pluginRepository;
 
     @Resource
+    private CatalogRepository catalogRepository;
+
+    @Resource
     private StorageFacade storageFacade;
 
     @Resource
@@ -52,19 +57,23 @@ public class FunctionServiceImpl implements FunctionService {
     private DtoAssembler assembler;
 
     @Override
-    public Long createFunction(CreateFunctionCmd createFunctionCmd) {
+    public Long createFunction(CreateFunctionCmd command) {
         Function function = new Function()
-                .setCatalogId(new CatalogId(createFunctionCmd.getCatalogId()))
-                .setFunctionName(createFunctionCmd.getFunctionName())
-                .setDatabase(createFunctionCmd.getDatabase())
-                .setInvocation(createFunctionCmd.getInvocation())
-                .setFunctionPath(createFunctionCmd.getFunctionPath())
-                .setClassName(createFunctionCmd.getClassName())
-                .setDescr(createFunctionCmd.getDescr());
+                .setCatalogId(new CatalogId(command.getCatalogId()))
+                .setFunctionName(command.getFunctionName())
+                .setDatabase(command.getDatabase())
+                .setInvocation(command.getInvocation())
+                .setFunctionPath(command.getFunctionPath())
+                .setClassName(command.getClassName())
+                .setDescr(command.getDescr());
 
         function.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
+
+        CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
+        lineageFacade.createFunction(entry.getPluginCode(), entry.getCatalogName(), function.getDatabase()
+                , function.getFunctionName(), function.getClassName(), function.getFunctionPath());
 
         function = functionRepository.save(function);
         return function.getFunctionId().getValue();
@@ -89,27 +98,31 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public void deleteFunction(Long functionId) {
-        functionRepository.remove(new FunctionId(functionId));
+        FunctionId id = new FunctionId(functionId);
+        Function function = functionRepository.find(id);
+        CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
+        lineageFacade.deleteCatalog(entry.getPluginCode(), entry.getCatalogName());
+        functionRepository.remove(id);
     }
 
     @Override
-    public void updateFunction(UpdateFunctionCmd updateFunctionCmd) {
+    public void updateFunction(UpdateFunctionCmd command) {
         Function function = new Function()
-                .setFunctionId(new FunctionId(updateFunctionCmd.getFunctionId()))
-                .setInvocation(updateFunctionCmd.getInvocation())
-                .setDescr(updateFunctionCmd.getDescr());
+                .setFunctionId(new FunctionId(command.getFunctionId()))
+                .setInvocation(command.getInvocation())
+                .setDescr(command.getDescr());
 
         function.setModifyTime(System.currentTimeMillis());
         functionRepository.save(function);
     }
 
     @Override
-    public List<FunctionResult> parseFunction(ParseFunctionCmd parseFunctionCmd) throws IOException,ClassNotFoundException{
-        String fileName=parseFunctionCmd.getFileName();
+    public List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException {
+        String fileName = command.getFileName();
         File file = storageFacade.loadAsResource(new Storage(fileName)).getFile();
-        Plugin plugin=pluginRepository.find(new PluginId(parseFunctionCmd.getPluginId()));
+        Plugin plugin = pluginRepository.find(new PluginId(command.getPluginId()));
         // parse function info
-       return lineageFacade.parseFunction(plugin.getPluginName(),file);
+        return lineageFacade.parseFunction(plugin.getPluginName(), file);
 
     }
 }

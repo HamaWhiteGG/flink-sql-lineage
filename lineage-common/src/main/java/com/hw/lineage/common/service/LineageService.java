@@ -45,15 +45,17 @@ public interface LineageService extends Plugin {
     /**
      * Get names of all tables and views under this database. An empty list is returned if none exists.
      */
-    List<String> listTables(String catalogName, String databaseName) throws Exception;
+    List<String> listTables(String catalogName, String database) throws Exception;
 
     /**
      * Get names of all views under this database. An empty list is returned if none exists.
      */
-    List<String> listViews(String catalogName, String databaseName) throws Exception;
+    List<String> listViews(String catalogName, String database) throws Exception;
 
     /**
      * Reads a registered table and returns the tableResult.
      */
     TableResult getTable(String catalogName, String database, String tableName)  throws Exception;
+
+     void dropTable(String catalogName, String database, String tableName) throws Exception;
 }

@@ -385,26 +385,21 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public List<String> listTables(String catalogName, String databaseName) throws Exception {
-        return getCatalog(catalogName).listTables(databaseName);
+    public List<String> listTables(String catalogName, String database) throws Exception {
+        return getCatalog(catalogName).listTables(database);
     }
 
     @Override
-    public List<String> listViews(String catalogName, String databaseName) throws Exception {
-        return getCatalog(catalogName).listViews(databaseName);
+    public List<String> listViews(String catalogName, String database) throws Exception {
+        return getCatalog(catalogName).listViews(database);
     }
 
     @Override
     public TableResult getTable(String catalogName, String database, String tableName) throws Exception {
         ObjectPath objectPath = new ObjectPath(database, tableName);
         CatalogBaseTable table = getCatalog(catalogName).getTable(objectPath);
-
-        LOG.info("table.comment: {}", table.getComment());
-        LOG.info("table.options: {}", table.getOptions());
-        LOG.info("table.kind: {}", table.getTableKind());
-        LOG.info("table.schema: {}", table.getUnresolvedSchema());
-
         Schema schema = table.getUnresolvedSchema();
+        LOG.info("table.schema: {}", schema);
         List<String> primaryKeyList = new ArrayList<>();
         schema.getPrimaryKey()
                 .ifPresent(pk ->
@@ -443,19 +438,23 @@ public class LineageServiceImpl implements LineageService {
         if (column instanceof Schema.UnresolvedComputedColumn) {
             return ((Schema.UnresolvedComputedColumn) column)
                     .getExpression()
-                    .getChildren()
-                    .stream()
-                    .map(e->e.asSummaryString())
-                    .collect(Collectors.joining(","));
+                    .asSummaryString();
         } else if (column instanceof Schema.UnresolvedPhysicalColumn) {
             return ((Schema.UnresolvedPhysicalColumn) column).getDataType()
                     .toString()
-                    .replace("NOT NULL","")
+                    // BIGINT NOT NULL
+                    .replace("NOT NULL", "")
                     .trim();
         } else if (column instanceof Schema.UnresolvedMetadataColumn) {
             return ((Schema.UnresolvedMetadataColumn) column).getDataType().toString();
         }
         return "unknown";
+    }
+
+    @Override
+    public void dropTable(String catalogName, String database, String tableName) throws Exception {
+        ObjectPath objectPath = new ObjectPath(database, tableName);
+        getCatalog(catalogName).dropTable(objectPath, false);
     }
 
     public String getCurrentCatalog() {

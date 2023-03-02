@@ -14,7 +14,7 @@ import com.hw.lineage.server.domain.query.permission.PermissionQuery;
  */
 public interface PermissionService {
 
-    Long createPermission(CreatePermissionCmd createPermissionCmd);
+    Long createPermission(CreatePermissionCmd command);
 
     PermissionDTO queryPermission(Long permissionId);
 
@@ -24,5 +24,5 @@ public interface PermissionService {
 
     void deletePermission(Long permissionId);
 
-    void updatePermission(UpdatePermissionCmd updatePermissionCmd);
+    void updatePermission(UpdatePermissionCmd command);
 }

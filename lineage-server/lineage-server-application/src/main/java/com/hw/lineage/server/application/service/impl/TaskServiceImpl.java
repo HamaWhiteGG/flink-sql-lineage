@@ -48,11 +48,11 @@ public class TaskServiceImpl implements TaskService {
     private DtoAssembler assembler;
 
     @Override
-    public Long createTask(CreateTaskCmd createTaskCmd) {
+    public Long createTask(CreateTaskCmd command) {
         Task task = new Task()
-                .setTaskName(createTaskCmd.getTaskName())
-                .setDescr(createTaskCmd.getDescr())
-                .setCatalogId(new CatalogId(createTaskCmd.getCatalogId()));
+                .setTaskName(command.getTaskName())
+                .setDescr(command.getDescr())
+                .setCatalogId(new CatalogId(command.getCatalogId()));
 
         task.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -85,12 +85,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updateTask(UpdateTaskCmd updateTaskCmd) {
+    public void updateTask(UpdateTaskCmd command) {
         Task task = new Task()
-                .setTaskId(new TaskId(updateTaskCmd.getTaskId()))
-                .setTaskName(updateTaskCmd.getTaskName())
-                .setDescr(updateTaskCmd.getDescr())
-                .setCatalogId(new CatalogId(updateTaskCmd.getCatalogId()));
+                .setTaskId(new TaskId(command.getTaskId()))
+                .setTaskName(command.getTaskName())
+                .setDescr(command.getDescr())
+                .setCatalogId(new CatalogId(command.getCatalogId()));
 
         task.setModifyTime(System.currentTimeMillis());
         taskRepository.save(task);

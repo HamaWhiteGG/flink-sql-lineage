@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public interface UserService extends UserDetailsService {
 
-    Long createUser(CreateUserCmd createUserCmd);
+    Long createUser(CreateUserCmd command);
 
     UserDTO queryUser(Long userId);
 
@@ -25,6 +25,6 @@ public interface UserService extends UserDetailsService {
 
     void deleteUser(Long userId);
 
-    void updateUser(UpdateUserCmd updateUserCmd);
+    void updateUser(UpdateUserCmd command);
     
 }

@@ -44,8 +44,8 @@ public class PluginController {
 
     @PostMapping("")
     @PreAuthorize("hasAuthority('system:plugin:add')")
-    public Result<Long> createPlugin(@Valid @RequestBody CreatePluginCmd createPluginCmd) {
-        Long pluginId = pluginService.createPlugin(createPluginCmd);
+    public Result<Long> createPlugin(@Valid @RequestBody CreatePluginCmd command) {
+        Long pluginId = pluginService.createPlugin(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, pluginId);
     }
 
@@ -57,9 +57,9 @@ public class PluginController {
     @PutMapping("/{pluginId}")
     @PreAuthorize("hasAuthority('system:plugin:edit')")
     public Result<Boolean> updatePlugin(@PathVariable("pluginId") Long pluginId,
-                                        @Valid @RequestBody UpdatePluginCmd updatePluginCmd) {
-        updatePluginCmd.setPluginId(pluginId);
-        pluginService.updatePlugin(updatePluginCmd);
+                                        @Valid @RequestBody UpdatePluginCmd command) {
+        command.setPluginId(pluginId);
+        pluginService.updatePlugin(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

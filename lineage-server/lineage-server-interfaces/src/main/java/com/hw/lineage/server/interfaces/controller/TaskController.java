@@ -41,8 +41,8 @@ public class TaskController {
     }
 
     @PostMapping("")
-    public Result<Long> createTask(@Valid @RequestBody CreateTaskCmd createTaskCmd) {
-        Long taskId = taskService.createTask(createTaskCmd);
+    public Result<Long> createTask(@Valid @RequestBody CreateTaskCmd command) {
+        Long taskId = taskService.createTask(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, taskId);
     }
 
@@ -53,9 +53,9 @@ public class TaskController {
 
     @PutMapping("/{taskId}")
     public Result<Boolean> updateTask(@PathVariable("taskId") Long taskId,
-                                      @Valid @RequestBody UpdateTaskCmd updateTaskCmd) {
-        updateTaskCmd.setTaskId(taskId);
-        taskService.updateTask(updateTaskCmd);
+                                      @Valid @RequestBody UpdateTaskCmd command) {
+        command.setTaskId(taskId);
+        taskService.updateTask(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

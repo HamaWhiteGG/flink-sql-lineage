@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateUserCmd {
 
-    @NotNull
     private Long userId;
 
     private String username;

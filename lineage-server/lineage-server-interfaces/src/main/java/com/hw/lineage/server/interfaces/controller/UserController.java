@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @PostMapping("")
-    public Result<Long> createUser(@Valid @RequestBody CreateUserCmd createUserCmd) {
-        Long userId = userService.createUser(createUserCmd);
+    public Result<Long> createUser(@Valid @RequestBody CreateUserCmd command) {
+        Long userId = userService.createUser(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, userId);
     }
 
@@ -53,9 +53,9 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public Result<Boolean> updateUser(@PathVariable("userId") Long userId,
-                                        @Valid @RequestBody UpdateUserCmd updateUserCmd) {
-        updateUserCmd.setUserId(userId);
-        userService.updateUser(updateUserCmd);
+                                        @Valid @RequestBody UpdateUserCmd command) {
+        command.setUserId(userId);
+        userService.updateUser(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

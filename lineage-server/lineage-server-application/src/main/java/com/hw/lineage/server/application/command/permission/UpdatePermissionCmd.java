@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdatePermissionCmd {
 
-    @NotNull
     private Long permissionId;
 
     private String permissionGroup;

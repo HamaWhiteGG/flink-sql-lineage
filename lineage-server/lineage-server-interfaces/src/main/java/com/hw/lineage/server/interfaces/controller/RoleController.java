@@ -41,8 +41,8 @@ public class RoleController {
     }
 
     @PostMapping("")
-    public Result<Long> createRole(@Valid @RequestBody CreateRoleCmd createRoleCmd) {
-        Long roleId = roleService.createRole(createRoleCmd);
+    public Result<Long> createRole(@Valid @RequestBody CreateRoleCmd command) {
+        Long roleId = roleService.createRole(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, roleId);
     }
 
@@ -53,9 +53,9 @@ public class RoleController {
 
     @PutMapping("/{roleId}")
     public Result<Boolean> updateRole(@PathVariable("roleId") Long roleId,
-                                        @Valid @RequestBody UpdateRoleCmd updateRoleCmd) {
-        updateRoleCmd.setRoleId(roleId);
-        roleService.updateRole(updateRoleCmd);
+                                        @Valid @RequestBody UpdateRoleCmd command) {
+        command.setRoleId(roleId);
+        roleService.updateRole(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

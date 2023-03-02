@@ -5,6 +5,7 @@ import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.loader.classloading.TemporaryClassLoaderContext;
@@ -52,15 +53,6 @@ public class LineageClient {
     private static final String CREATE_FUNCTION_SQL = "CREATE FUNCTION IF NOT EXISTS %s.%s.%s AS '%s' USING JAR '%s'";
     private static final String DROP_FUNCTION_SQL = "DROP FUNCTION IF EXISTS %s.%s.%s";
 
-    /**
-     * Table
-     */
-    private static final String DROP_TABLE_SQL = "DROP TABLE IF EXISTS %s.%s.%s";
-
-    /**
-     * View
-     */
-    private static final String DROP_VIEW_SQL = "DROP VIEW IF EXISTS %s.%s.%s";
 
     private final Map<String, LineageService> lineageServiceMap;
 
@@ -185,17 +177,47 @@ public class LineageClient {
         execute(pluginCode, String.format(DROP_FUNCTION_SQL, catalogName, database, functionName));
     }
 
-    public void deleteTable(String pluginCode, String catalogName, String database, String tableName) {
-        execute(pluginCode, String.format(DROP_TABLE_SQL, catalogName, database, tableName));
+    public void deleteTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+        LineageService service = getLineageService(pluginCode);
+        service.dropTable(catalogName, database, tableName);
     }
 
-    public void deleteView(String pluginCode, String catalogName, String database, String viewName) {
-        execute(pluginCode, String.format(DROP_VIEW_SQL, catalogName, database, viewName));
-    }
 
     private LineageService getLineageService(String pluginCode) {
         LineageService lineageService = lineageServiceMap.get(pluginCode);
         Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginCode);
         return lineageService;
+    }
+
+    /**
+     * Get the names of all databases in this catalog.
+     */
+    public List<String> listDatabases(String pluginCode, String catalogName) throws Exception {
+        LineageService service = getLineageService(pluginCode);
+        return service.listDatabases(catalogName);
+    }
+
+    /**
+     * Get names of all tables and views under this database. An empty list is returned if none exists.
+     */
+    public List<String> listTables(String pluginCode, String catalogName, String database) throws Exception {
+        LineageService service = getLineageService(pluginCode);
+        return service.listTables(catalogName, database);
+    }
+
+    /**
+     * Get names of all views under this database. An empty list is returned if none exists.
+     */
+    public List<String> listViews(String pluginCode, String catalogName, String database) throws Exception {
+        LineageService service = getLineageService(pluginCode);
+        return service.listViews(catalogName, database);
+    }
+
+    /**
+     * Reads a registered table and returns the tableResult.
+     */
+    public TableResult getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+        LineageService service = getLineageService(pluginCode);
+        return service.getTable(catalogName, database, tableName);
     }
 }

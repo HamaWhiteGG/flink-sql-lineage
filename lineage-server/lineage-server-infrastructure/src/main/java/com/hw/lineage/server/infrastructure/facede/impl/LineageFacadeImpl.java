@@ -3,6 +3,7 @@ package com.hw.lineage.server.infrastructure.facede.impl;
 import com.hw.lineage.client.LineageClient;
 import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.server.domain.entity.Catalog;
 import com.hw.lineage.server.domain.entity.Task;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: LineageFacadeImpl
@@ -69,6 +71,66 @@ public class LineageFacadeImpl implements LineageFacade {
     @Override
     public List<FunctionResult> parseFunction(String pluginName, File file) throws IOException, ClassNotFoundException {
         return lineageClient.parseFunction(pluginName, file);
+    }
+
+    @Override
+    public void createCatalog(String pluginCode, String catalogName, Map<String, String> propertiesMap) {
+        lineageClient.createCatalog(pluginCode, catalogName, propertiesMap);
+    }
+
+    @Override
+    public void deleteCatalog(String pluginCode, String catalogName) {
+        lineageClient.deleteCatalog(pluginCode, catalogName);
+    }
+
+    @Override
+    public void createDatabase(String pluginCode, String catalogName, String database, String comment) {
+        lineageClient.createDatabase(pluginCode, catalogName, database, comment);
+    }
+
+    @Override
+    public List<String> listDatabases(String pluginCode, String catalogName) throws Exception {
+        return lineageClient.listDatabases(pluginCode, catalogName);
+    }
+
+    @Override
+    public void deleteDatabase(String pluginCode, String catalogName, String database) {
+        lineageClient.deleteDatabase(pluginCode, catalogName, database);
+    }
+
+    @Override
+    public void createTable(String pluginCode, String catalogName, String database, String createSql) {
+        lineageClient.execute(pluginCode, catalogName, database, createSql);
+    }
+
+    @Override
+    public List<String> listTables(String pluginCode, String catalogName, String database) throws Exception {
+        return lineageClient.listTables(pluginCode, catalogName, database);
+    }
+
+    @Override
+    public TableResult getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+        return lineageClient.getTable(pluginCode, catalogName, database, tableName);
+    }
+
+    @Override
+    public List<String> listViews(String pluginCode, String catalogName, String database) throws Exception {
+        return lineageClient.listViews(pluginCode, catalogName, database);
+    }
+
+    @Override
+    public void deleteTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+        lineageClient.deleteTable(pluginCode, catalogName, database, tableName);
+    }
+
+    @Override
+    public void createFunction(String pluginCode, String catalogName, String database, String functionName, String className, String functionPath) {
+        lineageClient.createFunction(pluginCode, catalogName, database, functionName, className, functionPath);
+    }
+
+    @Override
+    public void deleteFunction(String pluginCode, String catalogName, String database, String functionName) {
+        lineageClient.deleteFunction(pluginCode, catalogName, database, functionName);
     }
 
 
