@@ -21,6 +21,14 @@
         </fileSet>
 
         <fileSet>
+            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
+            <outputDirectory>${assembly.name}/functions/</outputDirectory>
+            <includes>
+                <include>function-*.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target/classes/</directory>
             <outputDirectory>${assembly.name}/lineage-server/conf/</outputDirectory>
             <includes>

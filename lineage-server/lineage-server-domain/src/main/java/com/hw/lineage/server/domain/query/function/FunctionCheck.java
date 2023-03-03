@@ -1,5 +1,6 @@
 package com.hw.lineage.server.domain.query.function;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,12 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class FunctionCheck {
+
+    @ApiModelProperty(hidden = true)
+    private Long catalogId;
+
+    @ApiModelProperty(hidden = true)
+    private String database;
 
     @NotNull
     private String functionName;

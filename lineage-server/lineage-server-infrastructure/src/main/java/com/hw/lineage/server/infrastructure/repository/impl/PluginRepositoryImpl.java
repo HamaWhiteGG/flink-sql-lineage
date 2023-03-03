@@ -11,18 +11,17 @@ import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.PluginDO;
-import com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport;
 import com.hw.lineage.server.infrastructure.persistence.mapper.PluginMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.pluginName;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
-
-import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
 
 
 /**
@@ -48,7 +47,7 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
 
     @Override
     public boolean check(String name) {
-        return !pluginMapper.select(completer -> completer.where(PluginDynamicSqlSupport.pluginName, isEqualTo(name))).isEmpty();
+        return !pluginMapper.select(completer -> completer.where(pluginName, isEqualTo(name))).isEmpty();
     }
 
     @Override
@@ -72,7 +71,7 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
         try (Page<PluginDO> page = PageMethod.startPage(pluginQuery.getPageNum(), pluginQuery.getPageSize())) {
             PageInfo<PluginDO> pageInfo = page.doSelectPageInfo(() ->
                     pluginMapper.select(completer ->
-                            completer.where(PluginDynamicSqlSupport.pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
+                            completer.where(pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
                                     .orderBy(buildSortSpecification(pluginQuery))
                     )
             );

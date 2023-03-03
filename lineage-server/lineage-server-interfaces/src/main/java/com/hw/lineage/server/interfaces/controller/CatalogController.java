@@ -6,11 +6,17 @@ import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
 import com.hw.lineage.server.application.command.catalog.CreateDatabaseCmd;
 import com.hw.lineage.server.application.command.catalog.CreateTableCmd;
 import com.hw.lineage.server.application.command.catalog.UpdateCatalogCmd;
+import com.hw.lineage.server.application.command.function.CreateFunctionCmd;
+import com.hw.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.hw.lineage.server.application.dto.CatalogDTO;
+import com.hw.lineage.server.application.dto.FunctionDTO;
 import com.hw.lineage.server.application.dto.TableDTO;
 import com.hw.lineage.server.application.service.CatalogService;
+import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
+import com.hw.lineage.server.domain.query.function.FunctionCheck;
+import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
@@ -32,6 +38,9 @@ public class CatalogController {
 
     @Resource
     private CatalogService catalogService;
+
+    @Resource
+    private FunctionService functionService;
 
     @GetMapping("/{catalogId}")
     public Result<CatalogDTO> queryCatalog(@PathVariable("catalogId") Long catalogId) {
@@ -130,4 +139,63 @@ public class CatalogController {
         catalogService.deleteTable(catalogId, database, tableName);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
+
+    @GetMapping("/{catalogId}/databases/{database}/functions/{functionId}")
+    public Result<FunctionDTO> queryFunction(@PathVariable("catalogId") Long catalogId,
+                                             @PathVariable("database") String database,
+                                             @PathVariable("functionId") Long functionId) throws Exception {
+        FunctionDTO functionDTO = functionService.queryFunction(functionId);
+        return Result.success(ResultMessage.DETAIL_SUCCESS, functionDTO);
+    }
+
+    @GetMapping("/{catalogId}/databases/{database}/functions")
+    public Result<PageInfo<FunctionDTO>> queryFunctions(
+            @PathVariable("catalogId") Long catalogId,
+            @PathVariable("database") String database,
+            FunctionQuery functionQuery) {
+        functionQuery.setCatalogId(catalogId);
+        functionQuery.setDatabase(database);
+        PageInfo<FunctionDTO> pageInfo = functionService.queryFunctions(functionQuery);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
+    }
+
+    @PostMapping("/{catalogId}/databases/{database}/functions")
+    public Result<Long> createFunction(
+            @PathVariable("catalogId") Long catalogId,
+            @PathVariable("database") String database,
+            @Valid @RequestBody CreateFunctionCmd command) {
+        command.setCatalogId(catalogId);
+        command.setDatabase(database);
+        Long functionId = functionService.createFunction(command);
+        return Result.success(ResultMessage.CREATE_SUCCESS, functionId);
+    }
+
+    @GetMapping("/{catalogId}/databases/{database}/functions/exist")
+    public Result<Boolean> checkFunctionExist(
+            @PathVariable("catalogId") Long catalogId,
+            @PathVariable("database") String database,
+            @Valid FunctionCheck functionCheck) {
+        functionCheck.setCatalogId(catalogId);
+        functionCheck.setDatabase(database);
+        return Result.success(ResultMessage.CHECK_SUCCESS, functionService.checkFunctionExist(functionCheck));
+    }
+
+    @PutMapping("/{catalogId}/databases/{database}/functions/{functionId}")
+    public Result<Boolean> updateFunction(@PathVariable("catalogId") Long catalogId,
+                                          @PathVariable("database") String database,
+                                          @PathVariable("functionId") Long functionId,
+                                          @Valid @RequestBody UpdateFunctionCmd command) {
+        command.setFunctionId(functionId);
+        functionService.updateFunction(command);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
+    }
+
+    @DeleteMapping("/{catalogId}/databases/{database}/functions/{functionId}")
+    public Result<Boolean> deleteFunction(@PathVariable("catalogId") Long catalogId,
+                                          @PathVariable("database") String database,
+                                          @PathVariable("functionId") Long functionId) {
+        functionService.deleteFunction(catalogId, database, functionId);
+        return Result.success(ResultMessage.DELETE_SUCCESS);
+    }
+
 }

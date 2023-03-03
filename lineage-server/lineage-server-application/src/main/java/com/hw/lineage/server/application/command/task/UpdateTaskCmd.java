@@ -1,8 +1,7 @@
 package com.hw.lineage.server.application.command.task;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: UpdateTaskCmd
@@ -12,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateTaskCmd {
 
+    @ApiModelProperty(hidden = true)
     private Long taskId;
 
     private String taskName;

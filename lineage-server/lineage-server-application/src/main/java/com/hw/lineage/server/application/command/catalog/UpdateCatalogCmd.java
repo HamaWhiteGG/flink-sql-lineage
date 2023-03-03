@@ -1,6 +1,7 @@
 package com.hw.lineage.server.application.command.catalog;
 
 import com.alibaba.fastjson2.JSONObject;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
 @Data
 public class UpdateCatalogCmd {
 
+    @ApiModelProperty(hidden = true)
     private Long catalogId;
 
     private String catalogName;

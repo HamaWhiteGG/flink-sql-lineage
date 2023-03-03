@@ -22,6 +22,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.task;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
@@ -56,7 +58,7 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
 
     @Override
     public boolean check(String name) {
-        return !taskMapper.select(completer -> completer.where(TaskDynamicSqlSupport.taskName, isEqualTo(name))).isEmpty();
+        return !taskMapper.select(completer -> completer.where(taskName, isEqualTo(name))).isEmpty();
     }
 
     @Override
@@ -96,14 +98,14 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
     @Override
     public void removeTaskSql(TaskId taskId) {
         taskSqlMapper.delete(completer ->
-                completer.where(TaskSqlDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
+                completer.where(task.taskId, isEqualTo(taskId.getValue()))
         );
     }
 
     @Override
     public void removeTaskLineage(TaskId taskId) {
         taskLineageMapper.delete(completer ->
-                completer.where(TaskLineageDynamicSqlSupport.taskId, isEqualTo(taskId.getValue()))
+                completer.where(task.taskId, isEqualTo(taskId.getValue()))
         );
     }
 
@@ -117,7 +119,7 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
         try (Page<TaskDO> page = PageMethod.startPage(taskQuery.getPageNum(), taskQuery.getPageSize())) {
             PageInfo<TaskDO> pageInfo = page.doSelectPageInfo(() ->
                     taskMapper.select(completer ->
-                            completer.where(TaskDynamicSqlSupport.taskName, isLike(buildLikeValue(taskQuery.getTaskName())))
+                            completer.where(taskName, isLike(buildLikeValue(taskQuery.getTaskName())))
                                     .orderBy(buildSortSpecification(taskQuery))
                     )
             );
