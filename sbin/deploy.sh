@@ -30,4 +30,4 @@ printf "It takes tens of seconds for the service to start, please wait a moment.
 printf "Swagger API: http://%s:8194/swagger-ui/index.html\n" "${REMOTE_IP}"
 printf "Knife4j API: http://%s:8194/doc.html\n" "${REMOTE_IP}"
 printf "Quick Catalog API: http://%s:8194/catalogs/1\n" "${REMOTE_IP}"
-printf "Quick Task API: http://%s:8194/tasks/1/lineage\n" "${REMOTE_IP}"
+printf "Index Page: http://%s:8194/index.html\n" "${REMOTE_IP}"

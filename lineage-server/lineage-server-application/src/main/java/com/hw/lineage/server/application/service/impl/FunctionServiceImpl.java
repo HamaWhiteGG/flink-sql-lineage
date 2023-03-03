@@ -15,6 +15,7 @@ import com.hw.lineage.server.domain.facade.LineageFacade;
 import com.hw.lineage.server.domain.facade.StorageFacade;
 import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
+import com.hw.lineage.server.domain.query.function.FunctionEntry;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.repository.FunctionRepository;
@@ -60,8 +61,8 @@ public class FunctionServiceImpl implements FunctionService {
     public Long createFunction(CreateFunctionCmd command) {
         Function function = new Function()
                 .setCatalogId(new CatalogId(command.getCatalogId()))
-                .setFunctionName(command.getFunctionName())
                 .setDatabase(command.getDatabase())
+                .setFunctionName(command.getFunctionName())
                 .setInvocation(command.getInvocation())
                 .setFunctionPath(command.getFunctionPath())
                 .setClassName(command.getClassName())
@@ -87,7 +88,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public Boolean checkFunctionExist(FunctionCheck functionCheck) {
-        return functionRepository.check(functionCheck.getFunctionName());
+        return functionRepository.check(functionCheck);
     }
 
     @Override
@@ -97,11 +98,10 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    public void deleteFunction(Long functionId) {
+    public void deleteFunction(Long catalogId, String database, Long functionId) {
         FunctionId id = new FunctionId(functionId);
-        Function function = functionRepository.find(id);
-        CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
-        lineageFacade.deleteCatalog(entry.getPluginCode(), entry.getCatalogName());
+        FunctionEntry entry = functionRepository.findEntry(id);
+        lineageFacade.deleteFunction(entry.getPluginCode(), entry.getCatalogName(), database, entry.getFunctionName());
         functionRepository.remove(id);
     }
 

@@ -6,19 +6,25 @@ import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.domain.entity.Function;
+import com.hw.lineage.server.domain.query.function.FunctionCheck;
+import com.hw.lineage.server.domain.query.function.FunctionEntry;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.domain.repository.FunctionRepository;
 import com.hw.lineage.server.domain.vo.FunctionId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
+import com.hw.lineage.server.infrastructure.persistence.mapper.custom.CustomFunctionMapper;
 import com.hw.lineage.server.infrastructure.persistence.dos.FunctionDO;
-import com.hw.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport;
 import com.hw.lineage.server.infrastructure.persistence.mapper.FunctionMapper;
+import org.mybatis.dynamic.sql.render.RenderingStrategies;
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 
 /**
@@ -33,6 +39,9 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
     private FunctionMapper functionMapper;
 
     @Resource
+    private CustomFunctionMapper customFunctionMapper;
+
+    @Resource
     private DataConverter converter;
 
     @Override
@@ -45,8 +54,10 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
     }
 
     @Override
-    public boolean check(String name) {
-        return !functionMapper.select(completer -> completer.where(FunctionDynamicSqlSupport.functionName, isEqualTo(name))).isEmpty();
+    public boolean check(FunctionCheck functionCheck) {
+        return !functionMapper.select(completer -> completer.where(catalogId, isEqualTo(functionCheck.getCatalogId()))
+                .and(database, isEqualTo(functionCheck.getDatabase()))
+                .and(functionName, isEqualTo(functionCheck.getFunctionName()))).isEmpty();
     }
 
     @Override
@@ -70,11 +81,29 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
         try (Page<FunctionDO> page = PageMethod.startPage(functionQuery.getPageNum(), functionQuery.getPageSize())) {
             PageInfo<FunctionDO> pageInfo = page.doSelectPageInfo(() ->
                     functionMapper.select(completer ->
-                            completer.where(FunctionDynamicSqlSupport.functionName, isLike(buildLikeValue(functionQuery.getFunctionName())))
+                            completer.where(catalogId, isEqualTo(functionQuery.getCatalogId()))
+                                    .and(database, isEqualTo(functionQuery.getDatabase()))
+                                    .and(functionName, isLike(buildLikeValue(functionQuery.getFunctionName())))
                                     .orderBy(buildSortSpecification(functionQuery))
                     )
             );
             return PageUtils.convertPage(pageInfo, converter::toFunction);
         }
     }
+
+    @Override
+    public FunctionEntry findEntry(FunctionId functionId) {
+        SelectStatementProvider selectStatement =
+                select(plugin.pluginCode, catalog.catalogName, function.database, function.functionId, function.functionName)
+                        .from(function)
+                        .join(catalog).on(function.catalogId, equalTo(catalog.catalogId))
+                        .join(plugin).on(catalog.pluginId, equalTo(plugin.pluginId))
+                        .where(function.functionId, isEqualTo(functionId.getValue()))
+                        .build().render(RenderingStrategies.MYBATIS3);
+
+        return customFunctionMapper.selectOne(selectStatement).orElseThrow(() ->
+                new LineageException(String.format("functionId [%s] is not existed", functionId.getValue()))
+        );
+    }
+
 }

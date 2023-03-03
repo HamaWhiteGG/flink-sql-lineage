@@ -1,9 +1,9 @@
 package com.hw.lineage.server.application.command.function;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: CreateFunctionCmd
@@ -12,13 +12,14 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class CreateFunctionCmd {
-    @NotNull
+    @ApiModelProperty(hidden = true)
     private Long catalogId;
+
+    @ApiModelProperty(hidden = true)
+    private String database;
 
     @NotBlank
     private String functionName;
-
-    private String database;
 
     private String invocation;
 

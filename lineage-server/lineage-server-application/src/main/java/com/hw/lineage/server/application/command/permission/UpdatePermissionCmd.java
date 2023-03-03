@@ -1,8 +1,7 @@
 package com.hw.lineage.server.application.command.permission;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: UpdatePermissionCmd
@@ -12,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdatePermissionCmd {
 
+    @ApiModelProperty(hidden = true)
     private Long permissionId;
 
     private String permissionGroup;

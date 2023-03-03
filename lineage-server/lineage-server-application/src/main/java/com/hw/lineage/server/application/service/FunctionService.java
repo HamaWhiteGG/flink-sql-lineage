@@ -28,12 +28,12 @@ public interface FunctionService {
 
     PageInfo<FunctionDTO> queryFunctions(FunctionQuery functionQuery);
 
-    void deleteFunction(Long functionId);
+    void deleteFunction(Long catalogId, String database, Long functionId);
 
     void updateFunction(UpdateFunctionCmd command);
 
     /**
      * Parse the function name, function format, function main class and description from the jar file
      */
-    List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException,ClassNotFoundException;
+    List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException;
 }

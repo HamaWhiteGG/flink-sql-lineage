@@ -9,8 +9,10 @@ import lombok.Data;
  */
 @Data
 public class CatalogEntry {
+    private String pluginCode;
 
     private Long catalogId;
+    
     private String catalogName;
-    private String pluginCode;
+
 }
