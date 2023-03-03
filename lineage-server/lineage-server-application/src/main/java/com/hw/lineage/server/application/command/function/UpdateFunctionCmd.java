@@ -1,5 +1,6 @@
 package com.hw.lineage.server.application.command.function;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
 @Data
 public class UpdateFunctionCmd {
 
+    @ApiModelProperty(hidden = true)
     private Long functionId;
 
     private String invocation;
