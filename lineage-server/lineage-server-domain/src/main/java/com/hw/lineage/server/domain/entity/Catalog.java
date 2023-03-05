@@ -11,7 +11,10 @@ import com.hw.lineage.server.domain.vo.PluginId;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 
 /**
  * @description: Catalog
@@ -38,8 +41,13 @@ public class Catalog extends BasicEntity implements Entity {
 
     private Boolean defaultCatalog;
 
-
     public Map<String, String> getPropertiesMap() {
-        return JSON.parseObject(catalogProperties.toJSONString(), new TypeReference<Map<String, String>>() {});
+        Map<String, String> propertiesMap = catalogProperties == null
+                ? new HashMap<>(INITIAL_CAPACITY)
+                : JSON.parseObject(catalogProperties.toJSONString(), new TypeReference<Map<String, String>>() {});
+
+        propertiesMap.put("type", catalogType.value());
+        propertiesMap.put("default-database", defaultDatabase);
+        return propertiesMap;
     }
 }

@@ -17,7 +17,11 @@ public interface StorageFacade {
 
     String store(Storage storage, InputStream inputStream) throws IOException ;
 
-    void delete(Storage storage) throws IOException;
+    void delete(String filePath) throws IOException;
 
-     Resource loadAsResource(Storage storage) throws MalformedURLException;
+     Resource loadAsResource(String filePath) throws MalformedURLException;
+
+     String getUri(String filePath);
+
+    String getParentUri(String filePath);
 }

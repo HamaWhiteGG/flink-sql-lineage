@@ -22,9 +22,17 @@
 
         <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
-            <outputDirectory>${assembly.name}/functions/</outputDirectory>
+            <outputDirectory>${assembly.name}/examples/functions/</outputDirectory>
             <includes>
                 <include>function-*.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/data/hive-conf-dir</directory>
+            <outputDirectory>${assembly.name}/examples/hive-conf-dir/</outputDirectory>
+            <includes>
+                <include>*</include>
             </includes>
         </fileSet>
 

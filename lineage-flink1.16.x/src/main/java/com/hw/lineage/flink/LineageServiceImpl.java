@@ -118,7 +118,7 @@ public class LineageServiceImpl implements LineageService {
 
     @Override
     public void execute(String singleSql) {
-        LOG.info("Input Sql: \n {}", singleSql);
+        LOG.info("Execute SQL: {}", singleSql);
         tableEnv.executeSql(singleSql);
     }
 

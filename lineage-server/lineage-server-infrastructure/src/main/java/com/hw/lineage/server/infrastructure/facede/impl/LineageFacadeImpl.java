@@ -69,8 +69,8 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public List<FunctionResult> parseFunction(String pluginName, File file) throws IOException, ClassNotFoundException {
-        return lineageClient.parseFunction(pluginName, file);
+    public List<FunctionResult> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException {
+        return lineageClient.parseFunction(pluginCode, file);
     }
 
     @Override

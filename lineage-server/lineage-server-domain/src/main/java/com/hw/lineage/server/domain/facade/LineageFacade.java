@@ -19,7 +19,7 @@ public interface LineageFacade {
 
     void parseLineage(String pluginName, Task task, Catalog catalog);
 
-    List<FunctionResult> parseFunction(String pluginName, File file) throws IOException, ClassNotFoundException;
+    List<FunctionResult> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException;
 
     void createCatalog(String pluginCode, String catalogName, Map<String, String> propertiesMap);
 

@@ -6,6 +6,7 @@ import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@Validated
 @RestController
 @Api(tags = "Functions API")
 @RequestMapping("/functions")
