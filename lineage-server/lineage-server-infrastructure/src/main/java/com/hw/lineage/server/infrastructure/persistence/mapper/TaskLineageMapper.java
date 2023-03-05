@@ -36,7 +36,7 @@ public interface TaskLineageMapper extends CommonCountMapper, CommonDeleteMapper
     @Results(id="TaskLineageDOResult", value = {
         @Result(column="rid", property="rid", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.BIGINT),
-        @Result(column="sql_id", property="sqlId", jdbcType=JdbcType.INTEGER),
+        @Result(column="sql_id", property="sqlId", jdbcType=JdbcType.BIGINT),
         @Result(column="source_catalog", property="sourceCatalog", jdbcType=JdbcType.VARCHAR),
         @Result(column="source_database", property="sourceDatabase", jdbcType=JdbcType.VARCHAR),
         @Result(column="source_table", property="sourceTable", jdbcType=JdbcType.VARCHAR),

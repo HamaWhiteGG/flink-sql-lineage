@@ -1,8 +1,7 @@
 package com.hw.lineage.server.application.command.role;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: UpdateRoleCmd
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateRoleCmd {
 
-    @NotNull
+    @ApiModelProperty(hidden = true)
     private Long roleId;
 
     private String roleName;

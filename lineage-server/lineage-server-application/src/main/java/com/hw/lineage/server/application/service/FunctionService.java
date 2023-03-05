@@ -20,7 +20,7 @@ import java.util.List;
  */
 public interface FunctionService {
 
-    Long createFunction(CreateFunctionCmd createFunctionCmd);
+    Long createFunction(CreateFunctionCmd command);
 
     FunctionDTO queryFunction(Long functionId);
 
@@ -28,12 +28,12 @@ public interface FunctionService {
 
     PageInfo<FunctionDTO> queryFunctions(FunctionQuery functionQuery);
 
-    void deleteFunction(Long functionId);
+    void deleteFunction(Long catalogId, String database, Long functionId);
 
-    void updateFunction(UpdateFunctionCmd updateFunctionCmd);
+    void updateFunction(UpdateFunctionCmd command);
 
     /**
      * Parse the function name, function format, function main class and description from the jar file
      */
-    List<FunctionResult> parseFunction(ParseFunctionCmd parseFunctionCmd) throws IOException,ClassNotFoundException;
+    List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException;
 }

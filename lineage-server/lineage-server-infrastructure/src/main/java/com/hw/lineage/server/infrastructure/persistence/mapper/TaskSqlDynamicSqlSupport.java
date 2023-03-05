@@ -1,6 +1,5 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
-import com.hw.lineage.common.enums.ParseStatus;
 import com.hw.lineage.common.enums.SqlType;
 import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
@@ -15,18 +14,16 @@ public final class TaskSqlDynamicSqlSupport {
 
     public static final SqlColumn<SqlType> sqlType = taskSql.sqlType;
 
-    public static final SqlColumn<ParseStatus> parseStatus = taskSql.parseStatus;
+    public static final SqlColumn<Long> startLineNumber = taskSql.startLineNumber;
 
-    public static final SqlColumn<Long> parseTime = taskSql.parseTime;
+    public static final SqlColumn<Byte> sqlStatus = taskSql.sqlStatus;
 
     public static final SqlColumn<Boolean> invalid = taskSql.invalid;
 
     /**
      * Base64 encode
      */
-    public static final SqlColumn<String> sqlCode = taskSql.sqlCode;
-
-    public static final SqlColumn<String> parseLog = taskSql.parseLog;
+    public static final SqlColumn<String> sqlSource = taskSql.sqlSource;
 
     public static final class TaskSql extends AliasableSqlTable<TaskSql> {
         public final SqlColumn<Long> sqlId = column("sql_id", JDBCType.BIGINT);
@@ -35,15 +32,13 @@ public final class TaskSqlDynamicSqlSupport {
 
         public final SqlColumn<SqlType> sqlType = column("sql_type", JDBCType.VARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler");
 
-        public final SqlColumn<ParseStatus> parseStatus = column("parse_status", JDBCType.TINYINT, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler");
+        public final SqlColumn<Long> startLineNumber = column("start_line_number", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> parseTime = column("parse_time", JDBCType.BIGINT);
+        public final SqlColumn<Byte> sqlStatus = column("sql_status", JDBCType.TINYINT);
 
         public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
 
-        public final SqlColumn<String> sqlCode = column("sql_code", JDBCType.LONGVARCHAR);
-
-        public final SqlColumn<String> parseLog = column("parse_log", JDBCType.LONGVARCHAR);
+        public final SqlColumn<String> sqlSource = column("sql_source", JDBCType.LONGVARCHAR);
 
         public TaskSql() {
             super("rel_task_sql", TaskSql::new);

@@ -6,19 +6,26 @@ import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.domain.entity.Catalog;
+import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.CatalogDO;
-import com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport;
 import com.hw.lineage.server.infrastructure.persistence.mapper.CatalogMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.custom.CustomCatalogMapper;
+import org.mybatis.dynamic.sql.render.RenderingStrategies;
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalogName;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 /**
  * @description: CatalogRepositoryImpl
@@ -30,6 +37,9 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
 
     @Resource
     private CatalogMapper catalogMapper;
+
+    @Resource
+    private CustomCatalogMapper customCatalogMapper;
 
     @Resource
     private DataConverter converter;
@@ -45,7 +55,7 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
 
     @Override
     public boolean check(String name) {
-        return !catalogMapper.select(completer -> completer.where(CatalogDynamicSqlSupport.catalogName, isEqualTo(name))).isEmpty();
+        return !catalogMapper.select(completer -> completer.where(catalogName, isEqualTo(name))).isEmpty();
     }
 
     @Override
@@ -69,11 +79,35 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
         try (Page<CatalogDO> page = PageMethod.startPage(catalogQuery.getPageNum(), catalogQuery.getPageSize())) {
             PageInfo<CatalogDO> pageInfo = page.doSelectPageInfo(() ->
                     catalogMapper.select(completer ->
-                            completer.where(CatalogDynamicSqlSupport.catalogName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
+                            completer.where(catalogName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
                                     .orderBy(buildSortSpecification(catalogQuery))
                     )
             );
             return PageUtils.convertPage(pageInfo, converter::toCatalog);
         }
+    }
+
+    @Override
+    public void setDefault(CatalogId catalogId) {
+        catalogMapper.update(completer ->
+                completer.set(catalog.defaultCatalog).equalTo(FALSE).where(catalog.defaultCatalog, isEqualTo(TRUE))
+        );
+        catalogMapper.update(completer ->
+                completer.set(catalog.defaultCatalog).equalTo(TRUE).where(catalog.catalogId, isEqualTo(catalogId.getValue()))
+        );
+    }
+
+    @Override
+    public CatalogEntry findEntry(CatalogId catalogId) {
+        SelectStatementProvider selectStatement =
+                select(plugin.pluginCode, catalog.catalogId, catalog.catalogName)
+                        .from(catalog)
+                        .join(plugin).on(catalog.pluginId, equalTo(plugin.pluginId))
+                        .where(catalog.catalogId, isEqualTo(catalogId.getValue()))
+                        .build().render(RenderingStrategies.MYBATIS3);
+
+        return customCatalogMapper.selectOne(selectStatement).orElseThrow(() ->
+                new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue()))
+        );
     }
 }

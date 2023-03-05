@@ -31,8 +31,8 @@ public class RoleServiceImpl implements RoleService {
     private DtoAssembler assembler;
 
     @Override
-    public Long createRole(CreateRoleCmd createRoleCmd) {
-        Role role = new Role().setRoleName(createRoleCmd.getRoleName());
+    public Long createRole(CreateRoleCmd command) {
+        Role role = new Role().setRoleName(command.getRoleName());
 
         role.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -65,10 +65,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void updateRole(UpdateRoleCmd updateRoleCmd) {
+    public void updateRole(UpdateRoleCmd command) {
         Role role = new Role()
-                .setRoleId(new RoleId(updateRoleCmd.getRoleId()))
-                .setRoleName(updateRoleCmd.getRoleName());
+                .setRoleId(new RoleId(command.getRoleId()))
+                .setRoleName(command.getRoleName());
 
         role.setModifyTime(System.currentTimeMillis());
         repository.save(role);

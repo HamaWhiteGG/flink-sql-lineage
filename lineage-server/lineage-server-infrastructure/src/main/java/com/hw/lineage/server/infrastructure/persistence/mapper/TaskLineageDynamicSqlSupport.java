@@ -11,7 +11,7 @@ public final class TaskLineageDynamicSqlSupport {
 
     public static final SqlColumn<Long> taskId = taskLineage.taskId;
 
-    public static final SqlColumn<Integer> sqlId = taskLineage.sqlId;
+    public static final SqlColumn<Long> sqlId = taskLineage.sqlId;
 
     public static final SqlColumn<String> sourceCatalog = taskLineage.sourceCatalog;
 
@@ -38,7 +38,7 @@ public final class TaskLineageDynamicSqlSupport {
 
         public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
 
-        public final SqlColumn<Integer> sqlId = column("sql_id", JDBCType.INTEGER);
+        public final SqlColumn<Long> sqlId = column("sql_id", JDBCType.BIGINT);
 
         public final SqlColumn<String> sourceCatalog = column("source_catalog", JDBCType.VARCHAR);
 

@@ -48,10 +48,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long createUser(CreateUserCmd createUserCmd) {
+    public Long createUser(CreateUserCmd command) {
         User user = new User()
-                .setUsername(createUserCmd.getUsername())
-                .setPassword(createUserCmd.getPassword());
+                .setUsername(command.getUsername())
+                .setPassword(command.getPassword());
 
         user.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -85,12 +85,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UpdateUserCmd updateUserCmd) {
+    public void updateUser(UpdateUserCmd command) {
         User user = new User()
-                .setUserId(new UserId(updateUserCmd.getUserId()))
-                .setUsername(updateUserCmd.getUsername())
-                .setPassword(updateUserCmd.getPassword())
-                .setLocked(updateUserCmd.getLocked());
+                .setUserId(new UserId(command.getUserId()))
+                .setUsername(command.getUsername())
+                .setPassword(command.getPassword())
+                .setLocked(command.getLocked());
 
         user.setModifyTime(System.currentTimeMillis());
         repository.save(user);

@@ -16,6 +16,6 @@ public class ParseFunctionCmd {
     @NotNull
     private Long pluginId;
     @NotBlank
-    private String fileName;
+    private String functionPath;
 
 }

@@ -41,6 +41,10 @@
 
         <table tableName="bas_task" domainObjectName="Task">
             <generatedKey column="task_id" sqlStatement="Mysql" identity="true"/>
+            <columnOverride
+                    column="task_status"
+                    javaType="com.hw.lineage.common.enums.TaskStatus"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TaskStatusTypeHandler"/>
         </table>
 
         <table tableName="bas_plugin" domainObjectName="Plugin">
@@ -53,6 +57,10 @@
                     column="catalog_type"
                     javaType="com.hw.lineage.common.enums.CatalogType"
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
+            <columnOverride
+                    column="catalog_properties"
+                    javaType="com.alibaba.fastjson2.JSONObject"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler"/>
         </table>
 
         <table tableName="bas_function" domainObjectName="Function">
@@ -67,8 +75,8 @@
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler"/>
             <columnOverride
                     column="parse_status"
-                    javaType="com.hw.lineage.common.enums.ParseStatus"
-                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ParseStatusTypeHandler"/>
+                    javaType="com.hw.lineage.common.enums.SqlStatus"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlStatusTypeHandler"/>
         </table>
 
         <table tableName="rel_task_lineage" domainObjectName="TaskLineage"/>

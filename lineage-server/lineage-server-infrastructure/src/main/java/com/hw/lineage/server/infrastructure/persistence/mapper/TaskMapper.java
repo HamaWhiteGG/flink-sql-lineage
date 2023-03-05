@@ -4,6 +4,7 @@ import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynami
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TaskStatusTypeHandler;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -31,7 +32,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(taskId, taskName, descr, pluginId, catalogId, createUserId, modifyUserId, createTime, modifyTime, invalid, taskSource);
+    BasicColumn[] selectList = BasicColumn.columnList(taskId, catalogId, taskName, descr, database, taskStatus, lineageTime, createUserId, modifyUserId, createTime, modifyTime, invalid, taskSource, taskLog, lineageGraph);
 
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.taskId", before=false, resultType=Long.class)
@@ -40,16 +41,20 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="TaskDOResult", value = {
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT),
         @Result(column="task_name", property="taskName", jdbcType=JdbcType.VARCHAR),
         @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
-        @Result(column="plugin_id", property="pluginId", jdbcType=JdbcType.BIGINT),
-        @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT),
+        @Result(column="database", property="database", jdbcType=JdbcType.VARCHAR),
+        @Result(column="task_status", property="taskStatus", typeHandler=TaskStatusTypeHandler.class, jdbcType=JdbcType.TINYINT),
+        @Result(column="lineage_time", property="lineageTime", jdbcType=JdbcType.BIGINT),
         @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_user_id", property="modifyUserId", jdbcType=JdbcType.BIGINT),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_time", property="modifyTime", jdbcType=JdbcType.BIGINT),
         @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT),
-        @Result(column="task_source", property="taskSource", jdbcType=JdbcType.LONGVARCHAR)
+        @Result(column="task_source", property="taskSource", jdbcType=JdbcType.LONGVARCHAR),
+        @Result(column="task_log", property="taskLog", jdbcType=JdbcType.LONGVARCHAR),
+        @Result(column="lineage_graph", property="lineageGraph", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<TaskDO> selectMany(SelectStatementProvider selectStatement);
 
@@ -73,31 +78,39 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
 
     default int insert(TaskDO row) {
         return MyBatis3Utils.insert(this::insert, row, task, c ->
-            c.map(taskName).toProperty("taskName")
+            c.map(catalogId).toProperty("catalogId")
+            .map(taskName).toProperty("taskName")
             .map(descr).toProperty("descr")
-            .map(pluginId).toProperty("pluginId")
-            .map(catalogId).toProperty("catalogId")
+            .map(database).toProperty("database")
+            .map(taskStatus).toProperty("taskStatus")
+            .map(lineageTime).toProperty("lineageTime")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
             .map(createTime).toProperty("createTime")
             .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
             .map(taskSource).toProperty("taskSource")
+            .map(taskLog).toProperty("taskLog")
+            .map(lineageGraph).toProperty("lineageGraph")
         );
     }
 
     default int insertSelective(TaskDO row) {
         return MyBatis3Utils.insert(this::insert, row, task, c ->
-            c.map(taskName).toPropertyWhenPresent("taskName", row::getTaskName)
+            c.map(catalogId).toPropertyWhenPresent("catalogId", row::getCatalogId)
+            .map(taskName).toPropertyWhenPresent("taskName", row::getTaskName)
             .map(descr).toPropertyWhenPresent("descr", row::getDescr)
-            .map(pluginId).toPropertyWhenPresent("pluginId", row::getPluginId)
-            .map(catalogId).toPropertyWhenPresent("catalogId", row::getCatalogId)
+            .map(database).toPropertyWhenPresent("database", row::getDatabase)
+            .map(taskStatus).toPropertyWhenPresent("taskStatus", row::getTaskStatus)
+            .map(lineageTime).toPropertyWhenPresent("lineageTime", row::getLineageTime)
             .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
             .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
             .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
             .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
             .map(taskSource).toPropertyWhenPresent("taskSource", row::getTaskSource)
+            .map(taskLog).toPropertyWhenPresent("taskLog", row::getTaskLog)
+            .map(lineageGraph).toPropertyWhenPresent("lineageGraph", row::getLineageGraph)
         );
     }
 
@@ -124,59 +137,75 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
     }
 
     static UpdateDSL<UpdateModel> updateAllColumns(TaskDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(taskName).equalTo(row::getTaskName)
+        return dsl.set(catalogId).equalTo(row::getCatalogId)
+                .set(taskName).equalTo(row::getTaskName)
                 .set(descr).equalTo(row::getDescr)
-                .set(pluginId).equalTo(row::getPluginId)
-                .set(catalogId).equalTo(row::getCatalogId)
+                .set(database).equalTo(row::getDatabase)
+                .set(taskStatus).equalTo(row::getTaskStatus)
+                .set(lineageTime).equalTo(row::getLineageTime)
                 .set(createUserId).equalTo(row::getCreateUserId)
                 .set(modifyUserId).equalTo(row::getModifyUserId)
                 .set(createTime).equalTo(row::getCreateTime)
                 .set(modifyTime).equalTo(row::getModifyTime)
                 .set(invalid).equalTo(row::getInvalid)
-                .set(taskSource).equalTo(row::getTaskSource);
+                .set(taskSource).equalTo(row::getTaskSource)
+                .set(taskLog).equalTo(row::getTaskLog)
+                .set(lineageGraph).equalTo(row::getLineageGraph);
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(TaskDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(taskName).equalToWhenPresent(row::getTaskName)
+        return dsl.set(catalogId).equalToWhenPresent(row::getCatalogId)
+                .set(taskName).equalToWhenPresent(row::getTaskName)
                 .set(descr).equalToWhenPresent(row::getDescr)
-                .set(pluginId).equalToWhenPresent(row::getPluginId)
-                .set(catalogId).equalToWhenPresent(row::getCatalogId)
+                .set(database).equalToWhenPresent(row::getDatabase)
+                .set(taskStatus).equalToWhenPresent(row::getTaskStatus)
+                .set(lineageTime).equalToWhenPresent(row::getLineageTime)
                 .set(createUserId).equalToWhenPresent(row::getCreateUserId)
                 .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
                 .set(createTime).equalToWhenPresent(row::getCreateTime)
                 .set(modifyTime).equalToWhenPresent(row::getModifyTime)
                 .set(invalid).equalToWhenPresent(row::getInvalid)
-                .set(taskSource).equalToWhenPresent(row::getTaskSource);
+                .set(taskSource).equalToWhenPresent(row::getTaskSource)
+                .set(taskLog).equalToWhenPresent(row::getTaskLog)
+                .set(lineageGraph).equalToWhenPresent(row::getLineageGraph);
     }
 
     default int updateByPrimaryKey(TaskDO row) {
         return update(c ->
-            c.set(taskName).equalTo(row::getTaskName)
+            c.set(catalogId).equalTo(row::getCatalogId)
+            .set(taskName).equalTo(row::getTaskName)
             .set(descr).equalTo(row::getDescr)
-            .set(pluginId).equalTo(row::getPluginId)
-            .set(catalogId).equalTo(row::getCatalogId)
+            .set(database).equalTo(row::getDatabase)
+            .set(taskStatus).equalTo(row::getTaskStatus)
+            .set(lineageTime).equalTo(row::getLineageTime)
             .set(createUserId).equalTo(row::getCreateUserId)
             .set(modifyUserId).equalTo(row::getModifyUserId)
             .set(createTime).equalTo(row::getCreateTime)
             .set(modifyTime).equalTo(row::getModifyTime)
             .set(invalid).equalTo(row::getInvalid)
             .set(taskSource).equalTo(row::getTaskSource)
+            .set(taskLog).equalTo(row::getTaskLog)
+            .set(lineageGraph).equalTo(row::getLineageGraph)
             .where(taskId, isEqualTo(row::getTaskId))
         );
     }
 
     default int updateByPrimaryKeySelective(TaskDO row) {
         return update(c ->
-            c.set(taskName).equalToWhenPresent(row::getTaskName)
+            c.set(catalogId).equalToWhenPresent(row::getCatalogId)
+            .set(taskName).equalToWhenPresent(row::getTaskName)
             .set(descr).equalToWhenPresent(row::getDescr)
-            .set(pluginId).equalToWhenPresent(row::getPluginId)
-            .set(catalogId).equalToWhenPresent(row::getCatalogId)
+            .set(database).equalToWhenPresent(row::getDatabase)
+            .set(taskStatus).equalToWhenPresent(row::getTaskStatus)
+            .set(lineageTime).equalToWhenPresent(row::getLineageTime)
             .set(createUserId).equalToWhenPresent(row::getCreateUserId)
             .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
             .set(createTime).equalToWhenPresent(row::getCreateTime)
             .set(modifyTime).equalToWhenPresent(row::getModifyTime)
             .set(invalid).equalToWhenPresent(row::getInvalid)
             .set(taskSource).equalToWhenPresent(row::getTaskSource)
+            .set(taskLog).equalToWhenPresent(row::getTaskLog)
+            .set(lineageGraph).equalToWhenPresent(row::getLineageGraph)
             .where(taskId, isEqualTo(row::getTaskId))
         );
     }

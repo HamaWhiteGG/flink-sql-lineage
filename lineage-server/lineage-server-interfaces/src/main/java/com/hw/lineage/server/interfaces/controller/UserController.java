@@ -10,6 +10,7 @@ import com.hw.lineage.server.domain.query.user.UserQuery;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@Validated
 @RestController
 @Api(tags = "Users API")
 @RequestMapping("/users")
@@ -41,8 +43,8 @@ public class UserController {
     }
 
     @PostMapping("")
-    public Result<Long> createUser(@Valid @RequestBody CreateUserCmd createUserCmd) {
-        Long userId = userService.createUser(createUserCmd);
+    public Result<Long> createUser(@Valid @RequestBody CreateUserCmd command) {
+        Long userId = userService.createUser(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, userId);
     }
 
@@ -53,9 +55,9 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public Result<Boolean> updateUser(@PathVariable("userId") Long userId,
-                                        @Valid @RequestBody UpdateUserCmd updateUserCmd) {
-        updateUserCmd.setUserId(userId);
-        userService.updateUser(updateUserCmd);
+                                        @Valid @RequestBody UpdateUserCmd command) {
+        command.setUserId(userId);
+        userService.updateUser(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

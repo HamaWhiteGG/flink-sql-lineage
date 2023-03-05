@@ -15,5 +15,9 @@ public class PluginDTO extends BasicDTO {
 
     private String pluginName;
 
+    private String pluginCode;
+
     private String descr;
+
+    private Boolean defaultPlugin;
 }

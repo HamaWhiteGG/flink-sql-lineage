@@ -1,5 +1,6 @@
 package com.hw.lineage.server.interfaces.exception;
 
+import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultCode;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
@@ -41,7 +42,8 @@ public class ExceptionHandlers {
     @ExceptionHandler(Exception.class)
     protected Result<Boolean> handleExceptionHandler(final Exception exception) {
         LOG.error(exception.getMessage(), exception);
-        return Result.error(exception.getMessage());
+        String message = exception instanceof LineageException ? exception.getMessage() : exception.toString();
+        return Result.error(message);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -59,7 +61,7 @@ public class ExceptionHandlers {
     @ExceptionHandler(NullPointerException.class)
     protected Result<Boolean> handleNullPointException(final NullPointerException exception) {
         LOG.error("null pointer exception ", exception);
-        return Result.error(ResultCode.NOT_FOUND_EXCEPTION, ResultMessage.NOT_FOUND_EXCEPTION);
+        return Result.error(ResultCode.NOT_FOUND_EXCEPTION, ResultMessage.NULL_POINTER_EXCEPTION);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
