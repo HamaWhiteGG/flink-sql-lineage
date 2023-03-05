@@ -14,7 +14,7 @@ import com.hw.lineage.server.domain.query.role.RoleQuery;
  */
 public interface RoleService {
 
-    Long createRole(CreateRoleCmd createRoleCmd);
+    Long createRole(CreateRoleCmd command);
 
     RoleDTO queryRole(Long roleId);
 
@@ -24,5 +24,5 @@ public interface RoleService {
 
     void deleteRole(Long roleId);
 
-    void updateRole(UpdateRoleCmd updateRoleCmd);
+    void updateRole(UpdateRoleCmd command);
 }

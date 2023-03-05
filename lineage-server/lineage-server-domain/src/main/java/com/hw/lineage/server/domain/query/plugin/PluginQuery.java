@@ -12,4 +12,6 @@ import lombok.Data;
 public class PluginQuery extends PageOrderCriteria {
 
     private String pluginName;
+
+    private Boolean defaultPlugin;
 }

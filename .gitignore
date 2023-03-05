@@ -6,7 +6,7 @@
 *.war
 *.ear
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# virtual machine crash logs
 hs_err_pid*
 
 *~
@@ -61,3 +61,4 @@ data/logs
 lineage-web/build/
 lineage-web/node/
 static
+/lineage-server/lineage-server-start/data/

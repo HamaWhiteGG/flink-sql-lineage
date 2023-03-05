@@ -31,11 +31,11 @@ public class PermissionServiceImpl implements PermissionService {
     private DtoAssembler assembler;
 
     @Override
-    public Long createPermission(CreatePermissionCmd createPermissionCmd) {
+    public Long createPermission(CreatePermissionCmd command) {
         Permission permission = new Permission()
-                .setPermissionGroup(createPermissionCmd.getPermissionGroup())
-                .setPermissionName(createPermissionCmd.getPermissionName())
-                .setPermissionCode(createPermissionCmd.getPermissionCode());
+                .setPermissionGroup(command.getPermissionGroup())
+                .setPermissionName(command.getPermissionName())
+                .setPermissionCode(command.getPermissionCode());
 
         permission.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -68,12 +68,12 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void updatePermission(UpdatePermissionCmd updatePermissionCmd) {
+    public void updatePermission(UpdatePermissionCmd command) {
         Permission permission = new Permission()
-                .setPermissionId(new PermissionId(updatePermissionCmd.getPermissionId()))
-                .setPermissionGroup(updatePermissionCmd.getPermissionGroup())
-                .setPermissionName(updatePermissionCmd.getPermissionName())
-                .setPermissionCode(updatePermissionCmd.getPermissionCode());
+                .setPermissionId(new PermissionId(command.getPermissionId()))
+                .setPermissionGroup(command.getPermissionGroup())
+                .setPermissionName(command.getPermissionName())
+                .setPermissionCode(command.getPermissionCode());
 
         permission.setModifyTime(System.currentTimeMillis());
         repository.save(permission);

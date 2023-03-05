@@ -11,6 +11,7 @@ import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@Validated
 @RestController
 @Api(tags = "Plugins API")
 @RequestMapping("/plugins")
@@ -44,8 +46,8 @@ public class PluginController {
 
     @PostMapping("")
     @PreAuthorize("hasAuthority('system:plugin:add')")
-    public Result<Long> createPlugin(@Valid @RequestBody CreatePluginCmd createPluginCmd) {
-        Long pluginId = pluginService.createPlugin(createPluginCmd);
+    public Result<Long> createPlugin(@Valid @RequestBody CreatePluginCmd command) {
+        Long pluginId = pluginService.createPlugin(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, pluginId);
     }
 
@@ -57,9 +59,15 @@ public class PluginController {
     @PutMapping("/{pluginId}")
     @PreAuthorize("hasAuthority('system:plugin:edit')")
     public Result<Boolean> updatePlugin(@PathVariable("pluginId") Long pluginId,
-                                        @Valid @RequestBody UpdatePluginCmd updatePluginCmd) {
-        updatePluginCmd.setPluginId(pluginId);
-        pluginService.updatePlugin(updatePluginCmd);
+                                        @Valid @RequestBody UpdatePluginCmd command) {
+        command.setPluginId(pluginId);
+        pluginService.updatePlugin(command);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
+    }
+
+    @PutMapping("/{pluginId}/default")
+    public Result<Boolean> defaultPlugin(@PathVariable("pluginId") Long pluginId) {
+        pluginService.defaultPlugin(pluginId);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 

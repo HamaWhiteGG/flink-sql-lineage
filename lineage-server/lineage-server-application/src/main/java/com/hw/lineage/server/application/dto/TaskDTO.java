@@ -14,13 +14,11 @@ import java.util.List;
 public class TaskDTO extends BasicDTO {
     private Long taskId;
 
+    private Long catalogId;
+
     private String taskName;
 
     private String descr;
-
-    private Long pluginId;
-
-    private Long catalogId;
 
     private String taskSource;
 

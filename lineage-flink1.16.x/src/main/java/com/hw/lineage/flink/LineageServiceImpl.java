@@ -2,8 +2,11 @@ package com.hw.lineage.flink;
 
 
 import com.hw.lineage.common.enums.CatalogType;
+import com.hw.lineage.common.enums.TableKind;
+import com.hw.lineage.common.result.ColumnResult;
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.common.service.LineageService;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
@@ -20,16 +23,10 @@ import org.apache.flink.shaded.guava30.com.google.common.base.CaseFormat;
 import org.apache.flink.shaded.guava30.com.google.common.collect.ImmutableMap;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.annotation.FunctionHint;
-import org.apache.flink.table.api.EnvironmentSettings;
-import org.apache.flink.table.api.TableConfig;
-import org.apache.flink.table.api.TableException;
-import org.apache.flink.table.api.ValidationException;
+import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
-import org.apache.flink.table.catalog.AbstractCatalog;
-import org.apache.flink.table.catalog.CatalogManager;
-import org.apache.flink.table.catalog.FunctionCatalog;
-import org.apache.flink.table.catalog.GenericInMemoryCatalog;
+import org.apache.flink.table.catalog.*;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.table.functions.ScalarFunction;
@@ -78,6 +75,7 @@ public class LineageServiceImpl implements LineageService {
             TableAggregateFunction.class.getName(), "udtaf"
     );
 
+
     private TableEnvironmentImpl tableEnv;
     private FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
@@ -120,7 +118,7 @@ public class LineageServiceImpl implements LineageService {
 
     @Override
     public void execute(String singleSql) {
-        LOG.info("Input Sql: \n {}", singleSql);
+        LOG.info("Execute SQL: {}", singleSql);
         tableEnv.executeSql(singleSql);
     }
 
@@ -306,11 +304,11 @@ public class LineageServiceImpl implements LineageService {
 
     @Override
     public List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException {
-        LOG.info("starting parse function from jar {}",file.getPath());
+        LOG.info("starting parse function from jar {}", file.getPath());
         List<FunctionResult> resultList = new ArrayList<>();
         URL url = file.toURI().toURL();
 
-        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url},getClass().getClassLoader());
+        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url}, getClass().getClassLoader());
              JarFile jarFile = new JarFile(file)) {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
@@ -332,7 +330,6 @@ public class LineageServiceImpl implements LineageService {
         return resultList;
     }
 
-
     public FunctionResult parseUserDefinedFunction(Class<?> clazz) {
         String functionClass = clazz.getName();
         String className = searchClassName(functionClass);
@@ -345,7 +342,7 @@ public class LineageServiceImpl implements LineageService {
                 .findFirst();
 
         FunctionResult result = new FunctionResult();
-        result.setFunctionClass(functionClass);
+        result.setClassName(functionClass);
         result.setFunctionName(functionName);
 
         if (methodOptional.isPresent()) {
@@ -356,7 +353,7 @@ public class LineageServiceImpl implements LineageService {
                     .collect(Collectors.joining(","));
 
             // set functionFormat
-            result.setFunctionFormat(String.format("%s(%s)", functionName, parameters));
+            result.setInvocation(String.format("%s(%s)", functionName, parameters));
 
             // use function return type as description
             result.setDescr(buildFunctionReturnType(clazz, method));
@@ -372,10 +369,95 @@ public class LineageServiceImpl implements LineageService {
         return "return " + searchClassName(method.getReturnType().getName());
     }
 
-
     private String searchClassName(String value) {
         return value.contains(".") ? value.substring(value.lastIndexOf(".") + 1) : value;
     }
 
+    private Catalog getCatalog(String catalogName) {
+        return tableEnv.getCatalog(catalogName).orElseThrow(() ->
+                new ValidationException(String.format("Catalog %s does not exist", catalogName))
+        );
+    }
 
+    @Override
+    public List<String> listDatabases(String catalogName) throws Exception {
+        return getCatalog(catalogName).listDatabases();
+    }
+
+    @Override
+    public List<String> listTables(String catalogName, String database) throws Exception {
+        return getCatalog(catalogName).listTables(database);
+    }
+
+    @Override
+    public List<String> listViews(String catalogName, String database) throws Exception {
+        return getCatalog(catalogName).listViews(database);
+    }
+
+    @Override
+    public TableResult getTable(String catalogName, String database, String tableName) throws Exception {
+        ObjectPath objectPath = new ObjectPath(database, tableName);
+        CatalogBaseTable table = getCatalog(catalogName).getTable(objectPath);
+        Schema schema = table.getUnresolvedSchema();
+        LOG.info("table.schema: {}", schema);
+        List<String> primaryKeyList = new ArrayList<>();
+        schema.getPrimaryKey()
+                .ifPresent(pk ->
+                        primaryKeyList.addAll(pk.getColumnNames())
+                );
+
+        List<ColumnResult> columnList = schema.getColumns()
+                .stream()
+                .map(column -> {
+                    ColumnResult columnResult = new ColumnResult()
+                            .setColumnName(column.getName())
+                            .setColumnType(processColumnType(column))
+                            .setComment(column.getComment().orElse(""));
+                    if (primaryKeyList.contains(column.getName())) {
+                        columnResult.setPrimaryKey(true);
+                    }
+                    return columnResult;
+                })
+                .collect(Collectors.toList());
+
+        List<String> watermarkSpecList = schema.getWatermarkSpecs().
+                stream()
+                .map(Schema.UnresolvedWatermarkSpec::toString)
+                .collect(Collectors.toList());
+
+        return new TableResult()
+                .setTableName(tableName)
+                .setTableKind(TableKind.valueOf(table.getTableKind().name()))
+                .setComment(table.getComment())
+                .setColumnList(columnList)
+                .setWatermarkSpecList(watermarkSpecList)
+                .setPropertiesMap(table.getOptions());
+    }
+
+    private String processColumnType(Schema.UnresolvedColumn column) {
+        if (column instanceof Schema.UnresolvedComputedColumn) {
+            return ((Schema.UnresolvedComputedColumn) column)
+                    .getExpression()
+                    .asSummaryString();
+        } else if (column instanceof Schema.UnresolvedPhysicalColumn) {
+            return ((Schema.UnresolvedPhysicalColumn) column).getDataType()
+                    .toString()
+                    // BIGINT NOT NULL
+                    .replace("NOT NULL", "")
+                    .trim();
+        } else if (column instanceof Schema.UnresolvedMetadataColumn) {
+            return ((Schema.UnresolvedMetadataColumn) column).getDataType().toString();
+        }
+        return "unknown";
+    }
+
+    @Override
+    public void dropTable(String catalogName, String database, String tableName) throws Exception {
+        ObjectPath objectPath = new ObjectPath(database, tableName);
+        getCatalog(catalogName).dropTable(objectPath, false);
+    }
+
+    public String getCurrentCatalog() {
+        return tableEnv.getCurrentCatalog();
+    }
 }

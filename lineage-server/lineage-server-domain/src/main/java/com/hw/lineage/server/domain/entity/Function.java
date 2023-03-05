@@ -2,6 +2,7 @@ package com.hw.lineage.server.domain.entity;
 
 import com.hw.lineage.server.domain.entity.basic.BasicEntity;
 import com.hw.lineage.server.domain.repository.basic.Entity;
+import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.FunctionId;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,13 +18,17 @@ public class Function extends BasicEntity implements Entity {
 
     private FunctionId functionId;
 
+    private CatalogId catalogId;
+
     private String functionName;
 
-    private String functionFormat;
+    private String database;
+
+    private String invocation;
 
     private String functionPath;
 
-    private String functionClass;
+    private String className;
 
     private String descr;
 }

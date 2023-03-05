@@ -18,15 +18,16 @@ public interface DtoAssembler {
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 
     @Mapping(source = "taskId.value", target = "taskId")
-    @Mapping(source = "pluginId.value", target = "pluginId")
     @Mapping(source = "catalogId.value", target = "catalogId")
     @Mapping(source = "taskSource.value", target = "taskSource")
     TaskDTO fromTask(Task task);
 
     @Mapping(source = "catalogId.value", target = "catalogId")
+    @Mapping(source = "pluginId.value", target = "pluginId")
     CatalogDTO fromCatalog(Catalog catalog);
 
     @Mapping(source = "functionId.value", target = "functionId")
+    @Mapping(source = "catalogId.value", target = "catalogId")
     FunctionDTO fromFunction(Function function);
 
     @Mapping(source = "pluginId.value", target = "pluginId")

@@ -1,8 +1,7 @@
 package com.hw.lineage.server.application.command.function;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: UpdateFunctionCmd
@@ -12,16 +11,10 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateFunctionCmd {
 
-    @NotNull
+    @ApiModelProperty(hidden = true)
     private Long functionId;
 
-    private String functionName;
-
-    private String functionFormat;
-
-    private String functionPath;
-
-    private String functionClass;
+    private String invocation;
 
     private String descr;
 }

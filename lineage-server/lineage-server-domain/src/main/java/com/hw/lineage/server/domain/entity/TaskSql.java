@@ -1,6 +1,6 @@
 package com.hw.lineage.server.domain.entity;
 
-import com.hw.lineage.common.enums.ParseStatus;
+import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
 import com.hw.lineage.server.domain.vo.SqlId;
 import com.hw.lineage.server.domain.vo.TaskId;
@@ -20,7 +20,7 @@ public class TaskSql {
 
     private SqlId sqlId;
 
-    private ParseStatus parseStatus;
+    private SqlStatus parseStatus;
 
     private Long parseTime;
 

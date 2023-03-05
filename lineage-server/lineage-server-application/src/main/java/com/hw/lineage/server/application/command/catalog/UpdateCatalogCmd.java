@@ -1,8 +1,8 @@
 package com.hw.lineage.server.application.command.catalog;
 
+import com.alibaba.fastjson2.JSONObject;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: UpdateCatalogCmd
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateCatalogCmd {
 
-    @NotNull
+    @ApiModelProperty(hidden = true)
     private Long catalogId;
 
     private String catalogName;
@@ -20,4 +20,7 @@ public class UpdateCatalogCmd {
     private String defaultDatabase;
 
     private String descr;
+
+    private JSONObject catalogProperties;
+
 }

@@ -1,5 +1,7 @@
 package com.hw.lineage.server.infrastructure.persistence.dos;
 
+import com.hw.lineage.common.enums.TaskStatus;
+
 /**
  * @description: This class corresponds to the database table bas_task
  * @author: HamaWhite
@@ -10,13 +12,17 @@ package com.hw.lineage.server.infrastructure.persistence.dos;
 public class TaskDO {
     private Long taskId;
 
+    private Long catalogId;
+
     private String taskName;
 
     private String descr;
 
-    private Long pluginId;
+    private String database;
 
-    private Long catalogId;
+    private TaskStatus taskStatus;
+
+    private Long lineageTime;
 
     private Long createUserId;
 
@@ -33,12 +39,24 @@ public class TaskDO {
      */
     private String taskSource;
 
+    private String taskLog;
+
+    private String lineageGraph;
+
     public Long getTaskId() {
         return taskId;
     }
 
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
+    }
+
+    public Long getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(Long catalogId) {
+        this.catalogId = catalogId;
     }
 
     public String getTaskName() {
@@ -57,20 +75,28 @@ public class TaskDO {
         this.descr = descr;
     }
 
-    public Long getPluginId() {
-        return pluginId;
+    public String getDatabase() {
+        return database;
     }
 
-    public void setPluginId(Long pluginId) {
-        this.pluginId = pluginId;
+    public void setDatabase(String database) {
+        this.database = database;
     }
 
-    public Long getCatalogId() {
-        return catalogId;
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setCatalogId(Long catalogId) {
-        this.catalogId = catalogId;
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public Long getLineageTime() {
+        return lineageTime;
+    }
+
+    public void setLineageTime(Long lineageTime) {
+        this.lineageTime = lineageTime;
     }
 
     public Long getCreateUserId() {
@@ -121,6 +147,22 @@ public class TaskDO {
         this.taskSource = taskSource;
     }
 
+    public String getTaskLog() {
+        return taskLog;
+    }
+
+    public void setTaskLog(String taskLog) {
+        this.taskLog = taskLog;
+    }
+
+    public String getLineageGraph() {
+        return lineageGraph;
+    }
+
+    public void setLineageGraph(String lineageGraph) {
+        this.lineageGraph = lineageGraph;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -134,16 +176,20 @@ public class TaskDO {
         }
         TaskDO other = (TaskDO) that;
         return (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
+            && (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
             && (this.getTaskName() == null ? other.getTaskName() == null : this.getTaskName().equals(other.getTaskName()))
             && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
-            && (this.getPluginId() == null ? other.getPluginId() == null : this.getPluginId().equals(other.getPluginId()))
-            && (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
+            && (this.getDatabase() == null ? other.getDatabase() == null : this.getDatabase().equals(other.getDatabase()))
+            && (this.getTaskStatus() == null ? other.getTaskStatus() == null : this.getTaskStatus().equals(other.getTaskStatus()))
+            && (this.getLineageTime() == null ? other.getLineageTime() == null : this.getLineageTime().equals(other.getLineageTime()))
             && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
             && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
             && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
-            && (this.getTaskSource() == null ? other.getTaskSource() == null : this.getTaskSource().equals(other.getTaskSource()));
+            && (this.getTaskSource() == null ? other.getTaskSource() == null : this.getTaskSource().equals(other.getTaskSource()))
+            && (this.getTaskLog() == null ? other.getTaskLog() == null : this.getTaskLog().equals(other.getTaskLog()))
+            && (this.getLineageGraph() == null ? other.getLineageGraph() == null : this.getLineageGraph().equals(other.getLineageGraph()));
     }
 
     @Override
@@ -151,16 +197,20 @@ public class TaskDO {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getTaskId() == null) ? 0 : getTaskId().hashCode());
+        result = prime * result + ((getCatalogId() == null) ? 0 : getCatalogId().hashCode());
         result = prime * result + ((getTaskName() == null) ? 0 : getTaskName().hashCode());
         result = prime * result + ((getDescr() == null) ? 0 : getDescr().hashCode());
-        result = prime * result + ((getPluginId() == null) ? 0 : getPluginId().hashCode());
-        result = prime * result + ((getCatalogId() == null) ? 0 : getCatalogId().hashCode());
+        result = prime * result + ((getDatabase() == null) ? 0 : getDatabase().hashCode());
+        result = prime * result + ((getTaskStatus() == null) ? 0 : getTaskStatus().hashCode());
+        result = prime * result + ((getLineageTime() == null) ? 0 : getLineageTime().hashCode());
         result = prime * result + ((getCreateUserId() == null) ? 0 : getCreateUserId().hashCode());
         result = prime * result + ((getModifyUserId() == null) ? 0 : getModifyUserId().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getModifyTime() == null) ? 0 : getModifyTime().hashCode());
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
         result = prime * result + ((getTaskSource() == null) ? 0 : getTaskSource().hashCode());
+        result = prime * result + ((getTaskLog() == null) ? 0 : getTaskLog().hashCode());
+        result = prime * result + ((getLineageGraph() == null) ? 0 : getLineageGraph().hashCode());
         return result;
     }
 
@@ -171,16 +221,20 @@ public class TaskDO {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", taskId=").append(taskId);
+        sb.append(", catalogId=").append(catalogId);
         sb.append(", taskName=").append(taskName);
         sb.append(", descr=").append(descr);
-        sb.append(", pluginId=").append(pluginId);
-        sb.append(", catalogId=").append(catalogId);
+        sb.append(", database=").append(database);
+        sb.append(", taskStatus=").append(taskStatus);
+        sb.append(", lineageTime=").append(lineageTime);
         sb.append(", createUserId=").append(createUserId);
         sb.append(", modifyUserId=").append(modifyUserId);
         sb.append(", createTime=").append(createTime);
         sb.append(", modifyTime=").append(modifyTime);
         sb.append(", invalid=").append(invalid);
         sb.append(", taskSource=").append(taskSource);
+        sb.append(", taskLog=").append(taskLog);
+        sb.append(", lineageGraph=").append(lineageGraph);
         sb.append("]");
         return sb.toString();
     }

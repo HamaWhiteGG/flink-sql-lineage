@@ -31,7 +31,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(functionId, functionName, functionFormat, functionPath, functionClass, descr, createUserId, modifyUserId, createTime, modifyTime, invalid);
+    BasicColumn[] selectList = BasicColumn.columnList(functionId, catalogId, functionName, database, invocation, functionPath, className, descr, createUserId, modifyUserId, createTime, modifyTime, invalid);
 
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.functionId", before=false, resultType=Long.class)
@@ -40,10 +40,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="FunctionDOResult", value = {
         @Result(column="function_id", property="functionId", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT),
         @Result(column="function_name", property="functionName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="function_format", property="functionFormat", jdbcType=JdbcType.VARCHAR),
+        @Result(column="database", property="database", jdbcType=JdbcType.VARCHAR),
+        @Result(column="invocation", property="invocation", jdbcType=JdbcType.VARCHAR),
         @Result(column="function_path", property="functionPath", jdbcType=JdbcType.VARCHAR),
-        @Result(column="function_class", property="functionClass", jdbcType=JdbcType.VARCHAR),
+        @Result(column="class_name", property="className", jdbcType=JdbcType.VARCHAR),
         @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_user_id", property="createUserId", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_user_id", property="modifyUserId", jdbcType=JdbcType.BIGINT),
@@ -73,10 +75,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
 
     default int insert(FunctionDO row) {
         return MyBatis3Utils.insert(this::insert, row, function, c ->
-            c.map(functionName).toProperty("functionName")
-            .map(functionFormat).toProperty("functionFormat")
+            c.map(catalogId).toProperty("catalogId")
+            .map(functionName).toProperty("functionName")
+            .map(database).toProperty("database")
+            .map(invocation).toProperty("invocation")
             .map(functionPath).toProperty("functionPath")
-            .map(functionClass).toProperty("functionClass")
+            .map(className).toProperty("className")
             .map(descr).toProperty("descr")
             .map(createUserId).toProperty("createUserId")
             .map(modifyUserId).toProperty("modifyUserId")
@@ -88,10 +92,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
 
     default int insertSelective(FunctionDO row) {
         return MyBatis3Utils.insert(this::insert, row, function, c ->
-            c.map(functionName).toPropertyWhenPresent("functionName", row::getFunctionName)
-            .map(functionFormat).toPropertyWhenPresent("functionFormat", row::getFunctionFormat)
+            c.map(catalogId).toPropertyWhenPresent("catalogId", row::getCatalogId)
+            .map(functionName).toPropertyWhenPresent("functionName", row::getFunctionName)
+            .map(database).toPropertyWhenPresent("database", row::getDatabase)
+            .map(invocation).toPropertyWhenPresent("invocation", row::getInvocation)
             .map(functionPath).toPropertyWhenPresent("functionPath", row::getFunctionPath)
-            .map(functionClass).toPropertyWhenPresent("functionClass", row::getFunctionClass)
+            .map(className).toPropertyWhenPresent("className", row::getClassName)
             .map(descr).toPropertyWhenPresent("descr", row::getDescr)
             .map(createUserId).toPropertyWhenPresent("createUserId", row::getCreateUserId)
             .map(modifyUserId).toPropertyWhenPresent("modifyUserId", row::getModifyUserId)
@@ -124,10 +130,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
     }
 
     static UpdateDSL<UpdateModel> updateAllColumns(FunctionDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(functionName).equalTo(row::getFunctionName)
-                .set(functionFormat).equalTo(row::getFunctionFormat)
+        return dsl.set(catalogId).equalTo(row::getCatalogId)
+                .set(functionName).equalTo(row::getFunctionName)
+                .set(database).equalTo(row::getDatabase)
+                .set(invocation).equalTo(row::getInvocation)
                 .set(functionPath).equalTo(row::getFunctionPath)
-                .set(functionClass).equalTo(row::getFunctionClass)
+                .set(className).equalTo(row::getClassName)
                 .set(descr).equalTo(row::getDescr)
                 .set(createUserId).equalTo(row::getCreateUserId)
                 .set(modifyUserId).equalTo(row::getModifyUserId)
@@ -137,10 +145,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(FunctionDO row, UpdateDSL<UpdateModel> dsl) {
-        return dsl.set(functionName).equalToWhenPresent(row::getFunctionName)
-                .set(functionFormat).equalToWhenPresent(row::getFunctionFormat)
+        return dsl.set(catalogId).equalToWhenPresent(row::getCatalogId)
+                .set(functionName).equalToWhenPresent(row::getFunctionName)
+                .set(database).equalToWhenPresent(row::getDatabase)
+                .set(invocation).equalToWhenPresent(row::getInvocation)
                 .set(functionPath).equalToWhenPresent(row::getFunctionPath)
-                .set(functionClass).equalToWhenPresent(row::getFunctionClass)
+                .set(className).equalToWhenPresent(row::getClassName)
                 .set(descr).equalToWhenPresent(row::getDescr)
                 .set(createUserId).equalToWhenPresent(row::getCreateUserId)
                 .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)
@@ -151,10 +161,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
 
     default int updateByPrimaryKey(FunctionDO row) {
         return update(c ->
-            c.set(functionName).equalTo(row::getFunctionName)
-            .set(functionFormat).equalTo(row::getFunctionFormat)
+            c.set(catalogId).equalTo(row::getCatalogId)
+            .set(functionName).equalTo(row::getFunctionName)
+            .set(database).equalTo(row::getDatabase)
+            .set(invocation).equalTo(row::getInvocation)
             .set(functionPath).equalTo(row::getFunctionPath)
-            .set(functionClass).equalTo(row::getFunctionClass)
+            .set(className).equalTo(row::getClassName)
             .set(descr).equalTo(row::getDescr)
             .set(createUserId).equalTo(row::getCreateUserId)
             .set(modifyUserId).equalTo(row::getModifyUserId)
@@ -167,10 +179,12 @@ public interface FunctionMapper extends CommonCountMapper, CommonDeleteMapper, C
 
     default int updateByPrimaryKeySelective(FunctionDO row) {
         return update(c ->
-            c.set(functionName).equalToWhenPresent(row::getFunctionName)
-            .set(functionFormat).equalToWhenPresent(row::getFunctionFormat)
+            c.set(catalogId).equalToWhenPresent(row::getCatalogId)
+            .set(functionName).equalToWhenPresent(row::getFunctionName)
+            .set(database).equalToWhenPresent(row::getDatabase)
+            .set(invocation).equalToWhenPresent(row::getInvocation)
             .set(functionPath).equalToWhenPresent(row::getFunctionPath)
-            .set(functionClass).equalToWhenPresent(row::getFunctionClass)
+            .set(className).equalToWhenPresent(row::getClassName)
             .set(descr).equalToWhenPresent(row::getDescr)
             .set(createUserId).equalToWhenPresent(row::getCreateUserId)
             .set(modifyUserId).equalToWhenPresent(row::getModifyUserId)

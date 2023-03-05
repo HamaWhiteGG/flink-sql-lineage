@@ -14,7 +14,7 @@ import com.hw.lineage.server.domain.query.task.TaskQuery;
  */
 public interface TaskService {
 
-    Long createTask(CreateTaskCmd createTaskCmd);
+    Long createTask(CreateTaskCmd command);
 
     TaskDTO queryTask(Long taskId);
 
@@ -24,7 +24,7 @@ public interface TaskService {
 
     void deleteTask(Long taskId);
 
-    void updateTask(UpdateTaskCmd updateTaskCmd);
+    void updateTask(UpdateTaskCmd command);
 
     TaskDTO parseTaskLineage(Long taskId);
 }

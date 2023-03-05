@@ -11,7 +11,11 @@ public final class PluginDynamicSqlSupport {
 
     public static final SqlColumn<String> pluginName = plugin.pluginName;
 
+    public static final SqlColumn<String> pluginCode = plugin.pluginCode;
+
     public static final SqlColumn<String> descr = plugin.descr;
+
+    public static final SqlColumn<Boolean> defaultPlugin = plugin.defaultPlugin;
 
     public static final SqlColumn<Long> createUserId = plugin.createUserId;
 
@@ -28,7 +32,11 @@ public final class PluginDynamicSqlSupport {
 
         public final SqlColumn<String> pluginName = column("plugin_name", JDBCType.VARCHAR);
 
+        public final SqlColumn<String> pluginCode = column("plugin_code", JDBCType.VARCHAR);
+
         public final SqlColumn<String> descr = column("descr", JDBCType.VARCHAR);
+
+        public final SqlColumn<Boolean> defaultPlugin = column("default_plugin", JDBCType.BIT);
 
         public final SqlColumn<Long> createUserId = column("create_user_id", JDBCType.BIGINT);
 

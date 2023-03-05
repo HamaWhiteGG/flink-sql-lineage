@@ -1,5 +1,6 @@
 package com.hw.lineage.server.application.command.catalog;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.hw.lineage.common.enums.CatalogType;
 import lombok.Data;
 
@@ -14,6 +15,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CreateCatalogCmd {
 
+    @NotNull
+    private Long pluginId;
+
     @NotBlank
     private String catalogName;
 
@@ -24,4 +28,8 @@ public class CreateCatalogCmd {
     private String defaultDatabase;
 
     private String descr;
+
+    private JSONObject catalogProperties;
+
+    private Boolean defaultCatalog;
 }

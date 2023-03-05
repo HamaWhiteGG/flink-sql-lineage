@@ -1,8 +1,7 @@
 package com.hw.lineage.server.application.command.plugin;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: UpdatePluginCmd
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdatePluginCmd {
 
-    @NotNull
+    @ApiModelProperty(hidden = true)
     private Long pluginId;
 
     private String pluginName;

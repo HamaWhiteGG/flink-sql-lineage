@@ -12,7 +12,11 @@ public class PluginDO {
 
     private String pluginName;
 
+    private String pluginCode;
+
     private String descr;
+
+    private Boolean defaultPlugin;
 
     private Long createUserId;
 
@@ -40,12 +44,28 @@ public class PluginDO {
         this.pluginName = pluginName;
     }
 
+    public String getPluginCode() {
+        return pluginCode;
+    }
+
+    public void setPluginCode(String pluginCode) {
+        this.pluginCode = pluginCode;
+    }
+
     public String getDescr() {
         return descr;
     }
 
     public void setDescr(String descr) {
         this.descr = descr;
+    }
+
+    public Boolean getDefaultPlugin() {
+        return defaultPlugin;
+    }
+
+    public void setDefaultPlugin(Boolean defaultPlugin) {
+        this.defaultPlugin = defaultPlugin;
     }
 
     public Long getCreateUserId() {
@@ -102,7 +122,9 @@ public class PluginDO {
         PluginDO other = (PluginDO) that;
         return (this.getPluginId() == null ? other.getPluginId() == null : this.getPluginId().equals(other.getPluginId()))
             && (this.getPluginName() == null ? other.getPluginName() == null : this.getPluginName().equals(other.getPluginName()))
+            && (this.getPluginCode() == null ? other.getPluginCode() == null : this.getPluginCode().equals(other.getPluginCode()))
             && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
+            && (this.getDefaultPlugin() == null ? other.getDefaultPlugin() == null : this.getDefaultPlugin().equals(other.getDefaultPlugin()))
             && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
             && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -116,7 +138,9 @@ public class PluginDO {
         int result = 1;
         result = prime * result + ((getPluginId() == null) ? 0 : getPluginId().hashCode());
         result = prime * result + ((getPluginName() == null) ? 0 : getPluginName().hashCode());
+        result = prime * result + ((getPluginCode() == null) ? 0 : getPluginCode().hashCode());
         result = prime * result + ((getDescr() == null) ? 0 : getDescr().hashCode());
+        result = prime * result + ((getDefaultPlugin() == null) ? 0 : getDefaultPlugin().hashCode());
         result = prime * result + ((getCreateUserId() == null) ? 0 : getCreateUserId().hashCode());
         result = prime * result + ((getModifyUserId() == null) ? 0 : getModifyUserId().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
@@ -133,7 +157,9 @@ public class PluginDO {
         sb.append("Hash = ").append(hashCode());
         sb.append(", pluginId=").append(pluginId);
         sb.append(", pluginName=").append(pluginName);
+        sb.append(", pluginCode=").append(pluginCode);
         sb.append(", descr=").append(descr);
+        sb.append(", defaultPlugin=").append(defaultPlugin);
         sb.append(", createUserId=").append(createUserId);
         sb.append(", modifyUserId=").append(modifyUserId);
         sb.append(", createTime=").append(createTime);

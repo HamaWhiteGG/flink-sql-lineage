@@ -2,6 +2,7 @@ package com.hw.lineage.server.interfaces.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@Validated
 @RestController
 @Api(tags = "Securities API")
 @RequestMapping("/")
