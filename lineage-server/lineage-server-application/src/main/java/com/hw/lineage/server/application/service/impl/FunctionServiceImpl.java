@@ -23,7 +23,6 @@ import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.FunctionId;
 import com.hw.lineage.server.domain.vo.PluginId;
-import com.hw.lineage.server.domain.vo.Storage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,8 +72,9 @@ public class FunctionServiceImpl implements FunctionService {
                 .setInvalid(false);
 
         CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
+        String functionPath = storageFacade.getUri(function.getFunctionPath());
         lineageFacade.createFunction(entry.getPluginCode(), entry.getCatalogName(), function.getDatabase()
-                , function.getFunctionName(), function.getClassName(), function.getFunctionPath());
+                , function.getFunctionName(), function.getClassName(), functionPath);
 
         function = functionRepository.save(function);
         return function.getFunctionId().getValue();
@@ -118,11 +118,10 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException {
-        String fileName = command.getFileName();
-        File file = storageFacade.loadAsResource(new Storage(fileName)).getFile();
+        File file = storageFacade.loadAsResource(command.getFunctionPath()).getFile();
         Plugin plugin = pluginRepository.find(new PluginId(command.getPluginId()));
         // parse function info
-        return lineageFacade.parseFunction(plugin.getPluginName(), file);
+        return lineageFacade.parseFunction(plugin.getPluginCode(), file);
 
     }
 }

@@ -20,6 +20,7 @@ import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +32,7 @@ import java.util.List;
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@Validated
 @RestController
 @Api(tags = "Catalogs API")
 @RequestMapping("/catalogs")

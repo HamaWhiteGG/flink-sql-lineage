@@ -15,6 +15,7 @@ import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.domain.entity.Catalog;
 import com.hw.lineage.server.domain.entity.Plugin;
 import com.hw.lineage.server.domain.facade.LineageFacade;
+import com.hw.lineage.server.domain.facade.StorageFacade;
 import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
 import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
@@ -25,8 +26,12 @@ import com.hw.lineage.server.domain.vo.PluginId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.hw.lineage.common.enums.CatalogType.HIVE;
 
 /**
  * @description: CatalogServiceImpl
@@ -41,6 +46,9 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Resource
     private PluginRepository pluginRepository;
+
+    @Resource
+    private StorageFacade storageFacade;
 
     @Resource
     private LineageFacade lineageFacade;
@@ -64,7 +72,13 @@ public class CatalogServiceImpl implements CatalogService {
                 .setInvalid(false);
 
         Plugin plugin = pluginRepository.find(catalog.getPluginId());
-        lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), catalog.getPropertiesMap());
+        Map<String, String> propertiesMap = catalog.getPropertiesMap();
+        if (catalog.getCatalogType().equals(HIVE)) {
+            Arrays.asList("hive-conf-dir", "hadoop-conf-dir").forEach(option ->
+                    propertiesMap.computeIfPresent(option, (key, value) -> storageFacade.getParentUri(value))
+            );
+        }
+        lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), propertiesMap);
 
         catalog = catalogRepository.save(catalog);
         return catalog.getCatalogId().getValue();

@@ -13,4 +13,6 @@ public class Constant {
 
     public static final String DELIMITER = ".";
 
+    public static final int INITIAL_CAPACITY = 16;
+
 }

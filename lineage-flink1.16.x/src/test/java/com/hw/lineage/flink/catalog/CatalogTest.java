@@ -68,7 +68,7 @@ public class CatalogTest {
         // The database must be created in advance, otherwise an error will be reported when creating the catalog
         context.execute("CREATE CATALOG " + catalogName + " with (  " +
                 "       'type' = 'jdbc'                                     ," +
-                "       'default-database' = '" + database + "'      ," +
+                "       'default-database' = '" + database + "'             ," +
                 "       'username' = 'root'                                 ," +
                 "       'password' = 'root@123456'                          ," +
                 "       'base-url' = 'jdbc:mysql://192.168.90.150:3306'      " +
@@ -89,8 +89,8 @@ public class CatalogTest {
         // The database must be created in advance, otherwise an error will be reported when creating the catalog
         context.execute("CREATE CATALOG " + catalogName + " with (          " +
                 "       'type' = 'hive'                                              ," +
-                "       'default-database' = '" + database + "'               ," +
-                "       'hive-conf-dir' = '../data/storage/catalogs/1/hive-conf-dir'  ," +
+                "       'default-database' = '" + database + "'                      ," +
+                "       'hive-conf-dir' = '../data/hive-conf-dir'                    ," +
                 "       'hive-version' = '3.1.2'                                      " +
                 ")"
         );

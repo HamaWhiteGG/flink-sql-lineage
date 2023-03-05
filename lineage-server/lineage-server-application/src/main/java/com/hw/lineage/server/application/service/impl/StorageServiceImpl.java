@@ -1,5 +1,6 @@
 package com.hw.lineage.server.application.service.impl;
 
+import com.hw.lineage.common.enums.StorageType;
 import com.hw.lineage.server.application.service.StorageService;
 import com.hw.lineage.server.domain.facade.StorageFacade;
 import com.hw.lineage.server.domain.vo.Storage;
@@ -28,8 +29,8 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String uploadFile(MultipartFile file) throws IOException {
-        Storage storage = new Storage(file.getOriginalFilename());
+    public String uploadFile(MultipartFile file, StorageType storageType) throws IOException {
+        Storage storage = new Storage(file.getOriginalFilename(),storageType);
         // store file
         try (InputStream inputStream = file.getInputStream()) {
             return storageFacade.store(storage, inputStream);
@@ -37,12 +38,12 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void deleteFile(String fileName) throws IOException {
-        storageFacade.delete(new Storage(fileName));
+    public void deleteFile(String filePath) throws IOException {
+        storageFacade.delete(filePath);
     }
 
     @Override
-    public Resource downloadFile(String fileName) throws MalformedURLException {
-        return storageFacade.loadAsResource(new Storage(fileName));
+    public Resource downloadFile(String filePath) throws MalformedURLException {
+        return storageFacade.loadAsResource(filePath);
     }
 }

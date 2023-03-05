@@ -54,7 +54,7 @@ public class ResultMessage {
 
     public static final String DETAIL_FAILED = "detail failed";
 
-    public static final String NOT_FOUND_EXCEPTION = "not found exception";
+    public static final String NULL_POINTER_EXCEPTION = "null pointer exception";
 
     public static final String UNIQUE_INDEX_CONFLICT_ERROR = "unique index conflict, please enter again";
 
