@@ -19,7 +19,7 @@ public class TaskSourceTest {
     @Test
     public void testFirstSplitSource() {
         String firstSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
-        firstSource = Base64Utils.encode(firstSource.getBytes());
+        firstSource = Base64Utils.encode(firstSource);
         TaskSource firstTaskSource = new TaskSource(firstSource);
         String[] firstResults = firstTaskSource.splitSource();
         assertThat(firstResults).isNotNull().hasSize(3);
@@ -34,7 +34,7 @@ public class TaskSourceTest {
     @Test
     public void testSecondSplitSource() {
         String secondSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str, \";\", 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
-        secondSource = Base64Utils.encode(secondSource.getBytes());
+        secondSource = Base64Utils.encode(secondSource);
         TaskSource secondTaskSource = new TaskSource(secondSource);
         String[] secondResults = secondTaskSource.splitSource();
         assertThat(secondResults).isNotNull().hasSize(3);
@@ -49,7 +49,7 @@ public class TaskSourceTest {
     @Test
     public void testThirdSplitSource() {
         String thirdSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str,':', 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
-        thirdSource = Base64Utils.encode(thirdSource.getBytes());
+        thirdSource = Base64Utils.encode(thirdSource);
         TaskSource thirdTaskSource = new TaskSource(thirdSource);
         String[] thirdResults = thirdTaskSource.splitSource();
         assertThat(thirdResults).isNotNull().hasSize(3);
@@ -64,7 +64,7 @@ public class TaskSourceTest {
     @Test
     public void testFourthSplitSource() {
         String fourthSource = "SELECT * FROM t1;SELECT SPLIT_INDEX(str,':', 0) FROM t2;";
-        fourthSource = Base64Utils.encode(fourthSource.getBytes());
+        fourthSource = Base64Utils.encode(fourthSource);
         TaskSource fourthTaskSource = new TaskSource(fourthSource);
         String[] fourthResults = fourthTaskSource.splitSource();
         assertThat(fourthResults).isNotNull().hasSize(2);
@@ -78,7 +78,7 @@ public class TaskSourceTest {
     @Test
     public void testFifthSplitSource() {
         String fifthSource = "SELECT * FROM t1;;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;;;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
-        fifthSource = Base64Utils.encode(fifthSource.getBytes());
+        fifthSource = Base64Utils.encode(fifthSource);
         TaskSource fifthTaskSource = new TaskSource(fifthSource);
         String[] fifthResults = fifthTaskSource.splitSource();
         assertThat(fifthResults).isNotNull().hasSize(3);
@@ -103,7 +103,7 @@ public class TaskSourceTest {
                 "----third\n" +
                 "SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
 
-        sixthSource = Base64Utils.encode(sixthSource.getBytes());
+        sixthSource = Base64Utils.encode(sixthSource);
         TaskSource sixthTaskSource = new TaskSource(sixthSource);
         String[] sixthResults = sixthTaskSource.splitSource();
         assertThat(sixthResults).isNotNull().hasSize(3);

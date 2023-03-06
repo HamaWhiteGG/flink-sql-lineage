@@ -1,6 +1,6 @@
 package com.hw.lineage.server.infrastructure.persistence.converter;
 
-import com.hw.lineage.server.domain.entity.Task;
+import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.TaskId;
 import com.hw.lineage.server.domain.vo.TaskSource;

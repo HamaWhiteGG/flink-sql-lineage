@@ -1,4 +1,4 @@
-package com.hw.lineage.server.infrastructure.facede.impl;
+package com.hw.lineage.server.infrastructure.facade.impl;
 
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.server.domain.facade.StorageFacade;

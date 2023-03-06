@@ -1,6 +1,7 @@
 package com.hw.lineage.server.application.dto;
 
 import com.hw.lineage.server.application.dto.basic.BasicDTO;
+import com.hw.lineage.server.application.dto.graph.LineageGraph;
 import lombok.Data;
 
 import java.util.List;
@@ -20,9 +21,17 @@ public class TaskDTO extends BasicDTO {
 
     private String descr;
 
+    private String database;
+
     private String taskSource;
+
+    private String taskLog;
+
+    private Long lineageTime;
 
     private List<TaskSqlDTO> taskSqlList;
 
-    private List<TaskLineageDTO> taskLineageList;
+    private LineageGraph lineageGraph;
+
+//    private List<TaskLineageDTO> taskLineageList;
 }

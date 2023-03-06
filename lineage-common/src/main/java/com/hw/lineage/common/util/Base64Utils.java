@@ -15,8 +15,8 @@ public class Base64Utils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String encode(byte[] bytes) {
-        return encoder.encodeToString(bytes);
+    public static String encode(String text) {
+        return encoder.encodeToString(text.getBytes());
     }
 
     public static String decode(String text) {
