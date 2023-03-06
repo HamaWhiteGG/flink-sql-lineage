@@ -28,25 +28,25 @@ public final class PluginDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = plugin.invalid;
 
     public static final class Plugin extends AliasableSqlTable<Plugin> {
-        public final SqlColumn<Long> pluginId = column("plugin_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> pluginId = column("`plugin_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> pluginName = column("plugin_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> pluginName = column("`plugin_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> pluginCode = column("plugin_code", JDBCType.VARCHAR);
+        public final SqlColumn<String> pluginCode = column("`plugin_code`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> descr = column("descr", JDBCType.VARCHAR);
+        public final SqlColumn<String> descr = column("`descr`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Boolean> defaultPlugin = column("default_plugin", JDBCType.BIT);
+        public final SqlColumn<Boolean> defaultPlugin = column("`default_plugin`", JDBCType.BIT);
 
-        public final SqlColumn<Long> createUserId = column("create_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> createUserId = column("`create_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyUserId = column("`modify_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public Plugin() {
             super("bas_plugin", Plugin::new);

@@ -34,31 +34,31 @@ public final class TaskLineageDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = taskLineage.invalid;
 
     public static final class TaskLineage extends AliasableSqlTable<TaskLineage> {
-        public final SqlColumn<Long> rid = column("rid", JDBCType.BIGINT);
+        public final SqlColumn<Long> rid = column("`rid`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> taskId = column("`task_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> sqlId = column("sql_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> sqlId = column("`sql_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> sourceCatalog = column("source_catalog", JDBCType.VARCHAR);
+        public final SqlColumn<String> sourceCatalog = column("`source_catalog`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> sourceDatabase = column("source_database", JDBCType.VARCHAR);
+        public final SqlColumn<String> sourceDatabase = column("`source_database`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> sourceTable = column("source_table", JDBCType.VARCHAR);
+        public final SqlColumn<String> sourceTable = column("`source_table`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> sourceColumn = column("source_column", JDBCType.VARCHAR);
+        public final SqlColumn<String> sourceColumn = column("`source_column`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> targetCatalog = column("target_catalog", JDBCType.VARCHAR);
+        public final SqlColumn<String> targetCatalog = column("`target_catalog`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> targetDatabase = column("target_database", JDBCType.VARCHAR);
+        public final SqlColumn<String> targetDatabase = column("`target_database`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> targetTable = column("target_table", JDBCType.VARCHAR);
+        public final SqlColumn<String> targetTable = column("`target_table`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> targetColumn = column("target_column", JDBCType.VARCHAR);
+        public final SqlColumn<String> targetColumn = column("`target_column`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> transform = column("transform", JDBCType.VARCHAR);
+        public final SqlColumn<String> transform = column("`transform`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public TaskLineage() {
             super("rel_task_lineage", TaskLineage::new);

@@ -1,6 +1,6 @@
 package com.hw.lineage.server.domain.service;
 
-import com.hw.lineage.server.domain.entity.Task;
+import com.hw.lineage.server.domain.entity.task.Task;
 
 /**
  * @description: TaskDomainService
@@ -9,5 +9,5 @@ import com.hw.lineage.server.domain.entity.Task;
  */
 public interface TaskDomainService {
 
-    void buildTaskSql(Task task);
+    void generateTaskSql(Task task);
 }

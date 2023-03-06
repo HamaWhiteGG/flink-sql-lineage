@@ -18,15 +18,15 @@ public final class RoleDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = role.invalid;
 
     public static final class Role extends AliasableSqlTable<Role> {
-        public final SqlColumn<Long> roleId = column("role_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> roleId = column("`role_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> roleName = column("role_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> roleName = column("`role_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public Role() {
             super("bas_role", Role::new);

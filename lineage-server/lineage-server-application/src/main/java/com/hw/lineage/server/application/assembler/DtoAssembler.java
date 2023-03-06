@@ -2,6 +2,9 @@ package com.hw.lineage.server.application.assembler;
 
 import com.hw.lineage.server.application.dto.*;
 import com.hw.lineage.server.domain.entity.*;
+import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskLineage;
+import com.hw.lineage.server.domain.entity.task.TaskSql;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

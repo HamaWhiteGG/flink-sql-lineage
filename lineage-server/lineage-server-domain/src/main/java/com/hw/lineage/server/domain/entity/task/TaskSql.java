@@ -1,4 +1,4 @@
-package com.hw.lineage.server.domain.entity;
+package com.hw.lineage.server.domain.entity.task;
 
 import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
@@ -16,22 +16,21 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class TaskSql {
 
-    private TaskId taskId;
-
     private SqlId sqlId;
 
-    private SqlStatus parseStatus;
-
-    private Long parseTime;
-
-    private Boolean invalid;
+    private TaskId taskId;
 
     /**
      * Base64 encode
      */
-    private String sqlCode;
+    private String sqlSource;
 
     private SqlType sqlType;
 
-    private String parseLog;
+    private Long startLineNumber;
+
+    private SqlStatus sqlStatus;
+
+    private Boolean invalid;
+
 }

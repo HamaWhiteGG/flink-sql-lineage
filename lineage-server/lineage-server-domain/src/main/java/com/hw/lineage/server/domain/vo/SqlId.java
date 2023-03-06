@@ -10,9 +10,9 @@ import lombok.Data;
 @Data
 public class SqlId {
 
-    private final Integer value;
+    private final Long value;
 
-    public SqlId(Integer value) {
+    public SqlId(Long value) {
         this.value = value;
     }
 }

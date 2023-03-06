@@ -4,8 +4,8 @@ import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.common.util.EnumUtils;
-import com.hw.lineage.server.domain.entity.Task;
-import com.hw.lineage.server.domain.entity.TaskSql;
+import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.service.TaskDomainService;
 import org.springframework.stereotype.Service;
 
@@ -27,29 +27,25 @@ public class TaskDomainServiceImpl implements TaskDomainService {
     private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, INSERT, DROP);
 
     @Override
-    public void buildTaskSql(Task task) {
+    public void generateTaskSql(Task task) {
         String[] sqlArrays = task.getTaskSource().splitSource();
 
         Stream.of(sqlArrays).forEach(singleSql -> {
-            SqlType sqlType = computeSqlType(singleSql);
-
+            SqlType sqlType = extractSqlType(singleSql);
             checkArgument(SUPPORT_SQL_TYPE.contains(sqlType)
-                    , "currently only supports SQL starting with %s, not yet: %s"
-                    , SUPPORT_SQL_TYPE, singleSql
-            );
+                    , "currently only supports SQL starting with %s, not yet: %s", SUPPORT_SQL_TYPE, singleSql);
 
             TaskSql taskSql = new TaskSql()
                     .setTaskId(task.getTaskId())
-                    .setParseStatus(SqlStatus.UN_PARSE)
-                    .setParseTime(System.currentTimeMillis())
-                    .setSqlCode(Base64Utils.encode(singleSql.getBytes()))
+                    .setSqlSource(Base64Utils.encode(singleSql))
                     .setSqlType(sqlType)
+                    .setSqlStatus(SqlStatus.INIT)
                     .setInvalid(false);
             task.addTaskSql(taskSql);
         });
     }
 
-    private SqlType computeSqlType(String singleSql) {
+    private SqlType extractSqlType(String singleSql) {
         String sqlType = singleSql.split("\\s+")[0];
         return EnumUtils.getSqlTypeByValue(sqlType);
     }

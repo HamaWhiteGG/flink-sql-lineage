@@ -1,7 +1,9 @@
-package com.hw.lineage.server.domain.entity;
+package com.hw.lineage.server.domain.entity.task;
 
 import com.hw.lineage.common.enums.TaskStatus;
 import com.hw.lineage.server.domain.entity.basic.BasicEntity;
+import com.hw.lineage.server.domain.graph.column.ColumnGraph;
+import com.hw.lineage.server.domain.graph.table.TableGraph;
 import com.hw.lineage.server.domain.repository.basic.Entity;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.TaskId;
@@ -36,7 +38,9 @@ public class Task extends BasicEntity implements Entity {
 
     private String taskLog;
 
-    private String lineageGraph;
+    private TableGraph tableGraph;
+
+    private ColumnGraph columnGraph;
 
     private Long lineageTime;
 

@@ -22,19 +22,19 @@ public final class PermissionDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = permission.invalid;
 
     public static final class Permission extends AliasableSqlTable<Permission> {
-        public final SqlColumn<Long> permissionId = column("permission_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> permissionId = column("`permission_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> permissionGroup = column("permission_group", JDBCType.VARCHAR);
+        public final SqlColumn<String> permissionGroup = column("`permission_group`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> permissionName = column("permission_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> permissionName = column("`permission_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> permissionCode = column("permission_code", JDBCType.VARCHAR);
+        public final SqlColumn<String> permissionCode = column("`permission_code`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public Permission() {
             super("bas_permission", Permission::new);

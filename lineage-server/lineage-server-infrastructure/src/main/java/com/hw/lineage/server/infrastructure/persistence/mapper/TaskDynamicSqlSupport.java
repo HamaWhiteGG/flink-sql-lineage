@@ -42,35 +42,35 @@ public final class TaskDynamicSqlSupport {
     public static final SqlColumn<String> lineageGraph = task.lineageGraph;
 
     public static final class Task extends AliasableSqlTable<Task> {
-        public final SqlColumn<Long> taskId = column("task_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> taskId = column("`task_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> catalogId = column("catalog_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> catalogId = column("`catalog_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> taskName = column("task_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> taskName = column("`task_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> descr = column("descr", JDBCType.VARCHAR);
+        public final SqlColumn<String> descr = column("`descr`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> database = column("database", JDBCType.VARCHAR);
+        public final SqlColumn<String> database = column("`database`", JDBCType.VARCHAR);
 
-        public final SqlColumn<TaskStatus> taskStatus = column("task_status", JDBCType.TINYINT, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TaskStatusTypeHandler");
+        public final SqlColumn<TaskStatus> taskStatus = column("`task_status`", JDBCType.TINYINT, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TaskStatusTypeHandler");
 
-        public final SqlColumn<Long> lineageTime = column("lineage_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> lineageTime = column("`lineage_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> createUserId = column("create_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> createUserId = column("`create_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyUserId = column("`modify_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
-        public final SqlColumn<String> taskSource = column("task_source", JDBCType.LONGVARCHAR);
+        public final SqlColumn<String> taskSource = column("`task_source`", JDBCType.LONGVARCHAR);
 
-        public final SqlColumn<String> taskLog = column("task_log", JDBCType.LONGVARCHAR);
+        public final SqlColumn<String> taskLog = column("`task_log`", JDBCType.LONGVARCHAR);
 
-        public final SqlColumn<String> lineageGraph = column("lineage_graph", JDBCType.LONGVARCHAR);
+        public final SqlColumn<String> lineageGraph = column("`lineage_graph`", JDBCType.LONGVARCHAR);
 
         public Task() {
             super("bas_task", Task::new);

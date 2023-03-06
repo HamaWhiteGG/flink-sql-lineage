@@ -1,4 +1,4 @@
-package com.hw.lineage.server.infrastructure.facede.impl;
+package com.hw.lineage.server.infrastructure.facade.impl;
 
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.util.Preconditions;

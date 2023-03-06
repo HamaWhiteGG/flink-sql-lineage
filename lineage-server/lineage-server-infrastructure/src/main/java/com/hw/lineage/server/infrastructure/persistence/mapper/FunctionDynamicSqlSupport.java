@@ -34,31 +34,31 @@ public final class FunctionDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = function.invalid;
 
     public static final class Function extends AliasableSqlTable<Function> {
-        public final SqlColumn<Long> functionId = column("function_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> functionId = column("`function_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> catalogId = column("catalog_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> catalogId = column("`catalog_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> functionName = column("function_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> functionName = column("`function_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> database = column("database", JDBCType.VARCHAR);
+        public final SqlColumn<String> database = column("`database`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> invocation = column("invocation", JDBCType.VARCHAR);
+        public final SqlColumn<String> invocation = column("`invocation`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> functionPath = column("function_path", JDBCType.VARCHAR);
+        public final SqlColumn<String> functionPath = column("`function_path`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> className = column("class_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> className = column("`class_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> descr = column("descr", JDBCType.VARCHAR);
+        public final SqlColumn<String> descr = column("`descr`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Long> createUserId = column("create_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> createUserId = column("`create_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyUserId = column("`modify_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public Function() {
             super("bas_function", Function::new);
