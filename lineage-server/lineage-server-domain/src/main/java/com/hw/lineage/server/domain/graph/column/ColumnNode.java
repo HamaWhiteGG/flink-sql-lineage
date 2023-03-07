@@ -2,6 +2,8 @@ package com.hw.lineage.server.domain.graph.column;
 
 import com.hw.lineage.server.domain.graph.basic.Node;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @description: ColumnNode
@@ -9,6 +11,8 @@ import lombok.Data;
  * @version: 1.0.0
  */
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class ColumnNode extends Node {
 
     private Integer tableNodeId;

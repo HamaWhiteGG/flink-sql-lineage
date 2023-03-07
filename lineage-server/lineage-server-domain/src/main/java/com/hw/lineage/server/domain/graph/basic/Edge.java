@@ -1,6 +1,7 @@
 package com.hw.lineage.server.domain.graph.basic;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @description: Edge
@@ -8,13 +9,17 @@ import lombok.Data;
  * @version: 1.0.0
  */
 @Data
-public class Edge {
+@NoArgsConstructor
+public class Edge<N extends Node> {
 
-    private Node source;
+    private Integer edgeId;
 
-    private Node target;
+    private N source;
 
-    public Edge(Node source, Node target) {
+    private N target;
+
+    public Edge(Integer edgeId, N source, N target) {
+        this.edgeId = edgeId;
         this.source = source;
         this.target = target;
 

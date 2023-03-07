@@ -12,6 +12,7 @@ import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
+import com.hw.lineage.server.domain.vo.SqlId;
 import com.hw.lineage.server.infrastructure.config.LineageConfig;
 import com.hw.lineage.server.infrastructure.graph.GraphManager;
 import org.slf4j.Logger;
@@ -22,8 +23,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.hw.lineage.common.util.Constant.ILLEGAL_PARAM;
+import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 
 /**
  * @description: LineageFacadeImpl
@@ -52,25 +57,42 @@ public class LineageFacadeImpl implements LineageFacade {
     public void parseLineage(String pluginCode, String catalogName, Task task) {
         task.setTaskStatus(TaskStatus.RUNNING);
         try {
+            Map<SqlId,String> sqlSourceMap=new HashMap<>(INITIAL_CAPACITY);
             for (TaskSql taskSql : task.getTaskSqlList()) {
+                sqlSourceMap.put(taskSql.getSqlId(),taskSql.getSqlSource());
                 String singleSql = Base64Utils.decode(taskSql.getSqlSource());
                 switch (taskSql.getSqlType()) {
-                    case CREATE:
-                    case DROP:
-                        lineageClient.execute(pluginCode, catalogName, task.getDatabase(), singleSql);
-                        break;
                     case INSERT:
                         parseFieldLineage(pluginCode, catalogName, task, taskSql, singleSql);
                         break;
+                    case CREATE:
+                    case DROP:
+                        executeSql(pluginCode, catalogName, task, taskSql, singleSql);
+                        break;
                     default:
+                        throw new LineageException(ILLEGAL_PARAM);
                 }
             }
-            GraphManager graphManager = new GraphManager(this);
+            GraphManager graphManager = new GraphManager(this,sqlSourceMap);
             graphManager.createLineageGraph(pluginCode, task);
             task.setTaskStatus(TaskStatus.SUCCESS);
         } catch (Exception e) {
             task.setTaskStatus(TaskStatus.FAILED);
+            LOG.error("parse lineage exception", e);
             throw new LineageException(e.getMessage());
+        }
+    }
+
+
+    private void executeSql(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+        taskSql.setSqlStatus(SqlStatus.RUNNING);
+        try {
+            lineageClient.execute(pluginCode, catalogName, task.getDatabase(), singleSql);
+            taskSql.setSqlStatus(SqlStatus.SUCCESS);
+        } catch (Exception e) {
+            taskSql.setSqlStatus(SqlStatus.FAILED);
+            LOG.error("execute sql exception", e);
+            throw new LineageException(String.format("execute sql failed, sql: %s", singleSql));
         }
     }
 
@@ -97,6 +119,7 @@ public class LineageFacadeImpl implements LineageFacade {
             taskSql.setSqlStatus(SqlStatus.SUCCESS);
         } catch (Exception e) {
             taskSql.setSqlStatus(SqlStatus.FAILED);
+            LOG.error("parse lineage exception", e);
             throw new LineageException(String.format("parse lineage failed, sql: %s", singleSql));
         }
     }

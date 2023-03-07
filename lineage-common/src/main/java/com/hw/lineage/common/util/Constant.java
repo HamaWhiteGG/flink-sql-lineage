@@ -15,4 +15,6 @@ public class Constant {
 
     public static final int INITIAL_CAPACITY = 16;
 
+    public static final String ILLEGAL_PARAM="illegal param";
+
 }

@@ -1,6 +1,8 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
 import com.hw.lineage.common.enums.TaskStatus;
+import com.hw.lineage.server.domain.graph.column.ColumnGraph;
+import com.hw.lineage.server.domain.graph.table.TableGraph;
 import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
@@ -39,7 +41,9 @@ public final class TaskDynamicSqlSupport {
 
     public static final SqlColumn<String> taskLog = task.taskLog;
 
-    public static final SqlColumn<String> lineageGraph = task.lineageGraph;
+    public static final SqlColumn<TableGraph> tableGraph = task.tableGraph;
+
+    public static final SqlColumn<ColumnGraph> columnGraph = task.columnGraph;
 
     public static final class Task extends AliasableSqlTable<Task> {
         public final SqlColumn<Long> taskId = column("`task_id`", JDBCType.BIGINT);
@@ -70,7 +74,9 @@ public final class TaskDynamicSqlSupport {
 
         public final SqlColumn<String> taskLog = column("`task_log`", JDBCType.LONGVARCHAR);
 
-        public final SqlColumn<String> lineageGraph = column("`lineage_graph`", JDBCType.LONGVARCHAR);
+        public final SqlColumn<TableGraph> tableGraph = column("`table_graph`", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TableGraphTypeHandler");
+
+        public final SqlColumn<ColumnGraph> columnGraph = column("`column_graph`", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ColumnGraphTypeHandler");
 
         public Task() {
             super("bas_task", Task::new);

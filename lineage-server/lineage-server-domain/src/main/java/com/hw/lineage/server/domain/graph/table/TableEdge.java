@@ -1,8 +1,9 @@
 package com.hw.lineage.server.domain.graph.table;
 
 import com.hw.lineage.server.domain.graph.basic.Edge;
-import com.hw.lineage.server.domain.graph.basic.Node;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @description: TableEdge
@@ -10,12 +11,14 @@ import lombok.Data;
  * @version: 1.0.0
  */
 @Data
-public class TableEdge extends Edge {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class TableEdge extends Edge<TableNode> {
 
-    private Long sqlId;
+    private String sqlSource;
 
-    public TableEdge(Node source, Node target, Long sqlId) {
-        super(source, target);
-        this.sqlId = sqlId;
+    public TableEdge(Integer edgeId,TableNode source, TableNode target, String sqlSource) {
+        super(edgeId,source, target);
+        this.sqlSource = sqlSource;
     }
 }

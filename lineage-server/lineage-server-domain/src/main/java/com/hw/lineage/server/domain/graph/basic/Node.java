@@ -1,6 +1,7 @@
 package com.hw.lineage.server.domain.graph.basic;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
  * @version: 1.0.0
  */
 @Data
+@NoArgsConstructor
 public class Node {
 
     private Integer nodeId;

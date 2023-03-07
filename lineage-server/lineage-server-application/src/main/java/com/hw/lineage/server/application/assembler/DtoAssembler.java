@@ -1,15 +1,25 @@
 package com.hw.lineage.server.application.assembler;
 
+import com.google.common.base.Strings;
 import com.hw.lineage.server.application.dto.*;
+import com.hw.lineage.server.application.dto.graph.LineageGraph;
+import com.hw.lineage.server.application.dto.graph.link.ColumnLink;
+import com.hw.lineage.server.application.dto.graph.link.TableLink;
+import com.hw.lineage.server.application.dto.graph.link.basic.Link;
+import com.hw.lineage.server.application.dto.graph.vertex.Column;
+import com.hw.lineage.server.application.dto.graph.vertex.Vertex;
 import com.hw.lineage.server.domain.entity.*;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description: TaskAssembler
@@ -63,4 +73,47 @@ public interface DtoAssembler {
 
     @Mapping(source = "permissionId.value", target = "permissionId")
     PermissionDTO fromPermission(Permission permission);
+
+    @AfterMapping
+    default void setTaskLineageGraph(@MappingTarget TaskDTO taskDTO, Task task) {
+        List<Vertex> vertexList = task.getTableGraph().queryNodeSet()
+                .stream()
+                .map(tableNode -> {
+                    List<Column> columnList = tableNode.getColumnNodeList()
+                            .stream()
+                            .map(columnNode -> new Column(columnNode.getNodeId(), columnNode.getNodeName()))
+                            .collect(Collectors.toList());
+
+                    return new Vertex().setId(tableNode.getNodeId())
+                            .setName(tableNode.getNodeName())
+                            .setColumns(columnList)
+                            .setHasUpstream(!tableNode.getParentIdSet().isEmpty())
+                            .setHasDownstream(!tableNode.getChildIdSet().isEmpty());
+                })
+                .collect(Collectors.toList());
+
+        // add table edges
+        List<Link> linkList = task.getTableGraph().getEdgeSet()
+                .stream()
+                .map(tableEdge -> new TableLink(tableEdge.getEdgeId()
+                        , tableEdge.getSource().getNodeId()
+                        , tableEdge.getTarget().getNodeId()
+                        , tableEdge.getSqlSource()))
+                .collect(Collectors.toList());
+
+        // add column edges
+        linkList.addAll(task.getColumnGraph().getEdgeSet()
+                .stream()
+                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId()
+                        , columnEdge.getSource().getTableNodeId()
+                        , columnEdge.getTarget().getTableNodeId()
+                        , columnEdge.getSource().getNodeId()
+                        , columnEdge.getTarget().getNodeId()
+                        , Strings.nullToEmpty(columnEdge.getTransform())
+                ))
+                .collect(Collectors.toList())
+        );
+        LineageGraph lineageGraph = new LineageGraph().setNodes(vertexList).setLinks(linkList);
+        taskDTO.setLineageGraph(lineageGraph);
+    }
 }

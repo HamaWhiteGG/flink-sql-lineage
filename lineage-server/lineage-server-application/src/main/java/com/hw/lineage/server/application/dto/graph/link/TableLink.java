@@ -11,5 +11,10 @@ import lombok.Data;
 @Data
 public class TableLink extends Link {
 
-    private Transform task;
+    private String sqlSource;
+
+    public TableLink(Integer id, Integer relU, Integer relV, String sqlSource) {
+        super(id, relU, relV);
+        this.sqlSource = sqlSource;
+    }
 }

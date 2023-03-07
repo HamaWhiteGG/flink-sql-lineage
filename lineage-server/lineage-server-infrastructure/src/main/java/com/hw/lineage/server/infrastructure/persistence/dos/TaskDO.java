@@ -1,6 +1,8 @@
 package com.hw.lineage.server.infrastructure.persistence.dos;
 
 import com.hw.lineage.common.enums.TaskStatus;
+import com.hw.lineage.server.domain.graph.column.ColumnGraph;
+import com.hw.lineage.server.domain.graph.table.TableGraph;
 
 /**
  * @description: This class corresponds to the database table bas_task
@@ -41,7 +43,9 @@ public class TaskDO {
 
     private String taskLog;
 
-    private String lineageGraph;
+    private TableGraph tableGraph;
+
+    private ColumnGraph columnGraph;
 
     public Long getTaskId() {
         return taskId;
@@ -155,12 +159,20 @@ public class TaskDO {
         this.taskLog = taskLog;
     }
 
-    public String getLineageGraph() {
-        return lineageGraph;
+    public TableGraph getTableGraph() {
+        return tableGraph;
     }
 
-    public void setLineageGraph(String lineageGraph) {
-        this.lineageGraph = lineageGraph;
+    public void setTableGraph(TableGraph tableGraph) {
+        this.tableGraph = tableGraph;
+    }
+
+    public ColumnGraph getColumnGraph() {
+        return columnGraph;
+    }
+
+    public void setColumnGraph(ColumnGraph columnGraph) {
+        this.columnGraph = columnGraph;
     }
 
     @Override
@@ -189,7 +201,8 @@ public class TaskDO {
             && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
             && (this.getTaskSource() == null ? other.getTaskSource() == null : this.getTaskSource().equals(other.getTaskSource()))
             && (this.getTaskLog() == null ? other.getTaskLog() == null : this.getTaskLog().equals(other.getTaskLog()))
-            && (this.getLineageGraph() == null ? other.getLineageGraph() == null : this.getLineageGraph().equals(other.getLineageGraph()));
+            && (this.getTableGraph() == null ? other.getTableGraph() == null : this.getTableGraph().equals(other.getTableGraph()))
+            && (this.getColumnGraph() == null ? other.getColumnGraph() == null : this.getColumnGraph().equals(other.getColumnGraph()));
     }
 
     @Override
@@ -210,7 +223,8 @@ public class TaskDO {
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
         result = prime * result + ((getTaskSource() == null) ? 0 : getTaskSource().hashCode());
         result = prime * result + ((getTaskLog() == null) ? 0 : getTaskLog().hashCode());
-        result = prime * result + ((getLineageGraph() == null) ? 0 : getLineageGraph().hashCode());
+        result = prime * result + ((getTableGraph() == null) ? 0 : getTableGraph().hashCode());
+        result = prime * result + ((getColumnGraph() == null) ? 0 : getColumnGraph().hashCode());
         return result;
     }
 
@@ -234,7 +248,8 @@ public class TaskDO {
         sb.append(", invalid=").append(invalid);
         sb.append(", taskSource=").append(taskSource);
         sb.append(", taskLog=").append(taskLog);
-        sb.append(", lineageGraph=").append(lineageGraph);
+        sb.append(", tableGraph=").append(tableGraph);
+        sb.append(", columnGraph=").append(columnGraph);
         sb.append("]");
         return sb.toString();
     }

@@ -42,15 +42,15 @@ public class LineageClient {
     /**
      * Database
      */
-    private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS %s.%s COMMENT %s";
-    private static final String USE_DATABASE_SQL = "USE %s.%s";
-    private static final String DROP_DATABASE_SQL = "DROP DATABASE IF EXISTS %s.%s";
+    private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS %s.`%s` COMMENT %s";
+    private static final String USE_DATABASE_SQL = "USE %s.`%s`";
+    private static final String DROP_DATABASE_SQL = "DROP DATABASE IF EXISTS %s.`%s`";
 
     /**
      * Function
      */
-    private static final String CREATE_FUNCTION_SQL = "CREATE FUNCTION IF NOT EXISTS %s.%s.%s AS '%s' USING JAR '%s'";
-    private static final String DROP_FUNCTION_SQL = "DROP FUNCTION IF EXISTS %s.%s.%s";
+    private static final String CREATE_FUNCTION_SQL = "CREATE FUNCTION IF NOT EXISTS %s.`%s`.%s AS '%s' USING JAR '%s'";
+    private static final String DROP_FUNCTION_SQL = "DROP FUNCTION IF EXISTS %s.`%s`.%s";
 
 
     private final Map<String, LineageService> lineageServiceMap;

@@ -20,8 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 
-import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;
-import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalogName;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.*;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -80,6 +79,7 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
             PageInfo<CatalogDO> pageInfo = page.doSelectPageInfo(() ->
                     catalogMapper.select(completer ->
                             completer.where(catalogName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
+                                    .and(catalogType, isEqualToWhenPresent(catalogQuery.getCatalogType()))
                                     .orderBy(buildSortSpecification(catalogQuery))
                     )
             );

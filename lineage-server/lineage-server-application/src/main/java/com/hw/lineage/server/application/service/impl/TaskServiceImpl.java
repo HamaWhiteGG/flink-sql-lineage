@@ -19,6 +19,7 @@ import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.service.TaskDomainService;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.TaskId;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -94,6 +95,9 @@ public class TaskServiceImpl implements TaskService {
                 .setDescr(command.getDescr())
                 .setCatalogId(new CatalogId(command.getCatalogId()));
 
+        if (StringUtils.isNotEmpty(command.getSource())) {
+            task.setTaskStatus(TaskStatus.MODIFIED);
+        }
         task.setModifyTime(System.currentTimeMillis());
         taskRepository.save(task);
     }
@@ -102,16 +106,21 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO parseTaskLineage(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
 
-        taskRepository.removeTaskLineage(task.getTaskId());
-        taskRepository.removeTaskSql(task.getTaskId());
-
         taskDomainService.generateTaskSql(task);
+        taskRepository.removeTaskSql(task.getTaskId());
         taskRepository.saveTaskSql(task);
 
         CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
         lineageFacade.parseLineage(entry.getPluginCode(), entry.getCatalogName(), task);
-
+        taskRepository.removeTaskLineage(task.getTaskId());
         taskRepository.saveTaskLineage(task);
+
+        task.setLineageTime(System.currentTimeMillis());
+        taskRepository.save(task);
+
+//        TaskDTO taskDTO = assembler.fromTask(task);
+//        taskDTO.setLineageGraph(assembler.toLineageGraph(task.getTableGraph(), task.getColumnGraph()));
+//        return taskDTO;
         return assembler.fromTask(task);
     }
 }

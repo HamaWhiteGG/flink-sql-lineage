@@ -1,19 +1,10 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
-import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ColumnGraphTypeHandler;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TableGraphTypeHandler;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TaskStatusTypeHandler;
-import java.util.List;
-import java.util.Optional;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectKey;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -30,9 +21,15 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
+import java.util.List;
+import java.util.Optional;
+
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
 @Mapper
 public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(taskId, catalogId, taskName, descr, database, taskStatus, lineageTime, createUserId, modifyUserId, createTime, modifyTime, invalid, taskSource, taskLog, lineageGraph);
+    BasicColumn[] selectList = BasicColumn.columnList(taskId, catalogId, taskName, descr, database, taskStatus, lineageTime, createUserId, modifyUserId, createTime, modifyTime, invalid, taskSource, taskLog, tableGraph, columnGraph);
 
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.taskId", before=false, resultType=Long.class)
@@ -54,7 +51,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
         @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT),
         @Result(column="task_source", property="taskSource", jdbcType=JdbcType.LONGVARCHAR),
         @Result(column="task_log", property="taskLog", jdbcType=JdbcType.LONGVARCHAR),
-        @Result(column="lineage_graph", property="lineageGraph", jdbcType=JdbcType.LONGVARCHAR)
+        @Result(column="table_graph", property="tableGraph", typeHandler=TableGraphTypeHandler.class, jdbcType=JdbcType.LONGVARCHAR),
+        @Result(column="column_graph", property="columnGraph", typeHandler=ColumnGraphTypeHandler.class, jdbcType=JdbcType.LONGVARCHAR)
     })
     List<TaskDO> selectMany(SelectStatementProvider selectStatement);
 
@@ -91,7 +89,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .map(invalid).toProperty("invalid")
             .map(taskSource).toProperty("taskSource")
             .map(taskLog).toProperty("taskLog")
-            .map(lineageGraph).toProperty("lineageGraph")
+            .map(tableGraph).toProperty("tableGraph")
+            .map(columnGraph).toProperty("columnGraph")
         );
     }
 
@@ -110,7 +109,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
             .map(taskSource).toPropertyWhenPresent("taskSource", row::getTaskSource)
             .map(taskLog).toPropertyWhenPresent("taskLog", row::getTaskLog)
-            .map(lineageGraph).toPropertyWhenPresent("lineageGraph", row::getLineageGraph)
+            .map(tableGraph).toPropertyWhenPresent("tableGraph", row::getTableGraph)
+            .map(columnGraph).toPropertyWhenPresent("columnGraph", row::getColumnGraph)
         );
     }
 
@@ -150,7 +150,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
                 .set(invalid).equalTo(row::getInvalid)
                 .set(taskSource).equalTo(row::getTaskSource)
                 .set(taskLog).equalTo(row::getTaskLog)
-                .set(lineageGraph).equalTo(row::getLineageGraph);
+                .set(tableGraph).equalTo(row::getTableGraph)
+                .set(columnGraph).equalTo(row::getColumnGraph);
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(TaskDO row, UpdateDSL<UpdateModel> dsl) {
@@ -167,7 +168,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
                 .set(invalid).equalToWhenPresent(row::getInvalid)
                 .set(taskSource).equalToWhenPresent(row::getTaskSource)
                 .set(taskLog).equalToWhenPresent(row::getTaskLog)
-                .set(lineageGraph).equalToWhenPresent(row::getLineageGraph);
+                .set(tableGraph).equalToWhenPresent(row::getTableGraph)
+                .set(columnGraph).equalToWhenPresent(row::getColumnGraph);
     }
 
     default int updateByPrimaryKey(TaskDO row) {
@@ -185,7 +187,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .set(invalid).equalTo(row::getInvalid)
             .set(taskSource).equalTo(row::getTaskSource)
             .set(taskLog).equalTo(row::getTaskLog)
-            .set(lineageGraph).equalTo(row::getLineageGraph)
+            .set(tableGraph).equalTo(row::getTableGraph)
+            .set(columnGraph).equalTo(row::getColumnGraph)
             .where(taskId, isEqualTo(row::getTaskId))
         );
     }
@@ -205,7 +208,8 @@ public interface TaskMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .set(invalid).equalToWhenPresent(row::getInvalid)
             .set(taskSource).equalToWhenPresent(row::getTaskSource)
             .set(taskLog).equalToWhenPresent(row::getTaskLog)
-            .set(lineageGraph).equalToWhenPresent(row::getLineageGraph)
+            .set(tableGraph).equalToWhenPresent(row::getTableGraph)
+            .set(columnGraph).equalToWhenPresent(row::getColumnGraph)
             .where(taskId, isEqualTo(row::getTaskId))
         );
     }
