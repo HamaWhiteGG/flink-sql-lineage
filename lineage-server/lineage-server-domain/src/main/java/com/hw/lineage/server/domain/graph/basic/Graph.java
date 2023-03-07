@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 public class Graph<N extends Node, E extends Edge> {
 
-    private Map<String, Node> nodeMap;
+    private Map<String, N> nodeMap;
 
     private Set<E> edgeSet;
 
@@ -24,11 +24,15 @@ public class Graph<N extends Node, E extends Edge> {
         this.edgeSet = new HashSet<>();
     }
 
-    public Node getNode(String nodeName) {
+    public Set<N> queryNodeSet() {
+        return new HashSet<>(nodeMap.values());
+    }
+
+    public N queryNode(String nodeName) {
         return nodeMap.get(nodeName);
     }
 
-    public void putNode(String nodeName, N node) {
+    public void addNode(String nodeName, N node) {
         nodeMap.put(nodeName, node);
     }
 

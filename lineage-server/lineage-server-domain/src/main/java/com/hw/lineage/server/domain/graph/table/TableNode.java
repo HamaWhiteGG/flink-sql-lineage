@@ -3,6 +3,8 @@ package com.hw.lineage.server.domain.graph.table;
 import com.hw.lineage.server.domain.graph.basic.Node;
 import com.hw.lineage.server.domain.graph.column.ColumnNode;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
  * @version: 1.0.0
  */
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class TableNode extends Node {
 
     private List<ColumnNode> columnNodeList;

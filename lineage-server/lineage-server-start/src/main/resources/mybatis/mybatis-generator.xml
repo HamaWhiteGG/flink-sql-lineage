@@ -48,6 +48,14 @@
                     column="task_status"
                     javaType="com.hw.lineage.common.enums.TaskStatus"
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TaskStatusTypeHandler"/>
+            <columnOverride
+                    column="table_graph"
+                    javaType="com.hw.lineage.server.domain.graph.table.TableGraph"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.TableGraphTypeHandler"/>
+            <columnOverride
+                    column="column_graph"
+                    javaType="com.hw.lineage.server.domain.graph.column.ColumnGraph"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ColumnGraphTypeHandler"/>
         </table>
 
         <table tableName="bas_plugin" domainObjectName="Plugin" delimitAllColumns="true">

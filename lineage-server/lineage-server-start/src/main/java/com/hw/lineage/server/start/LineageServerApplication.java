@@ -1,10 +1,12 @@
 package com.hw.lineage.server.start;
 
+import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.application.service.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 
 /**
  * @description: LineageServerApplication
@@ -18,7 +20,15 @@ public class LineageServerApplication {
     }
 
     @Bean
-    CommandLineRunner init(StorageService storageService) {
+    @Order(1)
+    CommandLineRunner initStorage(StorageService storageService) {
         return args -> storageService.init();
     }
+
+    @Bean
+    @Order(2)
+    CommandLineRunner createFlinkMemoryCatalog(CatalogService catalogService) {
+        return args -> catalogService.createFlinkMemoryCatalog();
+    }
+
 }
