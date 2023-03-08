@@ -23,7 +23,7 @@ public class Node {
 
     private Set<Integer> childIdSet;
 
-    private Integer totalChildrenCnt;
+    private Integer childrenCnt;
 
     public Node(Integer nodeId, String nodeName) {
         this.nodeId = nodeId;
@@ -31,7 +31,7 @@ public class Node {
 
         this.parentIdSet = new HashSet<>();
         this.childIdSet = new HashSet<>();
-        this.totalChildrenCnt = 0;
+        this.childrenCnt = 0;
     }
 
     @Override
