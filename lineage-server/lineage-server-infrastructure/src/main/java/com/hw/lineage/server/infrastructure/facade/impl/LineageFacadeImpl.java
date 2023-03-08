@@ -14,7 +14,7 @@ import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
 import com.hw.lineage.server.domain.vo.SqlId;
 import com.hw.lineage.server.infrastructure.config.LineageConfig;
-import com.hw.lineage.server.infrastructure.graph.GraphManager;
+import com.hw.lineage.server.infrastructure.graph.GraphFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -73,8 +73,8 @@ public class LineageFacadeImpl implements LineageFacade {
                         throw new LineageException(ILLEGAL_PARAM);
                 }
             }
-            GraphManager graphManager = new GraphManager(this,sqlSourceMap);
-            graphManager.createLineageGraph(pluginCode, task);
+            GraphFactory graphFactory = new GraphFactory(this,sqlSourceMap);
+            graphFactory.createLineageGraph(pluginCode, task);
             task.setTaskStatus(TaskStatus.SUCCESS);
         } catch (Exception e) {
             task.setTaskStatus(TaskStatus.FAILED);

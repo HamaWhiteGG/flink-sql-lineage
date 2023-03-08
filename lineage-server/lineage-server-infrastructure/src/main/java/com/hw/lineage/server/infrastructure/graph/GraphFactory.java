@@ -20,11 +20,11 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
 
 
 /**
- * @description: GraphManager
+ * @description: GraphFactory
  * @author: HamaWhite
  * @version: 1.0.0
  */
-public class GraphManager {
+public class GraphFactory {
 
     private final AtomicInteger atomic = new AtomicInteger(1);
 
@@ -36,7 +36,7 @@ public class GraphManager {
 
     private final Map<SqlId, String> sqlSourceMap;
 
-    public GraphManager(LineageFacade lineageFacade, Map<SqlId, String> sqlSourceMap) {
+    public GraphFactory(LineageFacade lineageFacade, Map<SqlId, String> sqlSourceMap) {
         this.lineageFacade = lineageFacade;
         this.sqlSourceMap = sqlSourceMap;
         this.tableGraph = new TableGraph();
@@ -58,7 +58,7 @@ public class GraphManager {
         task.setColumnGraph(columnGraph);
     }
 
-    public TableNode getSourceTableNode(String pluginCode, TaskLineage lineage) throws Exception {
+    private TableNode getSourceTableNode(String pluginCode, TaskLineage lineage) throws Exception {
         String sourceTableName = lineage.buildSourceTableName();
         TableNode sourceTableNode = tableGraph.queryNode(sourceTableName);
 
@@ -80,7 +80,7 @@ public class GraphManager {
     }
 
 
-    public TableNode getTargetTableNode(String pluginCode, TaskLineage lineage) throws Exception {
+    private TableNode getTargetTableNode(String pluginCode, TaskLineage lineage) throws Exception {
         String targetTableName = lineage.buildTargetTableName();
         TableNode targetTableNode = tableGraph.queryNode(targetTableName);
 
