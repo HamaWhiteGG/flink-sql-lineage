@@ -68,7 +68,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO queryTask(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
-        return assembler.fromTask(task);
+        CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
+        return assembler.fromTask(task, entry.getCatalogName());
     }
 
     @Override
@@ -118,9 +119,6 @@ public class TaskServiceImpl implements TaskService {
         task.setLineageTime(System.currentTimeMillis());
         taskRepository.save(task);
 
-//        TaskDTO taskDTO = assembler.fromTask(task);
-//        taskDTO.setLineageGraph(assembler.toLineageGraph(task.getTableGraph(), task.getColumnGraph()));
-//        return taskDTO;
-        return assembler.fromTask(task);
+        return assembler.fromTask(task, entry.getCatalogName());
     }
 }

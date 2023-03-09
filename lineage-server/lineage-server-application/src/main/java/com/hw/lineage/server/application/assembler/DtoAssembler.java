@@ -21,6 +21,8 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hw.lineage.common.util.Constant.DELIMITER;
+
 /**
  * @description: TaskAssembler
  * @author: HamaWhite
@@ -34,6 +36,11 @@ public interface DtoAssembler {
     @Mapping(source = "catalogId.value", target = "catalogId")
     @Mapping(source = "taskSource.value", target = "taskSource")
     TaskDTO fromTask(Task task);
+
+    @Mapping(source = "task.taskId.value", target = "taskId")
+    @Mapping(source = "task.catalogId.value", target = "catalogId")
+    @Mapping(source = "task.taskSource.value", target = "taskSource")
+    TaskDTO fromTask(Task task, String catalogName);
 
     @Mapping(source = "catalogId.value", target = "catalogId")
     @Mapping(source = "pluginId.value", target = "pluginId")
@@ -75,20 +82,22 @@ public interface DtoAssembler {
     PermissionDTO fromPermission(Permission permission);
 
     @AfterMapping
-    default void setTaskLineageGraph(@MappingTarget TaskDTO taskDTO, Task task) {
+    default void setTaskLineageGraph(@MappingTarget TaskDTO taskDTO, Task task, String catalogName) {
         List<Vertex> vertexList = task.getTableGraph().queryNodeSet()
                 .stream()
                 .map(tableNode -> {
                     List<Column> columnList = tableNode.getColumnNodeList()
                             .stream()
-                            .map(columnNode -> new Column(columnNode.getNodeId(), columnNode.getNodeName()))
+                            .map(columnNode -> new Column(columnNode.getNodeId(), columnNode.getNodeName(), columnNode.getChildrenCnt()))
                             .collect(Collectors.toList());
 
+                    String optimizedName = optimizeName(catalogName, task.getDatabase(), tableNode.getNodeName());
                     return new Vertex().setId(tableNode.getNodeId())
-                            .setName(tableNode.getNodeName())
+                            .setName(optimizedName)
                             .setColumns(columnList)
                             .setHasUpstream(!tableNode.getParentIdSet().isEmpty())
-                            .setHasDownstream(!tableNode.getChildIdSet().isEmpty());
+                            .setHasDownstream(!tableNode.getChildIdSet().isEmpty())
+                            .setChildrenCnt(tableNode.getChildrenCnt());
                 })
                 .collect(Collectors.toList());
 
@@ -115,5 +124,16 @@ public interface DtoAssembler {
         );
         LineageGraph lineageGraph = new LineageGraph().setNodes(vertexList).setLinks(linkList);
         taskDTO.setLineageGraph(lineageGraph);
+    }
+
+
+    default String optimizeName(String catalogName, String database, String tableName) {
+        if (tableName.startsWith(catalogName)) {
+            tableName = tableName.replaceFirst(catalogName + DELIMITER, "");
+        }
+        if (tableName.startsWith(database)) {
+            tableName = tableName.replaceFirst(database + DELIMITER, "");
+        }
+        return tableName;
     }
 }
