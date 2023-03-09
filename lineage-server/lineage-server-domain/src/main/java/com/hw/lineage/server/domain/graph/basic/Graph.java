@@ -13,7 +13,7 @@ import java.util.Set;
  * @version: 1.0.0
  */
 @Data
-public class Graph<N extends Node, E extends Edge> {
+public class Graph<N extends Node, E extends Edge<N>> {
 
     private Map<String, N> nodeMap;
 

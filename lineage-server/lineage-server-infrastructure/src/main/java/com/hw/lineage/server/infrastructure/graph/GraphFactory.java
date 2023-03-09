@@ -4,6 +4,7 @@ import com.hw.lineage.common.result.ColumnResult;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.facade.LineageFacade;
+import com.hw.lineage.server.domain.graph.GraphHelper;
 import com.hw.lineage.server.domain.graph.column.ColumnEdge;
 import com.hw.lineage.server.domain.graph.column.ColumnGraph;
 import com.hw.lineage.server.domain.graph.column.ColumnNode;
@@ -54,6 +55,13 @@ public class GraphFactory {
             ColumnNode targetColumnNode = columnGraph.queryNode(lineage.buildTargetColumnName());
             columnGraph.addEdge(new ColumnEdge(atomic.getAndIncrement(), sourceColumnNode, targetColumnNode, lineage.getTransform()));
         }
+
+        GraphHelper<TableNode, TableEdge> tableHelper = new GraphHelper<>(tableGraph);
+        tableHelper.computeChildrenCnt();
+
+        GraphHelper<ColumnNode, ColumnEdge> columnHelper = new GraphHelper<>(columnGraph);
+        columnHelper.computeChildrenCnt();
+
         task.setTableGraph(tableGraph);
         task.setColumnGraph(columnGraph);
     }

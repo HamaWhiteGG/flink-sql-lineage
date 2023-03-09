@@ -25,4 +25,6 @@ public class Vertex {
     private Boolean hasDownstream;
 
     private String tableIcon;
+
+    private Integer childrenCnt;
 }

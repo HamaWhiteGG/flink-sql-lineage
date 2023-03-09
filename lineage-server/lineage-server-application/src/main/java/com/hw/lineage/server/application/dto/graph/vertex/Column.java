@@ -15,4 +15,6 @@ public class Column {
     private Integer id;
 
     private String name;
+
+    private Integer childrenCnt;
 }
