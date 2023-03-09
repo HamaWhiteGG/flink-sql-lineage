@@ -79,7 +79,8 @@ CREATE TABLE `bas_task`
     `task_source`    longtext             DEFAULT NULL COMMENT 'Base64 encode',
     `task_status`    tinyint(8)           DEFAULT NULL,
     `task_log`       text                 DEFAULT NULL,
-    `lineage_graph`  text                 DEFAULT NULL,
+    `table_graph`    text                 DEFAULT NULL,
+    `column_graph`   text                 DEFAULT NULL,
     `lineage_time`   bigint(20)           DEFAULT NULL,
     `create_user_id` bigint(20)  NOT NULL DEFAULT '0',
     `modify_user_id` bigint(20)  NOT NULL DEFAULT '0',
@@ -91,6 +92,7 @@ CREATE TABLE `bas_task`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
+
 
 DROP TABLE IF EXISTS `rel_task_sql`;
 CREATE TABLE `rel_task_sql`

@@ -37,6 +37,22 @@
         </fileSet>
 
         <fileSet>
+            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
+            <outputDirectory>${assembly.name}/data/storage/functions/function-a/</outputDirectory>
+            <includes>
+                <include>function-a.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
+            <outputDirectory>${assembly.name}/data/storage/functions/function-b/</outputDirectory>
+            <includes>
+                <include>function-b.jar</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target/classes/</directory>
             <outputDirectory>${assembly.name}/lineage-server/conf/</outputDirectory>
             <includes>

@@ -76,14 +76,7 @@ public class CatalogServiceImpl implements CatalogService {
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
 
-        Plugin plugin = pluginRepository.find(catalog.getPluginId());
-        Map<String, String> propertiesMap = catalog.getPropertiesMap();
-        if (catalog.getCatalogType().equals(HIVE)) {
-            Arrays.asList("hive-conf-dir", "hadoop-conf-dir").forEach(option ->
-                    propertiesMap.computeIfPresent(option, (key, value) -> storageFacade.getParentUri(value))
-            );
-        }
-        lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), propertiesMap);
+        createCatalogInEngine(catalog);
 
         catalog = catalogRepository.save(catalog);
         return catalog.getCatalogId().getValue();
@@ -187,18 +180,25 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public void createFlinkMemoryCatalog() {
+    public void createMemoryCatalogs() {
         CatalogQuery catalogQuery = new CatalogQuery();
         // when the pageSize parameter is equal to 0, query all data
         catalogQuery.setPageSize(0);
         catalogQuery.setCatalogType(CatalogType.MEMORY);
         PageInfo<Catalog> pageInfo = catalogRepository.findAll(catalogQuery);
-
         // create memory catalog in flink
-        pageInfo.getList().forEach(catalog -> {
-            Plugin plugin = pluginRepository.find(catalog.getPluginId());
-            lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), catalog.getPropertiesMap());
-            LOG.info("created memory catalog: [{}] in plugin: [{}]", catalog.getCatalogName(), plugin.getPluginName());
-        });
+        pageInfo.getList().forEach(this::createCatalogInEngine);
+    }
+
+    private void createCatalogInEngine(Catalog catalog) {
+        Plugin plugin = pluginRepository.find(catalog.getPluginId());
+        Map<String, String> propertiesMap = catalog.getPropertiesMap();
+        if (catalog.getCatalogType().equals(HIVE)) {
+            Arrays.asList("hive-conf-dir", "hadoop-conf-dir").forEach(option ->
+                    propertiesMap.computeIfPresent(option, (key, value) -> storageFacade.getParentUri(value))
+            );
+        }
+        lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), propertiesMap);
+        LOG.info("created catalog: [{}] in plugin: [{}]", catalog.getCatalogName(), plugin.getPluginName());
     }
 }
