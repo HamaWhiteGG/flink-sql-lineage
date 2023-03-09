@@ -14,7 +14,6 @@ import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.task.TaskCheck;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
-import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.service.TaskDomainService;
 import com.hw.lineage.server.domain.vo.CatalogId;
@@ -36,9 +35,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private CatalogRepository catalogRepository;
-
-    @Resource
-    private PluginRepository pluginRepository;
 
     @Resource
     private TaskDomainService taskDomainService;

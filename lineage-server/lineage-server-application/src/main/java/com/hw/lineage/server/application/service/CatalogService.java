@@ -52,5 +52,6 @@ public interface CatalogService {
     /**
      * Create the memory type catalog to flink when the application start
      */
-    void createFlinkMemoryCatalog();
+    void createMemoryCatalogs();
+
 }
