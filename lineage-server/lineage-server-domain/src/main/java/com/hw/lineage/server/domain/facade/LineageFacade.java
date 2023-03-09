@@ -2,8 +2,7 @@ package com.hw.lineage.server.domain.facade;
 
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.TableResult;
-import com.hw.lineage.server.domain.entity.Catalog;
-import com.hw.lineage.server.domain.entity.Task;
+import com.hw.lineage.server.domain.entity.task.Task;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public interface LineageFacade {
 
-    void parseLineage(String pluginName, Task task, Catalog catalog);
+    void parseLineage(String pluginCode, String catalogName, Task task);
 
     List<FunctionResult> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException;
 

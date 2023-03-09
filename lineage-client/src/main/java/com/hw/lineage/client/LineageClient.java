@@ -1,7 +1,6 @@
 package com.hw.lineage.client;
 
 import com.google.common.collect.Lists;
-import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
@@ -43,15 +42,15 @@ public class LineageClient {
     /**
      * Database
      */
-    private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS %s.%s COMMENT %s";
-    private static final String USE_DATABASE_SQL = "USE %s.%s";
-    private static final String DROP_DATABASE_SQL = "DROP DATABASE IF EXISTS %s.%s";
+    private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS %s.`%s` COMMENT %s";
+    private static final String USE_DATABASE_SQL = "USE %s.`%s`";
+    private static final String DROP_DATABASE_SQL = "DROP DATABASE IF EXISTS %s.`%s`";
 
     /**
      * Function
      */
-    private static final String CREATE_FUNCTION_SQL = "CREATE FUNCTION IF NOT EXISTS %s.%s.%s AS '%s' USING JAR '%s'";
-    private static final String DROP_FUNCTION_SQL = "DROP FUNCTION IF EXISTS %s.%s.%s";
+    private static final String CREATE_FUNCTION_SQL = "CREATE FUNCTION IF NOT EXISTS %s.`%s`.%s AS '%s' USING JAR '%s'";
+    private static final String DROP_FUNCTION_SQL = "DROP FUNCTION IF EXISTS %s.`%s`.%s";
 
 
     private final Map<String, LineageService> lineageServiceMap;
@@ -96,21 +95,14 @@ public class LineageClient {
         return pluginManager.load(LineageService.class);
     }
 
-    /**
-     * Set the catalog information, the flink plugin defaults to GenericInMemoryCatalog
-     */
-    public void setCatalog(String pluginCode, CatalogType catalogType, String catalogName
-            , String defaultDatabase, String... args) {
-        LineageService service = getLineageService(pluginCode);
-        service.setCatalog(catalogType, catalogName, defaultDatabase, args);
-    }
 
     /**
      * Parse the field blood relationship of the input SQL
      */
-    public List<LineageResult> parseFieldLineage(String pluginCode, String singleSql) {
+    public List<LineageResult> parseFieldLineage(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
+            service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
             return service.parseFieldLineage(singleSql);
         }
     }
@@ -149,6 +141,10 @@ public class LineageClient {
                 .map(entry -> String.format("'%s'='%s'", entry.getKey(), entry.getValue()))
                 .collect(Collectors.joining(","));
         execute(pluginCode, String.format(CREATE_CATALOG_SQL, catalogName, properties));
+    }
+
+    public void useCatalog(String pluginCode, String catalogName) {
+        execute(pluginCode, String.format(USE_CATALOG_SQL, catalogName));
     }
 
     public void deleteCatalog(String pluginCode, String catalogName) {

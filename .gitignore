@@ -62,3 +62,4 @@ lineage-web/build/
 lineage-web/node/
 static
 /lineage-server/lineage-server-start/data/
+logs

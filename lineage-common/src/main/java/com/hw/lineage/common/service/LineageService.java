@@ -1,6 +1,5 @@
 package com.hw.lineage.common.service;
 
-import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.plugin.Plugin;
 import com.hw.lineage.common.result.FunctionResult;
 import com.hw.lineage.common.result.LineageResult;
@@ -16,11 +15,6 @@ import java.util.List;
  * @version: 1.0.0
  */
 public interface LineageService extends Plugin {
-
-    /**
-     * Set the catalog information, the flink plugin defaults to GenericInMemoryCatalog
-     */
-    void setCatalog(CatalogType catalogType, String catalogName, String defaultDatabase, String... args);
 
     /**
      * Parse the field blood relationship of the input SQL

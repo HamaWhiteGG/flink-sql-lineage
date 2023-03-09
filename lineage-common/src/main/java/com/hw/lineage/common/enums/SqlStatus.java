@@ -9,11 +9,10 @@ import com.hw.lineage.common.enums.basic.IntEnum;
  */
 public enum SqlStatus implements IntEnum<SqlStatus> {
 
-    UN_PARSE(0),
-    PARSING(1),
-    SUCCESS( 2),
-    FAILED(3);
-
+    FAILED(-1),
+    SUCCESS(0),
+    INIT(1),
+    RUNNING(2);
 
     private final int value;
 

@@ -44,7 +44,7 @@ public interface CatalogMapper extends CommonCountMapper, CommonDeleteMapper, Co
         @Result(column="catalog_id", property="catalogId", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="plugin_id", property="pluginId", jdbcType=JdbcType.BIGINT),
         @Result(column="catalog_name", property="catalogName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="catalog_type", property="catalogType", typeHandler=CatalogTypeHandler.class, jdbcType=JdbcType.TINYINT),
+        @Result(column="catalog_type", property="catalogType", typeHandler=CatalogTypeHandler.class, jdbcType=JdbcType.VARCHAR),
         @Result(column="default_database", property="defaultDatabase", jdbcType=JdbcType.VARCHAR),
         @Result(column="descr", property="descr", jdbcType=JdbcType.VARCHAR),
         @Result(column="default_catalog", property="defaultCatalog", jdbcType=JdbcType.BIT),

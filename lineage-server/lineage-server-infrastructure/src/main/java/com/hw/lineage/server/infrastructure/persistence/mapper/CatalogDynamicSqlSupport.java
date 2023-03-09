@@ -36,31 +36,31 @@ public final class CatalogDynamicSqlSupport {
     public static final SqlColumn<JSONObject> catalogProperties = catalog.catalogProperties;
 
     public static final class Catalog extends AliasableSqlTable<Catalog> {
-        public final SqlColumn<Long> catalogId = column("catalog_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> catalogId = column("`catalog_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> pluginId = column("plugin_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> pluginId = column("`plugin_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> catalogName = column("catalog_name", JDBCType.VARCHAR);
+        public final SqlColumn<String> catalogName = column("`catalog_name`", JDBCType.VARCHAR);
 
-        public final SqlColumn<CatalogType> catalogType = column("catalog_type", JDBCType.TINYINT, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler");
+        public final SqlColumn<CatalogType> catalogType = column("`catalog_type`", JDBCType.VARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler");
 
-        public final SqlColumn<String> defaultDatabase = column("default_database", JDBCType.VARCHAR);
+        public final SqlColumn<String> defaultDatabase = column("`default_database`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> descr = column("descr", JDBCType.VARCHAR);
+        public final SqlColumn<String> descr = column("`descr`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Boolean> defaultCatalog = column("default_catalog", JDBCType.BIT);
+        public final SqlColumn<Boolean> defaultCatalog = column("`default_catalog`", JDBCType.BIT);
 
-        public final SqlColumn<Long> createUserId = column("create_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> createUserId = column("`create_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyUserId = column("modify_user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyUserId = column("`modify_user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
-        public final SqlColumn<JSONObject> catalogProperties = column("catalog_properties", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler");
+        public final SqlColumn<JSONObject> catalogProperties = column("`catalog_properties`", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler");
 
         public Catalog() {
             super("bas_catalog", Catalog::new);

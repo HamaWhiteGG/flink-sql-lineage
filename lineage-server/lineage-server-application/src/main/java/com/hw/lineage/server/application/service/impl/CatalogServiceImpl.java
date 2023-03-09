@@ -1,6 +1,7 @@
 package com.hw.lineage.server.application.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.enums.TableKind;
 import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.common.util.PageUtils;
@@ -23,6 +24,8 @@ import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.PluginId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -40,6 +43,8 @@ import static com.hw.lineage.common.enums.CatalogType.HIVE;
  */
 @Service
 public class CatalogServiceImpl implements CatalogService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogServiceImpl.class);
 
     @Resource
     private CatalogRepository catalogRepository;
@@ -179,5 +184,21 @@ public class CatalogServiceImpl implements CatalogService {
             }
             return new TableDTO(tableName, TableKind.TABLE);
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void createFlinkMemoryCatalog() {
+        CatalogQuery catalogQuery = new CatalogQuery();
+        // when the pageSize parameter is equal to 0, query all data
+        catalogQuery.setPageSize(0);
+        catalogQuery.setCatalogType(CatalogType.MEMORY);
+        PageInfo<Catalog> pageInfo = catalogRepository.findAll(catalogQuery);
+
+        // create memory catalog in flink
+        pageInfo.getList().forEach(catalog -> {
+            Plugin plugin = pluginRepository.find(catalog.getPluginId());
+            lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), catalog.getPropertiesMap());
+            LOG.info("created memory catalog: [{}] in plugin: [{}]", catalog.getCatalogName(), plugin.getPluginName());
+        });
     }
 }

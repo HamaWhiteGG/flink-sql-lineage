@@ -22,19 +22,19 @@ public final class UserDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = user.invalid;
 
     public static final class User extends AliasableSqlTable<User> {
-        public final SqlColumn<Long> userId = column("user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> userId = column("`user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<String> username = column("username", JDBCType.VARCHAR);
+        public final SqlColumn<String> username = column("`username`", JDBCType.VARCHAR);
 
-        public final SqlColumn<String> password = column("password", JDBCType.VARCHAR);
+        public final SqlColumn<String> password = column("`password`", JDBCType.VARCHAR);
 
-        public final SqlColumn<Boolean> locked = column("locked", JDBCType.BIT);
+        public final SqlColumn<Boolean> locked = column("`locked`", JDBCType.BIT);
 
-        public final SqlColumn<Long> createTime = column("create_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> createTime = column("`create_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> modifyTime = column("modify_time", JDBCType.BIGINT);
+        public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public User() {
             super("bas_user", User::new);
