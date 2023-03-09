@@ -23,19 +23,19 @@ public final class RoleUserDynamicSqlSupport {
     public static final SqlColumn<Date> updateTime = roleUser.updateTime;
 
     public static final class RoleUser extends AliasableSqlTable<RoleUser> {
-        public final SqlColumn<Long> id = column("id", JDBCType.BIGINT);
+        public final SqlColumn<Long> id = column("`id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> userId = column("user_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> userId = column("`user_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> roleId = column("role_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> roleId = column("`role_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> createBy = column("create_by", JDBCType.BIGINT);
+        public final SqlColumn<Long> createBy = column("`create_by`", JDBCType.BIGINT);
 
-        public final SqlColumn<Date> createTime = column("create_time", JDBCType.TIMESTAMP);
+        public final SqlColumn<Date> createTime = column("`create_time`", JDBCType.TIMESTAMP);
 
-        public final SqlColumn<Long> updateBy = column("update_by", JDBCType.BIGINT);
+        public final SqlColumn<Long> updateBy = column("`update_by`", JDBCType.BIGINT);
 
-        public final SqlColumn<Date> updateTime = column("update_time", JDBCType.TIMESTAMP);
+        public final SqlColumn<Date> updateTime = column("`update_time`", JDBCType.TIMESTAMP);
 
         public RoleUser() {
             super("rel_role_user", RoleUser::new);

@@ -1,7 +1,6 @@
 package com.hw.lineage.flink;
 
 
-import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.enums.TableKind;
 import com.hw.lineage.common.result.ColumnResult;
 import com.hw.lineage.common.result.FunctionResult;
@@ -18,7 +17,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
-import org.apache.flink.connector.jdbc.catalog.JdbcCatalog;
 import org.apache.flink.shaded.guava30.com.google.common.base.CaseFormat;
 import org.apache.flink.shaded.guava30.com.google.common.collect.ImmutableMap;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -27,7 +25,6 @@ import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.*;
-import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.table.functions.ScalarFunction;
 import org.apache.flink.table.functions.TableAggregateFunction;
@@ -97,23 +94,6 @@ public class LineageServiceImpl implements LineageService {
         }
         tableEnv.useCatalog(catalog.getName());
     }
-
-    @Override
-    public void setCatalog(CatalogType catalogType, String catalogName, String defaultDatabase, String... args) {
-        AbstractCatalog catalog;
-        switch (catalogType) {
-            case HIVE:
-                catalog = new HiveCatalog(catalogName, defaultDatabase, args[0]);
-                break;
-            case JDBC:
-                catalog = new JdbcCatalog(catalogName, defaultDatabase, args[0], args[1], args[2]);
-                break;
-            default:
-                catalog = new GenericInMemoryCatalog(catalogName, defaultDatabase);
-        }
-        useCatalog(catalog);
-    }
-
 
     @Override
     public void execute(String singleSql) {

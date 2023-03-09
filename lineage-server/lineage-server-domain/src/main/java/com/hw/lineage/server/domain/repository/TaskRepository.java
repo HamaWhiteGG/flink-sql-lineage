@@ -2,7 +2,7 @@ package com.hw.lineage.server.domain.repository;
 
 import com.github.pagehelper.PageInfo;
 import com.hw.lineage.server.domain.repository.basic.Repository;
-import com.hw.lineage.server.domain.entity.Task;
+import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 import com.hw.lineage.server.domain.vo.TaskId;
 

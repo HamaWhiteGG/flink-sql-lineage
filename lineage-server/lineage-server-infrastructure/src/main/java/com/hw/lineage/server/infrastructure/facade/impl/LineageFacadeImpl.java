@@ -1,16 +1,20 @@
-package com.hw.lineage.server.infrastructure.facede.impl;
+package com.hw.lineage.server.infrastructure.facade.impl;
 
 import com.hw.lineage.client.LineageClient;
 import com.hw.lineage.common.enums.SqlStatus;
+import com.hw.lineage.common.enums.TaskStatus;
+import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.result.TableResult;
 import com.hw.lineage.common.util.Base64Utils;
-import com.hw.lineage.server.domain.entity.Catalog;
-import com.hw.lineage.server.domain.entity.Task;
-import com.hw.lineage.server.domain.entity.TaskLineage;
-import com.hw.lineage.server.domain.entity.TaskSql;
+import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskLineage;
+import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
+import com.hw.lineage.server.domain.vo.SqlId;
 import com.hw.lineage.server.infrastructure.config.LineageConfig;
+import com.hw.lineage.server.infrastructure.graph.GraphFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,8 +23,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.hw.lineage.common.util.Constant.ILLEGAL_PARAM;
+import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 
 /**
  * @description: LineageFacadeImpl
@@ -46,25 +54,73 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public void parseLineage(String pluginName, Task task, Catalog catalog) {
-        lineageClient.setCatalog(pluginName
-                , catalog.getCatalogType()
-                , catalog.getCatalogName()
-                , catalog.getDefaultDatabase()
-        );
-
-        for (TaskSql taskSql : task.getTaskSqlList()) {
-            String sqlCode = Base64Utils.decode(taskSql.getSqlCode());
-            switch (taskSql.getSqlType()) {
-                case CREATE:
-                case DROP:
-                    lineageClient.execute(pluginName, sqlCode);
-                    break;
-                case INSERT:
-                    parseFieldLineage(pluginName, task, taskSql, sqlCode);
-                    break;
-                default:
+    public void parseLineage(String pluginCode, String catalogName, Task task) {
+        task.setTaskStatus(TaskStatus.RUNNING);
+        try {
+            Map<SqlId,String> sqlSourceMap=new HashMap<>(INITIAL_CAPACITY);
+            for (TaskSql taskSql : task.getTaskSqlList()) {
+                sqlSourceMap.put(taskSql.getSqlId(),taskSql.getSqlSource());
+                String singleSql = Base64Utils.decode(taskSql.getSqlSource());
+                switch (taskSql.getSqlType()) {
+                    case INSERT:
+                        parseFieldLineage(pluginCode, catalogName, task, taskSql, singleSql);
+                        break;
+                    case CREATE:
+                    case DROP:
+                        executeSql(pluginCode, catalogName, task, taskSql, singleSql);
+                        break;
+                    default:
+                        throw new LineageException(ILLEGAL_PARAM);
+                }
             }
+            GraphFactory graphFactory = new GraphFactory(this,sqlSourceMap);
+            graphFactory.createLineageGraph(pluginCode, task);
+            task.setTaskStatus(TaskStatus.SUCCESS);
+        } catch (Exception e) {
+            task.setTaskStatus(TaskStatus.FAILED);
+            LOG.error("parse lineage exception", e);
+            throw new LineageException(e.getMessage());
+        }
+    }
+
+
+    private void executeSql(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+        taskSql.setSqlStatus(SqlStatus.RUNNING);
+        try {
+            lineageClient.execute(pluginCode, catalogName, task.getDatabase(), singleSql);
+            taskSql.setSqlStatus(SqlStatus.SUCCESS);
+        } catch (Exception e) {
+            taskSql.setSqlStatus(SqlStatus.FAILED);
+            LOG.error("execute sql exception", e);
+            throw new LineageException(String.format("execute sql failed, sql: %s", singleSql));
+        }
+    }
+
+    private void parseFieldLineage(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+        taskSql.setSqlStatus(SqlStatus.RUNNING);
+        try {
+            List<LineageResult> resultList = lineageClient.parseFieldLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
+            resultList.forEach(e -> {
+                TaskLineage taskLineage = new TaskLineage()
+                        .setTaskId(task.getTaskId())
+                        .setSqlId(taskSql.getSqlId())
+                        .setSourceCatalog(e.getSourceCatalog())
+                        .setSourceDatabase(e.getSourceDatabase())
+                        .setSourceTable(e.getSourceTable())
+                        .setSourceColumn(e.getSourceColumn())
+                        .setTargetCatalog(e.getTargetCatalog())
+                        .setTargetDatabase(e.getTargetDatabase())
+                        .setTargetTable(e.getTargetTable())
+                        .setTargetColumn(e.getTargetColumn())
+                        .setTransform(e.getTransform())
+                        .setInvalid(false);
+                task.addTaskLineage(taskLineage);
+            });
+            taskSql.setSqlStatus(SqlStatus.SUCCESS);
+        } catch (Exception e) {
+            taskSql.setSqlStatus(SqlStatus.FAILED);
+            LOG.error("parse lineage exception", e);
+            throw new LineageException(String.format("parse lineage failed, sql: %s", singleSql));
         }
     }
 
@@ -132,30 +188,4 @@ public class LineageFacadeImpl implements LineageFacade {
     public void deleteFunction(String pluginCode, String catalogName, String database, String functionName) {
         lineageClient.deleteFunction(pluginCode, catalogName, database, functionName);
     }
-
-
-    private void parseFieldLineage(String pluginName, Task task, TaskSql taskSql, String sqlCode) {
-        taskSql.setParseStatus(SqlStatus.PARSING);
-        lineageClient.parseFieldLineage(pluginName, sqlCode)
-                .forEach(e -> {
-                    TaskLineage taskLineage = new TaskLineage()
-                            .setTaskId(task.getTaskId())
-                            .setSqlId(taskSql.getSqlId())
-                            .setSourceCatalog(e.getSourceCatalog())
-                            .setSourceDatabase(e.getSourceDatabase())
-                            .setSourceTable(e.getSourceTable())
-                            .setSourceColumn(e.getSourceColumn())
-                            .setTargetCatalog(e.getTargetCatalog())
-                            .setTargetDatabase(e.getTargetDatabase())
-                            .setTargetTable(e.getTargetTable())
-                            .setTargetColumn(e.getTargetColumn())
-                            .setTransform(e.getTransform())
-                            .setInvalid(false);
-
-                    taskSql.setParseTime(System.currentTimeMillis());
-                    taskSql.setParseStatus(SqlStatus.SUCCESS);
-                    task.addTaskLineage(taskLineage);
-                });
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.hw.lineage.server.domain.query.catalog;
 
+import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.server.domain.query.PageOrderCriteria;
 import lombok.Data;
 
@@ -12,4 +13,6 @@ import lombok.Data;
 public class CatalogQuery extends PageOrderCriteria {
 
     private String catalogName;
+
+    private CatalogType catalogType;
 }

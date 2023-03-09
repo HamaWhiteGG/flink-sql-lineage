@@ -16,13 +16,13 @@ public final class RolePermissionDynamicSqlSupport {
     public static final SqlColumn<Boolean> invalid = rolePermission.invalid;
 
     public static final class RolePermission extends AliasableSqlTable<RolePermission> {
-        public final SqlColumn<Long> rid = column("rid", JDBCType.BIGINT);
+        public final SqlColumn<Long> rid = column("`rid`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> roleId = column("role_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> roleId = column("`role_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Long> permissionId = column("permission_id", JDBCType.BIGINT);
+        public final SqlColumn<Long> permissionId = column("`permission_id`", JDBCType.BIGINT);
 
-        public final SqlColumn<Boolean> invalid = column("invalid", JDBCType.BIT);
+        public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
         public RolePermission() {
             super("rel_role_permission", RolePermission::new);

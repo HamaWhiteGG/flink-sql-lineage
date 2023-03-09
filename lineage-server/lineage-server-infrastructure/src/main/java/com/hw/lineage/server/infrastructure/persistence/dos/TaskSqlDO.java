@@ -1,5 +1,6 @@
 package com.hw.lineage.server.infrastructure.persistence.dos;
 
+import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
 
 /**
@@ -18,7 +19,7 @@ public class TaskSqlDO {
 
     private Long startLineNumber;
 
-    private Byte sqlStatus;
+    private SqlStatus sqlStatus;
 
     private Boolean invalid;
 
@@ -59,11 +60,11 @@ public class TaskSqlDO {
         this.startLineNumber = startLineNumber;
     }
 
-    public Byte getSqlStatus() {
+    public SqlStatus getSqlStatus() {
         return sqlStatus;
     }
 
-    public void setSqlStatus(Byte sqlStatus) {
+    public void setSqlStatus(SqlStatus sqlStatus) {
         this.sqlStatus = sqlStatus;
     }
 

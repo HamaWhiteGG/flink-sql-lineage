@@ -1,16 +1,18 @@
-package com.hw.lineage.server.application.dto.graph.node;
+package com.hw.lineage.server.application.dto.graph.vertex;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
 /**
- * @description: Node
+ * @description: Vertex
  * @author: HamaWhite
  * @version: 1.0.0
  */
 @Data
-public class Node {
+@Accessors(chain = true)
+public class Vertex {
 
     private Integer id;
 
@@ -23,4 +25,6 @@ public class Node {
     private Boolean hasDownstream;
 
     private String tableIcon;
+
+    private Integer childrenCnt;
 }

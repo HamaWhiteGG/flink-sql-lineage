@@ -48,4 +48,9 @@ public interface CatalogService {
     TableResult getTable(Long catalogId, String database, String tableName) throws Exception;
 
     List<TableDTO> queryTables(Long catalogId, String database) throws Exception;
+
+    /**
+     * Create the memory type catalog to flink when the application start
+     */
+    void createFlinkMemoryCatalog();
 }

@@ -13,20 +13,20 @@ import java.io.Serializable;
  */
 @Data
 public class TaskSqlDTO implements Serializable {
+
+    private Long sqlId;
+
     private Long taskId;
-
-    private Integer sqlId;
-
-    private SqlStatus parseStatus;
-
-    private Long parseTime;
 
     /**
      * Base64 encode
      */
-    private String sqlCode;
+    private String sqlSource;
 
     private SqlType sqlType;
 
-    private String parseLog;
+    private Long startLineNumber;
+
+    private SqlStatus sqlStatus;
+
 }

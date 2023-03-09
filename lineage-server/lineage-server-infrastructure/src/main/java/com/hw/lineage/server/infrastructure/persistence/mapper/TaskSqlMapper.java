@@ -4,6 +4,7 @@ import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskSqlDyn
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlStatusTypeHandler;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.SqlTypeHandler;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public interface TaskSqlMapper extends CommonCountMapper, CommonDeleteMapper, Co
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.BIGINT),
         @Result(column="sql_type", property="sqlType", typeHandler=SqlTypeHandler.class, jdbcType=JdbcType.VARCHAR),
         @Result(column="start_line_number", property="startLineNumber", jdbcType=JdbcType.BIGINT),
-        @Result(column="sql_status", property="sqlStatus", jdbcType=JdbcType.TINYINT),
+        @Result(column="sql_status", property="sqlStatus", typeHandler=SqlStatusTypeHandler.class, jdbcType=JdbcType.TINYINT),
         @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT),
         @Result(column="sql_source", property="sqlSource", jdbcType=JdbcType.LONGVARCHAR)
     })
