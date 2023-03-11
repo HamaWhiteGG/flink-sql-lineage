@@ -8,6 +8,8 @@ import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.domain.repository.basic.Repository;
 import com.hw.lineage.server.domain.vo.FunctionId;
 
+import java.util.List;
+
 /**
  * @description: FunctionRepository
  * @author: HamaWhite
@@ -19,4 +21,7 @@ public interface FunctionRepository extends Repository<Function, FunctionId> {
      boolean check(FunctionCheck functionCheck);
 
     FunctionEntry findEntry(FunctionId functionId);
+
+
+    List<Function> findMemory();
 }

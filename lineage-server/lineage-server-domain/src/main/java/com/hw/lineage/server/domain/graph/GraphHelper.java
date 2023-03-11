@@ -8,14 +8,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @description: GraphManager
+ * @description: GraphHelper
  * @author: HamaWhite
  * @version: 1.0.0
  */
 public class GraphHelper<N extends Node, E extends Edge<N>> {
     private Graph<N, E> graph;
 
-    private Map<Integer, Node> nodeIdMap;
+    private Map<Integer, N> nodeIdMap;
 
     private final Map<Integer, Set<Integer>> childrenMap;
 
@@ -30,9 +30,9 @@ public class GraphHelper<N extends Node, E extends Edge<N>> {
     public void computeChildrenCnt() {
         nodeIdMap = graph.queryNodeSet()
                 .stream()
-                .collect(Collectors.toMap(Node::getNodeId, node -> node));
+                .collect(Collectors.toMap(N::getNodeId, node -> node));
 
-        Set<Node> startSet = graph.queryNodeSet()
+        Set<N> startSet = graph.queryNodeSet()
                 .stream()
                 .filter(node -> node.getParentIdSet().isEmpty())
                 .collect(Collectors.toSet());
@@ -41,7 +41,7 @@ public class GraphHelper<N extends Node, E extends Edge<N>> {
         graph.queryNodeSet().forEach(node -> node.setChildrenCnt(childrenMap.get(node.getNodeId()).size()));
     }
 
-    private void searchChildrenSet(Node node) {
+    private void searchChildrenSet(N node) {
         Integer nodeId = node.getNodeId();
         visitIdSet.add(nodeId);
         if (node.getChildIdSet().isEmpty()) {

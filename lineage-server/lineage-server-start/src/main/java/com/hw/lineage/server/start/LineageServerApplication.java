@@ -1,6 +1,7 @@
 package com.hw.lineage.server.start;
 
 import com.hw.lineage.server.application.service.CatalogService;
+import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.application.service.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,8 +28,14 @@ public class LineageServerApplication {
 
     @Bean
     @Order(2)
-    CommandLineRunner createFlinkMemoryCatalog(CatalogService catalogService) {
-        return args -> catalogService.createFlinkMemoryCatalog();
+    CommandLineRunner createMemoryCatalogs(CatalogService catalogService) {
+        return args -> catalogService.createMemoryCatalogs();
+    }
+
+    @Bean
+    @Order(3)
+    CommandLineRunner createMemoryFunctions(FunctionService functionService) {
+        return args -> functionService.createMemoryFunctions();
     }
 
 }

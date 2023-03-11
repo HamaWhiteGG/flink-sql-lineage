@@ -63,6 +63,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.hudi</groupId>
             <artifactId>hudi-flink1.14-bundle</artifactId>
             <version>${hudi.version}</version>

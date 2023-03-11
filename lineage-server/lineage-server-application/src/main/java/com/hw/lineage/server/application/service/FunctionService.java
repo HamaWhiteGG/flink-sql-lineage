@@ -36,4 +36,9 @@ public interface FunctionService {
      * Parse the function name, function format, function main class and description from the jar file
      */
     List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException;
+
+    /**
+     * Create the functions of memory type catalog to flink when the application start
+     */
+    void createMemoryFunctions();
 }
