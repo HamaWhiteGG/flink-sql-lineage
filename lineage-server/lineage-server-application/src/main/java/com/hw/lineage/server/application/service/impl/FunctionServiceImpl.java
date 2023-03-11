@@ -23,6 +23,8 @@ import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.FunctionId;
 import com.hw.lineage.server.domain.vo.PluginId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +39,8 @@ import java.util.List;
  */
 @Service
 public class FunctionServiceImpl implements FunctionService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FunctionServiceImpl.class);
 
     @Resource
     private FunctionRepository functionRepository;
@@ -71,10 +75,7 @@ public class FunctionServiceImpl implements FunctionService {
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
 
-        CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
-        String functionPath = storageFacade.getUri(function.getFunctionPath());
-        lineageFacade.createFunction(entry.getPluginCode(), entry.getCatalogName(), function.getDatabase()
-                , function.getFunctionName(), function.getClassName(), functionPath);
+        createFunctionInEngine(function);
 
         function = functionRepository.save(function);
         return function.getFunctionId().getValue();
@@ -123,5 +124,21 @@ public class FunctionServiceImpl implements FunctionService {
         // parse function info
         return lineageFacade.parseFunction(plugin.getPluginCode(), file);
 
+    }
+
+    @Override
+    public void createMemoryFunctions() {
+        List<Function> functionList = functionRepository.findMemory();
+        // create functions of memory catalog in flink
+        functionList.forEach(this::createFunctionInEngine);
+    }
+
+
+    private void createFunctionInEngine(Function function) {
+        CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
+        String functionPath = storageFacade.getUri(function.getFunctionPath());
+        lineageFacade.createFunction(entry.getPluginCode(), entry.getCatalogName(), function.getDatabase()
+                , function.getFunctionName(), function.getClassName(), functionPath);
+        LOG.info("created function: [{}] in catalog: [{}]", function.getFunctionName(), entry.getCatalogName());
     }
 }

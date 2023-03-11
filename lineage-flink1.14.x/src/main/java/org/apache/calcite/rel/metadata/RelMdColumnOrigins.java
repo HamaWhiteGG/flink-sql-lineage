@@ -31,6 +31,7 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  *  <li>Support CEP, add method getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support ROW_NUMBER(), add method getColumnOrigins(Window rel, RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support transform, add method createDerivedColumnOrigins(Set<RelColumnOrigin> inputSet, String transform, boolean originTransform), and related code
+ *  <li>Support PROCTIME() is the first filed, add method computeIndexWithOffset, used by getColumnOrigins(Calc rel, RelMetadataQuery mq, int iOutputColumn)
  * <ol/>
  *
  * @description: RelMdColumnOrigins supplies a default implementation of {@link RelMetadataQuery#getColumnOrigins} for the standard logical algebra.
@@ -276,7 +277,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (rexNode instanceof RexInputRef) {
             // Direct reference:  no derivation added.
             RexInputRef inputRef = (RexInputRef) rexNode;
-            return mq.getColumnOrigins(input, inputRef.getIndex());
+            int index = inputRef.getIndex();
+            if (input instanceof TableScan) {
+                index = computeIndexWithOffset(projects, inputRef.getIndex(), iOutputColumn);
+            }
+            return mq.getColumnOrigins(input, index);
         } else if (rexNode instanceof RexCall && ((RexCall) rexNode).getOperands().isEmpty()) {
             // support for new fields in the source table similar to those created with the LOCALTIMESTAMP function
             return getColumnOrigins(rel, iOutputColumn);
@@ -287,6 +292,16 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         return createDerivedColumnOrigins(set, rexNode.toString(), true);
     }
 
+    private int computeIndexWithOffset(List<RexNode> projects, int baseIndex, int iOutputColumn) {
+        int offset = 0;
+        for (int index = 0; index < iOutputColumn; index++) {
+            RexNode rexNode = projects.get(index);
+            if ((rexNode instanceof RexCall && ((RexCall) rexNode).getOperands().isEmpty())) {
+                offset += 1;
+            }
+        }
+        return baseIndex + offset;
+    }
 
     /**
      * Support for new fields in the source table similar to those created with the LOCALTIMESTAMP function
