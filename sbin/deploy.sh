@@ -11,7 +11,7 @@ cd .. || exit
 PROJECT_DIR=$(pwd)
 
 echo 'Start maven packaging'
-mvn clean package -DskipTests -Pprod
+mvn clean package -Pprod
 echo 'Finish maven package'
 
 echo 'Copy the deploy package to the server /opt/workspace'
