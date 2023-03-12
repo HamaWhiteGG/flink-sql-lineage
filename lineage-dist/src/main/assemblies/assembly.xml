@@ -36,6 +36,7 @@
             </includes>
         </fileSet>
 
+        <!-- for create the built-in functions of memory type catalog to flink -->
         <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
             <outputDirectory>${assembly.name}/data/storage/functions/function-a/</outputDirectory>
@@ -44,6 +45,7 @@
             </includes>
         </fileSet>
 
+        <!-- for create the built-in functions of memory type catalog to flink -->
         <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target</directory>
             <outputDirectory>${assembly.name}/data/storage/functions/function-b/</outputDirectory>
@@ -54,10 +56,9 @@
 
         <fileSet>
             <directory>${project.parent.basedir}/lineage-server/lineage-server-start/target/classes/</directory>
-            <outputDirectory>${assembly.name}/lineage-server/conf/</outputDirectory>
+            <outputDirectory>${assembly.name}/conf/</outputDirectory>
             <includes>
                 <include>logback-spring.xml</include>
-                <include>application.properties</include>
                 <include>application-${profile.active}.properties</include>
             </includes>
         </fileSet>
