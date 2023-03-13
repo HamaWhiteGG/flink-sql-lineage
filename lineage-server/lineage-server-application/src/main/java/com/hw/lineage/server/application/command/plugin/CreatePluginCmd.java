@@ -1,6 +1,8 @@
 package com.hw.lineage.server.application.command.plugin;
 
+import com.hw.lineage.server.domain.query.BasicCriteria;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
@@ -10,10 +12,14 @@ import javax.validation.constraints.NotBlank;
  * @version: 1.0.0
  */
 @Data
-public class CreatePluginCmd {
+@ToString(callSuper = true)
+public class CreatePluginCmd extends BasicCriteria {
 
     @NotBlank
     private String pluginName;
+
+    @NotBlank
+    private String pluginCode;
 
     private String descr;
 

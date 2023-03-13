@@ -1,8 +1,10 @@
 package com.hw.lineage.server.application.command.catalog;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.hw.lineage.server.domain.query.BasicCriteria;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @description: UpdateCatalogCmd
@@ -10,7 +12,8 @@ import lombok.Data;
  * @version: 1.0.0
  */
 @Data
-public class UpdateCatalogCmd {
+@ToString(callSuper = true)
+public class UpdateCatalogCmd extends BasicCriteria {
 
     @ApiModelProperty(hidden = true)
     private Long catalogId;

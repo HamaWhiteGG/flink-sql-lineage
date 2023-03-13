@@ -34,8 +34,12 @@ public class PluginServiceImpl implements PluginService {
     public Long createPlugin(CreatePluginCmd command) {
         Plugin plugin = new Plugin()
                 .setPluginName(command.getPluginName())
+                .setPluginCode(command.getPluginCode())
                 .setDescr(command.getDescr())
                 .setDefaultPlugin(command.getDefaultPlugin());
+
+        plugin.setCreateUserId(command.getUserId())
+                .setModifyUserId(command.getUserId());
 
         plugin.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
@@ -53,7 +57,7 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public Boolean checkPluginExist(PluginCheck pluginCheck) {
-        return repository.check(pluginCheck.getPluginName());
+        return repository.check(pluginCheck);
     }
 
     @Override
@@ -74,6 +78,7 @@ public class PluginServiceImpl implements PluginService {
                 .setPluginName(command.getPluginName())
                 .setDescr(command.getDescr());
 
+        plugin.setModifyUserId(command.getUserId());
         plugin.setModifyTime(System.currentTimeMillis());
         repository.save(plugin);
     }

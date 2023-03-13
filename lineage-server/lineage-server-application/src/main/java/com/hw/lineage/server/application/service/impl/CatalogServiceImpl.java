@@ -72,6 +72,9 @@ public class CatalogServiceImpl implements CatalogService {
                 .setCatalogProperties(command.getCatalogProperties())
                 .setDefaultCatalog(command.getDefaultCatalog());
 
+        catalog.setCreateUserId(command.getUserId())
+                .setModifyUserId(command.getUserId());
+
         catalog.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
@@ -116,6 +119,7 @@ public class CatalogServiceImpl implements CatalogService {
                 .setDescr(command.getDescr())
                 .setCatalogProperties(command.getCatalogProperties());
 
+        catalog.setModifyUserId(command.getUserId());
         catalog.setModifyTime(System.currentTimeMillis());
         catalogRepository.save(catalog);
     }
