@@ -2,6 +2,7 @@ package com.hw.lineage.server.interfaces.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hw.lineage.server.application.service.UserService;
+import com.hw.lineage.server.interfaces.enhanced.EnhancedParametersFilter;
 import com.hw.lineage.server.interfaces.result.Result;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -98,6 +100,9 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint((req, resp, authException) -> writeSecurityResult(resp, Result.error(NOT_LOGGED_IN)))
         ;
+
+        // add the userId parameter in the request parameter
+        http.addFilterBefore(new EnhancedParametersFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
