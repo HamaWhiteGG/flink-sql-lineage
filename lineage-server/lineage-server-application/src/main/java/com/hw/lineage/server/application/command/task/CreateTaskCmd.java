@@ -1,6 +1,8 @@
 package com.hw.lineage.server.application.command.task;
 
+import com.hw.lineage.server.domain.query.BasicCriteria;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,7 +13,8 @@ import javax.validation.constraints.NotNull;
  * @version: 1.0.0
  */
 @Data
-public class CreateTaskCmd {
+@ToString(callSuper = true)
+public class CreateTaskCmd extends BasicCriteria {
 
     @NotBlank
     private String taskName;

@@ -71,6 +71,9 @@ public class FunctionServiceImpl implements FunctionService {
                 .setClassName(command.getClassName())
                 .setDescr(command.getDescr());
 
+        function.setCreateUserId(command.getUserId())
+                .setModifyUserId(command.getUserId());
+
         function.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
@@ -113,6 +116,7 @@ public class FunctionServiceImpl implements FunctionService {
                 .setInvocation(command.getInvocation())
                 .setDescr(command.getDescr());
 
+        function.setModifyUserId(command.getUserId());
         function.setModifyTime(System.currentTimeMillis());
         functionRepository.save(function);
     }
