@@ -53,6 +53,9 @@ public class TaskServiceImpl implements TaskService {
                 .setTaskStatus(TaskStatus.INIT)
                 .setCatalogId(new CatalogId(command.getCatalogId()));
 
+        task.setCreateUserId(command.getUserId())
+                .setModifyUserId(command.getUserId());
+
         task.setCreateTime(System.currentTimeMillis())
                 .setModifyTime(System.currentTimeMillis())
                 .setInvalid(false);
@@ -95,6 +98,8 @@ public class TaskServiceImpl implements TaskService {
         if (StringUtils.isNotEmpty(command.getSource())) {
             task.setTaskStatus(TaskStatus.MODIFIED);
         }
+
+        task.setModifyUserId(command.getUserId());
         task.setModifyTime(System.currentTimeMillis());
         taskRepository.save(task);
     }

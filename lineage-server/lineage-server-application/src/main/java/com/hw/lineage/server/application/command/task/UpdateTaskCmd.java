@@ -1,7 +1,9 @@
 package com.hw.lineage.server.application.command.task;
 
+import com.hw.lineage.server.domain.query.BasicCriteria;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @description: UpdateTaskCmd
@@ -9,7 +11,8 @@ import lombok.Data;
  * @version: 1.0.0
  */
 @Data
-public class UpdateTaskCmd {
+@ToString(callSuper = true)
+public class UpdateTaskCmd extends BasicCriteria {
 
     @ApiModelProperty(hidden = true)
     private Long taskId;
