@@ -4,9 +4,9 @@ import com.hw.lineage.client.LineageClient;
 import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.TaskStatus;
 import com.hw.lineage.common.exception.LineageException;
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.LineageResult;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
@@ -99,7 +99,7 @@ public class LineageFacadeImpl implements LineageFacade {
     private void parseFieldLineage(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         taskSql.setSqlStatus(SqlStatus.RUNNING);
         try {
-            List<LineageResult> resultList = lineageClient.parseFieldLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
+            List<LineageInfo> resultList = lineageClient.parseFieldLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
             resultList.forEach(e -> {
                 TaskLineage taskLineage = new TaskLineage()
                         .setTaskId(task.getTaskId())
@@ -125,7 +125,7 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public List<FunctionResult> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException {
+    public List<FunctionInfo> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException {
         return lineageClient.parseFunction(pluginCode, file);
     }
 
@@ -165,8 +165,14 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public TableResult getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+    public TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
         return lineageClient.getTable(pluginCode, catalogName, database, tableName);
+    }
+
+    @Override
+    public String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+        String tableDdl=lineageClient.getTableDdl(pluginCode, catalogName, database, tableName);
+        return Base64Utils.encode(tableDdl);
     }
 
     @Override

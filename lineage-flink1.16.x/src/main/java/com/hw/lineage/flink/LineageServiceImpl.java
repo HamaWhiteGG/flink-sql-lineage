@@ -2,10 +2,10 @@ package com.hw.lineage.flink;
 
 
 import com.hw.lineage.common.enums.TableKind;
-import com.hw.lineage.common.result.ColumnResult;
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.LineageResult;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.ColumnInfo;
+import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.service.LineageService;
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.calcite.rel.RelNode;
@@ -56,6 +56,7 @@ import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Constant.DELIMITER;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @description: LineageContext
@@ -65,6 +66,10 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
 public class LineageServiceImpl implements LineageService {
     private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);
 
+    private static final String SHOW_CREATE_TABLE_SQL = "SHOW CREATE TABLE %s.`%s`.%s";
+
+    private static final String SHOW_CREATE_VIEW_SQL = "SHOW CREATE VIEW %s.`%s`.%s";
+
     private static final Map<String, String> FUNCTION_SUFFIX_MAP = ImmutableMap.of(
             ScalarFunction.class.getName(), "udf",
             TableFunction.class.getName(), "udtf",
@@ -73,8 +78,8 @@ public class LineageServiceImpl implements LineageService {
     );
 
 
-    private TableEnvironmentImpl tableEnv;
-    private FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
+    private final TableEnvironmentImpl tableEnv;
+    private final FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
     public LineageServiceImpl() {
         Configuration configuration = new Configuration();
@@ -99,12 +104,16 @@ public class LineageServiceImpl implements LineageService {
 
     @Override
     public void execute(String singleSql) {
+        executeSql(singleSql);
+    }
+
+    private TableResult executeSql(String singleSql) {
         LOG.info("Execute SQL: {}", singleSql);
-        tableEnv.executeSql(singleSql);
+        return tableEnv.executeSql(singleSql);
     }
 
     @Override
-    public List<LineageResult> parseFieldLineage(String singleSql) {
+    public List<LineageInfo> parseFieldLineage(String singleSql) {
         /**
          * Since TableEnvironment is not thread-safe, add this sentence to solve it.
          * Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
@@ -222,7 +231,7 @@ public class LineageServiceImpl implements LineageService {
         });
     }
 
-    private List<LineageResult> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
+    private List<LineageInfo> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
         // target columns
         List<String> targetColumnList = tableEnv.from(sinkTable)
                 .getResolvedSchema()
@@ -232,7 +241,7 @@ public class LineageServiceImpl implements LineageService {
         validateSchema(sinkTable, optRelNode, targetColumnList);
 
         RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
-        List<LineageResult> resultList = new ArrayList<>();
+        List<LineageInfo> resultList = new ArrayList<>();
 
         for (int index = 0; index < targetColumnList.size(); index++) {
             String targetColumn = targetColumnList.get(index);
@@ -260,7 +269,7 @@ public class LineageServiceImpl implements LineageService {
                         LOG.debug("transform: {}", rco.getTransform());
                     }
                     // add record
-                    resultList.add(new LineageResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
+                    resultList.add(new LineageInfo(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
                 }
             }
         }
@@ -284,9 +293,9 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException {
+    public List<FunctionInfo> parseFunction(File file) throws IOException, ClassNotFoundException {
         LOG.info("starting parse function from jar {}", file.getPath());
-        List<FunctionResult> resultList = new ArrayList<>();
+        List<FunctionInfo> resultList = new ArrayList<>();
         URL url = file.toURI().toURL();
 
         try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url}, getClass().getClassLoader());
@@ -311,7 +320,7 @@ public class LineageServiceImpl implements LineageService {
         return resultList;
     }
 
-    public FunctionResult parseUserDefinedFunction(Class<?> clazz) {
+    public FunctionInfo parseUserDefinedFunction(Class<?> clazz) {
         String functionClass = clazz.getName();
         String className = searchClassName(functionClass);
         String functionName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, className);
@@ -322,7 +331,7 @@ public class LineageServiceImpl implements LineageService {
                 .filter(e -> "eval".equals(e.getName()))
                 .findFirst();
 
-        FunctionResult result = new FunctionResult();
+        FunctionInfo result = new FunctionInfo();
         result.setClassName(functionClass);
         result.setFunctionName(functionName);
 
@@ -376,7 +385,7 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public TableResult getTable(String catalogName, String database, String tableName) throws Exception {
+    public TableInfo getTable(String catalogName, String database, String tableName) throws Exception {
         ObjectPath objectPath = new ObjectPath(database, tableName);
         CatalogBaseTable table = getCatalog(catalogName).getTable(objectPath);
         Schema schema = table.getUnresolvedSchema();
@@ -387,31 +396,27 @@ public class LineageServiceImpl implements LineageService {
                         primaryKeyList.addAll(pk.getColumnNames())
                 );
 
-        List<ColumnResult> columnList = schema.getColumns()
+        Map<String, String> watermarkMap = schema.getWatermarkSpecs()
                 .stream()
-                .map(column -> {
-                    ColumnResult columnResult = new ColumnResult()
-                            .setColumnName(column.getName())
-                            .setColumnType(processColumnType(column))
-                            .setComment(column.getComment().orElse(""));
-                    if (primaryKeyList.contains(column.getName())) {
-                        columnResult.setPrimaryKey(true);
-                    }
-                    return columnResult;
-                })
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(Schema.UnresolvedWatermarkSpec::getColumnName
+                        , entry -> entry.getWatermarkExpression().toString())
+                );
 
-        List<String> watermarkSpecList = schema.getWatermarkSpecs().
-                stream()
-                .map(Schema.UnresolvedWatermarkSpec::toString)
-                .collect(Collectors.toList());
+        List<ColumnInfo> columnList = schema.getColumns()
+                .stream()
+                .map(column -> new ColumnInfo()
+                        .setColumnName(column.getName())
+                        .setColumnType(processColumnType(column))
+                        .setComment(column.getComment().orElse(""))
+                        .setPrimaryKey(primaryKeyList.contains(column.getName()))
+                        .setWatermark(watermarkMap.getOrDefault(column.getName(), ""))
+                ).collect(Collectors.toList());
 
-        return new TableResult()
+        return new TableInfo()
                 .setTableName(tableName)
                 .setTableKind(TableKind.valueOf(table.getTableKind().name()))
                 .setComment(table.getComment())
                 .setColumnList(columnList)
-                .setWatermarkSpecList(watermarkSpecList)
                 .setPropertiesMap(table.getOptions());
     }
 
@@ -436,6 +441,20 @@ public class LineageServiceImpl implements LineageService {
     public void dropTable(String catalogName, String database, String tableName) throws Exception {
         ObjectPath objectPath = new ObjectPath(database, tableName);
         getCatalog(catalogName).dropTable(objectPath, false);
+    }
+
+    @Override
+    public String getTableDdl(String catalogName, String database, String tableName) throws Exception {
+        TableInfo tableInfo = getTable(catalogName, database, tableName);
+        String showCreateSql = tableInfo.getTableKind().equals(TableKind.TABLE)
+                ? String.format(SHOW_CREATE_TABLE_SQL, catalogName, database, tableName)
+                : String.format(SHOW_CREATE_VIEW_SQL, catalogName, database, tableName);
+
+        TableResult tableResult = executeSql(showCreateSql);
+        String tableDdl=requireNonNull(tableResult.collect().next().getField(0)).toString();
+
+        // simplified table name
+        return tableDdl.replace(String.format("`%s`.`%s`.",catalogName,database),"");
     }
 
     public String getCurrentCatalog() {

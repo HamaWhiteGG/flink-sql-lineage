@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 @Data
 @Builder
 @AllArgsConstructor
-public class LineageResult {
+public class LineageInfo {
 
     private String sourceCatalog;
 
@@ -41,7 +41,7 @@ public class LineageResult {
      */
     private String transform;
 
-    public LineageResult(String sourceTablePath, String sourceColumn
+    public LineageInfo(String sourceTablePath, String sourceColumn
             , String targetTablePath, String targetColumn, String transform) {
         String[] sourceItems = sourceTablePath.split("\\" + Constant.DELIMITER);
         String[] targetItems = targetTablePath.split("\\" + Constant.DELIMITER);
@@ -57,7 +57,7 @@ public class LineageResult {
         this.transform = transform;
     }
 
-    public LineageResult(String catalog, String database, String sourceTable, String sourceColumn
+    public LineageInfo(String catalog, String database, String sourceTable, String sourceColumn
             , String targetTable, String targetColumn) {
         this.sourceCatalog = catalog;
         this.sourceDatabase = database;
@@ -69,10 +69,10 @@ public class LineageResult {
         this.targetColumn = targetColumn;
     }
 
-    public static List<LineageResult> buildResult(String catalog, String database, String[][] expectedArray) {
+    public static List<LineageInfo> buildResult(String catalog, String database, String[][] expectedArray) {
         return Stream.of(expectedArray)
                 .map(e -> {
-                    LineageResult result = new LineageResult(catalog, database, e[0], e[1], e[2], e[3]);
+                    LineageInfo result = new LineageInfo(catalog, database, e[0], e[1], e[2], e[3]);
                     // transform field is optional
                     if (e.length == 5) {
                         result.setTransform(e[4]);

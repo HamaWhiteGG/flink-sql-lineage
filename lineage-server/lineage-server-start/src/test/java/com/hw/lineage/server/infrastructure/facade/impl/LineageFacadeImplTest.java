@@ -1,6 +1,6 @@
 package com.hw.lineage.server.infrastructure.facade.impl;
 
-import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.FunctionInfo;
 import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.server.AbstractSpringBootTest;
 import com.hw.lineage.server.domain.facade.LineageFacade;
@@ -33,13 +33,13 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
     @Test
     public void testParseFunctionA() throws IOException, ClassNotFoundException {
         Stream.of(PLUGIN_NAMES).forEach(pluginName -> {
-            List<FunctionResult> resultList = parseFunction("function-a.jar", pluginName);
+            List<FunctionInfo> resultList = parseFunction("function-a.jar", pluginName);
 
             assertThat(resultList)
                     .isNotNull()
                     .asList()
                     .hasSize(1)
-                    .contains(new FunctionResult().setFunctionName("flink_suffix_udf")
+                    .contains(new FunctionInfo().setFunctionName("flink_suffix_udf")
                             .setInvocation("flink_suffix_udf(String1)")
                             .setClassName("com.hw.lineage.flink.table.udf.functiona.FlinkSuffixFunction")
                             .setDescr("return String")
@@ -54,17 +54,17 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
     @Test
     public void testParseFunctionB() throws IOException, ClassNotFoundException {
         Stream.of(PLUGIN_NAMES).forEach(pluginName -> {
-            List<FunctionResult> resultList = parseFunction("function-b.jar", pluginName);
+            List<FunctionInfo> resultList = parseFunction("function-b.jar", pluginName);
 
             assertThat(resultList)
                     .isNotNull()
                     .asList()
                     .hasSize(2)
-                    .contains(new FunctionResult().setFunctionName("flink_prefix_udf")
+                    .contains(new FunctionInfo().setFunctionName("flink_prefix_udf")
                                     .setInvocation("flink_prefix_udf(String1,Integer2)")
                                     .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkPrefixFunction")
                                     .setDescr("return String"),
-                            new FunctionResult().setFunctionName("flink_split_udtf")
+                            new FunctionInfo().setFunctionName("flink_split_udtf")
                                     .setInvocation("flink_split_udtf(String1)")
                                     .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkSplitFunction")
                                     .setDescr("return ROW<word STRING, length INT>")
@@ -73,7 +73,7 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
     }
 
 
-    private List<FunctionResult> parseFunction(String fileName, String pluginName) {
+    private List<FunctionInfo> parseFunction(String fileName, String pluginName) {
         File file = locateJarFile(fileName);
         try {
             return lineageFacade.parseFunction(pluginName, file);

@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description: TableResult
+ * @description: TableInfo
  * @author: HamaWhite
  * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class TableResult {
+public class TableInfo {
 
     private String tableName;
 
@@ -24,9 +24,7 @@ public class TableResult {
 
     private String comment;
 
-    private List<ColumnResult> columnList;
-
-    private List<String> watermarkSpecList;
+    private List<ColumnInfo> columnList;
 
     /**
      * Properties of the table

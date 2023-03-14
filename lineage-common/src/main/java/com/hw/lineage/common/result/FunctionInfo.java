@@ -5,14 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * @description: FunctionResult
+ * @description: FunctionInfo
  * @author: HamaWhite
  * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class FunctionResult {
+public class FunctionInfo {
 
     private String functionName;
 

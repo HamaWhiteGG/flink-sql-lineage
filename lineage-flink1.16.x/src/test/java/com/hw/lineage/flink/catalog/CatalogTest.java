@@ -3,15 +3,12 @@ package com.hw.lineage.flink.catalog;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.hw.lineage.common.enums.TableKind;
-import com.hw.lineage.common.result.ColumnResult;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.ColumnInfo;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.flink.LineageServiceImpl;
-import com.hw.lineage.flink.basic.AbstractBasicTest;
 import org.apache.flink.table.api.TableException;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,19 +18,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 /**
  * This unit test depends on the external Hive and Mysql environment,
  * if not, please comment out this unit test class(add @Ignore)
+ *
  * @author: HamaWhite
  * @version: 1.0.0
  */
 public class CatalogTest {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractBasicTest.class);
-
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    private static final Logger LOG = LoggerFactory.getLogger(CatalogTest.class);
 
     private static final String database = "lineage_db";
 
@@ -56,7 +51,7 @@ public class CatalogTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("depends on the external Mysql environment")
     public void testJdbcCatalog() {
         String catalogName = "jdbc_catalog";
         useJdbcCatalog(catalogName);
@@ -78,7 +73,7 @@ public class CatalogTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("depends on the external Hive environment")
     public void testHiveCatalog() {
         String catalogName = "hive_catalog";
         useHiveCatalog(catalogName);
@@ -106,20 +101,19 @@ public class CatalogTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("depends on the external Mysql environment")
     public void testQueryJdbcCatalogInfo() throws Exception {
         String catalogName = "jdbc_catalog";
         useJdbcCatalog(catalogName);
-        expectedException.expect(TableException.class);
-        expectedException.expectMessage(String.format("Could not execute CreateTable in path `%s`.`%s`.`%s`"
-                , catalogName, database, tableName)
-        );
-        checkQueryCatalogInfo(catalogName);
+
+        assertThrows(String.format("Could not execute CreateTable in path `%s`.`%s`.`%s`", catalogName, database, tableName)
+                , TableException.class
+                , () -> checkQueryCatalogInfo(catalogName));
     }
 
 
     @Test
-    @Ignore
+    @Ignore("depends on the external Hive environment")
     public void testQueryHiveCatalogInfo() throws Exception {
         String catalogName = "hive_catalog";
         useHiveCatalog(catalogName);
@@ -133,40 +127,62 @@ public class CatalogTest {
         assertThat(context.listTables(catalogName, database), hasItem(tableName));
         assertEquals(Collections.emptyList(), context.listViews(catalogName, database));
 
-        TableResult tableResult = new TableResult()
+        TableInfo expectedTableInfo = new TableInfo()
                 .setTableName(tableName)
                 .setTableKind(TableKind.TABLE)
                 .setComment("Users Table")
                 .setColumnList(
                         ImmutableList.of(
-                                new ColumnResult("id", "BIGINT", "", true),
-                                new ColumnResult("name", "STRING", "", false),
-                                new ColumnResult("birthday", "TIMESTAMP(3)", "", false),
-                                new ColumnResult("ts", "TIMESTAMP(3)", "", false),
+                                new ColumnInfo("id", "BIGINT", "", true, ""),
+                                new ColumnInfo("name", "STRING", "", false, ""),
+                                new ColumnInfo("birthday", "TIMESTAMP(3)", "", false, ""),
+                                new ColumnInfo("ts", "TIMESTAMP(3)", "", false, "[`ts` - INTERVAL '5' SECOND]"),
                                 /**
                                  * TODO optimize,this should be PROCTIME(),but [PROCTIME()]
                                  * Because the asSummaryString method of different subclasses of Expression is different
                                  */
-                                new ColumnResult("proc_time", "[PROCTIME()]", "", false)
+                                new ColumnInfo("proc_time", "[PROCTIME()]", "", false, "")
                         )
-                )
-                .setWatermarkSpecList(Collections.singletonList("WATERMARK FOR `ts` AS [`ts` - INTERVAL '5' SECOND]"))
-                .setPropertiesMap(
+                ).setPropertiesMap(
                         ImmutableMap.of(
-                                "connector", "mysql-cdc",
-                                "hostname", "127.0.0.1",
-                                "port", "3306",
-                                "username", "root",
                                 "password", "xxx",
+                                "hostname", "127.0.0.1",
                                 "server-time-zone", "Asia/Shanghai",
+                                "connector", "mysql-cdc",
+                                "port", "3306",
                                 "database-name", "demo",
-                                "table-name", "users"
+                                "table-name", "users",
+                                "username", "root"
                         )
                 );
-        LOG.info("tableResult: {}", tableResult);
-        assertEquals(tableResult, context.getTable(catalogName, database, tableName));
-    }
+        TableInfo tableInfo = context.getTable(catalogName, database, tableName);
+        LOG.info("tableInfo: {}", tableInfo);
+        assertEquals(expectedTableInfo, tableInfo);
 
+        String expectedTableDdl = "CREATE TABLE `ods_mysql_users_watermark` (\n" +
+                "  `id` BIGINT NOT NULL,\n" +
+                "  `name` VARCHAR(2147483647),\n" +
+                "  `birthday` TIMESTAMP(3),\n" +
+                "  `ts` TIMESTAMP(3),\n" +
+                "  `proc_time` AS PROCTIME(),\n" +
+                "  WATERMARK FOR `ts` AS `ts` - INTERVAL '5' SECOND,\n" +
+                "  CONSTRAINT `PK_3386` PRIMARY KEY (`id`) NOT ENFORCED\n" +
+                ") COMMENT 'Users Table'\n" +
+                "WITH (\n" +
+                "  'hostname' = '127.0.0.1',\n" +
+                "  'password' = 'xxx',\n" +
+                "  'connector' = 'mysql-cdc',\n" +
+                "  'port' = '3306',\n" +
+                "  'database-name' = 'demo',\n" +
+                "  'server-time-zone' = 'Asia/Shanghai',\n" +
+                "  'table-name' = 'users',\n" +
+                "  'username' = 'root'\n" +
+                ")\n";
+
+        String tableDdl = context.getTableDdl(catalogName, database, tableName);
+        LOG.info("tableDdl: {}", tableDdl);
+        assertEquals(expectedTableDdl, tableDdl);
+    }
 
     private void createTableOfOdsMysqlUsersWatermark() {
         context.execute("DROP TABLE IF EXISTS " + tableName);
@@ -182,10 +198,10 @@ public class CatalogTest {
                 " COMMENT 'Users Table' " +
                 " WITH ( " +
                 "       'connector' = 'mysql-cdc'            ," +
-                "       'hostname'  = '127.0.0.1'       ," +
+                "       'hostname'  = '127.0.0.1'            ," +
                 "       'port'      = '3306'                 ," +
                 "       'username'  = 'root'                 ," +
-                "       'password'  = 'xxx'          ," +
+                "       'password'  = 'xxx'                  ," +
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
