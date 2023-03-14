@@ -1,6 +1,6 @@
 package com.hw.lineage.flink.basic;
 
-import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.result.LineageInfo;
 import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.catalog.hive.HiveTestUtils;
@@ -51,11 +51,11 @@ public abstract class AbstractBasicTest {
     }
 
     protected void parseFieldLineage(String sql, String[][] expectedArray) {
-        List<LineageResult> actualList = context.parseFieldLineage(sql);
+        List<LineageInfo> actualList = context.parseFieldLineage(sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 
-        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
+        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
     }
 

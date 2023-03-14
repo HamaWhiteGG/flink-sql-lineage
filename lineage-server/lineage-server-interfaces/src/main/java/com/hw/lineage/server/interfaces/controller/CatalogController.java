@@ -1,7 +1,7 @@
 package com.hw.lineage.server.interfaces.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
 import com.hw.lineage.server.application.command.catalog.CreateDatabaseCmd;
 import com.hw.lineage.server.application.command.catalog.CreateTableCmd;
@@ -119,11 +119,19 @@ public class CatalogController {
     }
 
     @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}")
-    public Result<TableResult> queryTable(@PathVariable("catalogId") Long catalogId,
-                                          @PathVariable("database") String database,
-                                          @PathVariable("tableName") String tableName) throws Exception {
-        TableResult tableResult = catalogService.getTable(catalogId, database, tableName);
-        return Result.success(ResultMessage.DETAIL_SUCCESS, tableResult);
+    public Result<TableInfo> queryTable(@PathVariable("catalogId") Long catalogId,
+                                        @PathVariable("database") String database,
+                                        @PathVariable("tableName") String tableName) throws Exception {
+        TableInfo tableInfo = catalogService.getTable(catalogId, database, tableName);
+        return Result.success(ResultMessage.DETAIL_SUCCESS, tableInfo);
+    }
+
+    @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}/ddl")
+    public Result<String> queryTableDdl(@PathVariable("catalogId") Long catalogId,
+                                        @PathVariable("database") String database,
+                                        @PathVariable("tableName") String tableName) throws Exception {
+        String tableDdl = catalogService.getTableDdl(catalogId, database, tableName);
+        return Result.success(ResultMessage.DETAIL_SUCCESS, tableDdl);
     }
 
 

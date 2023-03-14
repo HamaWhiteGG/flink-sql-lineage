@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * @description: ColumnResult
+ * @description: ColumnInfo
  * @author: HamaWhite
  * @version: 1.0.0
  */
@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ColumnResult {
+public class ColumnInfo {
 
     private String columnName;
 
@@ -22,5 +22,7 @@ public class ColumnResult {
 
     private String comment;
 
-    private Boolean primaryKey = false;
+    private Boolean primaryKey;
+
+    private String watermark;
 }

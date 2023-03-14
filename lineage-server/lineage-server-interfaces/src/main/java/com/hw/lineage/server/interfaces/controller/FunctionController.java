@@ -1,6 +1,6 @@
 package com.hw.lineage.server.interfaces.controller;
 
-import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.FunctionInfo;
 import com.hw.lineage.server.application.command.function.ParseFunctionCmd;
 import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.interfaces.result.Result;
@@ -32,9 +32,9 @@ public class FunctionController {
     private FunctionService functionService;
 
     @PostMapping("/parse")
-    public Result<List<FunctionResult>> parseFunction(@Valid @RequestBody ParseFunctionCmd command)
+    public Result<List<FunctionInfo>> parseFunction(@Valid @RequestBody ParseFunctionCmd command)
             throws IOException, ClassNotFoundException {
-        List<FunctionResult> functionDTOList = functionService.parseFunction(command);
+        List<FunctionInfo> functionDTOList = functionService.parseFunction(command);
         return Result.success(ResultMessage.PARSE_FUNCTION_SUCCESS, functionDTOList);
     }
 }

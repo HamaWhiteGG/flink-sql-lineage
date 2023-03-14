@@ -1,9 +1,9 @@
 package com.hw.lineage.common.service;
 
 import com.hw.lineage.common.plugin.Plugin;
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.LineageResult;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.TableInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public interface LineageService extends Plugin {
     /**
      * Parse the field blood relationship of the input SQL
      */
-    List<LineageResult> parseFieldLineage(String singleSql);
+    List<LineageInfo> parseFieldLineage(String singleSql);
 
     /**
      * Execute the single sql
@@ -29,7 +29,7 @@ public interface LineageService extends Plugin {
     /**
      * Parse the function name, function format, function main class and description from the jar file
      */
-    List<FunctionResult> parseFunction(File file) throws IOException, ClassNotFoundException;
+    List<FunctionInfo> parseFunction(File file) throws IOException, ClassNotFoundException;
 
     /**
      * Get the names of all databases in this catalog.
@@ -49,7 +49,9 @@ public interface LineageService extends Plugin {
     /**
      * Reads a registered table and returns the tableResult.
      */
-    TableResult getTable(String catalogName, String database, String tableName)  throws Exception;
+    TableInfo getTable(String catalogName, String database, String tableName) throws Exception;
 
-     void dropTable(String catalogName, String database, String tableName) throws Exception;
+    String getTableDdl(String catalogName, String database, String tableName) throws Exception;
+
+    void dropTable(String catalogName, String database, String tableName) throws Exception;
 }

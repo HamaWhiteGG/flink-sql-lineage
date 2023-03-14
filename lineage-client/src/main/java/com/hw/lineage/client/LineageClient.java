@@ -1,10 +1,11 @@
 package com.hw.lineage.client;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.hw.lineage.common.exception.LineageException;
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.LineageResult;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.loader.classloading.TemporaryClassLoaderContext;
@@ -86,7 +87,7 @@ public class LineageClient {
         }
 
         // use AppClassLoader to load
-        // String[] parentPatterns = {LineageService.class.getName(), LineageResult.class.getName()};
+        // String[] parentPatterns = {LineageService.class.getName(), LineageInfo.class.getName()};
         String[] parentPatterns = {"com.hw.lineage.common"};
 
         PluginManager pluginManager =
@@ -99,7 +100,7 @@ public class LineageClient {
     /**
      * Parse the field blood relationship of the input SQL
      */
-    public List<LineageResult> parseFieldLineage(String pluginCode, String catalogName, String database, String singleSql) {
+    public List<LineageInfo> parseFieldLineage(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
@@ -128,7 +129,7 @@ public class LineageClient {
         }
     }
 
-    public List<FunctionResult> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException {
+    public List<FunctionInfo> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             return service.parseFunction(file);
@@ -152,10 +153,8 @@ public class LineageClient {
     }
 
     public void createDatabase(String pluginCode, String catalogName, String database, String comment) {
-        comment = comment == null ? "" : comment;
-        execute(pluginCode
-                , String.format(CREATE_DATABASE_SQL, catalogName, database, comment)
-        );
+        comment = Strings.nullToEmpty(comment);
+        execute(pluginCode, String.format(CREATE_DATABASE_SQL, catalogName, database, comment));
     }
 
     public void deleteDatabase(String pluginCode, String catalogName, String database) {
@@ -212,8 +211,16 @@ public class LineageClient {
     /**
      * Reads a registered table and returns the tableResult.
      */
-    public TableResult getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+    public TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
         LineageService service = getLineageService(pluginCode);
         return service.getTable(catalogName, database, tableName);
+    }
+
+    /**
+     * Return the base64 encrypted ddl
+     */
+    public String getTableDdl(String pluginCode,String catalogName, String database, String tableName) throws Exception {
+        LineageService service = getLineageService(pluginCode);
+        return service.getTableDdl(catalogName, database, tableName);
     }
 }

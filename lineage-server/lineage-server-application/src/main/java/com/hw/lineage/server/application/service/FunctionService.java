@@ -1,7 +1,7 @@
 package com.hw.lineage.server.application.service;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.FunctionInfo;
 import com.hw.lineage.server.application.dto.FunctionDTO;
 import com.hw.lineage.server.application.command.function.CreateFunctionCmd;
 import com.hw.lineage.server.application.command.function.ParseFunctionCmd;
@@ -35,7 +35,7 @@ public interface FunctionService {
     /**
      * Parse the function name, function format, function main class and description from the jar file
      */
-    List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException;
+    List<FunctionInfo> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException;
 
     /**
      * Create the functions of memory type catalog to flink when the application start

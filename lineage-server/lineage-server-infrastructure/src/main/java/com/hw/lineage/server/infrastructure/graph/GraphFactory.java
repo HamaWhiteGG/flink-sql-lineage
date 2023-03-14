@@ -1,6 +1,6 @@
 package com.hw.lineage.server.infrastructure.graph;
 
-import com.hw.lineage.common.result.ColumnResult;
+import com.hw.lineage.common.result.ColumnInfo;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.facade.LineageFacade;
@@ -74,10 +74,10 @@ public class GraphFactory {
             Integer tableNodeId = atomic.getAndIncrement();
             sourceTableNode = new TableNode(tableNodeId, sourceTableName);
             tableGraph.addNode(sourceTableName, sourceTableNode);
-            List<ColumnResult> columnList = lineageFacade.getTable(pluginCode, lineage.getSourceCatalog()
+            List<ColumnInfo> columnList = lineageFacade.getTable(pluginCode, lineage.getSourceCatalog()
                     , lineage.getSourceDatabase(), lineage.getSourceTable()).getColumnList();
 
-            for (ColumnResult column : columnList) {
+            for (ColumnInfo column : columnList) {
                 String nodeName = String.join(DELIMITER, sourceTableName, column.getColumnName());
                 ColumnNode columnNode = new ColumnNode(atomic.getAndIncrement(), column.getColumnName(), tableNodeId);
                 columnGraph.addNode(nodeName, columnNode);
@@ -96,10 +96,10 @@ public class GraphFactory {
             Integer tableNodeId = atomic.getAndIncrement();
             targetTableNode = new TableNode(tableNodeId, targetTableName);
             tableGraph.addNode(targetTableName, targetTableNode);
-            List<ColumnResult> columnList = lineageFacade.getTable(pluginCode, lineage.getTargetCatalog()
+            List<ColumnInfo> columnList = lineageFacade.getTable(pluginCode, lineage.getTargetCatalog()
                     , lineage.getTargetDatabase(), lineage.getTargetTable()).getColumnList();
 
-            for (ColumnResult column : columnList) {
+            for (ColumnInfo column : columnList) {
                 String nodeName = String.join(DELIMITER, targetTableName, column.getColumnName());
                 ColumnNode columnNode = new ColumnNode(atomic.getAndIncrement(), column.getColumnName(), tableNodeId);
                 columnGraph.addNode(nodeName, columnNode);

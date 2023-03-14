@@ -3,7 +3,7 @@ package com.hw.lineage.server.application.service.impl;
 import com.github.pagehelper.PageInfo;
 import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.enums.TableKind;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
@@ -164,9 +164,15 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public TableResult getTable(Long catalogId, String database, String tableName) throws Exception {
+    public TableInfo getTable(Long catalogId, String database, String tableName) throws Exception {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
         return lineageFacade.getTable(entry.getPluginCode(), entry.getCatalogName(), database, tableName);
+    }
+
+    @Override
+    public String getTableDdl(Long catalogId, String database, String tableName) throws Exception {
+        CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
+        return lineageFacade.getTableDdl(entry.getPluginCode(), entry.getCatalogName(), database, tableName);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.hw.lineage.server.domain.facade;
 
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.server.domain.entity.task.Task;
 
 import java.io.File;
@@ -18,7 +18,7 @@ public interface LineageFacade {
 
     void parseLineage(String pluginCode, String catalogName, Task task);
 
-    List<FunctionResult> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException;
+    List<FunctionInfo> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException;
 
     void createCatalog(String pluginCode, String catalogName, Map<String, String> propertiesMap);
 
@@ -34,7 +34,9 @@ public interface LineageFacade {
 
     List<String> listTables(String pluginCode, String catalogName, String database) throws Exception;
 
-    TableResult getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception;
+    TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception;
+
+    String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception;
 
     List<String> listViews(String pluginCode, String catalogName, String database) throws Exception;
 

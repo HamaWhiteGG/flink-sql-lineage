@@ -1,7 +1,7 @@
 package com.hw.lineage.client;
 
 import com.google.common.collect.ImmutableMap;
-import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.result.LineageInfo;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -83,11 +83,11 @@ public class LineageClientTest {
     }
 
     private void parseFieldLineage(String pluginCode, String sql, String[][] expectedArray) {
-        List<LineageResult> actualList = client.parseFieldLineage(pluginCode, catalogName, database, sql);
+        List<LineageInfo> actualList = client.parseFieldLineage(pluginCode, catalogName, database, sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 
-        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, database, expectedArray);
+        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, database, expectedArray);
         assertEquals(expectedList, actualList);
     }
 

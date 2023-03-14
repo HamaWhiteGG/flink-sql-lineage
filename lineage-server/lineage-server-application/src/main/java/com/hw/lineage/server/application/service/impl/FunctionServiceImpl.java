@@ -1,7 +1,7 @@
 package com.hw.lineage.server.application.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.FunctionInfo;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.function.CreateFunctionCmd;
@@ -122,7 +122,7 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     @Override
-    public List<FunctionResult> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException {
+    public List<FunctionInfo> parseFunction(ParseFunctionCmd command) throws IOException, ClassNotFoundException {
         File file = storageFacade.loadAsResource(command.getFunctionPath()).getFile();
         Plugin plugin = pluginRepository.find(new PluginId(command.getPluginId()));
         // parse function info

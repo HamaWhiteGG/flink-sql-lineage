@@ -1,7 +1,7 @@
 package com.hw.lineage.server.application.service;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.TableResult;
+import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
 import com.hw.lineage.server.application.command.catalog.CreateDatabaseCmd;
 import com.hw.lineage.server.application.command.catalog.CreateTableCmd;
@@ -45,7 +45,12 @@ public interface CatalogService {
 
     void deleteTable(Long catalogId, String database,String tableName)  throws Exception;
 
-    TableResult getTable(Long catalogId, String database, String tableName) throws Exception;
+    TableInfo getTable(Long catalogId, String database, String tableName) throws Exception;
+
+    /**
+     * Return the base64 encrypted ddl
+     */
+    String getTableDdl(Long catalogId, String database, String tableName) throws Exception;
 
     List<TableDTO> queryTables(Long catalogId, String database) throws Exception;
 
