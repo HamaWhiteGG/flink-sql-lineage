@@ -107,6 +107,27 @@
         </table>
 
         <table tableName="rel_role_permission" domainObjectName="RolePermission" delimitAllColumns="true"/>
+
+        <table tableName="bas_audit" domainObjectName="Audit" delimitAllColumns="true">
+            <generatedKey column="audit_id" sqlStatement="Mysql" identity="true"/>
+            <columnOverride
+                    column="module_code"
+                    javaType="com.hw.lineage.common.enums.audit.ModuleCode"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ModuleCodeHandler"/>
+            <columnOverride
+                    column="operation_type"
+                    javaType="com.hw.lineage.common.enums.audit.OperationType"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.OperationTypeHandler"/>
+            <columnOverride
+                    column="operation_status"
+                    javaType="com.hw.lineage.common.enums.audit.OperationStatus"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.OperationStatusTypeHandler"/>
+            <columnOverride
+                    column="parameters"
+                    javaType="com.alibaba.fastjson2.JSONObject"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler"/>
+
+        </table>
     </context>
 
 </generatorConfiguration>

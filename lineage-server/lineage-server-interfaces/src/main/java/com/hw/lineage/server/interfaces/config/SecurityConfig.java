@@ -53,7 +53,8 @@ public class SecurityConfig {
             "/storages/**",
             "/users/**",
             "/roles/**",
-            "/permissions/**"
+            "/permissions/**",
+            "/audits/**"
     };
 
     @Resource

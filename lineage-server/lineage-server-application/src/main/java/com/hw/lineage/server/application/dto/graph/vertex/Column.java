@@ -12,7 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Column {
 
-    private Integer id;
+    private String id;
 
     private String name;
 

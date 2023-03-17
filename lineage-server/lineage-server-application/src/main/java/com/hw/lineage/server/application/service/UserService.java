@@ -26,5 +26,8 @@ public interface UserService extends UserDetailsService {
     void deleteUser(Long userId);
 
     void updateUser(UpdateUserCmd command);
-    
+
+    Long getCurrentUserId();
+
+    String getCurrentUsername();
 }
