@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * @description: CreateDatabaseCmd
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotBlank;
  * @version: 1.0.0
  */
 @Data
-public class CreateDatabaseCmd {
+public class CreateDatabaseCmd implements Serializable {
     @ApiModelProperty(hidden = true)
     private Long catalogId;
 

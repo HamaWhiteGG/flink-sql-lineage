@@ -28,7 +28,7 @@ import javax.annotation.Resource;
  * @author: HamaWhite
  * @version: 1.0.0
  */
-@Service
+@Service("taskService")
 public class TaskServiceImpl implements TaskService {
     @Resource
     private TaskRepository taskRepository;
@@ -49,9 +49,10 @@ public class TaskServiceImpl implements TaskService {
     public Long createTask(CreateTaskCmd command) {
         Task task = new Task()
                 .setTaskName(command.getTaskName())
+                .setCatalogId(new CatalogId(command.getCatalogId()))
+                .setDatabase(command.getDatabase())
                 .setDescr(command.getDescr())
-                .setTaskStatus(TaskStatus.INIT)
-                .setCatalogId(new CatalogId(command.getCatalogId()));
+                .setTaskStatus(TaskStatus.INIT);
 
         task.setCreateUserId(command.getUserId())
                 .setModifyUserId(command.getUserId());

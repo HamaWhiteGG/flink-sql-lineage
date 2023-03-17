@@ -37,5 +37,4 @@ public class LineageServerApplication {
     CommandLineRunner createMemoryFunctions(FunctionService functionService) {
         return args -> functionService.createMemoryFunctions();
     }
-
 }

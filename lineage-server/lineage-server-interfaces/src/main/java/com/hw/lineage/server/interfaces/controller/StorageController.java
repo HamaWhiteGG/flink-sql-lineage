@@ -3,7 +3,8 @@ package com.hw.lineage.server.interfaces.controller;
 import com.hw.lineage.common.enums.StorageType;
 import com.hw.lineage.server.application.command.storage.DeleteStorageCmd;
 import com.hw.lineage.server.application.service.StorageService;
-import com.hw.lineage.server.interfaces.aspect.SkipAspect;
+import com.hw.lineage.server.interfaces.aspect.AuditLog;
+import com.hw.lineage.server.interfaces.aspect.SkipLogAspect;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
@@ -20,6 +21,8 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import static com.hw.lineage.common.enums.audit.ModuleCode.STORAGES;
+import static com.hw.lineage.common.enums.audit.OperationType.*;
 import static com.hw.lineage.common.util.Preconditions.checkArgument;
 
 /**
@@ -36,16 +39,18 @@ public class StorageController {
     @javax.annotation.Resource
     private StorageService storageService;
 
-    @SkipAspect
+    @SkipLogAspect
     @PostMapping("/upload")
+    @AuditLog(module = STORAGES, type = UPLOAD, descr = "'Upload File: ' + #file.originalFilename", params = false)
     public Result<String> uploadFile(@RequestParam("file") MultipartFile file, @NotNull StorageType storageType) throws IOException {
         checkArgument(!file.isEmpty(), "failed to store empty file.");
         String filePath = storageService.uploadFile(file, storageType);
         return Result.success(ResultMessage.UPLOAD_SUCCESS, filePath);
     }
 
-    @SkipAspect
+    @SkipLogAspect
     @GetMapping("/download")
+    @AuditLog(module = STORAGES, type = DOWNLOAD, descr = "'Download file: ' + #filePath")
     public ResponseEntity<Resource> downloadFile(@NotBlank String filePath) throws MalformedURLException {
         Resource file = storageService.downloadFile(filePath);
         return ResponseEntity
@@ -55,6 +60,7 @@ public class StorageController {
     }
 
     @DeleteMapping("")
+    @AuditLog(module = STORAGES, type = DELETE, descr = "'Delete File: ' + #command.filePath")
     public Result<Boolean> deleteFile(@Valid @RequestBody DeleteStorageCmd command) throws IOException {
         storageService.deleteFile(command.getFilePath());
         return Result.success(ResultMessage.DELETE_SUCCESS);

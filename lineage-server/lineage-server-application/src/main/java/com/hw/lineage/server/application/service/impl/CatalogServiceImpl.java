@@ -41,7 +41,7 @@ import static com.hw.lineage.common.enums.CatalogType.HIVE;
  * @author: HamaWhite
  * @version: 1.0.0
  */
-@Service
+@Service("catalogService")
 public class CatalogServiceImpl implements CatalogService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CatalogServiceImpl.class);
