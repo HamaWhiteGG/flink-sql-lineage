@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public abstract class Link {
 
-    private Integer id;
+    private String id;
 
-    private Integer relU;
+    private String relU;
 
-    private Integer relV;
+    private String relV;
 
-    public Link(Integer id, Integer relU, Integer relV) {
+    public Link(String id, String relU, String relV) {
         this.id = id;
         this.relU = relU;
         this.relV = relV;

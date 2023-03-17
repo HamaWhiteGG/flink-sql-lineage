@@ -14,7 +14,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class Vertex {
 
-    private Integer id;
+    private String id;
 
     private String name;
 

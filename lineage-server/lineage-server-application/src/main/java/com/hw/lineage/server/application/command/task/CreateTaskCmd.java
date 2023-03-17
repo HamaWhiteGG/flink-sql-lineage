@@ -22,9 +22,9 @@ public class CreateTaskCmd extends BasicCriteria {
     private String descr;
 
     @NotNull
-    private Long pluginId;
-
-    @NotNull
     private Long catalogId;
+
+    @NotBlank
+    private String database;
 
 }

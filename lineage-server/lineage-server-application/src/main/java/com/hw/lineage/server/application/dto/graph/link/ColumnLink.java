@@ -11,13 +11,13 @@ import lombok.Data;
 @Data
 public class ColumnLink extends Link {
 
-    private Integer u;
+    private String u;
 
-    private Integer v;
+    private String v;
 
     private String transform;
 
-    public ColumnLink(Integer id, Integer relU, Integer relV, Integer u, Integer v, String transform) {
+    public ColumnLink(String id, String relU, String relV, String u, String v, String transform) {
         super(id, relU, relV);
         this.u = u;
         this.v = v;

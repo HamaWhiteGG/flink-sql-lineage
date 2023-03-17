@@ -2,7 +2,7 @@ package com.hw.lineage.server.domain.query.permission;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @description: PermissionCheck
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @version: 1.0.0
  */
 @Data
-public class PermissionCheck {
+public class PermissionCheck implements Serializable {
 
     private String permissionName;
 

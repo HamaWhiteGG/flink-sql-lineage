@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @description: ParseFunctionCmd
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * @version: 1.0.0
  */
 @Data
-public class ParseFunctionCmd {
+public class ParseFunctionCmd implements Serializable {
 
     @NotNull
     private Long pluginId;

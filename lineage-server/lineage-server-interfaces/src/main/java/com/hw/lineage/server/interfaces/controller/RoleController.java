@@ -7,6 +7,7 @@ import com.hw.lineage.server.application.dto.RoleDTO;
 import com.hw.lineage.server.application.service.RoleService;
 import com.hw.lineage.server.domain.query.role.RoleCheck;
 import com.hw.lineage.server.domain.query.role.RoleQuery;
+import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
+import static com.hw.lineage.common.enums.audit.ModuleCode.ROLES;
+import static com.hw.lineage.common.enums.audit.OperationType.*;
 
 /**
  * @description: RoleController
@@ -31,29 +35,34 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping("/{roleId}")
+    @AuditLog(module = ROLES, type = QUERY, descr = "'Query Role: ' + @roleService.queryRole(#roleId).roleName")
     public Result<RoleDTO> queryRole(@PathVariable("roleId") Long roleId) {
         RoleDTO roleDTO = roleService.queryRole(roleId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, roleDTO);
     }
 
     @GetMapping("")
+    @AuditLog(module = ROLES, type = QUERY, descr = "'Query Roles'")
     public Result<PageInfo<RoleDTO>> queryRoles(RoleQuery roleQuery) {
         PageInfo<RoleDTO> pageInfo = roleService.queryRoles(roleQuery);
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 
     @PostMapping("")
+    @AuditLog(module = ROLES, type = CREATE, descr = "'Create Role: ' + #command.roleName")
     public Result<Long> createRole(@Valid @RequestBody CreateRoleCmd command) {
         Long roleId = roleService.createRole(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, roleId);
     }
 
     @GetMapping("/exist")
+    @AuditLog(module = ROLES, type = QUERY, descr = "'Check Role Exist'")
     public Result<Boolean> checkRoleExist(@Valid RoleCheck roleCheck) {
         return Result.success(ResultMessage.CHECK_SUCCESS, roleService.checkRoleExist(roleCheck));
     }
 
     @PutMapping("/{roleId}")
+    @AuditLog(module = ROLES, type = UPDATE, descr = "'Update Role: ' + @roleService.queryRole(#roleId).roleName")
     public Result<Boolean> updateRole(@PathVariable("roleId") Long roleId,
                                         @Valid @RequestBody UpdateRoleCmd command) {
         command.setRoleId(roleId);
@@ -62,6 +71,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleId}")
+    @AuditLog(module = ROLES, type = DELETE, descr = "'Delete Role: ' + @roleService.queryRole(#roleId).roleName")
     public Result<Boolean> deleteRole(@PathVariable("roleId") Long roleId) {
         roleService.deleteRole(roleId);
         return Result.success(ResultMessage.DELETE_SUCCESS);

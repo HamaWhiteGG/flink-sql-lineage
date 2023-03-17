@@ -97,4 +97,9 @@ public interface DataConverter {
 
     List<User> toUserList(List<UserDO> userDOList);
 
+    @Mapping(source = "auditId", target = "auditId.value")
+    Audit toAudit(AuditDO auditDO);
+
+    @Mapping(source = "auditId.value", target = "auditId")
+    AuditDO fromAudit(Audit audit);
 }

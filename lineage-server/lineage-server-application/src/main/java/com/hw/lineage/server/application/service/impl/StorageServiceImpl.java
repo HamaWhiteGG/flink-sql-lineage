@@ -17,7 +17,7 @@ import java.net.MalformedURLException;
  * @author: HamaWhite
  * @version: 1.0.0
  */
-@Service
+@Service("storageService")
 public class StorageServiceImpl implements StorageService {
 
     @javax.annotation.Resource

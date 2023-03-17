@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @description: FunctionCheck
@@ -11,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * @version: 1.0.0
  */
 @Data
-public class FunctionCheck {
+public class FunctionCheck implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private Long catalogId;

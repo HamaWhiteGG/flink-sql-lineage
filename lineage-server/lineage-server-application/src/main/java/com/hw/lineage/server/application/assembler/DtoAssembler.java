@@ -81,18 +81,24 @@ public interface DtoAssembler {
     @Mapping(source = "permissionId.value", target = "permissionId")
     PermissionDTO fromPermission(Permission permission);
 
+    @Mapping(source = "auditId.value", target = "auditId")
+    AuditDTO fromAudit(Audit audit);
+
     @AfterMapping
     default void setTaskLineageGraph(@MappingTarget TaskDTO taskDTO, Task task, String catalogName) {
+        if(task.getTableGraph()==null) {
+            return;
+        }
         List<Vertex> vertexList = task.getTableGraph().queryNodeSet()
                 .stream()
                 .map(tableNode -> {
                     List<Column> columnList = tableNode.getColumnNodeList()
                             .stream()
-                            .map(columnNode -> new Column(columnNode.getNodeId(), columnNode.getNodeName(), columnNode.getChildrenCnt()))
+                            .map(columnNode -> new Column(columnNode.getNodeId().toString(), columnNode.getNodeName(), columnNode.getChildrenCnt()))
                             .collect(Collectors.toList());
 
                     String optimizedName = optimizeName(catalogName, task.getDatabase(), tableNode.getNodeName());
-                    return new Vertex().setId(tableNode.getNodeId())
+                    return new Vertex().setId(tableNode.getNodeId().toString())
                             .setName(optimizedName)
                             .setColumns(columnList)
                             .setHasUpstream(!tableNode.getParentIdSet().isEmpty())
@@ -104,20 +110,20 @@ public interface DtoAssembler {
         // add table edges
         List<Link> linkList = task.getTableGraph().getEdgeSet()
                 .stream()
-                .map(tableEdge -> new TableLink(tableEdge.getEdgeId()
-                        , tableEdge.getSource().getNodeId()
-                        , tableEdge.getTarget().getNodeId()
+                .map(tableEdge -> new TableLink(tableEdge.getEdgeId().toString()
+                        , tableEdge.getSource().getNodeId().toString()
+                        , tableEdge.getTarget().getNodeId().toString()
                         , tableEdge.getSqlSource()))
                 .collect(Collectors.toList());
 
         // add column edges
         linkList.addAll(task.getColumnGraph().getEdgeSet()
                 .stream()
-                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId()
-                        , columnEdge.getSource().getTableNodeId()
-                        , columnEdge.getTarget().getTableNodeId()
-                        , columnEdge.getSource().getNodeId()
-                        , columnEdge.getTarget().getNodeId()
+                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId().toString()
+                        , columnEdge.getSource().getTableNodeId().toString()
+                        , columnEdge.getTarget().getTableNodeId().toString()
+                        , columnEdge.getSource().getNodeId().toString()
+                        , columnEdge.getTarget().getNodeId().toString()
                         , Strings.nullToEmpty(columnEdge.getTransform())
                 ))
                 .collect(Collectors.toList())
