@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @author: HamaWhite
  * @version: 1.0.0
  */
-@Service
+@Service("permissionService")
 public class PermissionServiceImpl implements PermissionService {
 
     @Resource

@@ -14,7 +14,6 @@ public class EnumUtils {
         throw new IllegalStateException("Utility class");
     }
 
-
     public static SqlType getSqlTypeByValue(String value) {
         for (SqlType sqlType : SqlType.values()) {
             if (sqlType.value().equalsIgnoreCase(value)) {

@@ -193,7 +193,24 @@ CREATE TABLE `bas_function`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-
-
-
-
+DROP TABLE IF EXISTS `bas_audit`;
+CREATE TABLE `bas_audit`
+(
+    `audit_id`         bigint(20) AUTO_INCREMENT,
+    `user_id`          bigint(20)  NOT NULL DEFAULT '0',
+    `username`         varchar(64) NOT NULL,
+    `module_code`      varchar(32) NOT NULL,
+    `operation_type`   varchar(32) NOT NULL,
+    `descr`            varchar(1024)        DEFAULT NULL,
+    `duration`         bigint(20)           DEFAULT NULL COMMENT 'Request duration',
+    `operation_status` tinyint(8)           DEFAULT NULL,
+    `method`           varchar(256)         DEFAULT NULL,
+    `parameters`       text                 DEFAULT NULL,
+    `exception`        text                 DEFAULT NULL,
+    `ip`               varchar(256)         DEFAULT NULL,
+    `create_time`      bigint(20)  NOT NULL,
+    `invalid`          tinyint(1)  NOT NULL DEFAULT '0',
+    PRIMARY KEY (`audit_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;

@@ -3,6 +3,7 @@ package com.hw.lineage.server.application.command.permission;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * @description: CreatePermissionCmd
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotBlank;
  * @version: 1.0.0
  */
 @Data
-public class CreatePermissionCmd {
+public class CreatePermissionCmd implements Serializable {
 
     @NotBlank
     private String permissionGroup;

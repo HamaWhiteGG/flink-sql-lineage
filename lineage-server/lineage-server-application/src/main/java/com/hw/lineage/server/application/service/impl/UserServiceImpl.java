@@ -14,6 +14,7 @@ import com.hw.lineage.server.domain.query.user.UserCheck;
 import com.hw.lineage.server.domain.query.user.UserQuery;
 import com.hw.lineage.server.domain.repository.UserRepository;
 import com.hw.lineage.server.domain.vo.UserId;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.hw.lineage.common.util.Constant.DEFAULT_USER_ID;
 import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 
 
@@ -29,7 +31,7 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
  * @author: HamaWhite
  * @version: 1.0.0
  */
-@Service
+@Service("userService")
 public class UserServiceImpl implements UserService {
 
     @Resource
@@ -94,5 +96,25 @@ public class UserServiceImpl implements UserService {
 
         user.setModifyTime(System.currentTimeMillis());
         repository.save(user);
+    }
+
+    @Override
+    public Long getCurrentUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDTO) {
+            return ((UserDTO) principal).getUserId();
+        }
+        // anonymous user, userId is 0
+        return DEFAULT_USER_ID;
+    }
+
+    @Override
+    public String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDTO) {
+            return ((UserDTO) principal).getUsername();
+        }
+        // the value is anonymousUser
+        return principal.toString();
     }
 }

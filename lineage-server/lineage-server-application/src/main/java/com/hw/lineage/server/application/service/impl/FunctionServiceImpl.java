@@ -37,7 +37,7 @@ import java.util.List;
  * @author: HamaWhite
  * @version: 1.0.0
  */
-@Service
+@Service("functionService")
 public class FunctionServiceImpl implements FunctionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FunctionServiceImpl.class);

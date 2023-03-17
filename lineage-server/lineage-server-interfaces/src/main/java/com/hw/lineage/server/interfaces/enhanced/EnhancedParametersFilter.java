@@ -1,6 +1,7 @@
 package com.hw.lineage.server.interfaces.enhanced;
 
 import com.hw.lineage.server.application.dto.UserDTO;
+import com.hw.lineage.server.application.service.UserService;
 import com.hw.lineage.server.interfaces.config.SecurityConfig;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.hw.lineage.common.util.Constant.DEFAULT_USER_ID;
 import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 
 /**
@@ -36,8 +38,8 @@ public class EnhancedParametersFilter implements Filter {
      * @param chain    Provides access to the next filter in the chain for this
      *                 filter to pass the request and response to for further
      *                 processing
-     * @throws IOException
-     * @throws ServletException
+     * @throws IOException      ...
+     * @throws ServletException ...
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -54,17 +56,20 @@ public class EnhancedParametersFilter implements Filter {
 
     /**
      * Add the userId parameter in the request parameter
+     *
+     * Unlike {@link UserService}, authentication is empty if not logged in, and authentication of
+     * {@link UserService} is AnonymousAuthenticationToken (Principal is anonymousUser)
      */
     private Map<String, String> buildAdditionalParameters() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Map<String, String> additionalMap = new HashMap<>(INITIAL_CAPACITY);
-        // add userId parameter
+        // add userId parameter, tenantId may be added later
         if (authentication != null) {
             UserDTO userDTO = (UserDTO) authentication.getPrincipal();
             additionalMap.put("userId", userDTO.getUserId().toString());
         } else {
-            // since the front end does not yet support login, the default userId is set to 1
-            additionalMap.put("userId", "1");
+            // since the front end does not yet support login, the default userId is set to 0
+            additionalMap.put("userId", DEFAULT_USER_ID.toString());
         }
         return additionalMap;
     }

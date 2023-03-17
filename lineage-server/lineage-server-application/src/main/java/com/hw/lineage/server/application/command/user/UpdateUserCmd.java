@@ -3,7 +3,7 @@ package com.hw.lineage.server.application.command.user;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @description: UpdateUserCmd
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @version: 1.0.0
  */
 @Data
-public class UpdateUserCmd {
+public class UpdateUserCmd implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private Long userId;

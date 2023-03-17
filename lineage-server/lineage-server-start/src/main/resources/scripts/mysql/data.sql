@@ -42,8 +42,3 @@ INSERT INTO lineage.bas_task (task_id, catalog_id, task_name, descr, `database`,
 INSERT INTO lineage.bas_function (function_id, catalog_id, function_name, `database`, invocation, function_path, class_name, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (1, 1, 'flink_suffix_udf', 'default', 'flink_suffix_udf(String1)', 'functions/function-a/function-a.jar', 'com.hw.lineage.flink.table.udf.functiona.FlinkSuffixFunction', 'return String', 1, 1, 1674565178000, 1674565178000, 0);
 INSERT INTO lineage.bas_function (function_id, catalog_id, function_name, `database`, invocation, function_path, class_name, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (2, 1, 'flink_prefix_udf', 'default', 'flink_prefix_udf(String1,Integer2)', 'functions/function-b/function-b.jar', 'com.hw.lineage.flink.table.udf.functionb.FlinkPrefixFunction', 'return String', 1, 1, 1674565178000, 1674565178000, 0);
 INSERT INTO lineage.bas_function (function_id, catalog_id, function_name, `database`, invocation, function_path, class_name, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (3, 1, 'flink_split_udtf', 'default', 'flink_split_udtf(String1)', 'functions/function-b/function-b.jar', 'com.hw.lineage.flink.table.udf.functionb.FlinkSplitFunction', 'return ROW<word STRING, length INT>', 1, 1, 1674565178000, 1674565178000, 0);
-
-
-
-
-

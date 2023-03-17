@@ -13,7 +13,7 @@ public class TableLink extends Link {
 
     private String sqlSource;
 
-    public TableLink(Integer id, Integer relU, Integer relV, String sqlSource) {
+    public TableLink(String id, String relU, String relV, String sqlSource) {
         super(id, relU, relV);
         this.sqlSource = sqlSource;
     }
