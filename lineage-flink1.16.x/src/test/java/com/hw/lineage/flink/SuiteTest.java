@@ -2,6 +2,7 @@ package com.hw.lineage.flink;
 
 import com.hw.lineage.flink.cep.CepTest;
 import com.hw.lineage.flink.common.CommonTest;
+import com.hw.lineage.flink.ctas.CtasTest;
 import com.hw.lineage.flink.localtimestamp.LocaltimestampTest;
 import com.hw.lineage.flink.lookup.join.LookupJoinTest;
 import com.hw.lineage.flink.proctime.ProctimeTest;
@@ -24,7 +25,8 @@ import org.junit.runners.Suite;
         , LocaltimestampTest.class
         , CepTest.class
         , WindowTest.class
-        , ProctimeTest.class})
+        , ProctimeTest.class
+        , CtasTest.class})
 public class SuiteTest {
 
     /**
