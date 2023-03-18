@@ -30,8 +30,10 @@ import org.apache.flink.table.functions.ScalarFunction;
 import org.apache.flink.table.functions.TableAggregateFunction;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.table.module.ModuleManager;
+import org.apache.flink.table.operations.CreateTableASOperation;
 import org.apache.flink.table.operations.Operation;
 import org.apache.flink.table.operations.SinkModifyOperation;
+import org.apache.flink.table.operations.ddl.CreateTableOperation;
 import org.apache.flink.table.planner.calcite.FlinkRelBuilder;
 import org.apache.flink.table.planner.calcite.RexFactory;
 import org.apache.flink.table.planner.delegation.PlannerBase;
@@ -148,6 +150,9 @@ public class LineageServiceImpl implements LineageService {
                     "Unsupported SQL query! only accepts a single SQL statement.");
         }
         Operation operation = operations.get(0);
+        // process create table as select
+        operation = prePocessCprereateTableASOperation(operation);
+
         if (operation instanceof SinkModifyOperation) {
             SinkModifyOperation sinkOperation = (SinkModifyOperation) operation;
 
@@ -159,6 +164,33 @@ public class LineageServiceImpl implements LineageService {
         } else {
             throw new TableException("Only insert is supported now.");
         }
+    }
+
+    /**
+     * There are two parts in CTAS, the SELECT part can be any SELECT query supported by Flink SQL.
+     * The CREATE part takes the resulting schema from the SELECT part and creates the target table.
+     *
+     * This method creates a new table and returns the remaining insert for subsequent lineage.
+     */
+    private Operation prePocessCprereateTableASOperation(Operation operation) {
+        if (operation instanceof CreateTableASOperation) {
+            CreateTableASOperation ctasOperation = (CreateTableASOperation) operation;
+            CreateTableOperation createTableOperation = ctasOperation.getCreateTableOperation();
+
+            if (createTableOperation.isTemporary()) {
+                tableEnv.getCatalogManager().createTemporaryTable(
+                        createTableOperation.getCatalogTable(),
+                        createTableOperation.getTableIdentifier(),
+                        createTableOperation.isIgnoreIfExists());
+            } else {
+                tableEnv.getCatalogManager().createTable(
+                        createTableOperation.getCatalogTable(),
+                        createTableOperation.getTableIdentifier(),
+                        createTableOperation.isIgnoreIfExists());
+            }
+            return ctasOperation.toSinkModifyOperation(tableEnv.getCatalogManager());
+        }
+        return operation;
     }
 
 
@@ -451,10 +483,10 @@ public class LineageServiceImpl implements LineageService {
                 : String.format(SHOW_CREATE_VIEW_SQL, catalogName, database, tableName);
 
         TableResult tableResult = executeSql(showCreateSql);
-        String tableDdl=requireNonNull(tableResult.collect().next().getField(0)).toString();
+        String tableDdl = requireNonNull(tableResult.collect().next().getField(0)).toString();
 
         // simplified table name
-        return tableDdl.replace(String.format("`%s`.`%s`.",catalogName,database),"");
+        return tableDdl.replace(String.format("`%s`.`%s`.", catalogName, database), "");
     }
 
     public String getCurrentCatalog() {
