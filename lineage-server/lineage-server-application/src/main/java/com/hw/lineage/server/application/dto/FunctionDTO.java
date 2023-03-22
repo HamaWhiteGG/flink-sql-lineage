@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: FunctionDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class FunctionDTO extends BasicDTO {

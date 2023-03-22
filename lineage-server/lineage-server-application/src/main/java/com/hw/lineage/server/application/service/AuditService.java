@@ -8,7 +8,6 @@ import com.hw.lineage.server.domain.query.audit.AuditQuery;
 /**
  * @description: AuditService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface AuditService {
 

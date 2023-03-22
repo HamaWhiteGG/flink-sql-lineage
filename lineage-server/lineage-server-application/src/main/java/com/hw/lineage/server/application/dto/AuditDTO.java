@@ -9,7 +9,6 @@ import lombok.Data;
 /**
  * @description: AuditDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class AuditDTO {

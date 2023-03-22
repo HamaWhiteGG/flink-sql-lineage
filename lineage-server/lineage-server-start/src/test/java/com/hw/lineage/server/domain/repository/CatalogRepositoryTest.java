@@ -12,7 +12,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 /**
  * @description: CatalogRepositoryTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class CatalogRepositoryTest extends AbstractSpringBootTest {
 

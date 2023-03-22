@@ -21,7 +21,6 @@ import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
  *
  * @description: EnhancedParametersFilter
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class EnhancedParametersFilter implements Filter {
 

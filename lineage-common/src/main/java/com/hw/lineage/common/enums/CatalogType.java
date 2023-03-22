@@ -6,7 +6,6 @@ import com.hw.lineage.common.enums.basic.StringEnum;
 /**
  * @description: CatalogType
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public enum CatalogType implements StringEnum<CatalogType> {
 

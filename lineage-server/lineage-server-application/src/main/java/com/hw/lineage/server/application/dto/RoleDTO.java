@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * @description: RoleDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class RoleDTO extends RootDTO {

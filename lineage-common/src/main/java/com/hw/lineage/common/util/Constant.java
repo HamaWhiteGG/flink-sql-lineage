@@ -3,7 +3,6 @@ package com.hw.lineage.common.util;
 /**
  * @description: Constant
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class Constant {
 

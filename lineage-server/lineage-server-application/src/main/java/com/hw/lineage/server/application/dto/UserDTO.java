@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 /**
  * @description: UserDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class UserDTO extends RootDTO implements UserDetails {

@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: TableLink
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class TableLink extends Link {

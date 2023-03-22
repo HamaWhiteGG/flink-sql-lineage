@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: PermissionDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class PermissionDTO extends RootDTO {

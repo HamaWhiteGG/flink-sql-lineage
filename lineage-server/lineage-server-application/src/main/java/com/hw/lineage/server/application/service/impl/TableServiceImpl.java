@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * @description: TableServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("tableService")
 public class TableServiceImpl implements TableService {

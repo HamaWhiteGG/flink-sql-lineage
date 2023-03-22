@@ -9,7 +9,6 @@ import org.junit.Test;
  *
  * @description: CepTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class CepTest extends AbstractBasicTest {
 

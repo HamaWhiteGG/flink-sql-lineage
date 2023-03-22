@@ -3,7 +3,6 @@ package com.hw.lineage.common.exception;
 /**
  * @description: LineageRuntimeException
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class LineageException extends RuntimeException {
 

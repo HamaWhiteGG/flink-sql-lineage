@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 /**
  * @description: TaskSource
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class TaskSource {

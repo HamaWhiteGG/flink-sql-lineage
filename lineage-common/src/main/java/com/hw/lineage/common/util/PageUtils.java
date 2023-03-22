@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 /**
  * @description: PageUtils
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class PageUtils {
     private PageUtils() {

@@ -28,16 +28,14 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  *  <li>Support lookup join, add method getColumnOrigins(Snapshot rel,RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support watermark, add method getColumnOrigins(SingleRel rel,RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support table function, add method getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn)
- *  <li>Support field AS LOCALTIMESTAMP, modify method getColumnOrigins(Calc rel, RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support CEP, add method getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn)
- *  <li>Support ROW_NUMBER(), add method getColumnOrigins(Window rel, RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support transform, add method createDerivedColumnOrigins(Set<RelColumnOrigin> inputSet, String transform, boolean originTransform), and related code
- *  <li>Support PROCTIME() is the first filed, add method computeIndexWithOffset, used by getColumnOrigins(Calc rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support field AS LOCALTIMESTAMP, modify method getColumnOrigins(Project rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support PROCTIME() is the first filed, add method computeIndexWithOffset, used by getColumnOrigins(Project rel, RelMetadataQuery mq, int iOutputColumn)
  * <ol/>
  *
  * @description: RelMdColumnOrigins supplies a default implementation of {@link RelMetadataQuery#getColumnOrigins} for the standard logical algebra.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.ColumnOrigin> {
 
@@ -119,32 +117,36 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (iOutputColumn < nLeftColumns) {
             set = mq.getColumnOrigins(rel.getLeft(), iOutputColumn);
         } else {
-            // get the field name of the left table configured in the Table Function on the right
-            TableFunctionScan tableFunctionScan = (TableFunctionScan) rel.getRight();
-            RexCall rexCall = (RexCall) tableFunctionScan.getCall();
-            // support only one field in table function
-            RexFieldAccess rexFieldAccess = (RexFieldAccess) rexCall.getOperands().get(0);
-            String fieldName = rexFieldAccess.getField().getName();
+            if (rel.getRight() instanceof TableFunctionScan) {
+                // get the field name of the left table configured in the Table Function on the right
+                TableFunctionScan tableFunctionScan = (TableFunctionScan) rel.getRight();
+                RexCall rexCall = (RexCall) tableFunctionScan.getCall();
+                // support only one field in table function
+                RexFieldAccess rexFieldAccess = (RexFieldAccess) rexCall.getOperands().get(0);
+                String fieldName = rexFieldAccess.getField().getName();
 
-            int leftFieldIndex = 0;
-            for (int i = 0; i < nLeftColumns; i++) {
-                if (leftFieldList.get(i).getName().equalsIgnoreCase(fieldName)) {
-                    leftFieldIndex = i;
-                    break;
+                int leftFieldIndex = 0;
+                for (int i = 0; i < nLeftColumns; i++) {
+                    if (leftFieldList.get(i).getName().equalsIgnoreCase(fieldName)) {
+                        leftFieldIndex = i;
+                        break;
+                    }
                 }
-            }
-            /**
-             * Get the fields from the left table, don't go to
-             * getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
-             * otherwise the return is null, and the UDTF field origin cannot be parsed
-             */
-            set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
+                /**
+                 * Get the fields from the left table, don't go to
+                 * getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
+                 * otherwise the return is null, and the UDTF field origin cannot be parsed
+                 */
+                set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
 
-            // process transform for udtf
-            String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
-                    + DELIMITER
-                    + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
-            set = createDerivedColumnOrigins(set, transform, false);
+                // process transform for udtf
+                String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
+                        + DELIMITER
+                        + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
+                set = createDerivedColumnOrigins(set, transform, false);
+            } else {
+                set = mq.getColumnOrigins(rel.getRight(), iOutputColumn - nLeftColumns);
+            }
         }
         return set;
     }
@@ -180,6 +182,9 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
     }
 
 
+    /**
+     * Support for new fields in the source table similar to those created with the LOCALTIMESTAMP function
+     */
     public Set<RelColumnOrigin> getColumnOrigins(Project rel,
                                                  final RelMetadataQuery mq, int iOutputColumn) {
         final RelNode input = rel.getInput();
@@ -188,11 +193,28 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (rexNode instanceof RexInputRef) {
             // Direct reference:  no derivation added.
             RexInputRef inputRef = (RexInputRef) rexNode;
-            return mq.getColumnOrigins(input, inputRef.getIndex());
+            int index = inputRef.getIndex();
+            if (input instanceof TableScan) {
+                index = computeIndexWithOffset(rel.getProjects(), inputRef.getIndex(), iOutputColumn);
+            }
+            return mq.getColumnOrigins(input, index);
+        } else if (input instanceof TableScan && rexNode.getClass().equals(RexCall.class) && ((RexCall) rexNode).getOperands().isEmpty()) {
+            return mq.getColumnOrigins(input, iOutputColumn);
         }
         // Anything else is a derivation, possibly from multiple columns.
         final Set<RelColumnOrigin> set = getMultipleColumns(rexNode, input, mq);
-        return createDerivedColumnOrigins(set);
+        return createDerivedColumnOrigins(set, rexNode.toString(), true);
+    }
+
+    private int computeIndexWithOffset(List<RexNode> projects, int baseIndex, int iOutputColumn) {
+        int offset = 0;
+        for (int index = 0; index < iOutputColumn; index++) {
+            RexNode rexNode = projects.get(index);
+            if ((rexNode.getClass().equals(RexCall.class) && ((RexCall) rexNode).getOperands().isEmpty())) {
+                offset += 1;
+            }
+        }
+        return baseIndex + offset;
     }
 
     /**
@@ -230,37 +252,6 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         return null;
     }
 
-
-    /**
-     * Support the field blood relationship of ROW_NUMBER()
-     */
-    public Set<RelColumnOrigin> getColumnOrigins(Window rel, RelMetadataQuery mq, int iOutputColumn) {
-        final RelNode input = rel.getInput();
-        /**
-         * Haven't found a good way to judge whether the field comes from window,
-         * for the time being, first judge by parsing the string
-         */
-        String fieldName = rel.getRowType().getFieldNames().get(iOutputColumn);
-        // for example: "w1$o0"
-        if (fieldName.startsWith("w") && fieldName.contains("$")) {
-            int groupIndex = Integer.parseInt(fieldName.substring(1, fieldName.indexOf("$")));
-            final Set<RelColumnOrigin> set = new LinkedHashSet<>();
-            if (!rel.groups.isEmpty()) {
-                Window.Group group = rel.groups.get(groupIndex);
-                // process partition by keys
-                group.keys.asList().forEach(index ->
-                        set.addAll(mq.getColumnOrigins(input, index))
-                );
-                // process order by keys
-                group.orderKeys.getFieldCollations().forEach(e ->
-                        set.addAll(mq.getColumnOrigins(input, e.getFieldIndex()))
-                );
-            }
-            return set;
-        }
-        return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
-    }
-
     public Set<RelColumnOrigin> getColumnOrigins(Calc rel,
                                                  final RelMetadataQuery mq, int iOutputColumn) {
         final RelNode input = rel.getInput();
@@ -278,53 +269,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (rexNode instanceof RexInputRef) {
             // Direct reference:  no derivation added.
             RexInputRef inputRef = (RexInputRef) rexNode;
-            int index = inputRef.getIndex();
-            if (input instanceof TableScan) {
-                index = computeIndexWithOffset(projects, inputRef.getIndex(), iOutputColumn);
-            }
-            return mq.getColumnOrigins(input, index);
-        } else if (rexNode instanceof RexCall && ((RexCall) rexNode).getOperands().isEmpty()) {
-            // support for new fields in the source table similar to those created with the LOCALTIMESTAMP function
-            return getColumnOrigins(rel, iOutputColumn);
+            return mq.getColumnOrigins(input, inputRef.getIndex());
         }
-
         // Anything else is a derivation, possibly from multiple columns.
         final Set<RelColumnOrigin> set = getMultipleColumns(rexNode, input, mq);
-        return createDerivedColumnOrigins(set, rexNode.toString(), true);
-    }
-
-    private int computeIndexWithOffset(List<RexNode> projects, int baseIndex, int iOutputColumn) {
-        int offset = 0;
-        for (int index = 0; index < iOutputColumn; index++) {
-            RexNode rexNode = projects.get(index);
-            if ((rexNode instanceof RexCall && ((RexCall) rexNode).getOperands().isEmpty())) {
-                offset += 1;
-            }
-        }
-        return baseIndex + offset;
-    }
-
-    /**
-     * Support for new fields in the source table similar to those created with the LOCALTIMESTAMP function
-     */
-    private Set<RelColumnOrigin> getColumnOrigins(Calc rel, int iOutputColumn) {
-        TableSourceTable table = ((TableSourceTable) rel.getInput().getTable());
-        if (table != null) {
-            String targetFieldName = rel.getProgram().getOutputRowType().getFieldList().get(iOutputColumn).getName();
-            List<String> fieldList = table.contextResolvedTable().getResolvedSchema().getColumnNames();
-
-            int index = -1;
-            for (int i = 0; i < fieldList.size(); i++) {
-                if (fieldList.get(i).equalsIgnoreCase(targetFieldName)) {
-                    index = i;
-                    break;
-                }
-            }
-            if (index != -1) {
-                return Collections.singleton(new RelColumnOrigin(table, index, false));
-            }
-        }
-        return Collections.emptySet();
+        return createDerivedColumnOrigins(set);
     }
 
     public Set<RelColumnOrigin> getColumnOrigins(Filter rel,

@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * @description: TaskDto
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class TaskDTO extends BasicDTO {

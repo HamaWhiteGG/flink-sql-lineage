@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * @description: RenameDomainPlugin
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class RenameDoPlugin extends PluginAdapter {
 

@@ -6,7 +6,6 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.StringEn
 /**
  * @description: ModuleCodeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class ModuleCodeHandler extends StringEnumTypeHandler<ModuleCode> {
     public ModuleCodeHandler() {

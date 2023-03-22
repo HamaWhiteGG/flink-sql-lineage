@@ -8,7 +8,6 @@ import lombok.ToString;
 /**
  * @description: CatalogQuery
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @ToString(callSuper = true)

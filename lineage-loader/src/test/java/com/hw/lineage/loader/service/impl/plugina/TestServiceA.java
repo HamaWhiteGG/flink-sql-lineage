@@ -5,7 +5,6 @@ import com.hw.lineage.loader.service.TestService;
 /**
  * @description: First implementation of {@link TestService}.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class TestServiceA implements TestService {
 

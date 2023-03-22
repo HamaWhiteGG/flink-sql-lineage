@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: TableId
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class TableId implements Identifier {

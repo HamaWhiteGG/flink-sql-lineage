@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: TableGraph
  * @author: HamaWhite
- * @version: 1.0.0
  */
 
 @Data

@@ -8,7 +8,6 @@ import lombok.Data;
 /**
  * @description: CatalogDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CatalogDTO extends BasicDTO {

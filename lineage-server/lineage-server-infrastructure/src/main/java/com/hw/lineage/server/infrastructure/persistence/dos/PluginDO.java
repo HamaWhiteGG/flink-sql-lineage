@@ -3,7 +3,6 @@ package com.hw.lineage.server.infrastructure.persistence.dos;
 /**
  * @description: This class corresponds to the database table bas_plugin
  * @author: HamaWhite
- * @version: 1.0.0
  *
  * @mbg.generated
  */

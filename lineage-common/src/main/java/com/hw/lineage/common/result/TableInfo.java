@@ -11,7 +11,6 @@ import java.util.Map;
 /**
  * @description: TableInfo
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor

@@ -5,7 +5,6 @@ import java.lang.annotation.*;
 /**
  * @description: SkipLogAspect
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

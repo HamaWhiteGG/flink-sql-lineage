@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 /**
  * @description: ColumnInfo
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor

@@ -22,7 +22,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
 /**
  * @description: TableRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class TableRepositoryImpl extends AbstractBasicRepository implements TableRepository {

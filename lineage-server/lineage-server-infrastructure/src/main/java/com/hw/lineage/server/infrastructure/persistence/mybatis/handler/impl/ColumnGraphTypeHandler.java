@@ -6,7 +6,6 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonType
 /**
  * @description: ColumnGraphTypeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class ColumnGraphTypeHandler extends JsonTypeHandler<ColumnGraph> {
     public ColumnGraphTypeHandler() {

@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * @description: UserRepository
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface UserRepository extends Repository<User, UserId> {
 

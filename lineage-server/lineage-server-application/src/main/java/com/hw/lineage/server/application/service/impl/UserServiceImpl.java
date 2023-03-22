@@ -29,7 +29,6 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 /**
  * @description: UserServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {

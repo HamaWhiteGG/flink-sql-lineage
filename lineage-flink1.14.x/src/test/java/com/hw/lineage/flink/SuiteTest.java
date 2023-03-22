@@ -14,7 +14,6 @@ import org.junit.runners.Suite;
 /**
  * @description: SuiteTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({CommonTest.class

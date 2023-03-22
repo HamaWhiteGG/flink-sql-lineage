@@ -6,7 +6,6 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonType
 /**
  * @description: TableGraphTypeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class TableGraphTypeHandler extends JsonTypeHandler<TableGraph> {
     public TableGraphTypeHandler() {

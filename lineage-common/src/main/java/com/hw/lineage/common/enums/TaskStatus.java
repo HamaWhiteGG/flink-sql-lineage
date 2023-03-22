@@ -5,7 +5,6 @@ import com.hw.lineage.common.enums.basic.IntEnum;
 /**
  * @description: TaskStatus
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public enum TaskStatus implements IntEnum<TaskStatus> {
 

@@ -20,7 +20,6 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
 /**
  * @description: TaskDomainServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service
 public class TaskDomainServiceImpl implements TaskDomainService {

@@ -5,7 +5,6 @@ import org.apache.flink.table.functions.ScalarFunction;
 /**
  * @description: FlinkSuffixFunction
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class FlinkSuffixFunction extends ScalarFunction {
 

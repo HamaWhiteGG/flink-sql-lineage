@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 /**
  * @description: LineageConfig
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @Component

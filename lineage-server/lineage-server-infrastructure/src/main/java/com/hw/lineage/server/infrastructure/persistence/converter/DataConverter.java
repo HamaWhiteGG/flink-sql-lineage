@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * @description: DataConverter
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Mapper(componentModel = "spring")
 public interface DataConverter {

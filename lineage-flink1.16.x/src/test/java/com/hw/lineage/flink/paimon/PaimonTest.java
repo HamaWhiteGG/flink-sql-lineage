@@ -2,19 +2,26 @@ package com.hw.lineage.flink.paimon;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @description: PaimonTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class PaimonTest extends AbstractBasicTest {
 
     private static final String catalogName = "paimon";
 
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
     @Before
-    public void createCatalogAndTable() {
+    public void createCatalogAndTable() throws IOException {
         // create and use paimon_catalog
         usePaimonCatalog();
 
@@ -31,13 +38,12 @@ public class PaimonTest extends AbstractBasicTest {
         createTableOfDemoLogAgg();
     }
 
-    private void usePaimonCatalog() {
+    private void usePaimonCatalog() throws IOException {
+        File warehouse = temporaryFolder.newFolder();
+
         context.execute("CREATE CATALOG " + catalogName + " with (          " +
                 "       'type' = 'paimon'                                           ," +
-                "       'metastore' = 'hive'                                        ," +
-                "       'uri' = 'thrift://192.168.90.150:9083'                      ," +
-                "       'warehouse' = 'hdfs://192.168.90.150/table_store/warehouse' ," +
-                "       'table.type' = 'EXTERNAL'                                   " +
+                "       'warehouse' = '" + warehouse.toURI() + "'                    " +
                 ")"
         );
         context.execute(String.format("USE CATALOG %s", catalogName));
@@ -83,7 +89,7 @@ public class PaimonTest extends AbstractBasicTest {
 
         String[][] secondExpected = {
                 {"demo_log_05", "user_id", "demo_log_agg", "user_id"},
-                {"demo_log_05", "item_id", "demo_log_agg", "cnt"},
+                {"demo_log_05", "item_id", "demo_log_agg", "cnt", "COUNT(DISTINCT item_id)"},
                 {"demo_log_05", "dt", "demo_log_agg", "dt"}
         };
         parseFieldLineage(catalogName, secondSql, secondExpected);

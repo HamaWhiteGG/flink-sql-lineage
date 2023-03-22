@@ -29,7 +29,6 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
 /**
  * @description: LineageClient
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class LineageClient {
 

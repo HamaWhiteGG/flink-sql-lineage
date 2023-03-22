@@ -39,7 +39,6 @@ import static com.hw.lineage.common.enums.CatalogType.HIVE;
 /**
  * @description: CatalogServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("catalogService")
 public class CatalogServiceImpl implements CatalogService {

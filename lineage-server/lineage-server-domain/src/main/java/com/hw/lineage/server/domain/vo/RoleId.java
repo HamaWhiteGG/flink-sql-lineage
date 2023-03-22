@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: RoleId
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class RoleId implements Identifier {

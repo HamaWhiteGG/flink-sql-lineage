@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * @description: PermissionCheck
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class PermissionCheck implements Serializable {

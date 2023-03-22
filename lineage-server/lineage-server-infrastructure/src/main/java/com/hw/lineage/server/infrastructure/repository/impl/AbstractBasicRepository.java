@@ -9,7 +9,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.sortColumn;
 /**
  * @description: AbstractBasicRepository
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public abstract class AbstractBasicRepository {
 
