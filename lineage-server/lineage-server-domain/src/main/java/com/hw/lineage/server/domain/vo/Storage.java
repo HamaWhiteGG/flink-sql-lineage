@@ -13,7 +13,6 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 /**
  * @description: Storage
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class Storage {

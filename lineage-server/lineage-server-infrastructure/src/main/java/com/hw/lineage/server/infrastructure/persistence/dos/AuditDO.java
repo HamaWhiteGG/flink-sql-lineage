@@ -8,7 +8,6 @@ import com.hw.lineage.common.enums.audit.OperationType;
 /**
  * @description: This class corresponds to the database table bas_audit
  * @author: HamaWhite
- * @version: 1.0.0
  *
  * @mbg.generated
  */

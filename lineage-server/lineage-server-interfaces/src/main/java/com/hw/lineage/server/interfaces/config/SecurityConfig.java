@@ -26,7 +26,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * @description: SecurityConfig
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

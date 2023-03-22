@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 /**
  * @description: LineageServerApplication
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @EnableAsync
 @SpringBootApplication(scanBasePackages = {"com.hw.lineage.server.*"})

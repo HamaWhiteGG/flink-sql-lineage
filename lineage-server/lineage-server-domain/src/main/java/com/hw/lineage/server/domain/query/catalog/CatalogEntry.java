@@ -5,7 +5,6 @@ import lombok.Data;
 /**
  * @description: CatalogEntry
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CatalogEntry {

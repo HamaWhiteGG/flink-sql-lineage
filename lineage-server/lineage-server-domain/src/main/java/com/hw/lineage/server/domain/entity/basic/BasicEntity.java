@@ -6,7 +6,6 @@ import lombok.experimental.Accessors;
 /**
  * @description: BasicEntity
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @Accessors(chain = true)

@@ -23,7 +23,6 @@ import java.util.ServiceLoader;
  *
  * @description: PluginLoader
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class PluginLoader implements AutoCloseable {
 

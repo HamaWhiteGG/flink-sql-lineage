@@ -24,22 +24,19 @@ import org.apache.flink.table.annotation.FunctionHint;
 import org.apache.flink.table.api.*;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
-import org.apache.flink.table.catalog.*;
+import org.apache.flink.table.catalog.AbstractCatalog;
+import org.apache.flink.table.catalog.Catalog;
+import org.apache.flink.table.catalog.CatalogBaseTable;
+import org.apache.flink.table.catalog.ObjectPath;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.table.functions.ScalarFunction;
 import org.apache.flink.table.functions.TableAggregateFunction;
 import org.apache.flink.table.functions.TableFunction;
 import org.apache.flink.table.operations.CatalogSinkModifyOperation;
 import org.apache.flink.table.operations.Operation;
-import org.apache.flink.table.planner.calcite.FlinkRelBuilder;
-import org.apache.flink.table.planner.calcite.SqlExprToRexConverterFactory;
-import org.apache.flink.table.planner.delegation.PlannerBase;
 import org.apache.flink.table.planner.operations.PlannerQueryOperation;
 import org.apache.flink.table.planner.plan.metadata.FlinkDefaultRelMetadataProvider;
-import org.apache.flink.table.planner.plan.optimize.program.FlinkChainedProgram;
-import org.apache.flink.table.planner.plan.optimize.program.StreamOptimizeContext;
 import org.apache.flink.table.planner.plan.schema.TableSourceTable;
-import org.apache.flink.table.planner.plan.trait.MiniBatchInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +57,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * @description: LineageContext
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class LineageServiceImpl implements LineageService {
     private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);
@@ -78,7 +74,6 @@ public class LineageServiceImpl implements LineageService {
     );
 
     private final TableEnvironmentImpl tableEnv;
-    private final FlinkChainedProgram<StreamOptimizeContext> flinkChainedProgram;
 
     public LineageServiceImpl() {
         Configuration configuration = new Configuration();
@@ -91,7 +86,6 @@ public class LineageServiceImpl implements LineageService {
                 .build();
 
         this.tableEnv = (TableEnvironmentImpl) StreamTableEnvironment.create(env, settings);
-        this.flinkChainedProgram = FlinkStreamProgramWithoutPhysical.buildProgram(configuration);
     }
 
     public void useCatalog(AbstractCatalog catalog) {
@@ -126,16 +120,12 @@ public class LineageServiceImpl implements LineageService {
         String sinkTable = parsed.getField(0);
         RelNode oriRelNode = parsed.getField(1);
 
-        // 2. Optimize original relNode to generate Optimized Logical Plan
-        RelNode optRelNode = optimize(oriRelNode);
-
         if (LOG.isDebugEnabled()) {
             LOG.debug("Original RelNode: \n {}", oriRelNode.explain());
-            LOG.debug("Optimized RelNode: \n {}", optRelNode.explain());
         }
 
-        // 3. Build lineage based from RelMetadataQuery
-        return buildFiledLineageResult(sinkTable, optRelNode);
+        // 2. Build lineage based from RelMetadataQuery
+        return buildFiledLineageResult(sinkTable, oriRelNode);
     }
 
 
@@ -158,72 +148,6 @@ public class LineageServiceImpl implements LineageService {
         } else {
             throw new TableException("Only insert is supported now.");
         }
-    }
-
-    /**
-     * Calling each program's optimize method in sequence.
-     * <p>
-     * Modified based on flink's source code {@link org.apache.flink.table.planner.plan.optimize.StreamCommonSubGraphBasedOptimizer}#optimizeTree
-     */
-    private RelNode optimize(RelNode relNode) {
-        return flinkChainedProgram.optimize(relNode, new StreamOptimizeContext() {
-            @Override
-            public boolean isBatchMode() {
-                return false;
-            }
-
-            @Override
-            public TableConfig getTableConfig() {
-                return tableEnv.getConfig();
-            }
-
-            @Override
-            public FunctionCatalog getFunctionCatalog() {
-                return getPlanner().getFlinkContext().getFunctionCatalog();
-            }
-
-            @Override
-            public CatalogManager getCatalogManager() {
-                return tableEnv.getCatalogManager();
-            }
-
-            @Override
-            public SqlExprToRexConverterFactory getSqlExprToRexConverterFactory() {
-                return getPlanner().getFlinkContext().getSqlExprToRexConverterFactory();
-            }
-
-            @Override
-            public <C> C unwrap(Class<C> clazz) {
-                return getPlanner().getFlinkContext().unwrap(clazz);
-
-            }
-
-            @Override
-            public FlinkRelBuilder getFlinkRelBuilder() {
-                return getPlanner().getRelBuilder();
-            }
-
-            @Override
-            public boolean needFinalTimeIndicatorConversion() {
-                return true;
-            }
-
-            @Override
-            public boolean isUpdateBeforeRequired() {
-                return false;
-            }
-
-            @Override
-            public MiniBatchInterval getMiniBatchInterval() {
-                return MiniBatchInterval.NONE;
-            }
-
-
-            @SuppressWarnings("squid:S5803")
-            private PlannerBase getPlanner() {
-                return (PlannerBase) tableEnv.getPlanner();
-            }
-        });
     }
 
     private List<LineageInfo> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {

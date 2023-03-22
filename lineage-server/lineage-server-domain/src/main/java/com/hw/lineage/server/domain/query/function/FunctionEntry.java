@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 /**
  * @description: FunctionEntry
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor

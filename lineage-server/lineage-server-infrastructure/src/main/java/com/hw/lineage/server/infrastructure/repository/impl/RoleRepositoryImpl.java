@@ -33,7 +33,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 /**
  * @description: RoleRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class RoleRepositoryImpl extends AbstractBasicRepository implements RoleRepository {

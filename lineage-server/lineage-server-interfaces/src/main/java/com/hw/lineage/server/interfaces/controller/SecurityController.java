@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  * it'll be automatically override by Spring Security filters.
  *
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Validated
 @RestController

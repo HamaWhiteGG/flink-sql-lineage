@@ -9,7 +9,6 @@ import java.lang.annotation.*;
 /**
  * @description: AuditLog
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

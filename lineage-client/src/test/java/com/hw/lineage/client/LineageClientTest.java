@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * @description: LineageClientTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class LineageClientTest {
 

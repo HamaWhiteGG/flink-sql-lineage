@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @description: DataConverterTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class DataConverterTest {
 

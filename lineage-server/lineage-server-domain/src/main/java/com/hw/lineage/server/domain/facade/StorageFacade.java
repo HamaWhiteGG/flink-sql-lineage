@@ -10,7 +10,6 @@ import java.net.MalformedURLException;
 /**
  * @description: StorageFacade
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface StorageFacade {
     void init() throws IOException;

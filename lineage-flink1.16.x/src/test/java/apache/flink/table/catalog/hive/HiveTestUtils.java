@@ -12,7 +12,6 @@ import java.io.IOException;
  *
  * @description: HiveTestUtils
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class HiveTestUtils {
     private static final String HIVE_WAREHOUSE_URI_FORMAT = "jdbc:derby:;databaseName=%s;create=true";

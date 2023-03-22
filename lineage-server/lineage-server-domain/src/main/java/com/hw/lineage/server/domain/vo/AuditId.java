@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: AuditId
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class AuditId implements Identifier {

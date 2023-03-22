@@ -14,7 +14,6 @@ import static org.junit.Assert.assertThrows;
 /**
  * @description: SpelTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class SpelTest {
 

@@ -24,7 +24,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 /**
  * @description: PermissionRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class PermissionRepositoryImpl extends AbstractBasicRepository implements PermissionRepository {

@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: PermissionId
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class PermissionId implements Identifier {

@@ -10,7 +10,6 @@ import com.hw.lineage.server.domain.query.permission.PermissionQuery;
 /**
  * @description: PermissionService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface PermissionService {
 

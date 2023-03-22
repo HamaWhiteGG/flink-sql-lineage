@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 /**
  * @description: Edge
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor

@@ -8,7 +8,6 @@ package com.hw.lineage.common.util.function;
  * @param <E> The type of Exceptions thrown by this function.
  * @description: FunctionWithException
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @FunctionalInterface
 public interface FunctionWithException<T, R, E extends Throwable> {

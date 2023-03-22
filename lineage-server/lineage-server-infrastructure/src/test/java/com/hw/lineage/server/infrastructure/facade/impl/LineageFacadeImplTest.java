@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @description: LineageFacadeImplTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 
 public class LineageFacadeImplTest {

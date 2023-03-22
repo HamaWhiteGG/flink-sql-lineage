@@ -5,7 +5,6 @@ import java.io.*;
 /**
  * @description: CopyUtils
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class CopyUtils {
 

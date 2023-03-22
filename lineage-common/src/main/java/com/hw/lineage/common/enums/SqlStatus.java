@@ -5,7 +5,6 @@ import com.hw.lineage.common.enums.basic.IntEnum;
 /**
  * @description: SqlStatus
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public enum SqlStatus implements IntEnum<SqlStatus> {
 

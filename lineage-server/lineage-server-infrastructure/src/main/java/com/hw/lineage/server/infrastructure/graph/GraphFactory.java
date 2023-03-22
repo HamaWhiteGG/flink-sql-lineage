@@ -23,7 +23,6 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
 /**
  * @description: GraphFactory
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class GraphFactory {
 

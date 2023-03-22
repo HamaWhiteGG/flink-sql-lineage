@@ -9,7 +9,6 @@ import com.hw.lineage.server.domain.vo.PermissionId;
 /**
  * @description: PermissionRepository
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface PermissionRepository extends Repository<Permission, PermissionId> {
 

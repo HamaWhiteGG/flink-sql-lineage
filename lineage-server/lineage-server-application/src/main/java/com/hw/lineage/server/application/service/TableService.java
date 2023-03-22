@@ -3,7 +3,6 @@ package com.hw.lineage.server.application.service;
 /**
  * @description: TableService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface TableService {
 

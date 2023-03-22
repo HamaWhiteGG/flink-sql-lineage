@@ -9,7 +9,6 @@ import java.io.Serializable;
 /**
  * @description: FunctionCheck
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class FunctionCheck implements Serializable {

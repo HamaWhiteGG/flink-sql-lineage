@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @description: CreateUserCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CreateUserCmd implements Serializable {

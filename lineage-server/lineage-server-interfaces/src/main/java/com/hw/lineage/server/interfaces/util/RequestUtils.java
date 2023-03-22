@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @description: RequestUtils
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class RequestUtils {
 

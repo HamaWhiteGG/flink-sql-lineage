@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * @description: Vertex
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @Accessors(chain = true)

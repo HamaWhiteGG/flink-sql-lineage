@@ -5,7 +5,6 @@ import lombok.Data;
 /**
  * @description: SqlId
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class SqlId {

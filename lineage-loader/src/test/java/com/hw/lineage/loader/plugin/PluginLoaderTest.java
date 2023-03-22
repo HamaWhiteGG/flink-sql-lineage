@@ -16,7 +16,6 @@ import java.util.Iterator;
 /**
  * @description: PluginLoaderTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class PluginLoaderTest extends PluginTestBase {
 

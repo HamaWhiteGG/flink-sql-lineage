@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @description: ControllerAspect
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Aspect
 @Component

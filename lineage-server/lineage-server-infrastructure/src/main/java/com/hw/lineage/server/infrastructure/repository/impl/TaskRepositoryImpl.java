@@ -30,7 +30,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 /**
  * @description: TaskRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskRepository {

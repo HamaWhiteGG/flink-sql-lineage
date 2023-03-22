@@ -1,7 +1,7 @@
 package com.hw.lineage.flink.proctime;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
-import org.apache.calcite.rel.core.Calc;
+import org.apache.calcite.rel.core.Project;
 import org.apache.calcite.rel.metadata.RelMdColumnOrigins;
 import org.apache.calcite.rel.metadata.RelMetadataQuery;
 import org.junit.Before;
@@ -12,16 +12,15 @@ import org.junit.Test;
  * of PROCTIME() type is parsed incorrectly</a>, thanks
  * <p>
  * <p>
- * The solution of PROCTIME() is the same as LOCALTIMESTAMP, it is enhanced in the getColumnOrigins(Calc rel...) method.
+ * The solution of PROCTIME() is the same as LOCALTIMESTAMP, it is enhanced in the getColumnOrigins(Project rel...) method.
  * LOCALTIMESTAMP has been processed, so the lineage of PROCTIME() can be directly parsed out.
  * <p>
  * But when PROCTIME() is the first field, the obtained blood relationship will be confused.
  * Therefore, add the computeIndexWithOffset method to calculate the correct source table number {@link RelMdColumnOrigins} ,
- * and this method is called by {@link RelMdColumnOrigins#getColumnOrigins(Calc, RelMetadataQuery, int)}
+ * and this method is called by {@link RelMdColumnOrigins#getColumnOrigins(Project, RelMetadataQuery, int)}
  *
  * @description: ProctimeTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class ProctimeTest extends AbstractBasicTest {
 
@@ -40,13 +39,6 @@ public class ProctimeTest extends AbstractBasicTest {
         createTableOfPrintSink();
     }
 
-    /**
-     * Optimized RelNode:
-     * <pre>
-     *  FlinkLogicalCalc(select=[PROCTIME() AS make_time, a, b])
-     *   FlinkLogicalTableSourceScan(table=[[hive, default, ST]], fields=[a, b])
-     * </pre>
-     */
     @Test
     public void testInsertSelectWithFirstProcTimeField() {
         String sql = "INSERT INTO TT(make_time, A, B) " +
@@ -65,13 +57,6 @@ public class ProctimeTest extends AbstractBasicTest {
         parseFieldLineage(sql, expectedArray);
     }
 
-    /**
-     * Optimized RelNode:
-     * <pre>
-     *  FlinkLogicalCalc(select=[id, name, PROCTIME() AS make_time])
-     *   FlinkLogicalTableSourceScan(table=[[hive, default, datagen_source]], fields=[id, name])
-     * </pre>
-     */
     @Test
     public void testInsertSelectWithLastProctimeField() {
         String sql = "INSERT INTO print_sink(id, name, make_time) " +
