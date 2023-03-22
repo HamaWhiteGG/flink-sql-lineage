@@ -5,7 +5,6 @@ import com.hw.lineage.loader.service.OtherTestService;
 /**
  * @description: Implementation of {@link OtherTestService}.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class OtherTestServiceB implements OtherTestService {
 

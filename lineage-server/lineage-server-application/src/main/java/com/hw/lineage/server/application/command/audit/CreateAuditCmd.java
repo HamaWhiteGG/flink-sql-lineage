@@ -15,7 +15,6 @@ import javax.validation.constraints.NotNull;
 /**
  * @description: CreateAuditCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @Accessors(chain = true)

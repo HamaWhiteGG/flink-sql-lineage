@@ -9,7 +9,6 @@ import java.util.Map;
  *
  * @description: PluginManager
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface PluginManager {
 

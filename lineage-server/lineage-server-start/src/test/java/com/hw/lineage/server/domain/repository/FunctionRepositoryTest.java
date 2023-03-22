@@ -17,7 +17,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 /**
  * @description: FunctionRepositoryTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class FunctionRepositoryTest extends AbstractSpringBootTest {
 

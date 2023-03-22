@@ -6,7 +6,6 @@ import java.util.Arrays;
 /**
  * @description: Descriptive meta information for a plugin.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class PluginDescriptor {
 

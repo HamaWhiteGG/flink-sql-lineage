@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * @description: DataConverter
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Mapper(componentModel = "spring")
 public interface DataConverter {
@@ -63,9 +62,19 @@ public interface DataConverter {
     @Mapping(source = "pluginId.value", target = "pluginId")
     CatalogDO fromCatalog(Catalog catalog);
 
+    @Mapping(source = "tableId", target = "tableId.value")
+    @Mapping(source = "catalogId", target = "catalogId.value")
+    Table toTable(TableDO tableDO);
+
+    List<Table> toTableList(List<TableDO> tableDOList);
+
+    @Mapping(source = "tableId.value", target = "tableId")
+    @Mapping(source = "catalogId.value", target = "catalogId")
+    TableDO fromTable(Table table);
+
     @Mapping(source = "functionId", target = "functionId.value")
     @Mapping(source = "catalogId", target = "catalogId.value")
-    Function toFunction(FunctionDO pluginDO);
+    Function toFunction(FunctionDO functionDO);
 
     List<Function> toFunctionList(List<FunctionDO> functionDOList);
 

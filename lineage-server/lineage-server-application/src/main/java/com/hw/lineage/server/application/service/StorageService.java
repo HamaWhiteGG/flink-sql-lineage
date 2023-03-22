@@ -10,7 +10,6 @@ import java.net.MalformedURLException;
 /**
  * @description: StorageService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface StorageService {
 

@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 /**
  * @description: RoleServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("roleService")
 public class RoleServiceImpl implements RoleService {

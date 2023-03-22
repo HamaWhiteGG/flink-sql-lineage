@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * @description: AbstractBasicTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public abstract class AbstractBasicTest {
 

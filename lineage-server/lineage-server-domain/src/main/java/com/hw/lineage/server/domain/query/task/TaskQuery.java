@@ -7,7 +7,6 @@ import lombok.ToString;
 /**
  * @description: TaskQuery
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @ToString(callSuper = true)

@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * @description: OrderCriteria
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class OrderCriteria implements Serializable {

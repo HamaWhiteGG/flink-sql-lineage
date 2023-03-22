@@ -26,7 +26,6 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
 /**
  * @description: TaskAssembler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Mapper(componentModel = "spring")
 public interface DtoAssembler {

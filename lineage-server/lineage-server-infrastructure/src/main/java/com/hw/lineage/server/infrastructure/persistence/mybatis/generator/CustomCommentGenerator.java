@@ -17,7 +17,6 @@ import java.util.Set;
 /**
  * @description: CustomCommentGenerator
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class CustomCommentGenerator implements CommentGenerator {
     private final Properties properties = new Properties();
@@ -49,7 +48,7 @@ public class CustomCommentGenerator implements CommentGenerator {
             topLevelClass.addJavaDocLine("/**");
             topLevelClass.addJavaDocLine(" * @description: " + description);
             topLevelClass.addJavaDocLine(" * @author: " + properties.getProperty("author"));
-            topLevelClass.addJavaDocLine(" * @version: " + properties.getProperty("version"));
+            // topLevelClass.addJavaDocLine(" * @version: " + properties.getProperty("version"));
             // topLevelClass.addJavaDocLine(" * @date: " + getDateString());
             // add @mbg.generated
             addJavadocTag(topLevelClass);

@@ -30,7 +30,6 @@ import java.util.*;
 /**
  * @description: SwaggerConfig
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @EnableKnife4j
 @Configuration

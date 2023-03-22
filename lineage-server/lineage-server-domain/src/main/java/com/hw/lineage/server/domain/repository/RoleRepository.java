@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * @description: RoleRepository
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface RoleRepository extends Repository<Role, RoleId> {
 

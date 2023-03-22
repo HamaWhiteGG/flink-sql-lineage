@@ -32,7 +32,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 /**
  * @description: FunctionRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class FunctionRepositoryImpl extends AbstractBasicRepository implements FunctionRepository {

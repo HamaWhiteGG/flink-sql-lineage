@@ -23,7 +23,6 @@ import java.util.*;
 /**
  * @description: DefaultPluginManagerTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class DefaultPluginManagerTest extends PluginTestBase {
 

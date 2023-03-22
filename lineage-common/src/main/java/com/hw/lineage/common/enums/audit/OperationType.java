@@ -5,7 +5,6 @@ import com.hw.lineage.common.enums.basic.StringEnum;
 /**
  * @description: OperationType
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public enum OperationType  implements StringEnum<OperationType> {
 

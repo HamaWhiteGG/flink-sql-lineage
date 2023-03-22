@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * @description: StorageFacadeImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service
 public class StorageFacadeImpl implements StorageFacade {

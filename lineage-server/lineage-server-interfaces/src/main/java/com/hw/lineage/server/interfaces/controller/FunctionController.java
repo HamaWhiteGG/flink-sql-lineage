@@ -24,7 +24,6 @@ import static com.hw.lineage.common.enums.audit.OperationType.PARSE;
 /**
  * @description: FunctionController
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Validated
 @RestController

@@ -39,7 +39,6 @@ import static com.hw.lineage.common.enums.CatalogType.HIVE;
 /**
  * @description: CatalogServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("catalogService")
 public class CatalogServiceImpl implements CatalogService {
@@ -153,7 +152,7 @@ public class CatalogServiceImpl implements CatalogService {
     public void createTable(CreateTableCmd command) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(command.getCatalogId()));
         lineageFacade.createTable(entry.getPluginCode(), entry.getCatalogName()
-                , command.getDatabase(), command.getCreateSql()
+                , command.getDatabase(), command.getDdl()
         );
     }
 

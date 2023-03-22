@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 /**
  * @description: FunctionInfo
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor

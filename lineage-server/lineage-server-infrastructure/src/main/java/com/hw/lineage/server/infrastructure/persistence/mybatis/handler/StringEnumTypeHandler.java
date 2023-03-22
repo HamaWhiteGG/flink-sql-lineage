@@ -17,7 +17,6 @@ import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 /**
  * @description: StringEnumTypeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public abstract class StringEnumTypeHandler<E extends StringEnum> extends BaseTypeHandler<E> {
     private final Map<String, E> enumMap;

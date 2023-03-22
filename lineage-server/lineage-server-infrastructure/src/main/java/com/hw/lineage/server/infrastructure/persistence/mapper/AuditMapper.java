@@ -1,11 +1,22 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.AuditDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
 import com.hw.lineage.server.infrastructure.persistence.dos.AuditDO;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.ModuleCodeHandler;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.OperationStatusTypeHandler;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.OperationTypeHandler;
-import org.apache.ibatis.annotations.*;
+import java.util.List;
+import java.util.Optional;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -21,12 +32,6 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.hw.lineage.server.infrastructure.persistence.mapper.AuditDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 @Mapper
 public interface AuditMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {

@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 /**
  * @description: CreateFunctionCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @ToString(callSuper = true)

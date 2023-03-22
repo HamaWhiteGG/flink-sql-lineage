@@ -10,7 +10,6 @@ import java.util.Locale;
 /**
  * @description: LocaleValidatorConfig
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Configuration
 public class LocaleValidatorConfig {

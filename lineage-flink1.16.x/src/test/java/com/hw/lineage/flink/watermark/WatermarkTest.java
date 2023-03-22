@@ -7,7 +7,6 @@ import org.junit.Test;
 /**
  * @description: WatermarkTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class WatermarkTest extends AbstractBasicTest {
 

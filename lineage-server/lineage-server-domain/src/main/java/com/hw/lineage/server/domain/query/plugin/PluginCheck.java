@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * @description: PluginCheck
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class PluginCheck implements Serializable {

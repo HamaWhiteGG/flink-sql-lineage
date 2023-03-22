@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @description: RoleCheck
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class RoleCheck implements Serializable {

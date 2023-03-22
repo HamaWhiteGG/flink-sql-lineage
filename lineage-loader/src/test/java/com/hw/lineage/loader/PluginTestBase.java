@@ -10,7 +10,6 @@ import java.net.URL;
  * @description: Base class for some tests related to the plugin mechanism.
  * Provides access to some common test resources.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public abstract class PluginTestBase extends TestLogger {
 

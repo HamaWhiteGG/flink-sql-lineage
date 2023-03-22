@@ -9,7 +9,6 @@ import java.io.Serializable;
 /**
  * @description: CreateDatabaseCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CreateDatabaseCmd implements Serializable {

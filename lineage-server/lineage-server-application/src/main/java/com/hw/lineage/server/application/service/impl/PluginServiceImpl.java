@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 /**
  * @description: PluginServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("pluginService")
 public class PluginServiceImpl implements PluginService {

@@ -26,7 +26,6 @@ import javax.annotation.Resource;
 /**
  * @description: TaskServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("taskService")
 public class TaskServiceImpl implements TaskService {
@@ -120,7 +119,6 @@ public class TaskServiceImpl implements TaskService {
 
         task.setLineageTime(System.currentTimeMillis());
         taskRepository.save(task);
-
         return assembler.fromTask(task, entry.getCatalogName());
     }
 }

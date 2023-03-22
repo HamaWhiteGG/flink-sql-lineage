@@ -5,6 +5,7 @@ import com.hw.lineage.flink.common.CommonTest;
 import com.hw.lineage.flink.ctas.CtasTest;
 import com.hw.lineage.flink.localtimestamp.LocaltimestampTest;
 import com.hw.lineage.flink.lookup.join.LookupJoinTest;
+import com.hw.lineage.flink.paimon.PaimonTest;
 import com.hw.lineage.flink.proctime.ProctimeTest;
 import com.hw.lineage.flink.tablefuncion.TableFunctionTest;
 import com.hw.lineage.flink.watermark.WatermarkTest;
@@ -15,7 +16,6 @@ import org.junit.runners.Suite;
 /**
  * @description: SuiteTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({CommonTest.class
@@ -26,7 +26,8 @@ import org.junit.runners.Suite;
         , CepTest.class
         , WindowTest.class
         , ProctimeTest.class
-        , CtasTest.class})
+        , CtasTest.class
+        , PaimonTest.class})
 public class SuiteTest {
 
     /**

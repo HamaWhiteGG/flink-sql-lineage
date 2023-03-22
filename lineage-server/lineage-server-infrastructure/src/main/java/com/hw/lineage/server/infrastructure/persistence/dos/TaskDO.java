@@ -7,7 +7,6 @@ import com.hw.lineage.server.domain.graph.table.TableGraph;
 /**
  * @description: This class corresponds to the database table bas_task
  * @author: HamaWhite
- * @version: 1.0.0
  *
  * @mbg.generated
  */

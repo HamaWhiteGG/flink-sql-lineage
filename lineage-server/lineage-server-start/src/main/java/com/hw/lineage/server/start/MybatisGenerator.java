@@ -17,7 +17,6 @@ import java.util.List;
  *
  * @description: MybatisGenerator
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class MybatisGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(MybatisGenerator.class);

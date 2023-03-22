@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * @description: CatalogService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface CatalogService {
 

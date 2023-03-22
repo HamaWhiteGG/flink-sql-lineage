@@ -21,7 +21,6 @@ import java.util.TreeMap;
 /**
  * @description: Customize an HttpRequest that supports additional parameters
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class EnhancedHttpRequestWrapper extends HttpServletRequestWrapper {
 

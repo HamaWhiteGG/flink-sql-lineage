@@ -16,7 +16,6 @@ import java.io.StringWriter;
  *
  * @description: TestLogger
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class TestLogger {
     protected final Logger log = LoggerFactory.getLogger(getClass());

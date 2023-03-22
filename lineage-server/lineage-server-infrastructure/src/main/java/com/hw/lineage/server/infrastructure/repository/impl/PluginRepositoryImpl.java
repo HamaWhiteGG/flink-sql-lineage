@@ -26,7 +26,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 /**
  * @description: PluginRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class PluginRepositoryImpl extends AbstractBasicRepository implements PluginRepository {

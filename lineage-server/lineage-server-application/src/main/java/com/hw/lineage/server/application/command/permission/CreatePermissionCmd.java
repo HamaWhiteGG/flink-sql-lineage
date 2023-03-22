@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @description: CreatePermissionCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CreatePermissionCmd implements Serializable {

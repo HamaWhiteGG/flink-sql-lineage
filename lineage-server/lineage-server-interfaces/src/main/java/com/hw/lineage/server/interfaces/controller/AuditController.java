@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 /**
  * @description: AuditController
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Validated
 @RestController

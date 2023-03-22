@@ -7,7 +7,6 @@ import org.junit.Test;
 /**
  * @description: LocaltimestampTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class LocaltimestampTest extends AbstractBasicTest {
 
@@ -20,18 +19,6 @@ public class LocaltimestampTest extends AbstractBasicTest {
         createTableOfPrintSink();
     }
 
-
-    /**
-     * Optimized RelNode: FlinkLogicalWatermarkAssigner(rowtime=[ts], watermark=[$3])
-     * FlinkLogicalCalc(select=[id, name, LOCALTIMESTAMP() AS birthday, LOCALTIMESTAMP() AS ts])
-     * FlinkLogicalTableSourceScan(table=[[hive, flink_demo, datagen_source]], fields=[id, name])
-     * <p>
-     * Since FlinkLogicalTableSourceScan in Optimized RelNode only has id and name fields, there are
-     * no birthday and ts fields. The birthday and ts fields have been optimized to LOCALTIMESTAMP()
-     * AS birthday, LOCALTIMESTAMP() AS ts. Therefore, in the getColumnOrigins(Calc rel, final
-     * RelMetadataQuery mq, int iOutputColumn) method, under special treatment for LOCALTIMESTAMP()
-     * AS birthday, LOCALTIMESTAMP() AS ts
-     */
     @Test
     public void testInsertSelectLocaltimestamp() {
         String sql = "INSERT INTO print_sink " +

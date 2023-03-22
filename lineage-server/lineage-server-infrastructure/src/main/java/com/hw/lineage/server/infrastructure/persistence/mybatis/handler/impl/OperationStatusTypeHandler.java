@@ -6,7 +6,6 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.IntEnumT
 /**
  * @description: OperationStatusTypeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class OperationStatusTypeHandler extends IntEnumTypeHandler<OperationStatus> {
     public OperationStatusTypeHandler() {

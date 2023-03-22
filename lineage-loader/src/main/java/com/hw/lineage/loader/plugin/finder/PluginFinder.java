@@ -13,7 +13,6 @@ import java.util.Collection;
  *
  * @description: PluginFinder
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface PluginFinder {
 
