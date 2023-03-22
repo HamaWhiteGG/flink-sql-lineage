@@ -51,12 +51,23 @@ public abstract class AbstractBasicTest {
     }
 
     protected void parseFieldLineage(String sql, String[][] expectedArray) {
+        List<LineageInfo> actualList = parseFieldLineage(sql);
+        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
+        assertEquals(expectedList, actualList);
+    }
+
+
+    protected void parseFieldLineage(String catalogName, String sql, String[][] expectedArray) {
+        List<LineageInfo> actualList = parseFieldLineage(sql);
+        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
+        assertEquals(expectedList, actualList);
+    }
+
+    private List<LineageInfo> parseFieldLineage(String sql) {
         List<LineageInfo> actualList = context.parseFieldLineage(sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
-
-        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
-        assertEquals(expectedList, actualList);
+        return actualList;
     }
 
 

@@ -16,6 +16,7 @@
         <hadoop.version>3.2.2</hadoop.version>
         <hive.version>3.1.2</hive.version>
         <mysql.cdc.version>2.2.1</mysql.cdc.version>
+        <paimon.version>0.4-SNAPSHOT</paimon.version>
     </properties>
 
     <dependencies>
@@ -153,6 +154,17 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.paimon</groupId>
+            <artifactId>paimon-flink-1.16</artifactId>
+            <version>${paimon.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.paimon</groupId>
+            <artifactId>paimon-hive-catalog</artifactId>
+            <version>${paimon.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

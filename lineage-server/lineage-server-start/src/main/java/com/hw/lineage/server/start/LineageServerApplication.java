@@ -3,17 +3,20 @@ package com.hw.lineage.server.start;
 import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.application.service.StorageService;
+import com.hw.lineage.server.application.service.TableService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * @description: LineageServerApplication
  * @author: HamaWhite
  * @version: 1.0.0
  */
+@EnableAsync
 @SpringBootApplication(scanBasePackages = {"com.hw.lineage.server.*"})
 public class LineageServerApplication {
     public static void main(String[] args) {
@@ -34,6 +37,12 @@ public class LineageServerApplication {
 
     @Bean
     @Order(3)
+    CommandLineRunner createMemoryTables(TableService tableService) {
+        return args -> tableService.createMemoryTables();
+    }
+
+    @Bean
+    @Order(4)
     CommandLineRunner createMemoryFunctions(FunctionService functionService) {
         return args -> functionService.createMemoryFunctions();
     }

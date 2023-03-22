@@ -9,10 +9,20 @@ import com.hw.lineage.common.enums.basic.StringEnum;
  */
 public enum SqlType implements StringEnum<SqlType> {
     SELECT("select"),
-    INSERT("insert"),
     CREATE("create"),
     DROP("drop"),
-    OTHER("other");
+    ALTER("alter"),
+    INSERT("insert"),
+    ANALYZE("analyze"),
+    DESCRIBE("describe"),
+    EXPLAIN("explain"),
+    USE("use"),
+    SHOW("show"),
+    LOAD("load"),
+    UNLOAD("unload"),
+    SET("set"),
+    RESET("reset"),
+    JAR("jar");
 
     private final String value;
 

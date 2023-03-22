@@ -120,7 +120,6 @@ public class TaskServiceImpl implements TaskService {
 
         task.setLineageTime(System.currentTimeMillis());
         taskRepository.save(task);
-
         return assembler.fromTask(task, entry.getCatalogName());
     }
 }

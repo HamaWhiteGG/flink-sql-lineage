@@ -76,7 +76,11 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
     public void saveTaskSql(Task task) {
         List<TaskSql> taskSqlList = task.getTaskSqlList().stream().map(taskSql -> {
                     TaskSqlDO taskSqlDO = converter.fromTaskSql(taskSql);
-                    taskSqlMapper.insertSelective(taskSqlDO);
+                    if (taskSqlDO.getSqlId() == null) {
+                        taskSqlMapper.insertSelective(taskSqlDO);
+                    } else {
+                        taskSqlMapper.updateByPrimaryKeySelective(taskSqlDO);
+                    }
                     return converter.toTaskSql(taskSqlDO);
                 }
         ).collect(Collectors.toList());

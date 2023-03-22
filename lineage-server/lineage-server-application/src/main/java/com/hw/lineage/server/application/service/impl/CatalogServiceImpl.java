@@ -153,7 +153,7 @@ public class CatalogServiceImpl implements CatalogService {
     public void createTable(CreateTableCmd command) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(command.getCatalogId()));
         lineageFacade.createTable(entry.getPluginCode(), entry.getCatalogName()
-                , command.getDatabase(), command.getCreateSql()
+                , command.getDatabase(), command.getDdl()
         );
     }
 
