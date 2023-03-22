@@ -3,7 +3,6 @@ package com.hw.lineage.common.util;
 /**
  * @description: Utility class for Java arrays.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class ArrayUtils {
     private ArrayUtils() {

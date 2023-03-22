@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 /**
  * @description: StorageServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("storageService")
 public class StorageServiceImpl implements StorageService {

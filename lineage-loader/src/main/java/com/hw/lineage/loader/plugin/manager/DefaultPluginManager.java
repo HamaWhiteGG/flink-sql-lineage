@@ -9,7 +9,6 @@ import java.util.*;
 /**
  * @description: Default implementation of {@link PluginManager}.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @ThreadSafe
 public class DefaultPluginManager implements PluginManager {

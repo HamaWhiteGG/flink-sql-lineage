@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * @description: LinageService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface LineageService extends Plugin {
 

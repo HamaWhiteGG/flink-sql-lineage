@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: Column
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @AllArgsConstructor

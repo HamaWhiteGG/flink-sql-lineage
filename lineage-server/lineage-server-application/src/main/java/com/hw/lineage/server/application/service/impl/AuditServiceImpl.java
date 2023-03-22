@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 /**
  * @description: AuditServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("auditService")
 public class AuditServiceImpl implements AuditService {

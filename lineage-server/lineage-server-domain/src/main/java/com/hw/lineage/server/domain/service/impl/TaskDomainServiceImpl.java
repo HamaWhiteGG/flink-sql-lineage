@@ -1,9 +1,9 @@
 package com.hw.lineage.server.domain.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
 import com.hw.lineage.common.util.Base64Utils;
-import com.hw.lineage.common.util.EnumUtils;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.service.TaskDomainService;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.hw.lineage.common.enums.SqlType.*;
@@ -19,12 +20,28 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
 /**
  * @description: TaskDomainServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service
 public class TaskDomainServiceImpl implements TaskDomainService {
 
-    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, INSERT, DROP);
+    private static final Map<String, SqlType> SQL_TYPE_MAP = ImmutableMap.<String, SqlType>builder()
+            .put("SELECT", SELECT)
+            .put("CREATE", CREATE)
+            .put("DROP", DROP)
+            .put("ALTER", ALTER)
+            .put("INSERT", INSERT)
+            .put("ANALYZE", ANALYZE)
+            .put("DESCRIBE", DESCRIBE).put("DESC", DESCRIBE)
+            .put("EXPLAIN", EXPLAIN)
+            .put("USE", USE)
+            .put("SHOW", SHOW)
+            .put("LOAD", LOAD)
+            .put("UNLOAD", UNLOAD)
+            .put("SET", SET)
+            .put("RESET", RESET)
+            .put("ADD", JAR).put("REMOVE", JAR)
+            .build();
+    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, DROP, ALTER, INSERT, USE, LOAD, UNLOAD, SET, RESET, JAR);
 
     @Override
     public void generateTaskSql(Task task) {
@@ -47,7 +64,6 @@ public class TaskDomainServiceImpl implements TaskDomainService {
 
     private SqlType extractSqlType(String singleSql) {
         String sqlType = singleSql.split("\\s+")[0];
-        return EnumUtils.getSqlTypeByValue(sqlType);
+        return SQL_TYPE_MAP.get(sqlType.toUpperCase());
     }
-
 }

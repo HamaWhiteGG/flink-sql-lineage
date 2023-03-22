@@ -6,7 +6,6 @@ import com.hw.lineage.common.enums.CatalogType;
 /**
  * @description: This class corresponds to the database table bas_catalog
  * @author: HamaWhite
- * @version: 1.0.0
  *
  * @mbg.generated
  */

@@ -14,7 +14,6 @@ import java.util.Optional;
 /**
  * @description: CustomCatalogMapper
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Mapper
 public interface CustomCatalogMapper {

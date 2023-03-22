@@ -23,7 +23,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 /**
  * @description: AuditRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class AuditRepositoryImpl extends AbstractBasicRepository implements AuditRepository {

@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * @description: LineageService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface LineageFacade {
 
@@ -30,7 +29,7 @@ public interface LineageFacade {
 
     void deleteDatabase(String pluginCode, String catalogName, String database);
 
-    void createTable(String pluginCode, String catalogName, String database, String createSql);
+    void createTable(String pluginCode, String catalogName, String database, String ddl);
 
     List<String> listTables(String pluginCode, String catalogName, String database) throws Exception;
 

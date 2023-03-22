@@ -9,7 +9,6 @@ import java.io.Serializable;
 /**
  * @description: ParseFunctionCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class ParseFunctionCmd implements Serializable {

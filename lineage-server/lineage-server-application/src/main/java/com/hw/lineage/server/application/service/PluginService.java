@@ -10,7 +10,6 @@ import com.hw.lineage.server.domain.query.plugin.PluginQuery;
 /**
  * @description: PluginService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface PluginService {
 

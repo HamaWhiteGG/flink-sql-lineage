@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * @description: MapTypeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class MapTypeHandler extends BaseTypeHandler<Map<String, String>> {
 

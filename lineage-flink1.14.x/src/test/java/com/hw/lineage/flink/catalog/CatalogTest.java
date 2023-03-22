@@ -25,7 +25,6 @@ import static org.junit.Assert.assertThrows;
  * if not, please comment out this unit test class(add @Ignore)
  *
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class CatalogTest {
     private static final Logger LOG = LoggerFactory.getLogger(CatalogTest.class);

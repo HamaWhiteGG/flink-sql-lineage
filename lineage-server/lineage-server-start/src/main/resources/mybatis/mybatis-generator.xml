@@ -74,6 +74,10 @@
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler"/>
         </table>
 
+        <table tableName="bas_table" domainObjectName="Table" delimitAllColumns="true">
+            <generatedKey column="table_id" sqlStatement="Mysql" identity="true"/>
+        </table>
+
         <table tableName="bas_function" domainObjectName="Function" delimitAllColumns="true">
             <generatedKey column="function_id" sqlStatement="Mysql" identity="true"/>
         </table>
@@ -126,7 +130,6 @@
                     column="parameters"
                     javaType="com.alibaba.fastjson2.JSONObject"
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler"/>
-
         </table>
     </context>
 

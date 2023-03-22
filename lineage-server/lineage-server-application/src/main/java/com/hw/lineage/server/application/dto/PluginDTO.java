@@ -6,7 +6,6 @@ import lombok.Data;
 /**
  * @description: PluginDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class PluginDTO extends BasicDTO {

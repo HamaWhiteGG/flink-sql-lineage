@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 /**
  * @description: CreatePluginCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @ToString(callSuper = true)

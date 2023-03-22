@@ -10,7 +10,6 @@ import com.hw.lineage.server.domain.vo.CatalogId;
 /**
  * @description: CatalogRepository
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface CatalogRepository extends Repository<Catalog, CatalogId> {
     PageInfo<Catalog> findAll(CatalogQuery catalogQuery);

@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @description: CatalogCheck
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CatalogCheck implements Serializable {

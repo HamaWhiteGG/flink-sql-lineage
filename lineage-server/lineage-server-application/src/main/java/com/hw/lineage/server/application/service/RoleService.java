@@ -10,7 +10,6 @@ import com.hw.lineage.server.domain.query.role.RoleQuery;
 /**
  * @description: RoleService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface RoleService {
 

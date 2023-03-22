@@ -5,7 +5,6 @@ import com.hw.lineage.common.enums.basic.StringEnum;
 /**
  * @description: TableKind
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public enum TableKind implements StringEnum<TableKind> {
 

@@ -3,7 +3,6 @@ package com.hw.lineage.server.interfaces.result;
 /**
  * @description: ResultCode
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class ResultCode {
     private ResultCode() {

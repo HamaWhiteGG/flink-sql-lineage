@@ -23,7 +23,6 @@ import static com.hw.lineage.common.enums.audit.OperationType.*;
 /**
  * @description: TaskController
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Validated
 @RestController

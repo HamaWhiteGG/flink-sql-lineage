@@ -39,7 +39,6 @@ CREATE TABLE `rel_role_user`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-
 DROP TABLE IF EXISTS `bas_permission`;
 CREATE TABLE `bas_permission`
 (
@@ -92,7 +91,6 @@ CREATE TABLE `bas_task`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
-
 
 DROP TABLE IF EXISTS `rel_task_sql`;
 CREATE TABLE `rel_task_sql`
@@ -168,6 +166,25 @@ CREATE TABLE `bas_catalog`
     `invalid`            tinyint(1)  NOT NULL DEFAULT '0',
     PRIMARY KEY (`catalog_id`),
     KEY `catalog_name_idx` (`catalog_name`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `bas_table`;
+CREATE TABLE `bas_table`
+(
+    `table_id`       bigint(20) AUTO_INCREMENT,
+    `catalog_id`     bigint(20)   NOT NULL,
+    `database`       varchar(64)  NOT NULL,
+    `table_name`     varchar(128) NOT NULL,
+    `ddl`            text COMMENT 'Base64 encode',
+    `descr`          varchar(256)          DEFAULT NULL,
+    `create_user_id` bigint(20)   NOT NULL DEFAULT '0',
+    `modify_user_id` bigint(20)   NOT NULL DEFAULT '0',
+    `create_time`    bigint(20)   NOT NULL,
+    `modify_time`    bigint(20)   NOT NULL,
+    `invalid`        tinyint(1)   NOT NULL DEFAULT '0',
+    PRIMARY KEY (`table_id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;

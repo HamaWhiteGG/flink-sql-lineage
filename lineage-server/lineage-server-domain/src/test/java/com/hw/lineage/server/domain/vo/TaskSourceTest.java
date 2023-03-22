@@ -9,7 +9,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 /**
  * @description: TaskSourceTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class TaskSourceTest {
 

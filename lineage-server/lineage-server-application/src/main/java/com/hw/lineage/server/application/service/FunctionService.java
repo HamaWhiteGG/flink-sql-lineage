@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * @description: FunctionService
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface FunctionService {
 

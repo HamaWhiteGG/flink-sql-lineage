@@ -8,7 +8,6 @@ import org.junit.Test;
 /**
  * @description: CommonTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class CommonTest extends AbstractBasicTest {
 

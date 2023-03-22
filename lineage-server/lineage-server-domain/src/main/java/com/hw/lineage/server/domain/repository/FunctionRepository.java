@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * @description: FunctionRepository
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface FunctionRepository extends Repository<Function, FunctionId> {
     PageInfo<Function> findAll(FunctionQuery functionQuery);

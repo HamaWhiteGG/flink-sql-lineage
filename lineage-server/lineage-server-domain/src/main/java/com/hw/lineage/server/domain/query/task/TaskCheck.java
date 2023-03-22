@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @description: TaskCheck
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class TaskCheck implements Serializable {

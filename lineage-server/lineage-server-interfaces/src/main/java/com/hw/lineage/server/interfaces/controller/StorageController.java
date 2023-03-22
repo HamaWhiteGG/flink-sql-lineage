@@ -28,7 +28,6 @@ import static com.hw.lineage.common.util.Preconditions.checkArgument;
 /**
  * @description: StorageController
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Validated
 @RestController

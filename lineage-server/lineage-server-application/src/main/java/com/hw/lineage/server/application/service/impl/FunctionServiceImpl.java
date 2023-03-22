@@ -35,7 +35,6 @@ import java.util.List;
 /**
  * @description: FunctionServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("functionService")
 public class FunctionServiceImpl implements FunctionService {

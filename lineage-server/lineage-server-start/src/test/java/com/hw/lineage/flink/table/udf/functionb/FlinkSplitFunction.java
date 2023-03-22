@@ -8,7 +8,6 @@ import org.apache.flink.types.Row;
 /**
  * @description: FlinkSplitFunction
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @FunctionHint(output = @DataTypeHint("ROW<word STRING, length INT>"))
 public class FlinkSplitFunction extends TableFunction<Row> {

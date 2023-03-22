@@ -9,7 +9,6 @@ import java.util.Set;
 /**
  * @description: node.Node
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 @NoArgsConstructor

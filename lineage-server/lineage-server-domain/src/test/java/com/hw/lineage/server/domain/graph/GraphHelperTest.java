@@ -15,7 +15,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * @description: GraphHelperTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class GraphHelperTest {
 

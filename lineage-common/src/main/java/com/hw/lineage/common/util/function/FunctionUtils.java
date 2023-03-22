@@ -7,7 +7,6 @@ import java.util.function.Function;
 /**
  * @description: Utility class for Flink's functions.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class FunctionUtils {
 

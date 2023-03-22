@@ -5,7 +5,6 @@ import lombok.Data;
 /**
  * @description: BasicDTO
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public abstract class BasicDTO extends RootDTO {

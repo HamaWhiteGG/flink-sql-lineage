@@ -7,7 +7,6 @@ import org.junit.Test;
 /**
  * @description: WindowTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class WindowTest extends AbstractBasicTest {
 
@@ -40,8 +39,8 @@ public class WindowTest extends AbstractBasicTest {
                 "   ods_mysql_users";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users", "ts", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "id", "ROW_NUMBER() OVER (PARTITION BY id ORDER BY ts DESC NULLS LAST)"},
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id", "ROW_NUMBER() OVER (PARTITION BY id ORDER BY ts DESC NULLS LAST)"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
@@ -71,11 +70,11 @@ public class WindowTest extends AbstractBasicTest {
                 "   ods_mysql_users";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users", "ts", "dwd_hudi_users", "id"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "id", "ROW_NUMBER() OVER (PARTITION BY id ORDER BY ts DESC NULLS LAST)"},
+                {"ods_mysql_users", "id", "dwd_hudi_users", "id", "ROW_NUMBER() OVER (PARTITION BY id ORDER BY ts DESC NULLS LAST)"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"},
-                {"ods_mysql_users", "ts", "dwd_hudi_users", "company_name"},
+                {"ods_mysql_users", "ts", "dwd_hudi_users", "company_name","CAST(ROW_NUMBER() OVER (PARTITION BY name ORDER BY ts DESC NULLS LAST)):VARCHAR(2147483647) CHARACTER SET \"UTF-16LE\" NOT NULL"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name","CAST(ROW_NUMBER() OVER (PARTITION BY name ORDER BY ts DESC NULLS LAST)):VARCHAR(2147483647) CHARACTER SET \"UTF-16LE\" NOT NULL"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}

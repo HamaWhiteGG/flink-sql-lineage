@@ -12,7 +12,6 @@ import java.sql.SQLException;
 /**
  * @description: JsonTypeHandler
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class JsonTypeHandler<E extends Object> extends BaseTypeHandler<E> {
 

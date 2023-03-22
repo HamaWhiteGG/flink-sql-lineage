@@ -19,7 +19,6 @@ import javax.annotation.Resource;
 /**
  * @description: PermissionServiceImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service("permissionService")
 public class PermissionServiceImpl implements PermissionService {

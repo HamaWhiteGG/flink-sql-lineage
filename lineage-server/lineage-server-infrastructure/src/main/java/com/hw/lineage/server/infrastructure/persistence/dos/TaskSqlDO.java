@@ -6,7 +6,6 @@ import com.hw.lineage.common.enums.SqlType;
 /**
  * @description: This class corresponds to the database table rel_task_sql
  * @author: HamaWhite
- * @version: 1.0.0
  *
  * @mbg.generated
  */

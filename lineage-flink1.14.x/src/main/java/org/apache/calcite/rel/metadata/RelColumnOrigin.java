@@ -29,7 +29,6 @@ import org.apache.calcite.plan.RelOptTable;
  * @description: RelColumnOrigin is a data structure describing one of the origins of an
  * output column produced by a relational expression.
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class RelColumnOrigin {
     //~ Instance fields --------------------------------------------------------

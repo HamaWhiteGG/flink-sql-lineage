@@ -33,12 +33,13 @@ import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 /**
  * @description: LineageFacadeImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Service
 public class LineageFacadeImpl implements LineageFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(LineageFacadeImpl.class);
+
+    private static final String CTAS_REGEX = "CREATE\\s+TABLE(?s).*AS\\s+SELECT(?s).*";
 
     @Resource
     private LineageConfig config;
@@ -57,29 +58,41 @@ public class LineageFacadeImpl implements LineageFacade {
     public void parseLineage(String pluginCode, String catalogName, Task task) {
         task.setTaskStatus(TaskStatus.RUNNING);
         try {
-            Map<SqlId,String> sqlSourceMap=new HashMap<>(INITIAL_CAPACITY);
+            Map<SqlId, String> sqlSourceMap = new HashMap<>(INITIAL_CAPACITY);
             for (TaskSql taskSql : task.getTaskSqlList()) {
-                sqlSourceMap.put(taskSql.getSqlId(),taskSql.getSqlSource());
+                sqlSourceMap.put(taskSql.getSqlId(), taskSql.getSqlSource());
                 String singleSql = Base64Utils.decode(taskSql.getSqlSource());
                 switch (taskSql.getSqlType()) {
                     case INSERT:
                         parseFieldLineage(pluginCode, catalogName, task, taskSql, singleSql);
                         break;
                     case CREATE:
+                        if (ctas(singleSql)) {
+                            parseFieldLineage(pluginCode, catalogName, task, taskSql, singleSql);
+                        } else {
+                            executeSql(pluginCode, catalogName, task, taskSql, singleSql);
+                        }
+                        break;
                     case DROP:
+                    case ALTER:
+                    case USE:
+                    case LOAD:
+                    case UNLOAD:
+                    case SET:
+                    case RESET:
+                    case JAR:
                         executeSql(pluginCode, catalogName, task, taskSql, singleSql);
                         break;
                     default:
                         throw new LineageException(ILLEGAL_PARAM);
                 }
             }
-            GraphFactory graphFactory = new GraphFactory(this,sqlSourceMap);
+            GraphFactory graphFactory = new GraphFactory(this, sqlSourceMap);
             graphFactory.createLineageGraph(pluginCode, task);
             task.setTaskStatus(TaskStatus.SUCCESS);
         } catch (Exception e) {
             task.setTaskStatus(TaskStatus.FAILED);
-            LOG.error("parse lineage exception", e);
-            throw new LineageException(e.getMessage());
+            throw new LineageException(e);
         }
     }
 
@@ -119,9 +132,12 @@ public class LineageFacadeImpl implements LineageFacade {
             taskSql.setSqlStatus(SqlStatus.SUCCESS);
         } catch (Exception e) {
             taskSql.setSqlStatus(SqlStatus.FAILED);
-            LOG.error("parse lineage exception", e);
-            throw new LineageException(String.format("parse lineage failed, sql: %s", singleSql));
+            throw new LineageException(e);
         }
+    }
+
+    private boolean ctas(String singleSql) {
+        return singleSql.matches(CTAS_REGEX);
     }
 
     @Override
@@ -155,8 +171,9 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public void createTable(String pluginCode, String catalogName, String database, String createSql) {
-        lineageClient.execute(pluginCode, catalogName, database, createSql);
+    public void createTable(String pluginCode, String catalogName, String database, String ddl) {
+        String singleSql = Base64Utils.decode(ddl);
+        lineageClient.execute(pluginCode, catalogName, database, singleSql);
     }
 
     @Override
@@ -171,7 +188,7 @@ public class LineageFacadeImpl implements LineageFacade {
 
     @Override
     public String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception {
-        String tableDdl=lineageClient.getTableDdl(pluginCode, catalogName, database, tableName);
+        String tableDdl = lineageClient.getTableDdl(pluginCode, catalogName, database, tableName);
         return Base64Utils.encode(tableDdl);
     }
 

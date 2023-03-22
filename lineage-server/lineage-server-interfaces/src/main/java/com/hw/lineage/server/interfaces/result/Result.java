@@ -8,7 +8,6 @@ import java.io.Serializable;
 /**
  * @description: ServerResult
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class Result<T> implements Serializable {

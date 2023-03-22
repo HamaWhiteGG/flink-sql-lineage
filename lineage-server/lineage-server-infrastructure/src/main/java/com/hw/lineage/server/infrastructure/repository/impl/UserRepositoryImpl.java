@@ -34,7 +34,6 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 /**
  * @description: UserRepositoryImpl
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Repository
 public class UserRepositoryImpl extends AbstractBasicRepository implements UserRepository {

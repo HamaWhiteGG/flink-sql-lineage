@@ -3,7 +3,6 @@ package com.hw.lineage.server.domain.repository.basic;
 /**
  * @description: Basic Repository interface
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public interface Repository<T extends Entity, ID extends Identifier> {
 

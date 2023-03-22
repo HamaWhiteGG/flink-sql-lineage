@@ -7,7 +7,6 @@ import org.junit.Test;
 /**
  * @description: LookupJoinTest
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class LookupJoinTest extends AbstractBasicTest {
 

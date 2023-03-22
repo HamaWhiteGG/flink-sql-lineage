@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 /**
  * @description: GraphHelper
  * @author: HamaWhite
- * @version: 1.0.0
  */
 public class GraphHelper<N extends Node, E extends Edge<N>> {
     private Graph<N, E> graph;

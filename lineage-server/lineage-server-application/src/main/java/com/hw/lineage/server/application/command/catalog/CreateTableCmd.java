@@ -9,7 +9,6 @@ import java.io.Serializable;
 /**
  * @description: CreateTableCmd
  * @author: HamaWhite
- * @version: 1.0.0
  */
 @Data
 public class CreateTableCmd implements Serializable {
@@ -21,5 +20,5 @@ public class CreateTableCmd implements Serializable {
     private String database;
 
     @NotBlank
-    private String createSql;
+    private String ddl;
 }
