@@ -21,5 +21,5 @@ public class CreateTableCmd implements Serializable {
     private String database;
 
     @NotBlank
-    private String createSql;
+    private String ddl;
 }
