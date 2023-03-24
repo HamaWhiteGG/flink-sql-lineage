@@ -7,7 +7,6 @@ import org.apache.calcite.rel.core.*;
 import org.apache.calcite.rel.type.RelDataTypeField;
 import org.apache.calcite.rex.*;
 import org.apache.calcite.util.BuiltInMethod;
-import org.apache.flink.table.planner.plan.schema.TableSourceTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

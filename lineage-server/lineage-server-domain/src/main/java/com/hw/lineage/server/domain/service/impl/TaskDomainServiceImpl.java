@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static com.hw.lineage.common.enums.SqlType.*;
 import static com.hw.lineage.common.util.Preconditions.checkArgument;
@@ -45,21 +44,20 @@ public class TaskDomainServiceImpl implements TaskDomainService {
 
     @Override
     public void generateTaskSql(Task task) {
-        String[] sqlArrays = task.getTaskSource().splitSource();
-
-        Stream.of(sqlArrays).forEach(singleSql -> {
-            SqlType sqlType = extractSqlType(singleSql);
-            checkArgument(SUPPORT_SQL_TYPE.contains(sqlType)
-                    , "currently only supports SQL starting with %s, not yet: %s", SUPPORT_SQL_TYPE, singleSql);
-
-            TaskSql taskSql = new TaskSql()
-                    .setTaskId(task.getTaskId())
-                    .setSqlSource(Base64Utils.encode(singleSql))
-                    .setSqlType(sqlType)
-                    .setSqlStatus(SqlStatus.INIT)
-                    .setInvalid(false);
-            task.addTaskSql(taskSql);
-        });
+        task.getTaskSource().split()
+                .forEach(e -> {
+                    SqlType sqlType = extractSqlType(e.getSqlSource());
+                    checkArgument(SUPPORT_SQL_TYPE.contains(sqlType)
+                            , "currently only supports SQL starting with %s, not yet: %s", SUPPORT_SQL_TYPE, e.getSqlSource());
+                    TaskSql taskSql = new TaskSql()
+                            .setTaskId(task.getTaskId())
+                            .setSqlSource(Base64Utils.encode(e.getSqlSource()))
+                            .setSqlType(sqlType)
+                            .setStartLineNumber(e.getStartLineNumber())
+                            .setSqlStatus(SqlStatus.INIT)
+                            .setInvalid(false);
+                    task.addTaskSql(taskSql);
+                });
     }
 
     private SqlType extractSqlType(String singleSql) {
