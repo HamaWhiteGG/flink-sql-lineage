@@ -25,5 +25,7 @@ public interface TaskService {
 
     void updateTask(UpdateTaskCmd command);
 
-    TaskDTO parseTaskLineage(Long taskId);
+    TaskDTO analyzeTaskLineage(Long taskId);
+
+    Boolean checkTaskSyntax(Long taskId);
 }

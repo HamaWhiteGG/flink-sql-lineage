@@ -16,9 +16,11 @@ import java.util.List;
 public interface LineageService extends Plugin {
 
     /**
-     * Parse the field blood relationship of the input SQL
+     * Analyze the field blood relationship of the input SQL
      */
-    List<LineageInfo> parseFieldLineage(String singleSql);
+    List<LineageInfo> analyzeLineage(String singleSql);
+
+    void parse(String singleSql);
 
     /**
      * Execute the single sql

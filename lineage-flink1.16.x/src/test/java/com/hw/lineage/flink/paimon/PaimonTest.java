@@ -73,7 +73,7 @@ public class PaimonTest extends AbstractBasicTest {
                 {"demo_log_01", "dt", "demo_log_05", "dt"},
                 {"demo_log_01", "hh", "demo_log_05", "hh"}
         };
-        parseFieldLineage(catalogName, firstSql, firstExpected);
+        analyzeLineage(catalogName, firstSql, firstExpected);
 
         String secondSql = "INSERT INTO demo_log_agg " +
                 "SELECT                              " +
@@ -92,7 +92,7 @@ public class PaimonTest extends AbstractBasicTest {
                 {"demo_log_05", "item_id", "demo_log_agg", "cnt", "COUNT(DISTINCT item_id)"},
                 {"demo_log_05", "dt", "demo_log_agg", "dt"}
         };
-        parseFieldLineage(catalogName, secondSql, secondExpected);
+        analyzeLineage(catalogName, secondSql, secondExpected);
     }
 
 
@@ -162,8 +162,8 @@ public class PaimonTest extends AbstractBasicTest {
 
         context.execute("CREATE TABLE IF NOT EXISTS demo_log_agg (  " +
                 "       user_id                 BIGINT                       ," +
-                "       cnt                 BIGINT                           ," +
-                "       dt                STRING                             ," +
+                "       cnt                     BIGINT                       ," +
+                "       dt                      STRING                       ," +
                 "       PRIMARY KEY (dt, user_id) NOT ENFORCED                " +
                 ") PARTITIONED BY (dt) with (                                 " +
                 "        'bucket' = '2'                                       " +

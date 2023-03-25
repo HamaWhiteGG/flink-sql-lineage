@@ -55,7 +55,7 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public void parseLineage(String pluginCode, String catalogName, Task task) {
+    public void analyzeLineage(String pluginCode, String catalogName, Task task) {
         task.setTaskStatus(TaskStatus.RUNNING);
         try {
             Map<SqlId, String> sqlSourceMap = new HashMap<>(INITIAL_CAPACITY);
@@ -64,11 +64,11 @@ public class LineageFacadeImpl implements LineageFacade {
                 String singleSql = Base64Utils.decode(taskSql.getSqlSource());
                 switch (taskSql.getSqlType()) {
                     case INSERT:
-                        parseFieldLineage(pluginCode, catalogName, task, taskSql, singleSql);
+                        analyzeLineage(pluginCode, catalogName, task, taskSql, singleSql);
                         break;
                     case CREATE:
                         if (ctas(singleSql)) {
-                            parseFieldLineage(pluginCode, catalogName, task, taskSql, singleSql);
+                            analyzeLineage(pluginCode, catalogName, task, taskSql, singleSql);
                         } else {
                             executeSql(pluginCode, catalogName, task, taskSql, singleSql);
                         }
@@ -109,10 +109,10 @@ public class LineageFacadeImpl implements LineageFacade {
         }
     }
 
-    private void parseFieldLineage(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+    private void analyzeLineage(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         taskSql.setSqlStatus(SqlStatus.RUNNING);
         try {
-            List<LineageInfo> resultList = lineageClient.parseFieldLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
+            List<LineageInfo> resultList = lineageClient.analyzeLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
             resultList.forEach(e -> {
                 TaskLineage taskLineage = new TaskLineage()
                         .setTaskId(task.getTaskId())

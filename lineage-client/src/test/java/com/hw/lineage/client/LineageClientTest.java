@@ -78,11 +78,11 @@ public class LineageClientTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(pluginCode, sql, expectedArray);
+        analyzeLineage(pluginCode, sql, expectedArray);
     }
 
-    private void parseFieldLineage(String pluginCode, String sql, String[][] expectedArray) {
-        List<LineageInfo> actualList = client.parseFieldLineage(pluginCode, catalogName, database, sql);
+    private void analyzeLineage(String pluginCode, String sql, String[][] expectedArray) {
+        List<LineageInfo> actualList = client.analyzeLineage(pluginCode, catalogName, database, sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 

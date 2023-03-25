@@ -37,7 +37,7 @@ public class LocaltimestampTest extends AbstractBasicTest {
                 {"datagen_source", "ts", "print_sink", "ts"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
 
     }
 

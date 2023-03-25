@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface LineageFacade {
 
-    void parseLineage(String pluginCode, String catalogName, Task task);
+    void analyzeLineage(String pluginCode, String catalogName, Task task);
 
     List<FunctionInfo> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException;
 

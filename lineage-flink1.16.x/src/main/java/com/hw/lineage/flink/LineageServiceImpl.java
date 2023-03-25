@@ -28,6 +28,7 @@ import org.apache.flink.table.catalog.AbstractCatalog;
 import org.apache.flink.table.catalog.Catalog;
 import org.apache.flink.table.catalog.CatalogBaseTable;
 import org.apache.flink.table.catalog.ObjectPath;
+import org.apache.flink.table.delegation.Parser;
 import org.apache.flink.table.functions.AggregateFunction;
 import org.apache.flink.table.functions.ScalarFunction;
 import org.apache.flink.table.functions.TableAggregateFunction;
@@ -107,7 +108,7 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public List<LineageInfo> parseFieldLineage(String singleSql) {
+    public List<LineageInfo> analyzeLineage(String singleSql) {
         /**
          * Since TableEnvironment is not thread-safe, add this sentence to solve it.
          * Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
@@ -130,14 +131,10 @@ public class LineageServiceImpl implements LineageService {
     }
 
 
-    private Tuple2<String, RelNode> parseStatement(String sql) {
-        List<Operation> operations = tableEnv.getParser().parse(sql);
+    private Tuple2<String, RelNode> parseStatement(String singleSql) {
+        // do parse, validate and convert
+        Operation operation = parseValidateConvert(singleSql);
 
-        if (operations.size() != 1) {
-            throw new TableException(
-                    "Unsupported SQL query! only accepts a single SQL statement.");
-        }
-        Operation operation = operations.get(0);
         // process create table as select
         operation = prePocessCprereateTableASOperation(operation);
 
@@ -152,6 +149,25 @@ public class LineageServiceImpl implements LineageService {
         } else {
             throw new TableException("Only insert is supported now.");
         }
+    }
+
+    /**
+     * Note: {@link Parser#parse(String)} will do three stages: parse, validate and convert
+     */
+    private Operation parseValidateConvert(String singleSql) {
+        /**
+         * Since TableEnvironment is not thread-safe, add this sentence to solve it.
+         * Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
+         * http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
+         */
+        RelMetadataQueryBase.THREAD_PROVIDERS.set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
+
+        List<Operation> operations = tableEnv.getParser().parse(singleSql);
+        if (operations.size() != 1) {
+            throw new TableException(
+                    "Unsupported SQL query! only accepts a single SQL statement.");
+        }
+        return operations.get(0);
     }
 
     /**
@@ -241,6 +257,12 @@ public class LineageServiceImpl implements LineageService {
                                     + "Sink schema:  %s",
                             sinkTable, queryFieldList, sinkFieldList));
         }
+    }
+
+    @Override
+    public void parse(String singleSql) {
+        LOG.info("Input Sql: \n {}", singleSql);
+        parseValidateConvert(singleSql);
     }
 
     @Override

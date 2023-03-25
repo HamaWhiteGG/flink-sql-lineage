@@ -58,7 +58,7 @@ public class CepTest extends AbstractBasicTest {
                 {"temperature_source", "temperature", "print_sink", "avg_temp", "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
@@ -113,7 +113,7 @@ public class CepTest extends AbstractBasicTest {
                 {"temperature_source", "temperature", "print_sink", "avg_temp", "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
