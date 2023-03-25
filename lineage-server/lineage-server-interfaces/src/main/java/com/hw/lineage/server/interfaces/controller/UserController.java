@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import static com.hw.lineage.common.enums.audit.ModuleCode.USERS;
+import static com.hw.lineage.common.enums.audit.ModuleCode.USER;
 import static com.hw.lineage.common.enums.audit.OperationType.*;
 
 /**
@@ -34,34 +34,34 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    @AuditLog(module = USERS, type = QUERY, descr = "'Query User: ' + @userService.queryUser(#userId).username")
+    @AuditLog(module = USER, type = QUERY, descr = "'Query User: ' + @userService.queryUser(#userId).username")
     public Result<UserDTO> queryUser(@PathVariable("userId") Long userId) {
         UserDTO userDTO = userService.queryUser(userId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, userDTO);
     }
 
     @GetMapping("")
-    @AuditLog(module = USERS, type = QUERY, descr = "'Query Users'")
+    @AuditLog(module = USER, type = QUERY, descr = "'Query Users'")
     public Result<PageInfo<UserDTO>> queryUsers(UserQuery userQuery) {
         PageInfo<UserDTO> pageInfo = userService.queryUsers(userQuery);
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 
     @PostMapping("")
-    @AuditLog(module = USERS, type = CREATE, descr = "'Create User: ' + #command.username")
+    @AuditLog(module = USER, type = CREATE, descr = "'Create User: ' + #command.username")
     public Result<Long> createUser(@Valid @RequestBody CreateUserCmd command) {
         Long userId = userService.createUser(command);
         return Result.success(ResultMessage.CREATE_SUCCESS, userId);
     }
 
     @GetMapping("/exist")
-    @AuditLog(module = USERS, type = QUERY, descr = "'Check User Exist'")
+    @AuditLog(module = USER, type = QUERY, descr = "'Check User Exist'")
     public Result<Boolean> checkUserExist(@Valid UserCheck userCheck) {
         return Result.success(ResultMessage.CHECK_SUCCESS, userService.checkUserExist(userCheck));
     }
 
     @PutMapping("/{userId}")
-    @AuditLog(module = USERS, type = UPDATE, descr = "'Update User: ' + @userService.queryUser(#userId).username")
+    @AuditLog(module = USER, type = UPDATE, descr = "'Update User: ' + @userService.queryUser(#userId).username")
     public Result<Boolean> updateUser(@PathVariable("userId") Long userId,
                                         @Valid @RequestBody UpdateUserCmd command) {
         command.setUserId(userId);
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    @AuditLog(module = USERS, type = DELETE, descr = "'Delete User: ' + @userService.queryUser(#userId).username")
+    @AuditLog(module = USER, type = DELETE, descr = "'Delete User: ' + @userService.queryUser(#userId).username")
     public Result<Boolean> deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
         return Result.success(ResultMessage.DELETE_SUCCESS);

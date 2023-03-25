@@ -18,8 +18,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
-import static com.hw.lineage.common.enums.audit.ModuleCode.FUNCTIONS;
-import static com.hw.lineage.common.enums.audit.OperationType.PARSE;
+import static com.hw.lineage.common.enums.audit.ModuleCode.FUNCTION;
+import static com.hw.lineage.common.enums.audit.OperationType.PARSE_FUNCTION;
 
 /**
  * @description: FunctionController
@@ -35,7 +35,7 @@ public class FunctionController {
     private FunctionService functionService;
 
     @PostMapping("/parse")
-    @AuditLog(module = FUNCTIONS, type = PARSE, descr = "'Parse File: ' + #command.functionPath")
+    @AuditLog(module = FUNCTION, type = PARSE_FUNCTION, descr = "'Parse File: ' + #command.functionPath")
     public Result<List<FunctionInfo>> parseFunction(@Valid @RequestBody ParseFunctionCmd command)
             throws IOException, ClassNotFoundException {
         List<FunctionInfo> functionDTOList = functionService.parseFunction(command);

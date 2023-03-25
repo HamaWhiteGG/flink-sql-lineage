@@ -97,13 +97,13 @@ public class LineageClient {
 
 
     /**
-     * Parse the field blood relationship of the input SQL
+     * Analyze the field blood relationship of the input SQL
      */
-    public List<LineageInfo> parseFieldLineage(String pluginCode, String catalogName, String database, String singleSql) {
+    public List<LineageInfo> analyzeLineage(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
-            return service.parseFieldLineage(singleSql);
+            return service.analyzeLineage(singleSql);
         }
     }
 

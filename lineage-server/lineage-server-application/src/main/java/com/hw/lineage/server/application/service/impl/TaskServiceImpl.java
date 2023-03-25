@@ -105,7 +105,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDTO parseTaskLineage(Long taskId) {
+    public TaskDTO analyzeTaskLineage(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
 
         taskDomainService.generateTaskSql(task);
@@ -113,12 +113,17 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.saveTaskSql(task);
 
         CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
-        lineageFacade.parseLineage(entry.getPluginCode(), entry.getCatalogName(), task);
+        lineageFacade.analyzeLineage(entry.getPluginCode(), entry.getCatalogName(), task);
         taskRepository.removeTaskLineage(task.getTaskId());
         taskRepository.saveTaskLineage(task);
 
         task.setLineageTime(System.currentTimeMillis());
         taskRepository.save(task);
         return assembler.fromTask(task, entry.getCatalogName());
+    }
+
+    @Override
+    public Boolean checkTaskSyntax(Long taskId) {
+        return null;
     }
 }

@@ -31,7 +31,9 @@ public class ResultMessage {
 
     public static final String DETAIL_SUCCESS = "detail success";
 
-    public static final String PARSE_LINEAGE_SUCCESS = "parse lineage success";
+    public static final String ANALYZE_LINEAGE_SUCCESS = "analyze lineage success";
+
+    public static final String CHECK_SYNTAX_SUCCESS = "check syntax success";
 
     public static final String PARSE_FUNCTION_SUCCESS = "parse function success";
 
