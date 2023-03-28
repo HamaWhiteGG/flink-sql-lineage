@@ -4,6 +4,7 @@ CREATE TABLE `bas_user`
     `user_id`     bigint(20) AUTO_INCREMENT,
     `username`    varchar(64) NOT NULL,
     `password`    varchar(64) NOT NULL,
+    `avatar`      text                 DEFAULT NULL,
     `locked`      tinyint(1)  NOT NULL DEFAULT '0',
     `create_time` bigint(20)  NOT NULL,
     `modify_time` bigint(20)  NOT NULL,

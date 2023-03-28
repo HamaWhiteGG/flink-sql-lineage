@@ -43,7 +43,7 @@ public class GraphFactory {
         this.columnGraph = new ColumnGraph();
     }
 
-    public void createLineageGraph(String pluginCode, Task task) throws Exception {
+    public void createLineageGraph(String pluginCode, Task task) {
         for (TaskLineage lineage : task.getTaskLineageList()) {
             TableNode sourceTableNode = getSourceTableNode(pluginCode, lineage);
             TableNode targetTableNode = getTargetTableNode(pluginCode, lineage);
@@ -65,7 +65,7 @@ public class GraphFactory {
         task.setColumnGraph(columnGraph);
     }
 
-    private TableNode getSourceTableNode(String pluginCode, TaskLineage lineage) throws Exception {
+    private TableNode getSourceTableNode(String pluginCode, TaskLineage lineage){
         String sourceTableName = lineage.buildSourceTableName();
         TableNode sourceTableNode = tableGraph.queryNode(sourceTableName);
 
@@ -87,7 +87,7 @@ public class GraphFactory {
     }
 
 
-    private TableNode getTargetTableNode(String pluginCode, TaskLineage lineage) throws Exception {
+    private TableNode getTargetTableNode(String pluginCode, TaskLineage lineage){
         String targetTableName = lineage.buildTargetTableName();
         TableNode targetTableNode = tableGraph.queryNode(targetTableName);
 

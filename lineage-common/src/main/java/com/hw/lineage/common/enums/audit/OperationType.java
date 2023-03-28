@@ -16,7 +16,9 @@ public enum OperationType  implements StringEnum<OperationType> {
     QUERY("Query"),
     UPLOAD("Upload"),
     DOWNLOAD("Download"),
-    PARSE("Parse");
+    PARSE_FUNCTION("Parse Function"),
+    ANALYZE_LINEAGE("Analyze Lineage"),
+    CHECK_SYNTAX("Check Syntax");
 
     private final String value;
 

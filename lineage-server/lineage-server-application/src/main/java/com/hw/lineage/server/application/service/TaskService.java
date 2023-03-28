@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.hw.lineage.server.application.command.task.CreateTaskCmd;
 import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
+import com.hw.lineage.server.application.dto.TaskSyntaxDTO;
 import com.hw.lineage.server.domain.query.task.TaskCheck;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 
@@ -25,5 +26,7 @@ public interface TaskService {
 
     void updateTask(UpdateTaskCmd command);
 
-    TaskDTO parseTaskLineage(Long taskId);
+    TaskDTO analyzeTaskLineage(Long taskId);
+
+    TaskSyntaxDTO checkTaskSyntax(Long taskId);
 }

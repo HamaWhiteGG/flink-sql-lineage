@@ -44,7 +44,7 @@ public class CommonTest extends AbstractBasicTest {
                 "FROM" +
                 "   ods_mysql_users";
 
-        context.parseFieldLineage(sql);
+        context.analyzeLineage(sql);
     }
 
 
@@ -75,7 +75,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
     /**
@@ -105,7 +105,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
     /**
@@ -135,7 +135,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
@@ -164,7 +164,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
@@ -187,7 +187,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "name", "dwd_hudi_users", "company_name"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
@@ -227,7 +227,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
@@ -264,7 +264,7 @@ public class CommonTest extends AbstractBasicTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 

@@ -15,7 +15,9 @@ import java.util.Map;
  */
 public interface LineageFacade {
 
-    void parseLineage(String pluginCode, String catalogName, Task task);
+    void analyzeLineage(String pluginCode, String catalogName, Task task);
+
+    void checkSyntax(String pluginCode, String catalogName, Task task);
 
     List<FunctionInfo> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException;
 
@@ -33,7 +35,7 @@ public interface LineageFacade {
 
     List<String> listTables(String pluginCode, String catalogName, String database) throws Exception;
 
-    TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception;
+    TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) ;
 
     String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception;
 

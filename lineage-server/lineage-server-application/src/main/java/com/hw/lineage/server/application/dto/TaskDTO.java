@@ -1,5 +1,6 @@
 package com.hw.lineage.server.application.dto;
 
+import com.hw.lineage.common.enums.TaskStatus;
 import com.hw.lineage.server.application.dto.basic.BasicDTO;
 import com.hw.lineage.server.application.dto.graph.LineageGraph;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 @Data
 public class TaskDTO extends BasicDTO {
+
     private Long taskId;
 
     private Long catalogId;
@@ -23,6 +25,8 @@ public class TaskDTO extends BasicDTO {
     private String database;
 
     private String taskSource;
+
+    private TaskStatus taskStatus;
 
     private String taskLog;
 

@@ -26,6 +26,8 @@ public class UserDTO extends RootDTO implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private byte[] avatar;
+
     private Boolean locked;
 
     private List<RoleDTO> roleList;
