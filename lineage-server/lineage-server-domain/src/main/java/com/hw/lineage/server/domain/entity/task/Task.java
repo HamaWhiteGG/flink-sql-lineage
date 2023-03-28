@@ -21,6 +21,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 public class Task extends BasicEntity implements Entity {
+
     private TaskId taskId;
 
     private CatalogId catalogId;
@@ -50,13 +51,28 @@ public class Task extends BasicEntity implements Entity {
     public Task() {
         this.taskSqlList = new ArrayList<>();
         this.taskLineageList = new ArrayList<>();
+        this.taskLog = "";
     }
 
-    public boolean addTaskSql(TaskSql taskSql) {
-        return this.taskSqlList.add(taskSql);
+    public void addTaskSql(TaskSql taskSql) {
+        taskSqlList.add(taskSql);
     }
 
-    public boolean addTaskLineage(TaskLineage taskLineage) {
-        return this.taskLineageList.add(taskLineage);
+    public void addTaskLineage(TaskLineage taskLineage) {
+        taskLineageList.add(taskLineage);
+    }
+
+
+    public void appendTaskLog(String log) {
+        taskLog += System.lineSeparator() + log;
+    }
+
+    public void clearGraph() {
+        tableGraph = null;
+        columnGraph = null;
+    }
+
+    public void clearTaskLog() {
+        taskLog = "";
     }
 }

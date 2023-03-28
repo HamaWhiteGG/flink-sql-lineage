@@ -40,7 +40,7 @@ public class CtasTest extends AbstractBasicTest {
                 {"datagen_source", "name", "my_ctas_table", "name"},
                 {"datagen_source", "age", "my_ctas_table", "age"}
         };
-        parseFieldLineage(ctasSql, expectedArray);
+        analyzeLineage(ctasSql, expectedArray);
     }
 
 

@@ -56,7 +56,7 @@ public class LookupJoinTest extends AbstractBasicTest {
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 }

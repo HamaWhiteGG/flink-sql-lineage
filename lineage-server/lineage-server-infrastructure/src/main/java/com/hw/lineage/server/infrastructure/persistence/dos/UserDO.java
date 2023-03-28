@@ -1,5 +1,7 @@
 package com.hw.lineage.server.infrastructure.persistence.dos;
 
+import java.util.Arrays;
+
 /**
  * @description: This class corresponds to the database table bas_user
  * @author: HamaWhite
@@ -20,6 +22,8 @@ public class UserDO {
     private Long modifyTime;
 
     private Boolean invalid;
+
+    private byte[] avatar;
 
     public Long getUserId() {
         return userId;
@@ -77,6 +81,14 @@ public class UserDO {
         this.invalid = invalid;
     }
 
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -95,7 +107,8 @@ public class UserDO {
             && (this.getLocked() == null ? other.getLocked() == null : this.getLocked().equals(other.getLocked()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
-            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()));
+            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
+            && (Arrays.equals(this.getAvatar(), other.getAvatar()));
     }
 
     @Override
@@ -109,6 +122,7 @@ public class UserDO {
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getModifyTime() == null) ? 0 : getModifyTime().hashCode());
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
+        result = prime * result + (Arrays.hashCode(getAvatar()));
         return result;
     }
 
@@ -125,6 +139,7 @@ public class UserDO {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifyTime=").append(modifyTime);
         sb.append(", invalid=").append(invalid);
+        sb.append(", avatar=").append(avatar);
         sb.append("]");
         return sb.toString();
     }

@@ -49,8 +49,8 @@ public abstract class AbstractBasicTest {
         HiveTestUtils.deleteTemporaryFolder();
     }
 
-    protected void parseFieldLineage(String sql, String[][] expectedArray) {
-        List<LineageInfo> actualList = context.parseFieldLineage(sql);
+    protected void analyzeLineage(String sql, String[][] expectedArray) {
+        List<LineageInfo> actualList = context.analyzeLineage(sql);
         LOG.info("Linage Result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 

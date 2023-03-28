@@ -7,6 +7,7 @@ import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.task.CreateTaskCmd;
 import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
+import com.hw.lineage.server.application.dto.TaskSyntaxDTO;
 import com.hw.lineage.server.application.service.TaskService;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.facade.LineageFacade;
@@ -105,20 +106,31 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDTO parseTaskLineage(Long taskId) {
+    public TaskDTO analyzeTaskLineage(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
+        task.clearGraph();
 
         taskDomainService.generateTaskSql(task);
         taskRepository.removeTaskSql(task.getTaskId());
         taskRepository.saveTaskSql(task);
 
         CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
-        lineageFacade.parseLineage(entry.getPluginCode(), entry.getCatalogName(), task);
+        lineageFacade.analyzeLineage(entry.getPluginCode(), entry.getCatalogName(), task);
         taskRepository.removeTaskLineage(task.getTaskId());
         taskRepository.saveTaskLineage(task);
 
         task.setLineageTime(System.currentTimeMillis());
         taskRepository.save(task);
         return assembler.fromTask(task, entry.getCatalogName());
+    }
+
+    @Override
+    public TaskSyntaxDTO checkTaskSyntax(Long taskId) {
+        Task task = taskRepository.find(new TaskId(taskId));
+        taskDomainService.generateTaskSql(task);
+
+        CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
+        lineageFacade.checkSyntax(entry.getPluginCode(), entry.getCatalogName(), task);
+        return assembler.toTaskSyntaxDTO(task);
     }
 }

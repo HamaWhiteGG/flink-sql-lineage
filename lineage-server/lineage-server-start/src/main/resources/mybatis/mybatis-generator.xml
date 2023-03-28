@@ -98,6 +98,10 @@
 
         <table tableName="bas_user" domainObjectName="User" delimitAllColumns="true">
             <generatedKey column="user_id" sqlStatement="Mysql" identity="true"/>
+            <columnOverride
+                    column="avatar"
+                    javaType="byte[]"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.ByteArrayBase64TypeHandler"/>
         </table>
 
         <table tableName="bas_role" domainObjectName="Role" delimitAllColumns="true">

@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import static com.hw.lineage.common.enums.audit.ModuleCode.STORAGES;
+import static com.hw.lineage.common.enums.audit.ModuleCode.STORAGE;
 import static com.hw.lineage.common.enums.audit.OperationType.*;
 import static com.hw.lineage.common.util.Preconditions.checkArgument;
 
@@ -40,7 +40,7 @@ public class StorageController {
 
     @SkipLogAspect
     @PostMapping("/upload")
-    @AuditLog(module = STORAGES, type = UPLOAD, descr = "'Upload File: ' + #file.originalFilename", params = false)
+    @AuditLog(module = STORAGE, type = UPLOAD, descr = "'Upload File: ' + #file.originalFilename", params = false)
     public Result<String> uploadFile(@RequestParam("file") MultipartFile file, @NotNull StorageType storageType) throws IOException {
         checkArgument(!file.isEmpty(), "failed to store empty file.");
         String filePath = storageService.uploadFile(file, storageType);
@@ -49,7 +49,7 @@ public class StorageController {
 
     @SkipLogAspect
     @GetMapping("/download")
-    @AuditLog(module = STORAGES, type = DOWNLOAD, descr = "'Download file: ' + #filePath")
+    @AuditLog(module = STORAGE, type = DOWNLOAD, descr = "'Download file: ' + #filePath")
     public ResponseEntity<Resource> downloadFile(@NotBlank String filePath) throws MalformedURLException {
         Resource file = storageService.downloadFile(filePath);
         return ResponseEntity
@@ -59,7 +59,7 @@ public class StorageController {
     }
 
     @DeleteMapping("")
-    @AuditLog(module = STORAGES, type = DELETE, descr = "'Delete File: ' + #command.filePath")
+    @AuditLog(module = STORAGE, type = DELETE, descr = "'Delete File: ' + #command.filePath")
     public Result<Boolean> deleteFile(@Valid @RequestBody DeleteStorageCmd command) throws IOException {
         storageService.deleteFile(command.getFilePath());
         return Result.success(ResultMessage.DELETE_SUCCESS);

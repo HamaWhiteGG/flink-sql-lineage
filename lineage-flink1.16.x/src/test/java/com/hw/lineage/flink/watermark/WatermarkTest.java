@@ -50,7 +50,7 @@ public class WatermarkTest extends AbstractBasicTest {
                 {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
 
@@ -87,7 +87,7 @@ public class WatermarkTest extends AbstractBasicTest {
                 {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
 
     }
 }

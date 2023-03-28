@@ -95,15 +95,31 @@ public class LineageClient {
         return pluginManager.load(LineageService.class);
     }
 
+    private LineageService getLineageService(String pluginCode) {
+        LineageService lineageService = lineageServiceMap.get(pluginCode);
+        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginCode);
+        return lineageService;
+    }
 
     /**
-     * Parse the field blood relationship of the input SQL
+     * Analyze the field blood relationship of the input SQL
      */
-    public List<LineageInfo> parseFieldLineage(String pluginCode, String catalogName, String database, String singleSql) {
+    public List<LineageInfo> analyzeLineage(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
-            return service.parseFieldLineage(singleSql);
+            return service.analyzeLineage(singleSql);
+        }
+    }
+
+    /**
+     * Perform Parse and validate operations on SQL
+     */
+    public void parseSql(String pluginCode, String catalogName, String database, String singleSql) {
+        LineageService service = getLineageService(pluginCode);
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
+            service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
+            service.parseSql(singleSql);
         }
     }
 
@@ -174,13 +190,6 @@ public class LineageClient {
     public void deleteTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
         LineageService service = getLineageService(pluginCode);
         service.dropTable(catalogName, database, tableName);
-    }
-
-
-    private LineageService getLineageService(String pluginCode) {
-        LineageService lineageService = lineageServiceMap.get(pluginCode);
-        Preconditions.checkNotNull(lineageService, "This plugin %s is not supported.", pluginCode);
-        return lineageService;
     }
 
     /**

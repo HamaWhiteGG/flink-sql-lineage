@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public abstract class BasicDTO extends RootDTO {
+
     private Long createUserId;
 
     private Long modifyUserId;

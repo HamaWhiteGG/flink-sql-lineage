@@ -163,7 +163,7 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public TableInfo getTable(Long catalogId, String database, String tableName) throws Exception {
+    public TableInfo getTable(Long catalogId, String database, String tableName) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
         return lineageFacade.getTable(entry.getPluginCode(), entry.getCatalogName(), database, tableName);
     }

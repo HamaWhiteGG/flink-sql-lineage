@@ -54,7 +54,7 @@ public class ProctimeTest extends AbstractBasicTest {
                 {"ST", "a", "TT", "A"},
                 {"ST", "b", "TT", "B"}
         };
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ProctimeTest extends AbstractBasicTest {
                 {"datagen_source", "name", "print_sink", "name"},
                 {"datagen_source", "make_time", "print_sink", "make_time"}
         };
-        parseFieldLineage(sql, expectedArray);
+        analyzeLineage(sql, expectedArray);
 
     }
 
