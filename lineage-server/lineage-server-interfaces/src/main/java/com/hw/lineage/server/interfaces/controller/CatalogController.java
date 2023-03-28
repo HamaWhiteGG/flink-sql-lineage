@@ -109,7 +109,7 @@ public class CatalogController {
     @DeleteMapping("/{catalogId}/databases/{database}")
     @AuditLog(module = DATABASE, type = DELETE, descr = "'Delete Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<Boolean> deleteDatabase(@PathVariable("catalogId") Long catalogId,
-                                         @PathVariable("database") String database) {
+                                          @PathVariable("database") String database) {
         catalogService.deleteDatabase(catalogId, database);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
@@ -136,7 +136,7 @@ public class CatalogController {
     @AuditLog(module = TABLE, type = QUERY, descr = "'Query Table: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
     public Result<TableInfo> queryTable(@PathVariable("catalogId") Long catalogId,
                                         @PathVariable("database") String database,
-                                        @PathVariable("tableName") String tableName) throws Exception {
+                                        @PathVariable("tableName") String tableName) {
         TableInfo tableInfo = catalogService.getTable(catalogId, database, tableName);
         return Result.success(ResultMessage.DETAIL_SUCCESS, tableInfo);
     }
@@ -190,7 +190,7 @@ public class CatalogController {
     }
 
     @PostMapping("/{catalogId}/databases/{database}/functions")
-    @AuditLog(module = FUNCTION, type = CREATE, descr = "'Create Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + #command.functionName" )
+    @AuditLog(module = FUNCTION, type = CREATE, descr = "'Create Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + #command.functionName")
     public Result<Long> createFunction(
             @PathVariable("catalogId") Long catalogId,
             @PathVariable("database") String database,
@@ -213,7 +213,7 @@ public class CatalogController {
     }
 
     @PutMapping("/{catalogId}/databases/{database}/functions/{functionId}")
-    @AuditLog(module = FUNCTION, type = UPDATE, descr = "'Update Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName" )
+    @AuditLog(module = FUNCTION, type = UPDATE, descr = "'Update Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName")
     public Result<Boolean> updateFunction(@PathVariable("catalogId") Long catalogId,
                                           @PathVariable("database") String database,
                                           @PathVariable("functionId") Long functionId,
@@ -224,7 +224,7 @@ public class CatalogController {
     }
 
     @DeleteMapping("/{catalogId}/databases/{database}/functions/{functionId}")
-    @AuditLog(module = FUNCTION, type = DELETE, descr = "'Delete Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName" )
+    @AuditLog(module = FUNCTION, type = DELETE, descr = "'Delete Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName")
     public Result<Boolean> deleteFunction(@PathVariable("catalogId") Long catalogId,
                                           @PathVariable("database") String database,
                                           @PathVariable("functionId") Long functionId) {

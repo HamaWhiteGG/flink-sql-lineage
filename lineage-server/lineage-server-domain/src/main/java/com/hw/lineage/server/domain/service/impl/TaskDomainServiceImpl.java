@@ -42,6 +42,7 @@ public class TaskDomainServiceImpl implements TaskDomainService {
             .build();
     private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, DROP, ALTER, INSERT, USE, LOAD, UNLOAD, SET, RESET, JAR);
 
+
     @Override
     public void generateTaskSql(Task task) {
         task.getTaskSource().split()

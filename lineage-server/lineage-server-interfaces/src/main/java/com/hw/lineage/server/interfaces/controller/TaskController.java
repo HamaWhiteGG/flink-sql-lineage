@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.hw.lineage.server.application.command.task.CreateTaskCmd;
 import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
+import com.hw.lineage.server.application.dto.TaskSyntaxDTO;
 import com.hw.lineage.server.application.service.TaskService;
 import com.hw.lineage.server.domain.query.task.TaskCheck;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
@@ -85,8 +86,8 @@ public class TaskController {
 
     @PostMapping("/{taskId}/syntax")
     @AuditLog(module = TASK, type = CHECK_SYNTAX, descr = "'Check Syntax: ' + @taskService.queryTask(#taskId).taskName")
-    public Result<Boolean> checkTaskSyntax(@PathVariable("taskId") Long taskId) {
-        Boolean result= taskService.checkTaskSyntax(taskId);
-        return Result.success(ResultMessage.CHECK_SYNTAX_SUCCESS, result);
+    public Result<TaskSyntaxDTO> checkTaskSyntax(@PathVariable("taskId") Long taskId) {
+        TaskSyntaxDTO taskSyntaxDTO= taskService.checkTaskSyntax(taskId);
+        return Result.success(ResultMessage.CHECK_SYNTAX_SUCCESS, taskSyntaxDTO);
     }
 }

@@ -30,7 +30,9 @@
         <powermock.version>2.0.9</powermock.version>
         <fastjson2.version>2.0.24</fastjson2.version>
         <slf4j-api.version>1.7.32</slf4j-api.version>
+        <commons-io.version>2.7</commons-io.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
+        <avatar-generator.version>1.1.0</avatar-generator.version>
         <commons-collections4.version>4.4</commons-collections4.version>
 
         <node.version>v18.11.0</node.version>
@@ -169,6 +171,12 @@
             </dependency>
 
             <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-boot-starter</artifactId>
                 <version>${springfox-boot-starter.version}</version>
@@ -184,6 +192,12 @@
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>
                 <version>${fastjson2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.talanlabs</groupId>
+                <artifactId>avatar-generator</artifactId>
+                <version>${avatar-generator.version}</version>
             </dependency>
 
             <dependency>

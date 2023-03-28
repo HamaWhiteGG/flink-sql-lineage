@@ -7,6 +7,7 @@ import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.task.CreateTaskCmd;
 import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
+import com.hw.lineage.server.application.dto.TaskSyntaxDTO;
 import com.hw.lineage.server.application.service.TaskService;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.facade.LineageFacade;
@@ -107,6 +108,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO analyzeTaskLineage(Long taskId) {
         Task task = taskRepository.find(new TaskId(taskId));
+        task.clearGraph();
 
         taskDomainService.generateTaskSql(task);
         taskRepository.removeTaskSql(task.getTaskId());
@@ -123,7 +125,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Boolean checkTaskSyntax(Long taskId) {
-        return null;
+    public TaskSyntaxDTO checkTaskSyntax(Long taskId) {
+        Task task = taskRepository.find(new TaskId(taskId));
+        taskDomainService.generateTaskSql(task);
+
+        CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
+        lineageFacade.checkSyntax(entry.getPluginCode(), entry.getCatalogName(), task);
+        return assembler.toTaskSyntaxDTO(task);
     }
 }

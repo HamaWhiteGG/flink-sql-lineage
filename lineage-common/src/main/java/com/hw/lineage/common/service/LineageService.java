@@ -20,7 +20,10 @@ public interface LineageService extends Plugin {
      */
     List<LineageInfo> analyzeLineage(String singleSql);
 
-    void parse(String singleSql);
+    /**
+     *  Perform Parse and validate operations on SQL
+     */
+    void parseSql(String singleSql);
 
     /**
      * Execute the single sql
