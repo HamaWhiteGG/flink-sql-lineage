@@ -1,8 +1,9 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
-import java.sql.JDBCType;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
+
+import java.sql.JDBCType;
 
 public final class UserDynamicSqlSupport {
     public static final User user = new User();
@@ -21,6 +22,8 @@ public final class UserDynamicSqlSupport {
 
     public static final SqlColumn<Boolean> invalid = user.invalid;
 
+    public static final SqlColumn<byte[]> avatar = user.avatar;
+
     public static final class User extends AliasableSqlTable<User> {
         public final SqlColumn<Long> userId = column("`user_id`", JDBCType.BIGINT);
 
@@ -35,6 +38,8 @@ public final class UserDynamicSqlSupport {
         public final SqlColumn<Long> modifyTime = column("`modify_time`", JDBCType.BIGINT);
 
         public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
+
+        public final SqlColumn<byte[]> avatar = column("`avatar`", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.ByteArrayBase64TypeHandler");
 
         public User() {
             super("bas_user", User::new);

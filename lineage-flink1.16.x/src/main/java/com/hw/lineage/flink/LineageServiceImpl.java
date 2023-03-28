@@ -260,7 +260,7 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public void parse(String singleSql) {
+    public void parseSql(String singleSql) {
         LOG.info("Input Sql: \n {}", singleSql);
         parseValidateConvert(singleSql);
     }

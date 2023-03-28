@@ -4,6 +4,7 @@ import static com.hw.lineage.server.infrastructure.persistence.mapper.UserDynami
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 import com.hw.lineage.server.infrastructure.persistence.dos.UserDO;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.ByteArrayBase64TypeHandler;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -31,7 +32,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
 public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, CommonUpdateMapper {
-    BasicColumn[] selectList = BasicColumn.columnList(userId, username, password, locked, createTime, modifyTime, invalid);
+    BasicColumn[] selectList = BasicColumn.columnList(userId, username, password, locked, createTime, modifyTime, invalid, avatar);
 
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="row.userId", before=false, resultType=Long.class)
@@ -45,7 +46,8 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
         @Result(column="locked", property="locked", jdbcType=JdbcType.BIT),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
         @Result(column="modify_time", property="modifyTime", jdbcType=JdbcType.BIGINT),
-        @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT)
+        @Result(column="invalid", property="invalid", jdbcType=JdbcType.BIT),
+        @Result(column="avatar", property="avatar", typeHandler=ByteArrayBase64TypeHandler.class, jdbcType=JdbcType.LONGVARCHAR)
     })
     List<UserDO> selectMany(SelectStatementProvider selectStatement);
 
@@ -75,6 +77,7 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .map(createTime).toProperty("createTime")
             .map(modifyTime).toProperty("modifyTime")
             .map(invalid).toProperty("invalid")
+            .map(avatar).toProperty("avatar")
         );
     }
 
@@ -86,6 +89,7 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .map(createTime).toPropertyWhenPresent("createTime", row::getCreateTime)
             .map(modifyTime).toPropertyWhenPresent("modifyTime", row::getModifyTime)
             .map(invalid).toPropertyWhenPresent("invalid", row::getInvalid)
+            .map(avatar).toPropertyWhenPresent("avatar", row::getAvatar)
         );
     }
 
@@ -117,7 +121,8 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
                 .set(locked).equalTo(row::getLocked)
                 .set(createTime).equalTo(row::getCreateTime)
                 .set(modifyTime).equalTo(row::getModifyTime)
-                .set(invalid).equalTo(row::getInvalid);
+                .set(invalid).equalTo(row::getInvalid)
+                .set(avatar).equalTo(row::getAvatar);
     }
 
     static UpdateDSL<UpdateModel> updateSelectiveColumns(UserDO row, UpdateDSL<UpdateModel> dsl) {
@@ -126,7 +131,8 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
                 .set(locked).equalToWhenPresent(row::getLocked)
                 .set(createTime).equalToWhenPresent(row::getCreateTime)
                 .set(modifyTime).equalToWhenPresent(row::getModifyTime)
-                .set(invalid).equalToWhenPresent(row::getInvalid);
+                .set(invalid).equalToWhenPresent(row::getInvalid)
+                .set(avatar).equalToWhenPresent(row::getAvatar);
     }
 
     default int updateByPrimaryKey(UserDO row) {
@@ -137,6 +143,7 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .set(createTime).equalTo(row::getCreateTime)
             .set(modifyTime).equalTo(row::getModifyTime)
             .set(invalid).equalTo(row::getInvalid)
+            .set(avatar).equalTo(row::getAvatar)
             .where(userId, isEqualTo(row::getUserId))
         );
     }
@@ -149,6 +156,7 @@ public interface UserMapper extends CommonCountMapper, CommonDeleteMapper, Commo
             .set(createTime).equalToWhenPresent(row::getCreateTime)
             .set(modifyTime).equalToWhenPresent(row::getModifyTime)
             .set(invalid).equalToWhenPresent(row::getInvalid)
+            .set(avatar).equalToWhenPresent(row::getAvatar)
             .where(userId, isEqualTo(row::getUserId))
         );
     }

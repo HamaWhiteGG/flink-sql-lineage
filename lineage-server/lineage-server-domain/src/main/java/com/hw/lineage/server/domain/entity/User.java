@@ -20,6 +20,7 @@ public class User extends RootEntity implements Entity {
 
     private String password;
 
-    private Boolean locked;
+    private byte[] avatar;
 
+    private Boolean locked;
 }

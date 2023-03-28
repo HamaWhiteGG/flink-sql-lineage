@@ -11,6 +11,10 @@ import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +44,15 @@ public class UserController {
         return Result.success(ResultMessage.DETAIL_SUCCESS, userDTO);
     }
 
+    @GetMapping("/{userId}/avatar")
+    @AuditLog(module = USER, type = QUERY, descr = "'Query User Avatar: ' + @userService.queryUser(#userId).username")
+    public ResponseEntity<byte[]> queryUserAvatar(@PathVariable("userId") Long userId)  {
+        UserDTO userDTO = userService.queryUser(userId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(userDTO.getAvatar(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("")
     @AuditLog(module = USER, type = QUERY, descr = "'Query Users'")
     public Result<PageInfo<UserDTO>> queryUsers(UserQuery userQuery) {
@@ -63,7 +76,7 @@ public class UserController {
     @PutMapping("/{userId}")
     @AuditLog(module = USER, type = UPDATE, descr = "'Update User: ' + @userService.queryUser(#userId).username")
     public Result<Boolean> updateUser(@PathVariable("userId") Long userId,
-                                        @Valid @RequestBody UpdateUserCmd command) {
+                                      @Valid @RequestBody UpdateUserCmd command) {
         command.setUserId(userId);
         userService.updateUser(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);

@@ -57,7 +57,7 @@ public class CommonTest extends AbstractBasicTest {
     public void testInsertSelect() {
         String sql = "INSERT INTO dwd_hudi_users " +
                 "SELECT " +
-                "   i ," +
+                "   id ," +
                 "   name ," +
                 "   name as company_name ," +
                 "   birthday ," +

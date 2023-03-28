@@ -41,6 +41,9 @@ public interface DtoAssembler {
     @Mapping(source = "task.taskSource.value", target = "taskSource")
     TaskDTO fromTask(Task task, String catalogName);
 
+    @Mapping(source = "taskId.value", target = "taskId")
+    TaskSyntaxDTO toTaskSyntaxDTO(Task task);
+
     @Mapping(source = "catalogId.value", target = "catalogId")
     @Mapping(source = "pluginId.value", target = "pluginId")
     CatalogDTO fromCatalog(Catalog catalog);

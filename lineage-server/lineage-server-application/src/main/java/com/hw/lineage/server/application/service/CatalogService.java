@@ -42,9 +42,9 @@ public interface CatalogService {
 
     void createTable(CreateTableCmd command);
 
-    void deleteTable(Long catalogId, String database,String tableName)  throws Exception;
+    void deleteTable(Long catalogId, String database, String tableName) throws Exception;
 
-    TableInfo getTable(Long catalogId, String database, String tableName) throws Exception;
+    TableInfo getTable(Long catalogId, String database, String tableName);
 
     /**
      * Return the base64 encrypted ddl
