@@ -35,7 +35,7 @@ import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
  * @description: LineageFacadeImpl
  * @author: HamaWhite
  */
-@Service
+@Service("lineageFacade")
 public class LineageFacadeImpl implements LineageFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(LineageFacadeImpl.class);

@@ -223,7 +223,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <profiles>
         <profile>
             <id>dev</id>
@@ -238,6 +237,12 @@
             <id>test</id>
             <properties>
                 <profile.active>test</profile.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <profile.active>docker</profile.active>
             </properties>
         </profile>
         <profile>

@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
  * @description: StorageFacadeImpl
  * @author: HamaWhite
  */
-@Service
+@Service("storageFacade")
 public class StorageFacadeImpl implements StorageFacade {
 
     private static final Logger LOG = LoggerFactory.getLogger(StorageFacadeImpl.class);
