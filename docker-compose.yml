@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root@123456
+      MYSQL_DATABASE: lineage
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./data/storage/mysql:/var/lib/mysql"
+      - "./scripts/mysql:/docker-entrypoint-initdb.d/"
+    networks:
+      springboot-mysql-net:
+
+  lineage-server:
+    container_name: lineage-server
+    image: lineage-server:1.0.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8194:8194"
+    depends_on:
+      - mysql
+    networks:
+      springboot-mysql-net:
+    restart: on-failure
+
+networks:
+  springboot-mysql-net:

@@ -92,9 +92,7 @@
                     <excludes>
                         <exclude>mybatis/**</exclude>
                         <exclude>scripts/**</exclude>
-                        <exclude>application-dev.properties</exclude>
-                        <exclude>application-test.properties</exclude>
-                        <exclude>application-prod.properties</exclude>
+                        <exclude>application-*.properties</exclude>
                     </excludes>
                 </configuration>
             </plugin>

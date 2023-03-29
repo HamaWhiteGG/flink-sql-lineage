@@ -64,14 +64,6 @@
         </fileSet>
 
         <fileSet>
-            <directory>${project.parent.basedir}/lineage-server/lineage-server-start/src/main/resources/</directory>
-            <outputDirectory>${assembly.name}/</outputDirectory>
-            <includes>
-                <include>scripts/mysql/*</include>
-            </includes>
-        </fileSet>
-
-        <fileSet>
             <directory>${project.parent.basedir}/lineage-client/target</directory>
             <outputDirectory>${assembly.name}/lineage-client/</outputDirectory>
             <includes>
@@ -125,6 +117,14 @@
             <outputDirectory>${assembly.name}/plugins/flink1.16.x/lib/</outputDirectory>
             <includes>
                 <include>*</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/scripts</directory>
+            <outputDirectory>${assembly.name}/scripts</outputDirectory>
+            <includes>
+                <include>**</include>
             </includes>
         </fileSet>
 
