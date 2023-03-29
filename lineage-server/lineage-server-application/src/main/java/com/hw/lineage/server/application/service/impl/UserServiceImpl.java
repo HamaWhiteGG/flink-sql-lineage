@@ -10,13 +10,11 @@ import com.hw.lineage.server.application.service.UserService;
 import com.hw.lineage.server.domain.entity.Permission;
 import com.hw.lineage.server.domain.entity.Role;
 import com.hw.lineage.server.domain.entity.User;
+import com.hw.lineage.server.domain.facade.AvatarFacade;
 import com.hw.lineage.server.domain.query.user.UserCheck;
 import com.hw.lineage.server.domain.query.user.UserQuery;
 import com.hw.lineage.server.domain.repository.UserRepository;
 import com.hw.lineage.server.domain.vo.UserId;
-import com.talanlabs.avatargenerator.Avatar;
-import com.talanlabs.avatargenerator.GitHubAvatar;
-import com.talanlabs.avatargenerator.layers.backgrounds.RandomColorPaintBackgroundLayer;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserRepository repository;
+
+    @Resource
+    private AvatarFacade avatarFacade;
 
     @Resource
     private DtoAssembler assembler;
@@ -62,18 +63,10 @@ public class UserServiceImpl implements UserService {
                 .setInvalid(false);
 
         // generate avatar
-        user.setAvatar(generateAvatar(System.currentTimeMillis()));
+        user.setAvatar(avatarFacade.generateAvatar(System.currentTimeMillis()));
 
         user = repository.save(user);
         return user.getUserId().getValue();
-    }
-
-
-    private byte[] generateAvatar(long code) {
-        Avatar avatar = GitHubAvatar.newAvatarBuilder()
-                .layers(new RandomColorPaintBackgroundLayer())
-                .build();
-        return avatar.createAsPngBytes(code);
     }
 
     @Override
