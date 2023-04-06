@@ -10,6 +10,7 @@ import com.hw.lineage.server.application.command.function.CreateFunctionCmd;
 import com.hw.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.hw.lineage.server.application.dto.CatalogDTO;
 import com.hw.lineage.server.application.dto.FunctionDTO;
+import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.application.dto.TableDTO;
 import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.application.service.FunctionService;
@@ -17,12 +18,20 @@ import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
+import com.hw.lineage.server.domain.query.function.FunctionTaskQuery;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -116,7 +125,7 @@ public class CatalogController {
 
     @GetMapping("/{catalogId}/databases")
     @AuditLog(module = DATABASE, type = QUERY, descr = "'Query Databases In ' + @catalogService.queryCatalog(#catalogId).catalogName")
-    public Result<List<String>> queryDatabases(@PathVariable("catalogId") Long catalogId) throws Exception {
+    public Result<List<String>> queryDatabases(@PathVariable("catalogId") Long catalogId) {
         List<String> databaseList = catalogService.queryDatabases(catalogId);
         return Result.success(ResultMessage.QUERY_SUCCESS, databaseList);
     }
@@ -172,7 +181,7 @@ public class CatalogController {
     @AuditLog(module = FUNCTION, type = QUERY, descr = "'Query Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + @functionService.queryFunction(#functionId).functionName")
     public Result<FunctionDTO> queryFunction(@PathVariable("catalogId") Long catalogId,
                                              @PathVariable("database") String database,
-                                             @PathVariable("functionId") Long functionId) throws Exception {
+                                             @PathVariable("functionId") Long functionId) {
         FunctionDTO functionDTO = functionService.queryFunction(functionId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, functionDTO);
     }
@@ -188,6 +197,19 @@ public class CatalogController {
         PageInfo<FunctionDTO> pageInfo = functionService.queryFunctions(functionQuery);
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
+
+    @GetMapping("/{catalogId}/databases/{database}/functions/{functionId}/tasks")
+    @AuditLog(module = FUNCTION, type = QUERY, descr = "'Query Function Tasks: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + @functionService.queryFunction(#functionId).functionName")
+    public Result<PageInfo<FunctionTaskDTO>> queryFunctionTasks(
+            @PathVariable("catalogId") Long catalogId,
+            @PathVariable("database") String database,
+            @PathVariable("functionId") Long functionId,
+            FunctionTaskQuery query) {
+        query.setFunctionId(functionId);
+        PageInfo<FunctionTaskDTO> pageInfo = functionService.queryFunctionTasks(query);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
+    }
+
 
     @PostMapping("/{catalogId}/databases/{database}/functions")
     @AuditLog(module = FUNCTION, type = CREATE, descr = "'Create Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + #command.functionName")

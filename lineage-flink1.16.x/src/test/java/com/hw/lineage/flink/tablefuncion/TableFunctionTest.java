@@ -54,6 +54,7 @@ public class TableFunctionTest extends AbstractBasicTest {
         };
 
         analyzeLineage(sql, expectedArray);
+        analyzeFunction(sql, new String[]{"my_split_udtf"});
     }
 
 
@@ -87,6 +88,7 @@ public class TableFunctionTest extends AbstractBasicTest {
         };
 
         analyzeLineage(sql, expectedArray);
+        analyzeFunction(sql, new String[]{"my_split_udtf"});
     }
 
 
@@ -120,6 +122,7 @@ public class TableFunctionTest extends AbstractBasicTest {
         };
 
         analyzeLineage(sql, expectedArray);
+        analyzeFunction(sql, new String[]{"my_split_udtf"});
     }
 
 

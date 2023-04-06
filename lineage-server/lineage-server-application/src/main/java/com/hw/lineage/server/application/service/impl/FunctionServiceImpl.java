@@ -17,6 +17,8 @@ import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionEntry;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
+import com.hw.lineage.server.domain.query.function.FunctionTaskQuery;
+import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.repository.FunctionRepository;
 import com.hw.lineage.server.domain.repository.PluginRepository;
@@ -98,6 +100,11 @@ public class FunctionServiceImpl implements FunctionService {
     public PageInfo<FunctionDTO> queryFunctions(FunctionQuery functionQuery) {
         PageInfo<Function> pageInfo = functionRepository.findAll(functionQuery);
         return PageUtils.convertPage(pageInfo, assembler::fromFunction);
+    }
+
+    @Override
+    public PageInfo<FunctionTaskDTO> queryFunctionTasks(FunctionTaskQuery query) {
+        return functionRepository.findFunctionTasks(query);
     }
 
     @Override

@@ -2,12 +2,14 @@ package com.hw.lineage.common.service;
 
 import com.hw.lineage.common.plugin.Plugin;
 import com.hw.lineage.common.result.FunctionInfo;
-import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.result.TableInfo;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @description: LinageService
@@ -16,19 +18,24 @@ import java.util.List;
 public interface LineageService extends Plugin {
 
     /**
-     * Analyze the field blood relationship of the input SQL
+     * Analyze the field lineage of the input SQL
      */
-    List<LineageInfo> analyzeLineage(String singleSql);
+    List<LineageResult> analyzeLineage(String singleSql);
 
     /**
      *  Perform Parse and validate operations on SQL
      */
-    void parseSql(String singleSql);
+    void parseValidate(String singleSql);
 
     /**
      * Execute the single sql
      */
     void execute(String singleSql);
+
+    /**
+     * Analyze the custom functions used in this SQL
+     */
+    Set<FunctionResult> analyzeFunction(String singleSql);
 
     /**
      * Parse the function name, function format, function main class and description from the jar file
@@ -38,7 +45,7 @@ public interface LineageService extends Plugin {
     /**
      * Get the names of all databases in this catalog.
      */
-    List<String> listDatabases(String catalogName) throws Exception;
+    List<String> listDatabases(String catalogName);
 
     /**
      * Get names of all tables and views under this database. An empty list is returned if none exists.

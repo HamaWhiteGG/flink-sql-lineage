@@ -54,7 +54,7 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
     public User find(UserId userId) {
         UserDO userDO = userMapper.selectByPrimaryKey(userId.getValue())
                 .orElseThrow(() ->
-                        new LineageException(String.format("userId [%s] is not existed", userId.getValue()))
+                        new LineageException(String.format("userId [%d] is not existed", userId.getValue()))
                 );
         return converter.toUser(userDO);
     }

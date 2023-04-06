@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface LineageFacade {
 
-    void analyzeLineage(String pluginCode, String catalogName, Task task);
+    void analyze(String pluginCode, String catalogName, Task task);
 
     void checkSyntax(String pluginCode, String catalogName, Task task);
 
@@ -27,7 +27,7 @@ public interface LineageFacade {
 
     void createDatabase(String pluginCode, String catalogName, String database, String comment);
 
-    List<String> listDatabases(String pluginCode, String catalogName) throws Exception;
+    List<String> listDatabases(String pluginCode, String catalogName);
 
     void deleteDatabase(String pluginCode, String catalogName, String database);
 

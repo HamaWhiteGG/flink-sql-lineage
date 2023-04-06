@@ -7,22 +7,30 @@ import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.task.CreateTaskCmd;
 import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
+import com.hw.lineage.server.application.dto.TaskFunctionDTO;
 import com.hw.lineage.server.application.dto.TaskSyntaxDTO;
 import com.hw.lineage.server.application.service.TaskService;
+import com.hw.lineage.server.domain.entity.Catalog;
+import com.hw.lineage.server.domain.entity.Function;
 import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.facade.LineageFacade;
 import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.task.TaskCheck;
+import com.hw.lineage.server.domain.query.task.TaskFunctionQuery;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
+import com.hw.lineage.server.domain.repository.FunctionRepository;
 import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.service.TaskDomainService;
 import com.hw.lineage.server.domain.vo.CatalogId;
+import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.domain.vo.TaskId;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @description: TaskServiceImpl
@@ -35,6 +43,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Resource
     private CatalogRepository catalogRepository;
+
+    @Resource
+    private FunctionRepository functionRepository;
 
     @Resource
     private TaskDomainService taskDomainService;
@@ -84,6 +95,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public PageInfo<TaskFunctionDTO> queryTaskFunctions(TaskFunctionQuery query) {
+        PageInfo<TaskFunction> pageInfo = taskRepository.findTaskFunctions(query);
+        return PageUtils.convertPage(pageInfo, assembler::fromTaskFunction);
+    }
+
+    @Override
     public void deleteTask(Long taskId) {
         taskRepository.remove(new TaskId(taskId));
     }
@@ -110,18 +127,37 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.find(new TaskId(taskId));
         task.clearGraph();
 
+        // split sql
         taskDomainService.generateTaskSql(task);
+        // remove task sql, lineage and function
         taskRepository.removeTaskSql(task.getTaskId());
+        taskRepository.removeTaskLineage(task.getTaskId());
+        taskRepository.removeTaskFunction(task.getTaskId());
+        // save split sql
         taskRepository.saveTaskSql(task);
 
+        // analyze lineages and custom functions
         CatalogEntry entry = catalogRepository.findEntry(task.getCatalogId());
-        lineageFacade.analyzeLineage(entry.getPluginCode(), entry.getCatalogName(), task);
-        taskRepository.removeTaskLineage(task.getTaskId());
+        lineageFacade.analyze(entry.getPluginCode(), entry.getCatalogName(), task);
+
+        // save lineages
         taskRepository.saveTaskLineage(task);
+
+        // save custom functions
+        addFunctionId(entry.getPluginId(), task.getTaskFunctionList());
+        taskRepository.saveTaskFunction(task);
 
         task.setLineageTime(System.currentTimeMillis());
         taskRepository.save(task);
         return assembler.fromTask(task, entry.getCatalogName());
+    }
+
+    private void addFunctionId(Long pluginId, List<TaskFunction> taskFunctionList) {
+        taskFunctionList.forEach(e -> {
+            Catalog catalog = catalogRepository.find(new PluginId(pluginId), e.getCatalogName());
+            Function function = functionRepository.find(catalog.getCatalogId(), e.getDatabase(), e.getFunctionName());
+            e.setFunctionId(function.getFunctionId());
+        });
     }
 
     @Override

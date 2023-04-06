@@ -106,6 +106,7 @@ public class CommonTest extends AbstractBasicTest {
         };
 
         analyzeLineage(sql, expectedArray);
+        analyzeFunction(sql, new String[]{"my_suffix_udf"});
     }
 
     /**
@@ -136,6 +137,7 @@ public class CommonTest extends AbstractBasicTest {
         };
 
         analyzeLineage(sql, expectedArray);
+        analyzeFunction(sql, new String[]{"my_suffix_udf"});
     }
 
 
