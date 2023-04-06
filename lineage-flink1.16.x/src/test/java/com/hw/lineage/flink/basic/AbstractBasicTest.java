@@ -1,7 +1,8 @@
 package com.hw.lineage.flink.basic;
 
 import apache.flink.table.catalog.hive.HiveTestUtils;
-import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.junit.AfterClass;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,25 +52,37 @@ public abstract class AbstractBasicTest {
     }
 
     protected void analyzeLineage(String sql, String[][] expectedArray) {
-        List<LineageInfo> actualList = analyzeLineage(sql);
-        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
+        List<LineageResult> actualList = analyzeLineage(sql);
+        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
     }
 
 
     protected void analyzeLineage(String catalogName, String sql, String[][] expectedArray) {
-        List<LineageInfo> actualList = analyzeLineage(sql);
-        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
+        List<LineageResult> actualList = analyzeLineage(sql);
+        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
     }
 
-    private List<LineageInfo> analyzeLineage(String sql) {
-        List<LineageInfo> actualList = context.analyzeLineage(sql);
-        LOG.info("Linage Result: ");
+    private List<LineageResult> analyzeLineage(String sql) {
+        List<LineageResult> actualList = context.analyzeLineage(sql);
+        LOG.info("Analyze linage result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
         return actualList;
     }
 
+    protected void analyzeFunction(String sql, String[] expectedArray) {
+        Set<FunctionResult> actualSet = analyzeFunction(sql);
+        Set<FunctionResult> expectedSet = FunctionResult.buildResult(catalogName, defaultDatabase, expectedArray);
+        assertEquals(expectedSet, actualSet);
+    }
+
+    private Set<FunctionResult> analyzeFunction(String sql) {
+        Set<FunctionResult> actualSet = context.analyzeFunction(sql);
+        LOG.info("Analyze function result: ");
+        actualSet.forEach(e -> LOG.info(e.toString()));
+        return actualSet;
+    }
 
     /**
      * Create mysql cdc table ods_mysql_users

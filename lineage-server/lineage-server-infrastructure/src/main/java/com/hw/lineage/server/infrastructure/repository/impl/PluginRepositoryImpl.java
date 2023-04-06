@@ -39,7 +39,7 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
     @Override
     public Plugin find(PluginId pluginId) {
         PluginDO pluginDO = pluginMapper.selectByPrimaryKey(pluginId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("pluginId [%s] is not existed", pluginId.getValue())));
+                .orElseThrow(() -> new LineageException(String.format("pluginId [%d] is not existed", pluginId.getValue())));
         return converter.toPlugin(pluginDO);
     }
 

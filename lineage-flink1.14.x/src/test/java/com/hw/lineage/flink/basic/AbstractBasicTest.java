@@ -1,6 +1,7 @@
 package com.hw.lineage.flink.basic;
 
-import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.flink.table.catalog.hive.HiveTestUtils;
@@ -10,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,7 +42,6 @@ public abstract class AbstractBasicTest {
         context.useCatalog(hiveCatalog);
     }
 
-
     @AfterClass
     public static void closeCatalog() {
         if (hiveCatalog != null) {
@@ -50,12 +51,25 @@ public abstract class AbstractBasicTest {
     }
 
     protected void analyzeLineage(String sql, String[][] expectedArray) {
-        List<LineageInfo> actualList = context.analyzeLineage(sql);
-        LOG.info("Linage Result: ");
+        List<LineageResult> actualList = context.analyzeLineage(sql);
+        LOG.info("Analyze linage result: ");
         actualList.forEach(e -> LOG.info(e.toString()));
 
-        List<LineageInfo> expectedList = LineageInfo.buildResult(catalogName, defaultDatabase, expectedArray);
+        List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
+    }
+
+    protected void analyzeFunction(String sql, String[] expectedArray) {
+        Set<FunctionResult> actualSet = analyzeFunction(sql);
+        Set<FunctionResult> expectedSet = FunctionResult.buildResult(catalogName, defaultDatabase, expectedArray);
+        assertEquals(expectedSet, actualSet);
+    }
+
+    private Set<FunctionResult> analyzeFunction(String sql) {
+        Set<FunctionResult> actualSet = context.analyzeFunction(sql);
+        LOG.info("Analyze function result: ");
+        actualSet.forEach(e -> LOG.info(e.toString()));
+        return actualSet;
     }
 
     /**

@@ -6,24 +6,29 @@ import com.github.pagehelper.page.PageMethod;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
+import com.hw.lineage.server.domain.query.task.TaskFunctionQuery;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.vo.TaskId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
+import com.hw.lineage.server.infrastructure.persistence.dos.TaskFunctionDO;
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
-import com.hw.lineage.server.infrastructure.persistence.mapper.*;
+import com.hw.lineage.server.infrastructure.persistence.mapper.TaskFunctionMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.TaskLineageMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.TaskMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.TaskSqlMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.task;
-import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.taskName;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
 
@@ -43,13 +48,16 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
     private TaskLineageMapper taskLineageMapper;
 
     @Resource
+    private TaskFunctionMapper taskFunctionMapper;
+
+    @Resource
     private DataConverter converter;
 
     @Override
     public Task find(TaskId taskId) {
         TaskDO taskDO = taskMapper.selectByPrimaryKey(taskId.getValue())
                 .orElseThrow(() ->
-                        new LineageException(String.format("taskId [%s] is not existed", taskId.getValue()))
+                        new LineageException(String.format("taskId [%d] is not existed", taskId.getValue()))
                 );
         return converter.toTask(taskDO);
     }
@@ -99,6 +107,17 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
     }
 
     @Override
+    public void saveTaskFunction(Task task) {
+        List<TaskFunction> taskFunctionList = task.getTaskFunctionList().stream().map(taskFunction -> {
+                    TaskFunctionDO taskFunctionDO = converter.fromTaskFunction(taskFunction);
+                    taskFunctionMapper.insertSelective(taskFunctionDO);
+                    return converter.toTaskFunction(taskFunctionDO);
+                }
+        ).collect(Collectors.toList());
+        task.setTaskFunctionList(taskFunctionList);
+    }
+
+    @Override
     public void removeTaskSql(TaskId taskId) {
         taskSqlMapper.delete(completer ->
                 completer.where(task.taskId, isEqualTo(taskId.getValue()))
@@ -108,6 +127,13 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
     @Override
     public void removeTaskLineage(TaskId taskId) {
         taskLineageMapper.delete(completer ->
+                completer.where(task.taskId, isEqualTo(taskId.getValue()))
+        );
+    }
+
+    @Override
+    public void removeTaskFunction(TaskId taskId) {
+        taskFunctionMapper.delete(completer ->
                 completer.where(task.taskId, isEqualTo(taskId.getValue()))
         );
     }
@@ -127,6 +153,19 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
                     )
             );
             return PageUtils.convertPage(pageInfo, converter::toTask);
+        }
+    }
+
+    @Override
+    public PageInfo<TaskFunction> findTaskFunctions(TaskFunctionQuery query) {
+        try (Page<TaskDO> page = PageMethod.startPage(query.getPageNum(), query.getPageSize())) {
+            PageInfo<TaskFunctionDO> pageInfo = page.doSelectPageInfo(() ->
+                    taskFunctionMapper.select(completer ->
+                            completer.where(taskId, isEqualTo(query.getTaskId()))
+                                    .orderBy(buildSortSpecification(query))
+                    )
+            );
+            return PageUtils.convertPage(pageInfo, converter::toTaskFunction);
         }
     }
 }

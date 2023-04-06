@@ -5,11 +5,13 @@ import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.TaskStatus;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.result.FunctionInfo;
-import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.supplier.CustomSupplier;
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.hw.lineage.common.util.Constant.ILLEGAL_PARAM;
 import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
@@ -56,7 +59,7 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public void analyzeLineage(String pluginCode, String catalogName, Task task) {
+    public void analyze(String pluginCode, String catalogName, Task task) {
         doProcessTask(task, () -> {
             Map<SqlId, String> sqlSourceMap = new HashMap<>(INITIAL_CAPACITY);
             for (TaskSql taskSql : task.getTaskSqlList()) {
@@ -70,7 +73,7 @@ public class LineageFacadeImpl implements LineageFacade {
                         if (ctas(singleSql)) {
                             analyzeLineage(pluginCode, catalogName, task, taskSql, singleSql);
                         } else {
-                            executeSql(pluginCode, catalogName, task, taskSql, singleSql);
+                            execute(pluginCode, catalogName, task, taskSql, singleSql);
                         }
                         break;
                     case DROP:
@@ -81,11 +84,13 @@ public class LineageFacadeImpl implements LineageFacade {
                     case SET:
                     case RESET:
                     case JAR:
-                        executeSql(pluginCode, catalogName, task, taskSql, singleSql);
+                        execute(pluginCode, catalogName, task, taskSql, singleSql);
                         break;
                     default:
                         throw new LineageException(ILLEGAL_PARAM);
                 }
+                // analyze the custom functions used in this SQL
+                analyzeFunction(pluginCode, catalogName, task, taskSql, singleSql);
             }
             GraphFactory graphFactory = new GraphFactory(this, sqlSourceMap);
             graphFactory.createLineageGraph(pluginCode, task);
@@ -99,7 +104,7 @@ public class LineageFacadeImpl implements LineageFacade {
             for (TaskSql taskSql : task.getTaskSqlList()) {
                 taskSql.setSqlId(new SqlId(sqlId++));
                 String singleSql = Base64Utils.decode(taskSql.getSqlSource());
-                parseSql(pluginCode, catalogName, task, taskSql, singleSql);
+                parseValidate(pluginCode, catalogName, task, taskSql, singleSql);
             }
         });
     }
@@ -117,19 +122,19 @@ public class LineageFacadeImpl implements LineageFacade {
         }
     }
 
-    private void parseSql(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+    private void parseValidate(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         doProcessSql(task, taskSql, singleSql, () ->
-                lineageClient.parseSql(pluginCode, catalogName, task.getDatabase(), singleSql));
+                lineageClient.parseValidate(pluginCode, catalogName, task.getDatabase(), singleSql));
     }
 
-    private void executeSql(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+    private void execute(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         doProcessSql(task, taskSql, singleSql, () ->
                 lineageClient.execute(pluginCode, catalogName, task.getDatabase(), singleSql));
     }
 
     private void analyzeLineage(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         doProcessSql(task, taskSql, singleSql, () -> {
-            List<LineageInfo> resultList = lineageClient.analyzeLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
+            List<LineageResult> resultList = lineageClient.analyzeLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
             resultList.forEach(e -> {
                 TaskLineage taskLineage = new TaskLineage()
                         .setTaskId(task.getTaskId())
@@ -145,6 +150,23 @@ public class LineageFacadeImpl implements LineageFacade {
                         .setTransform(e.getTransform())
                         .setInvalid(false);
                 task.addTaskLineage(taskLineage);
+            });
+        });
+    }
+
+    private void analyzeFunction(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
+        doProcessSql(task, taskSql, singleSql, () -> {
+            Set<FunctionResult> resultSet = lineageClient.analyzeFunction(pluginCode, catalogName, task.getDatabase(), singleSql);
+            resultSet.forEach(e -> {
+                TaskFunction taskFunction = new TaskFunction()
+                        .setTaskId(task.getTaskId())
+                        .setSqlId(taskSql.getSqlId())
+                        .setCatalogName(e.getCatalogName())
+                        .setDatabase(e.getDatabase())
+                        .setFunctionName(e.getFunctionName())
+                        .setCreateTime(System.currentTimeMillis())
+                        .setInvalid(false);
+                task.addTaskFunction(taskFunction);
             });
         });
     }
@@ -187,7 +209,7 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public List<String> listDatabases(String pluginCode, String catalogName) throws Exception {
+    public List<String> listDatabases(String pluginCode, String catalogName) {
         return lineageClient.listDatabases(pluginCode, catalogName);
     }
 

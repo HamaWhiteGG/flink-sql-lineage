@@ -10,6 +10,7 @@ import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
+import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.CatalogDO;
 import com.hw.lineage.server.infrastructure.persistence.mapper.CatalogMapper;
@@ -46,7 +47,19 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
     public Catalog find(CatalogId catalogId) {
         CatalogDO catalogDO = catalogMapper.selectByPrimaryKey(catalogId.getValue())
                 .orElseThrow(() ->
-                        new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue()))
+                        new LineageException(String.format("catalogId [%d] is not existed", catalogId.getValue()))
+                );
+        return converter.toCatalog(catalogDO);
+    }
+
+    @Override
+    public Catalog find(PluginId pluginId, String catalogName) {
+        CatalogDO catalogDO = catalogMapper.selectOne(completer ->
+                        completer.where(catalog.pluginId, isEqualTo(pluginId.getValue()))
+                                .and(catalog.catalogName, isEqualTo(catalogName)))
+                .orElseThrow(() ->
+                        new LineageException(String.format("pluginId [%d], catalogName [%s] is not existed"
+                                , pluginId.getValue(), catalogName))
                 );
         return converter.toCatalog(catalogDO);
     }
@@ -99,7 +112,7 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
     @Override
     public CatalogEntry findEntry(CatalogId catalogId) {
         SelectStatementProvider selectStatement =
-                select(plugin.pluginCode, catalog.catalogId, catalog.catalogName)
+                select(plugin.pluginId, plugin.pluginCode, catalog.catalogId, catalog.catalogName)
                         .from(catalog)
                         .join(plugin).on(catalog.pluginId, equalTo(plugin.pluginId))
                         .where(catalog.catalogId, isEqualTo(catalogId.getValue()))

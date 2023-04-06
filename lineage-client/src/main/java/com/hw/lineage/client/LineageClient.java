@@ -4,7 +4,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.common.result.FunctionInfo;
-import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.service.LineageService;
 import com.hw.lineage.common.util.Preconditions;
@@ -22,6 +23,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Preconditions.checkArgument;
@@ -86,7 +88,7 @@ public class LineageClient {
         }
 
         // use AppClassLoader to load
-        // String[] parentPatterns = {LineageService.class.getName(), LineageInfo.class.getName()};
+        // String[] parentPatterns = {LineageService.class.getName(), LineageResult.class.getName()};
         String[] parentPatterns = {"com.hw.lineage.common"};
 
         PluginManager pluginManager =
@@ -104,7 +106,7 @@ public class LineageClient {
     /**
      * Analyze the field blood relationship of the input SQL
      */
-    public List<LineageInfo> analyzeLineage(String pluginCode, String catalogName, String database, String singleSql) {
+    public List<LineageResult> analyzeLineage(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
@@ -113,13 +115,24 @@ public class LineageClient {
     }
 
     /**
-     * Perform Parse and validate operations on SQL
+     *  Analyze the custom functions used in this SQL
      */
-    public void parseSql(String pluginCode, String catalogName, String database, String singleSql) {
+    public Set<FunctionResult> analyzeFunction(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
-            service.parseSql(singleSql);
+            return service.analyzeFunction(singleSql);
+        }
+    }
+
+    /**
+     * Perform Parse and validate operations on SQL
+     */
+    public void parseValidate(String pluginCode, String catalogName, String database, String singleSql) {
+        LineageService service = getLineageService(pluginCode);
+        try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
+            service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
+            service.parseValidate(singleSql);
         }
     }
 
@@ -195,7 +208,7 @@ public class LineageClient {
     /**
      * Get the names of all databases in this catalog.
      */
-    public List<String> listDatabases(String pluginCode, String catalogName) throws Exception {
+    public List<String> listDatabases(String pluginCode, String catalogName) {
         LineageService service = getLineageService(pluginCode);
         return service.listDatabases(catalogName);
     }

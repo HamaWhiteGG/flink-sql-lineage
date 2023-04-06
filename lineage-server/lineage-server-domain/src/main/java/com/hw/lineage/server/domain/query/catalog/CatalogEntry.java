@@ -8,6 +8,9 @@ import lombok.Data;
  */
 @Data
 public class CatalogEntry {
+
+    private Long pluginId;
+
     private String pluginCode;
 
     private Long catalogId;

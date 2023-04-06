@@ -52,7 +52,7 @@ public class RoleRepositoryImpl extends AbstractBasicRepository implements RoleR
     @Override
     public Role find(RoleId roleId) {
         RoleDO roleDO = roleMapper.selectByPrimaryKey(roleId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("roleId [%s] is not existed", roleId.getValue())));
+                .orElseThrow(() -> new LineageException(String.format("roleId [%d] is not existed", roleId.getValue())));
         return converter.toRole(roleDO);
     }
 
