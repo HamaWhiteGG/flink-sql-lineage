@@ -36,7 +36,7 @@ public class TableRepositoryImpl extends AbstractBasicRepository implements Tabl
     public Table find(TableId tableId) {
         TableDO tableDO = tableMapper.selectByPrimaryKey(tableId.getValue())
                 .orElseThrow(() ->
-                        new LineageException(String.format("tableId [%s] is not existed", tableId.getValue()))
+                        new LineageException(String.format("tableId [%d] is not existed", tableId.getValue()))
                 );
         return converter.toTable(tableDO);
     }

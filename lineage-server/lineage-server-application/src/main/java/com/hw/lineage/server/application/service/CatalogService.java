@@ -38,7 +38,7 @@ public interface CatalogService {
 
     void deleteDatabase(Long catalogId, String database);
 
-    List<String> queryDatabases(Long catalogId) throws Exception;
+    List<String> queryDatabases(Long catalogId);
 
     void createTable(CreateTableCmd command);
 

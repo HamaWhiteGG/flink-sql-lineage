@@ -36,7 +36,7 @@ public class AuditRepositoryImpl extends AbstractBasicRepository implements Audi
     @Override
     public Audit find(AuditId auditId) {
         AuditDO auditDO = auditMapper.selectByPrimaryKey(auditId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("auditId [%s] is not existed", auditId.getValue())));
+                .orElseThrow(() -> new LineageException(String.format("auditId [%d] is not existed", auditId.getValue())));
         return converter.toAudit(auditDO);
     }
 

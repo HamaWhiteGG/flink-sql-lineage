@@ -4,7 +4,8 @@ package com.hw.lineage.flink;
 import com.hw.lineage.common.enums.TableKind;
 import com.hw.lineage.common.result.ColumnInfo;
 import com.hw.lineage.common.result.FunctionInfo;
-import com.hw.lineage.common.result.LineageInfo;
+import com.hw.lineage.common.result.FunctionResult;
+import com.hw.lineage.common.result.LineageResult;
 import com.hw.lineage.common.result.TableInfo;
 import com.hw.lineage.common.service.LineageService;
 import org.apache.calcite.plan.RelOptTable;
@@ -13,6 +14,7 @@ import org.apache.calcite.rel.metadata.JaninoRelMetadataProvider;
 import org.apache.calcite.rel.metadata.RelColumnOrigin;
 import org.apache.calcite.rel.metadata.RelMetadataQuery;
 import org.apache.calcite.rel.metadata.RelMetadataQueryBase;
+import org.apache.calcite.sql.SqlNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -21,15 +23,23 @@ import org.apache.flink.shaded.guava30.com.google.common.base.CaseFormat;
 import org.apache.flink.shaded.guava30.com.google.common.collect.ImmutableMap;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.annotation.FunctionHint;
-import org.apache.flink.table.api.*;
+import org.apache.flink.table.api.EnvironmentSettings;
+import org.apache.flink.table.api.Schema;
+import org.apache.flink.table.api.TableException;
+import org.apache.flink.table.api.TableResult;
+import org.apache.flink.table.api.ValidationException;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import org.apache.flink.table.catalog.AbstractCatalog;
 import org.apache.flink.table.catalog.Catalog;
 import org.apache.flink.table.catalog.CatalogBaseTable;
+import org.apache.flink.table.catalog.ContextResolvedFunction;
+import org.apache.flink.table.catalog.FunctionCatalog;
 import org.apache.flink.table.catalog.ObjectPath;
+import org.apache.flink.table.catalog.UnresolvedIdentifier;
 import org.apache.flink.table.delegation.Parser;
 import org.apache.flink.table.functions.AggregateFunction;
+import org.apache.flink.table.functions.FunctionIdentifier;
 import org.apache.flink.table.functions.ScalarFunction;
 import org.apache.flink.table.functions.TableAggregateFunction;
 import org.apache.flink.table.functions.TableFunction;
@@ -37,6 +47,8 @@ import org.apache.flink.table.operations.CreateTableASOperation;
 import org.apache.flink.table.operations.Operation;
 import org.apache.flink.table.operations.SinkModifyOperation;
 import org.apache.flink.table.operations.ddl.CreateTableOperation;
+import org.apache.flink.table.planner.delegation.ParserImpl;
+import org.apache.flink.table.planner.delegation.PlannerBase;
 import org.apache.flink.table.planner.operations.PlannerQueryOperation;
 import org.apache.flink.table.planner.plan.metadata.FlinkDefaultRelMetadataProvider;
 import org.apache.flink.table.planner.plan.schema.TableSourceTable;
@@ -48,7 +60,14 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -102,21 +121,62 @@ public class LineageServiceImpl implements LineageService {
         executeSql(singleSql);
     }
 
+    @Override
+    public Set<FunctionResult> analyzeFunction(String singleSql) {
+        LOG.info("Analyze function Sql: \n {}", singleSql);
+        ParserImpl parser = (ParserImpl) tableEnv.getParser();
+
+        // parsing sql and return the abstract syntax tree
+        SqlNode sqlNode = parser.parseSql(singleSql);
+
+        // validate the query
+        SqlNode validated = parser.validate(sqlNode);
+
+        // look for all functions
+        FunctionVisitor visitor = new FunctionVisitor();
+        validated.accept(visitor);
+        List<UnresolvedIdentifier> fullFunctionList = visitor.getFunctionList();
+
+        // filter custom functions
+        Set<FunctionResult> resultSet = new HashSet<>();
+        for (UnresolvedIdentifier unresolvedIdentifier : fullFunctionList) {
+            getFunctionCatalog()
+                    .lookupFunction(unresolvedIdentifier)
+                    .flatMap(ContextResolvedFunction::getIdentifier)
+                    // the objectIdentifier of the built-in function is null
+                    .flatMap(FunctionIdentifier::getIdentifier)
+                    .ifPresent(identifier -> {
+                        FunctionResult functionResult = new FunctionResult()
+                                .setCatalogName(identifier.getCatalogName())
+                                .setDatabase(identifier.getDatabaseName())
+                                .setFunctionName(identifier.getObjectName());
+                        LOG.debug("analyzed function: {}", functionResult);
+                        resultSet.add(functionResult);
+                    });
+        }
+        return resultSet;
+    }
+
+    private FunctionCatalog getFunctionCatalog() {
+        PlannerBase planner = (PlannerBase) tableEnv.getPlanner();
+        return planner.getFlinkContext().getFunctionCatalog();
+    }
+
     private TableResult executeSql(String singleSql) {
         LOG.info("Execute SQL: {}", singleSql);
         return tableEnv.executeSql(singleSql);
     }
 
     @Override
-    public List<LineageInfo> analyzeLineage(String singleSql) {
-        /**
-         * Since TableEnvironment is not thread-safe, add this sentence to solve it.
-         * Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
-         * http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
+    public List<LineageResult> analyzeLineage(String singleSql) {
+        /*
+          Since TableEnvironment is not thread-safe, add this sentence to solve it.
+          Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
+          http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
          */
         RelMetadataQueryBase.THREAD_PROVIDERS.set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
 
-        LOG.info("Input Sql: \n {}", singleSql);
+        LOG.info("Analyze lineage Sql: \n {}", singleSql);
         // 1. Generate original relNode tree
         Tuple2<String, RelNode> parsed = parseStatement(singleSql);
         String sinkTable = parsed.getField(0);
@@ -136,7 +196,7 @@ public class LineageServiceImpl implements LineageService {
         Operation operation = parseValidateConvert(singleSql);
 
         // process create table as select
-        operation = prePocessCprereateTableASOperation(operation);
+        operation = prePocessCreateTableAsOperation(operation);
 
         if (operation instanceof SinkModifyOperation) {
             SinkModifyOperation sinkOperation = (SinkModifyOperation) operation;
@@ -155,10 +215,10 @@ public class LineageServiceImpl implements LineageService {
      * Note: {@link Parser#parse(String)} will do three stages: parse, validate and convert
      */
     private Operation parseValidateConvert(String singleSql) {
-        /**
-         * Since TableEnvironment is not thread-safe, add this sentence to solve it.
-         * Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
-         * http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
+        /*
+          Since TableEnvironment is not thread-safe, add this sentence to solve it.
+          Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
+          http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
          */
         RelMetadataQueryBase.THREAD_PROVIDERS.set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
 
@@ -176,7 +236,7 @@ public class LineageServiceImpl implements LineageService {
      * <p>
      * This method creates a new table and returns the remaining insert for subsequent lineage.
      */
-    private Operation prePocessCprereateTableASOperation(Operation operation) {
+    private Operation prePocessCreateTableAsOperation(Operation operation) {
         if (operation instanceof CreateTableASOperation) {
             CreateTableASOperation ctasOperation = (CreateTableASOperation) operation;
             CreateTableOperation createTableOperation = ctasOperation.getCreateTableOperation();
@@ -198,7 +258,7 @@ public class LineageServiceImpl implements LineageService {
     }
 
 
-    private List<LineageInfo> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
+    private List<LineageResult> buildFiledLineageResult(String sinkTable, RelNode optRelNode) {
         // target columns
         List<String> targetColumnList = tableEnv.from(sinkTable)
                 .getResolvedSchema()
@@ -208,7 +268,7 @@ public class LineageServiceImpl implements LineageService {
         validateSchema(sinkTable, optRelNode, targetColumnList);
 
         RelMetadataQuery metadataQuery = optRelNode.getCluster().getMetadataQuery();
-        List<LineageInfo> resultList = new ArrayList<>();
+        List<LineageResult> resultList = new ArrayList<>();
 
         for (int index = 0; index < targetColumnList.size(); index++) {
             String targetColumn = targetColumnList.get(index);
@@ -236,7 +296,7 @@ public class LineageServiceImpl implements LineageService {
                         LOG.debug("transform: {}", rco.getTransform());
                     }
                     // add record
-                    resultList.add(new LineageInfo(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
+                    resultList.add(new LineageResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
                 }
             }
         }
@@ -260,8 +320,8 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public void parseSql(String singleSql) {
-        LOG.info("Input Sql: \n {}", singleSql);
+    public void parseValidate(String singleSql) {
+        LOG.info("Parse validate Sql: \n {}", singleSql);
         parseValidateConvert(singleSql);
     }
 
@@ -343,7 +403,7 @@ public class LineageServiceImpl implements LineageService {
     }
 
     @Override
-    public List<String> listDatabases(String catalogName) throws Exception {
+    public List<String> listDatabases(String catalogName) {
         return getCatalog(catalogName).listDatabases();
     }
 

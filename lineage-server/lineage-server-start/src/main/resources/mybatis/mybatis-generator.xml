@@ -135,6 +135,8 @@
                     javaType="com.alibaba.fastjson2.JSONObject"
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler"/>
         </table>
+
+        <table tableName="rel_task_function" domainObjectName="TaskFunction" delimitAllColumns="true"/>
     </context>
 
 </generatorConfiguration>

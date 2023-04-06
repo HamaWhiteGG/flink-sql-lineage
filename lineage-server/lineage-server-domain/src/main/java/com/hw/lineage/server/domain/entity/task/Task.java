@@ -48,9 +48,12 @@ public class Task extends BasicEntity implements Entity {
 
     private List<TaskLineage> taskLineageList;
 
+    private List<TaskFunction> taskFunctionList;
+
     public Task() {
         this.taskSqlList = new ArrayList<>();
         this.taskLineageList = new ArrayList<>();
+        this.taskFunctionList = new ArrayList<>();
         this.taskLog = "";
     }
 
@@ -62,6 +65,9 @@ public class Task extends BasicEntity implements Entity {
         taskLineageList.add(taskLineage);
     }
 
+    public void addTaskFunction(TaskFunction taskFunction) {
+        taskFunctionList.add(taskFunction);
+    }
 
     public void appendTaskLog(String log) {
         taskLog += System.lineSeparator() + log;

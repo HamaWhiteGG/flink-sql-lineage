@@ -10,6 +10,7 @@ import com.hw.lineage.server.application.dto.graph.vertex.Column;
 import com.hw.lineage.server.application.dto.graph.vertex.Vertex;
 import com.hw.lineage.server.domain.entity.*;
 import com.hw.lineage.server.domain.entity.task.Task;
+import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import org.mapstruct.AfterMapping;
@@ -60,6 +61,11 @@ public interface DtoAssembler {
     @Mapping(source = "taskId.value", target = "taskId")
     @Mapping(source = "sqlId.value", target = "sqlId")
     TaskSqlDTO fromTaskSql(TaskSql taskSql);
+
+    @Mapping(source = "taskId.value", target = "taskId")
+    @Mapping(source = "sqlId.value", target = "sqlId")
+    @Mapping(source = "functionId.value", target = "functionId")
+    TaskFunctionDTO fromTaskFunction(TaskFunction taskFunction);
 
     @Mapping(source = "taskId.value", target = "taskId")
     @Mapping(source = "sqlId.value", target = "sqlId")

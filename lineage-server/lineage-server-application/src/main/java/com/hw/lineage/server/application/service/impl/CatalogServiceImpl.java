@@ -143,7 +143,7 @@ public class CatalogServiceImpl implements CatalogService {
     }
 
     @Override
-    public List<String> queryDatabases(Long catalogId) throws Exception {
+    public List<String> queryDatabases(Long catalogId) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
         return lineageFacade.listDatabases(entry.getPluginCode(), entry.getCatalogName());
     }
