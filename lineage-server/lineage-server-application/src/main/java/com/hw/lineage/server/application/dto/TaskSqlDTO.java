@@ -27,5 +27,4 @@ public class  TaskSqlDTO implements Serializable {
     private Long startLineNumber;
 
     private SqlStatus sqlStatus;
-
 }

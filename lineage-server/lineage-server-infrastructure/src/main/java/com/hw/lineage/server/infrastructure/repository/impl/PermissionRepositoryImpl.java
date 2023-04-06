@@ -37,7 +37,7 @@ public class PermissionRepositoryImpl extends AbstractBasicRepository implements
     @Override
     public Permission find(PermissionId permissionId) {
         PermissionDO permissionDO = permissionMapper.selectByPrimaryKey(permissionId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("permissionId [%s] is not existed", permissionId.getValue())));
+                .orElseThrow(() -> new LineageException(String.format("permissionId [%d] is not existed", permissionId.getValue())));
         return converter.toPermission(permissionDO);
     }
 

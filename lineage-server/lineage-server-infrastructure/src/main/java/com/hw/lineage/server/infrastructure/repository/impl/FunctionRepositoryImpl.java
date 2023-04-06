@@ -10,14 +10,20 @@ import com.hw.lineage.server.domain.entity.Function;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionEntry;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
+import com.hw.lineage.server.domain.query.function.FunctionTaskQuery;
+import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.domain.repository.FunctionRepository;
+import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.FunctionId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.FunctionDO;
 import com.hw.lineage.server.infrastructure.persistence.mapper.FunctionMapper;
+import com.hw.lineage.server.infrastructure.persistence.mapper.TaskFunctionMapper;
 import com.hw.lineage.server.infrastructure.persistence.mapper.custom.CustomFunctionMapper;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -36,11 +42,16 @@ import static org.mybatis.dynamic.sql.SqlBuilder.*;
 @Repository
 public class FunctionRepositoryImpl extends AbstractBasicRepository implements FunctionRepository {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FunctionRepositoryImpl.class);
+
     @Resource
     private FunctionMapper functionMapper;
 
     @Resource
     private CustomFunctionMapper customFunctionMapper;
+
+    @Resource
+    private TaskFunctionMapper taskFunctionMapper;
 
     @Resource
     private DataConverter converter;
@@ -49,7 +60,20 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
     public Function find(FunctionId functionId) {
         FunctionDO functionDO = functionMapper.selectByPrimaryKey(functionId.getValue())
                 .orElseThrow(() ->
-                        new LineageException(String.format("functionId [%s] is not existed", functionId.getValue()))
+                        new LineageException(String.format("functionId [%d] is not existed", functionId.getValue()))
+                );
+        return converter.toFunction(functionDO);
+    }
+
+    @Override
+    public Function find(CatalogId catalogId, String database, String functionName) {
+        FunctionDO functionDO = functionMapper.selectOne(completer ->
+                        completer.where(function.catalogId, isEqualTo(catalogId.getValue()))
+                                .and(function.database, isEqualTo(database))
+                                .and(function.functionName, isEqualTo(functionName)))
+                .orElseThrow(() ->
+                        new LineageException(String.format("catalogId [%d], database [%s], functionName[%s] is not existed"
+                                , catalogId.getValue(), database, functionName))
                 );
         return converter.toFunction(functionDO);
     }
@@ -90,6 +114,23 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
             );
             return PageUtils.convertPage(pageInfo, converter::toFunction);
         }
+    }
+
+    @Override
+    public PageInfo<FunctionTaskDTO> findFunctionTasks(FunctionTaskQuery query) {
+//        try (Page<FunctionTaskDTO> page = PageMethod.startPage(query.getPageNum(), query.getPageSize())) {
+//            SelectStatementProvider selectStatement =
+//                    select(taskFunction.taskId, taskFunction.sqlId, max(taskFunction.createTime).as(taskFunction.createTime.name()))
+//                            .from(taskFunction)
+//                            .where(functionId, isEqualTo(query.getFunctionId()))
+//                            .groupBy(taskFunction.taskId)
+//                            .orderBy(buildSortSpecification(query))
+//                            .build().render(RenderingStrategies.MYBATIS3);
+//
+//            LOG.info("execute select sql: {}",selectStatement.getSelectStatement());
+//            return page.doSelectPageInfo(() -> taskFunctionMapper.selectMany(selectStatement));
+//        }
+        return null;
     }
 
     @Override

@@ -4,16 +4,25 @@ import com.github.pagehelper.PageInfo;
 import com.hw.lineage.server.application.command.task.CreateTaskCmd;
 import com.hw.lineage.server.application.command.task.UpdateTaskCmd;
 import com.hw.lineage.server.application.dto.TaskDTO;
+import com.hw.lineage.server.application.dto.TaskFunctionDTO;
 import com.hw.lineage.server.application.dto.TaskSyntaxDTO;
 import com.hw.lineage.server.application.service.TaskService;
 import com.hw.lineage.server.domain.query.task.TaskCheck;
+import com.hw.lineage.server.domain.query.task.TaskFunctionQuery;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -89,5 +98,14 @@ public class TaskController {
     public Result<TaskSyntaxDTO> checkTaskSyntax(@PathVariable("taskId") Long taskId) {
         TaskSyntaxDTO taskSyntaxDTO= taskService.checkTaskSyntax(taskId);
         return Result.success(ResultMessage.CHECK_SYNTAX_SUCCESS, taskSyntaxDTO);
+    }
+
+    @GetMapping("/{taskId}/functions")
+    @AuditLog(module = TASK, type = QUERY, descr = "'Query Task Functions: ' + @taskService.queryTask(#taskId).taskName")
+    public Result<PageInfo<TaskFunctionDTO>> queryTaskFunctions(@PathVariable("taskId") Long taskId,
+                                                                TaskFunctionQuery query) {
+        query.setTaskId(taskId);
+        PageInfo<TaskFunctionDTO> pageInfo = taskService.queryTaskFunctions(query);
+        return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 }

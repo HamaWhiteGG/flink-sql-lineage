@@ -34,5 +34,7 @@ public class TaskDTO extends BasicDTO {
 
     private List<TaskSqlDTO> taskSqlList;
 
+    private List<TaskFunctionDTO> taskFunctionList;
+
     private LineageGraph lineageGraph;
 }

@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 @Data
 public class TaskLineageDTO implements Serializable {
+
     private Long taskId;
 
     private Integer sqlId;

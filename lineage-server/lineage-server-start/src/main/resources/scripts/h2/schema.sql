@@ -232,3 +232,20 @@ CREATE TABLE `bas_audit`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `rel_task_function`;
+CREATE TABLE `rel_task_function`
+(
+    `rid`           bigint(20) AUTO_INCREMENT,
+    `task_id`       bigint(20)  NOT NULL,
+    `sql_id`        bigint(10)  NOT NULL,
+    `function_id`   bigint(20)  NOT NULL,
+    `catalog_name`  varchar(64) NOT NULL,
+    `database`      varchar(64) NOT NULL,
+    `function_name` varchar(64) NOT NULL,
+    `create_time`   bigint(20)  NOT NULL,
+    `invalid`       tinyint(1)  NOT NULL DEFAULT '0',
+    PRIMARY KEY (`rid`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8;

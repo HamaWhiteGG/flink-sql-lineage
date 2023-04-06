@@ -13,5 +13,6 @@ import com.hw.lineage.server.domain.vo.PermissionId;
 public interface PermissionRepository extends Repository<Permission, PermissionId> {
 
     boolean check(String permissionName,String permissionCode);
+
     PageInfo<Permission> findAll(PermissionQuery permissionQuery);
 }

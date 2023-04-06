@@ -17,6 +17,7 @@ import java.util.List;
 public interface RoleRepository extends Repository<Role, RoleId> {
 
     List<User> findUsers(RoleId roleId);
+
     List<Permission> findPermissions(RoleId roleId);
 
     PageInfo<Role> findAll(RoleQuery roleQuery);
