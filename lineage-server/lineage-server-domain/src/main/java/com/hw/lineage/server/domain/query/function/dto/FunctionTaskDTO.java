@@ -14,6 +14,8 @@ public class FunctionTaskDTO implements Serializable {
 
     private Long taskId;
 
+    private String taskName;
+
     private List<Long> sqlIdList;
 
     private Long createTime;
