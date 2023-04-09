@@ -1,63 +1,83 @@
 package com.hw.lineage.server.domain.graph;
 
-import com.hw.lineage.server.domain.graph.basic.Edge;
-import com.hw.lineage.server.domain.graph.basic.Graph;
-import com.hw.lineage.server.domain.graph.basic.Node;
+import com.hw.lineage.server.domain.graph.column.ColumnEdge;
+import com.hw.lineage.server.domain.graph.column.ColumnGraph;
+import com.hw.lineage.server.domain.graph.column.ColumnNode;
+import com.hw.lineage.server.domain.graph.table.TableEdge;
+import com.hw.lineage.server.domain.graph.table.TableGraph;
+import com.hw.lineage.server.domain.graph.table.TableNode;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @description: GraphHelper
  * @author: HamaWhite
  */
-public class GraphHelper<N extends Node, E extends Edge<N>> {
-    private Graph<N, E> graph;
+public class GraphHelper {
 
-    private Map<Integer, N> nodeIdMap;
+    public void calculateChildrenCnt(TableGraph tableGraph, ColumnGraph columnGraph) {
+        GraphCalculator<TableNode, TableEdge> tableCalculator = new GraphCalculator<>(tableGraph);
+        tableCalculator.calculateChildrenCnt();
 
-    private final Map<Integer, Set<Integer>> childrenMap;
-
-    private final Set<Integer> visitIdSet;
-
-    public GraphHelper(Graph<N, E> graph) {
-        this.graph = graph;
-        this.childrenMap = new HashMap<>();
-        this.visitIdSet = new HashSet<>();
+        GraphCalculator<ColumnNode, ColumnEdge> columnCalculator = new GraphCalculator<>(columnGraph);
+        columnCalculator.calculateChildrenCnt();
     }
 
-    public void computeChildrenCnt() {
-        nodeIdMap = graph.queryNodeSet()
-                .stream()
-                .collect(Collectors.toMap(N::getNodeId, node -> node));
+    public TableGraph filter(TableGraph tableGraph, String nodeName) {
+        TableNode currentNode = tableGraph.queryNode(nodeName);
+        Set<TableNode> resultSet = new HashSet<>();
+        resultSet.add(currentNode);
 
-        Set<N> startSet = graph.queryNodeSet()
+        Map<Integer, TableNode> nodeIdMap = tableGraph.queryNodeIdMap();
+        searchParents(nodeIdMap, currentNode, resultSet);
+        searchChildren(nodeIdMap, currentNode, resultSet);
+
+        Map<String, TableNode> filterNodeMap = tableGraph.getNodeMap()
+                .entrySet()
                 .stream()
-                .filter(node -> node.getParentIdSet().isEmpty())
+                .filter(entry -> resultSet.contains(entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        Set<TableEdge> filterEdgeSet = tableGraph.getEdgeSet()
+                .stream()
+                .filter(e -> resultSet.contains(e.getSource()) && resultSet.contains(e.getTarget()))
                 .collect(Collectors.toSet());
 
-        startSet.forEach(this::searchChildrenSet);
-        graph.queryNodeSet().forEach(node -> node.setChildrenCnt(childrenMap.get(node.getNodeId()).size()));
+        return new TableGraph(filterNodeMap, filterEdgeSet);
     }
 
-    private void searchChildrenSet(N node) {
-        Integer nodeId = node.getNodeId();
-        visitIdSet.add(nodeId);
-        if (node.getChildIdSet().isEmpty()) {
-            childrenMap.put(nodeId, Collections.emptySet());
+    private void searchParents(Map<Integer, TableNode> nodeIdMap, TableNode currentNode, Set<TableNode> nodeSet) {
+        for (Integer parentId : currentNode.getParentIdSet()) {
+            TableNode parentNode = nodeIdMap.get(parentId);
+            nodeSet.add(parentNode);
+            searchParents(nodeIdMap, parentNode, nodeSet);
         }
-        Set<Integer> childrenSet = new HashSet<>();
-        for (Integer childId : node.getChildIdSet()) {
-            if (!visitIdSet.contains(childId)) {
-                searchChildrenSet(nodeIdMap.get(childId));
-            }
-            childrenSet.add(childId);
-            childrenSet.addAll(childrenMap.get(childId));
-        }
-        childrenMap.put(nodeId, childrenSet);
     }
 
-    public Map<Integer, Set<Integer>> getChildrenMap() {
-        return childrenMap;
+    private void searchChildren(Map<Integer, TableNode> nodeIdMap, TableNode currentNode, Set<TableNode> nodeSet) {
+        for (Integer childId : currentNode.getChildIdSet()) {
+            TableNode childNode = nodeIdMap.get(childId);
+            nodeSet.add(childNode);
+            searchChildren(nodeIdMap, childNode, nodeSet);
+        }
+    }
+
+    public ColumnGraph filter(ColumnGraph columnGraph, Set<Integer> tableNodeIdSet) {
+        Map<String, ColumnNode> filterNodeMap = columnGraph.getNodeMap()
+                .entrySet()
+                .stream()
+                .filter(entry -> tableNodeIdSet.contains(entry.getValue().getTableNodeId()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        Set<ColumnEdge> filterEdgeSet = columnGraph.getEdgeSet()
+                .stream()
+                .filter(e -> tableNodeIdSet.contains(e.getSource().getTableNodeId())
+                        && tableNodeIdSet.contains(e.getTarget().getTableNodeId()))
+                .collect(Collectors.toSet());
+
+        return new ColumnGraph(filterNodeMap, filterEdgeSet);
     }
 }

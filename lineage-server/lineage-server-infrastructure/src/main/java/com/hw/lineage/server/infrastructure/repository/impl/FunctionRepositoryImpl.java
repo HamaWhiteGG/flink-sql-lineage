@@ -18,8 +18,8 @@ import com.hw.lineage.server.domain.vo.FunctionId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.FunctionDO;
 import com.hw.lineage.server.infrastructure.persistence.mapper.FunctionMapper;
-import com.hw.lineage.server.infrastructure.persistence.mapper.TaskFunctionMapper;
 import com.hw.lineage.server.infrastructure.persistence.mapper.custom.CustomFunctionMapper;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.function.GroupConcat;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.slf4j.Logger;
@@ -32,6 +32,9 @@ import java.util.List;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.FunctionDynamicSqlSupport.*;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDynamicSqlSupport.plugin;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.task;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskFunctionDynamicSqlSupport.taskFunction;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.custom.CustomFunctionMapper.SQL_IDS;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 
@@ -49,9 +52,6 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
 
     @Resource
     private CustomFunctionMapper customFunctionMapper;
-
-    @Resource
-    private TaskFunctionMapper taskFunctionMapper;
 
     @Resource
     private DataConverter converter;
@@ -118,19 +118,19 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
 
     @Override
     public PageInfo<FunctionTaskDTO> findFunctionTasks(FunctionTaskQuery query) {
-//        try (Page<FunctionTaskDTO> page = PageMethod.startPage(query.getPageNum(), query.getPageSize())) {
-//            SelectStatementProvider selectStatement =
-//                    select(taskFunction.taskId, taskFunction.sqlId, max(taskFunction.createTime).as(taskFunction.createTime.name()))
-//                            .from(taskFunction)
-//                            .where(functionId, isEqualTo(query.getFunctionId()))
-//                            .groupBy(taskFunction.taskId)
-//                            .orderBy(buildSortSpecification(query))
-//                            .build().render(RenderingStrategies.MYBATIS3);
-//
-//            LOG.info("execute select sql: {}",selectStatement.getSelectStatement());
-//            return page.doSelectPageInfo(() -> taskFunctionMapper.selectMany(selectStatement));
-//        }
-        return null;
+        try (Page<FunctionTaskDTO> page = PageMethod.startPage(query.getPageNum(), query.getPageSize())) {
+            SelectStatementProvider selectStatement =
+                    select(taskFunction.taskId, task.taskName, GroupConcat.of(taskFunction.sqlId).as(SQL_IDS), max(taskFunction.createTime).as(taskFunction.createTime.name()))
+                            .from(taskFunction)
+                            .join(task).on(taskFunction.taskId, equalTo(task.taskId))
+                            .where(taskFunction.functionId, isEqualTo(query.getFunctionId()))
+                            .groupBy(taskFunction.taskId, task.taskName)
+                            .orderBy(buildSortSpecification(query))
+                            .build().render(RenderingStrategies.MYBATIS3);
+
+            LOG.info("generated sql: {}", selectStatement.getSelectStatement());
+            return page.doSelectPageInfo(() -> customFunctionMapper.selectMany(selectStatement));
+        }
     }
 
     @Override
@@ -156,5 +156,4 @@ public class FunctionRepositoryImpl extends AbstractBasicRepository implements F
         );
         return converter.toFunctionList(functionDOList);
     }
-
 }

@@ -12,18 +12,26 @@ import com.hw.lineage.server.application.command.catalog.CreateTableCmd;
 import com.hw.lineage.server.application.command.catalog.UpdateCatalogCmd;
 import com.hw.lineage.server.application.dto.CatalogDTO;
 import com.hw.lineage.server.application.dto.TableDTO;
+import com.hw.lineage.server.application.dto.graph.LineageGraph;
 import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.domain.entity.Catalog;
 import com.hw.lineage.server.domain.entity.Plugin;
+import com.hw.lineage.server.domain.entity.task.TaskLineage;
+import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
 import com.hw.lineage.server.domain.facade.StorageFacade;
+import com.hw.lineage.server.domain.graph.GraphHelper;
+import com.hw.lineage.server.domain.graph.column.ColumnGraph;
+import com.hw.lineage.server.domain.graph.table.TableGraph;
 import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
 import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.repository.CatalogRepository;
 import com.hw.lineage.server.domain.repository.PluginRepository;
+import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.PluginId;
+import com.hw.lineage.server.infrastructure.graph.GraphFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,6 +43,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.enums.CatalogType.HIVE;
+import static com.hw.lineage.common.util.Constant.DELIMITER;
 
 /**
  * @description: CatalogServiceImpl
@@ -50,6 +59,9 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Resource
     private PluginRepository pluginRepository;
+
+    @Resource
+    private TaskRepository taskRepository;
 
     @Resource
     private StorageFacade storageFacade;
@@ -166,6 +178,34 @@ public class CatalogServiceImpl implements CatalogService {
     public TableInfo getTable(Long catalogId, String database, String tableName) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
         return lineageFacade.getTable(entry.getPluginCode(), entry.getCatalogName(), database, tableName);
+    }
+
+    @Override
+    public LineageGraph getTableLineage(Long catalogId, String database, String tableName) {
+        CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
+        PluginId pluginId = new PluginId(entry.getPluginId());
+
+        List<TaskLineage> taskLineageList = taskRepository.findTaskLineages(pluginId);
+        List<TaskSql> taskSqlList = taskRepository.findTaskSqls(pluginId);
+
+        // create global tableGraph and columnGraph
+        GraphFactory factory = new GraphFactory(lineageFacade, taskSqlList);
+        factory.createLineageGraph(entry.getPluginCode(), taskLineageList);
+
+        String tableNodeName = String.join(DELIMITER, entry.getCatalogName(), database, tableName);
+        GraphHelper graphHelper = new GraphHelper();
+        // filter out the parents and children nodes of this table
+        TableGraph tableGraph = graphHelper.filter(factory.getTableGraph(), tableNodeName);
+        ColumnGraph columnGraph = graphHelper.filter(factory.getColumnGraph(), tableGraph.queryNodeIdSet());
+
+        // calculate the count of all downstream nodes for each node in the graph
+        graphHelper.calculateChildrenCnt(tableGraph, columnGraph);
+
+        return assembler.toLineageGraph(tableGraph,
+                columnGraph,
+                entry.getCatalogName(),
+                database
+        );
     }
 
     @Override
