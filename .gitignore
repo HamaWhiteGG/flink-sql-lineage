@@ -6,7 +6,7 @@
 *.war
 *.ear
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# virtual machine crash logs
 hs_err_pid*
 
 *~
@@ -31,21 +31,16 @@ target
 *.tmp
 Thumbs.db
 *.DS_Store
-
-
 *.tgz
 
-.DS_Store
-node_modules
 
 # local env files
 .env.local
 .env.*.local
 
 # Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+*.log
+*.log.zip
 
 # Editor directories and files
 .vscode
@@ -54,11 +49,17 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-
-dist/dependency-lineage*
-data/tmp
-data/log
-
 dist
 
+node_modules
 package-lock.json
+
+data/tmp
+data/storage
+data/logs
+
+lineage-web/build/
+lineage-web/node/
+static
+/lineage-server/lineage-server-start/data/
+logs
