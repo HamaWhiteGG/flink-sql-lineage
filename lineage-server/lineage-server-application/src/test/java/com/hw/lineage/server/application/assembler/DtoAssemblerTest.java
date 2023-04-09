@@ -50,11 +50,11 @@ public class DtoAssemblerTest {
     @Test
     public void testOptimizeName() {
         String tableName = "catalog1.default1.table1";
-        assertThat(INSTANCE.optimizeName("catalog1", "default1", tableName))
+        assertThat(INSTANCE.optimizeTableName("catalog1", "default1", tableName))
                 .isEqualTo("table1");
-        assertThat(INSTANCE.optimizeName("catalog1", "default2", tableName))
+        assertThat(INSTANCE.optimizeTableName("catalog1", "default2", tableName))
                 .isEqualTo("default1.table1");
-        assertThat(INSTANCE.optimizeName("catalog2", "default2", tableName))
+        assertThat(INSTANCE.optimizeTableName("catalog2", "default2", tableName))
                 .isEqualTo("catalog1.default1.table1");
     }
 }

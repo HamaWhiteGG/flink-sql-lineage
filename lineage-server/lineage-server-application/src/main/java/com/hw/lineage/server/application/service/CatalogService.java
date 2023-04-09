@@ -8,6 +8,7 @@ import com.hw.lineage.server.application.command.catalog.CreateTableCmd;
 import com.hw.lineage.server.application.command.catalog.UpdateCatalogCmd;
 import com.hw.lineage.server.application.dto.CatalogDTO;
 import com.hw.lineage.server.application.dto.TableDTO;
+import com.hw.lineage.server.application.dto.graph.LineageGraph;
 import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
 import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 
@@ -45,6 +46,8 @@ public interface CatalogService {
     void deleteTable(Long catalogId, String database, String tableName) throws Exception;
 
     TableInfo getTable(Long catalogId, String database, String tableName);
+
+    LineageGraph getTableLineage(Long catalogId, String database, String tableName);
 
     /**
      * Return the base64 encrypted ddl

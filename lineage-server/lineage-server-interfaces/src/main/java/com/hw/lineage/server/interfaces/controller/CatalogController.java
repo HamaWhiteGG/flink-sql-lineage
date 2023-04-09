@@ -10,8 +10,8 @@ import com.hw.lineage.server.application.command.function.CreateFunctionCmd;
 import com.hw.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.hw.lineage.server.application.dto.CatalogDTO;
 import com.hw.lineage.server.application.dto.FunctionDTO;
-import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.application.dto.TableDTO;
+import com.hw.lineage.server.application.dto.graph.LineageGraph;
 import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.domain.query.catalog.CatalogCheck;
@@ -19,19 +19,13 @@ import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.domain.query.function.FunctionTaskQuery;
+import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -148,6 +142,15 @@ public class CatalogController {
                                         @PathVariable("tableName") String tableName) {
         TableInfo tableInfo = catalogService.getTable(catalogId, database, tableName);
         return Result.success(ResultMessage.DETAIL_SUCCESS, tableInfo);
+    }
+
+    @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}/lineage")
+    @AuditLog(module = TABLE, type = QUERY, descr = "'Query Table Lineage: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
+    public Result<LineageGraph> queryTableLineage(@PathVariable("catalogId") Long catalogId,
+                                                  @PathVariable("database") String database,
+                                                  @PathVariable("tableName") String tableName) {
+        LineageGraph lineageGraph = catalogService.getTableLineage(catalogId, database, tableName);
+        return Result.success(ResultMessage.QUERY_SUCCESS, lineageGraph);
     }
 
     @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}/ddl")

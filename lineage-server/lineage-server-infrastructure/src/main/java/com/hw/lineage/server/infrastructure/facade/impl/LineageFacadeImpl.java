@@ -15,6 +15,7 @@ import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
+import com.hw.lineage.server.domain.graph.GraphHelper;
 import com.hw.lineage.server.domain.vo.SqlId;
 import com.hw.lineage.server.infrastructure.config.LineageConfig;
 import com.hw.lineage.server.infrastructure.graph.GraphFactory;
@@ -26,13 +27,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.hw.lineage.common.util.Constant.ILLEGAL_PARAM;
-import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 
 /**
  * @description: LineageFacadeImpl
@@ -61,9 +60,7 @@ public class LineageFacadeImpl implements LineageFacade {
     @Override
     public void analyze(String pluginCode, String catalogName, Task task) {
         doProcessTask(task, () -> {
-            Map<SqlId, String> sqlSourceMap = new HashMap<>(INITIAL_CAPACITY);
             for (TaskSql taskSql : task.getTaskSqlList()) {
-                sqlSourceMap.put(taskSql.getSqlId(), taskSql.getSqlSource());
                 String singleSql = Base64Utils.decode(taskSql.getSqlSource());
                 switch (taskSql.getSqlType()) {
                     case INSERT:
@@ -92,9 +89,21 @@ public class LineageFacadeImpl implements LineageFacade {
                 // analyze the custom functions used in this SQL
                 analyzeFunction(pluginCode, catalogName, task, taskSql, singleSql);
             }
-            GraphFactory graphFactory = new GraphFactory(this, sqlSourceMap);
-            graphFactory.createLineageGraph(pluginCode, task);
+            // build tableGraph and columnGraph for the task
+            buildLineageGraph(pluginCode, task);
         });
+    }
+
+    private void buildLineageGraph(String pluginCode, Task task) {
+        GraphFactory graphFactory = new GraphFactory(this, task.getTaskSqlList());
+        // create tableGraph and columnGraph for the task
+        graphFactory.createLineageGraph(pluginCode, task.getTaskLineageList());
+        // calculate the count of all downstream nodes for each node in the graph
+        GraphHelper graphHelper = new GraphHelper();
+        graphHelper.calculateChildrenCnt(graphFactory.getTableGraph(), graphFactory.getColumnGraph());
+
+        task.setTableGraph(graphFactory.getTableGraph());
+        task.setColumnGraph(graphFactory.getColumnGraph());
     }
 
     @Override
