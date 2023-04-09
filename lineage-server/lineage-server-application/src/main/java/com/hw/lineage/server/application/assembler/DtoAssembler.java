@@ -13,6 +13,8 @@ import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
+import com.hw.lineage.server.domain.graph.column.ColumnGraph;
+import com.hw.lineage.server.domain.graph.table.TableGraph;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -94,10 +96,20 @@ public interface DtoAssembler {
 
     @AfterMapping
     default void setTaskLineageGraph(@MappingTarget TaskDTO taskDTO, Task task, String catalogName) {
-        if(task.getTableGraph()==null) {
-            return;
+        LineageGraph lineageGraph = toLineageGraph(task.getTableGraph(),
+                task.getColumnGraph(),
+                catalogName,
+                task.getDatabase()
+        );
+        taskDTO.setLineageGraph(lineageGraph);
+    }
+
+    default LineageGraph toLineageGraph(TableGraph tableGraph, ColumnGraph columnGraph, String catalogName, String database) {
+        LineageGraph lineageGraph = new LineageGraph();
+        if (tableGraph == null) {
+            return lineageGraph;
         }
-        List<Vertex> vertexList = task.getTableGraph().queryNodeSet()
+        List<Vertex> vertexList = tableGraph.queryNodeSet()
                 .stream()
                 .map(tableNode -> {
                     List<Column> columnList = tableNode.getColumnNodeList()
@@ -105,7 +117,7 @@ public interface DtoAssembler {
                             .map(columnNode -> new Column(columnNode.getNodeId().toString(), columnNode.getNodeName(), columnNode.getChildrenCnt()))
                             .collect(Collectors.toList());
 
-                    String optimizedName = optimizeName(catalogName, task.getDatabase(), tableNode.getNodeName());
+                    String optimizedName = optimizeTableName(catalogName, database, tableNode.getNodeName());
                     return new Vertex().setId(tableNode.getNodeId().toString())
                             .setName(optimizedName)
                             .setColumns(columnList)
@@ -116,7 +128,7 @@ public interface DtoAssembler {
                 .collect(Collectors.toList());
 
         // add table edges
-        List<Link> linkList = task.getTableGraph().getEdgeSet()
+        List<Link> linkList = tableGraph.getEdgeSet()
                 .stream()
                 .map(tableEdge -> new TableLink(tableEdge.getEdgeId().toString()
                         , tableEdge.getSource().getNodeId().toString()
@@ -125,7 +137,7 @@ public interface DtoAssembler {
                 .collect(Collectors.toList());
 
         // add column edges
-        linkList.addAll(task.getColumnGraph().getEdgeSet()
+        linkList.addAll(columnGraph.getEdgeSet()
                 .stream()
                 .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId().toString()
                         , columnEdge.getSource().getTableNodeId().toString()
@@ -136,12 +148,10 @@ public interface DtoAssembler {
                 ))
                 .collect(Collectors.toList())
         );
-        LineageGraph lineageGraph = new LineageGraph().setNodes(vertexList).setLinks(linkList);
-        taskDTO.setLineageGraph(lineageGraph);
+        return lineageGraph.setNodes(vertexList).setLinks(linkList);
     }
 
-
-    default String optimizeName(String catalogName, String database, String tableName) {
+    default String optimizeTableName(String catalogName, String database, String tableName) {
         if (tableName.startsWith(catalogName)) {
             tableName = tableName.replaceFirst(catalogName + DELIMITER, "");
         }

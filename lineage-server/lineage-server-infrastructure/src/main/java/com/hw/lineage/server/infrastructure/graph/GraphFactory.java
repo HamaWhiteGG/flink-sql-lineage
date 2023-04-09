@@ -1,10 +1,9 @@
 package com.hw.lineage.server.infrastructure.graph;
 
 import com.hw.lineage.common.result.ColumnInfo;
-import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
+import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;
-import com.hw.lineage.server.domain.graph.GraphHelper;
 import com.hw.lineage.server.domain.graph.column.ColumnEdge;
 import com.hw.lineage.server.domain.graph.column.ColumnGraph;
 import com.hw.lineage.server.domain.graph.column.ColumnNode;
@@ -16,6 +15,7 @@ import com.hw.lineage.server.domain.vo.SqlId;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Constant.DELIMITER;
 
@@ -36,15 +36,17 @@ public class GraphFactory {
 
     private final Map<SqlId, String> sqlSourceMap;
 
-    public GraphFactory(LineageFacade lineageFacade, Map<SqlId, String> sqlSourceMap) {
+    public GraphFactory(LineageFacade lineageFacade, List<TaskSql> taskSqlList) {
         this.lineageFacade = lineageFacade;
-        this.sqlSourceMap = sqlSourceMap;
         this.tableGraph = new TableGraph();
         this.columnGraph = new ColumnGraph();
+
+        this.sqlSourceMap = taskSqlList.stream()
+                .collect(Collectors.toMap(TaskSql::getSqlId, TaskSql::getSqlSource));
     }
 
-    public void createLineageGraph(String pluginCode, Task task) {
-        for (TaskLineage lineage : task.getTaskLineageList()) {
+    public void createLineageGraph(String pluginCode, List<TaskLineage> taskLineageList) {
+        for (TaskLineage lineage : taskLineageList) {
             TableNode sourceTableNode = getSourceTableNode(pluginCode, lineage);
             TableNode targetTableNode = getTargetTableNode(pluginCode, lineage);
             String sqlSource = sqlSourceMap.get(lineage.getSqlId());
@@ -54,18 +56,9 @@ public class GraphFactory {
             ColumnNode targetColumnNode = columnGraph.queryNode(lineage.buildTargetColumnName());
             columnGraph.addEdge(new ColumnEdge(atomic.getAndIncrement(), sourceColumnNode, targetColumnNode, lineage.getTransform()));
         }
-
-        GraphHelper<TableNode, TableEdge> tableHelper = new GraphHelper<>(tableGraph);
-        tableHelper.computeChildrenCnt();
-
-        GraphHelper<ColumnNode, ColumnEdge> columnHelper = new GraphHelper<>(columnGraph);
-        columnHelper.computeChildrenCnt();
-
-        task.setTableGraph(tableGraph);
-        task.setColumnGraph(columnGraph);
     }
 
-    private TableNode getSourceTableNode(String pluginCode, TaskLineage lineage){
+    private TableNode getSourceTableNode(String pluginCode, TaskLineage lineage) {
         String sourceTableName = lineage.buildSourceTableName();
         TableNode sourceTableNode = tableGraph.queryNode(sourceTableName);
 
@@ -87,7 +80,7 @@ public class GraphFactory {
     }
 
 
-    private TableNode getTargetTableNode(String pluginCode, TaskLineage lineage){
+    private TableNode getTargetTableNode(String pluginCode, TaskLineage lineage) {
         String targetTableName = lineage.buildTargetTableName();
         TableNode targetTableNode = tableGraph.queryNode(targetTableName);
 
@@ -107,5 +100,13 @@ public class GraphFactory {
 
         }
         return targetTableNode;
+    }
+
+    public TableGraph getTableGraph() {
+        return tableGraph;
+    }
+
+    public ColumnGraph getColumnGraph() {
+        return columnGraph;
     }
 }

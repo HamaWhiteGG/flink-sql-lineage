@@ -1,29 +1,11 @@
 package com.hw.lineage.server.infrastructure.persistence.converter;
 
-import com.hw.lineage.server.domain.entity.Audit;
-import com.hw.lineage.server.domain.entity.Catalog;
-import com.hw.lineage.server.domain.entity.Function;
-import com.hw.lineage.server.domain.entity.Permission;
-import com.hw.lineage.server.domain.entity.Plugin;
-import com.hw.lineage.server.domain.entity.Role;
-import com.hw.lineage.server.domain.entity.Table;
-import com.hw.lineage.server.domain.entity.User;
+import com.hw.lineage.server.domain.entity.*;
 import com.hw.lineage.server.domain.entity.task.Task;
 import com.hw.lineage.server.domain.entity.task.TaskFunction;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
-import com.hw.lineage.server.infrastructure.persistence.dos.AuditDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.CatalogDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.FunctionDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.PermissionDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.PluginDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.RoleDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.TableDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.TaskFunctionDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.TaskLineageDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.TaskSqlDO;
-import com.hw.lineage.server.infrastructure.persistence.dos.UserDO;
+import com.hw.lineage.server.infrastructure.persistence.dos.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -54,6 +36,8 @@ public interface DataConverter {
     @Mapping(source = "sqlId", target = "sqlId.value")
     TaskSql toTaskSql(TaskSqlDO taskSqlDO);
 
+    List<TaskSql> toTaskSqlList(List<TaskSqlDO> taskSqlDOList);
+
     @Mapping(source = "taskId.value", target = "taskId")
     @Mapping(source = "sqlId.value", target = "sqlId")
     TaskSqlDO fromTaskSql(TaskSql taskSql);
@@ -61,6 +45,8 @@ public interface DataConverter {
     @Mapping(source = "taskId", target = "taskId.value")
     @Mapping(source = "sqlId", target = "sqlId.value")
     TaskLineage toTaskLineage(TaskLineageDO taskLineageDO);
+
+    List<TaskLineage> toTaskLineageList(List<TaskLineageDO> taskLineageDOList);
 
     @Mapping(source = "taskId.value", target = "taskId")
     @Mapping(source = "sqlId.value", target = "sqlId")

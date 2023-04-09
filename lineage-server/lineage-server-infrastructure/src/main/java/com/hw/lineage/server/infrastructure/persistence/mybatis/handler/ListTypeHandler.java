@@ -28,20 +28,24 @@ public class ListTypeHandler extends BaseTypeHandler<List<Long>> {
 
     @Override
     public List<Long> getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String value = rs.getString(columnName);
-        return Splitter.on(DELIM).splitToList(value).stream().map(Long::valueOf).collect(Collectors.toList());
-
+        return splitToList(rs.getString(columnName));
     }
 
     @Override
     public List<Long> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String value = rs.getString(columnIndex);
-        return Splitter.on(DELIM).splitToList(value).stream().map(Long::valueOf).collect(Collectors.toList());
+        return splitToList(rs.getString(columnIndex));
     }
 
     @Override
     public List<Long> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String value = cs.getString(columnIndex);
-        return Splitter.on(DELIM).splitToList(value).stream().map(Long::valueOf).collect(Collectors.toList());
+        return splitToList(cs.getString(columnIndex));
+    }
+
+    private List<Long> splitToList(String value) {
+        return Splitter.on(DELIM)
+                .splitToList(value)
+                .stream()
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
     }
 }
