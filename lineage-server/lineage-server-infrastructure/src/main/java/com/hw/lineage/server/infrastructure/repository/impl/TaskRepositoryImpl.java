@@ -12,6 +12,7 @@ import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.query.task.TaskFunctionQuery;
 import com.hw.lineage.server.domain.query.task.TaskQuery;
 import com.hw.lineage.server.domain.repository.TaskRepository;
+import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.domain.vo.TaskId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
@@ -28,9 +29,11 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;
 import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static org.mybatis.dynamic.sql.SqlBuilder.isLike;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskLineageDynamicSqlSupport.taskLineage;
+import static com.hw.lineage.server.infrastructure.persistence.mapper.TaskSqlDynamicSqlSupport.taskSql;
+import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
 /**
  * @description: TaskRepositoryImpl
@@ -167,5 +170,25 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
             );
             return PageUtils.convertPage(pageInfo, converter::toTaskFunction);
         }
+    }
+
+    @Override
+    public List<TaskLineage> findTaskLineages(PluginId pluginId) {
+        List<TaskLineageDO> taskLineageDOList = taskLineageMapper.select(completer ->
+                completer.join(task).on(taskLineage.taskId, equalTo(task.taskId))
+                        .join(catalog).on(task.catalogId, equalTo(catalog.catalogId))
+                        .where(catalog.pluginId, isEqualTo(pluginId.getValue()))
+        );
+        return converter.toTaskLineageList(taskLineageDOList);
+    }
+
+    @Override
+    public List<TaskSql> findTaskSqls(PluginId pluginId) {
+        List<TaskSqlDO> taskSqlDOList = taskSqlMapper.select(completer ->
+                completer.join(task).on(taskSql.taskId, equalTo(task.taskId))
+                        .join(catalog).on(task.catalogId, equalTo(catalog.catalogId))
+                        .where(catalog.pluginId, isEqualTo(pluginId.getValue()))
+        );
+        return converter.toTaskSqlList(taskSqlDOList);
     }
 }

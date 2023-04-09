@@ -38,6 +38,7 @@ import java.util.List;
  */
 @Service("taskService")
 public class TaskServiceImpl implements TaskService {
+
     @Resource
     private TaskRepository taskRepository;
 

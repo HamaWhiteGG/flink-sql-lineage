@@ -13,10 +13,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @description: GraphHelperTest
+ * @description: GraphCalculatorTest
  * @author: HamaWhite
  */
-public class GraphHelperTest {
+public class GraphCalculatorTest {
 
     /**
      * <pre>
@@ -80,10 +80,10 @@ public class GraphHelperTest {
         graph.addEdge(edge8);
         graph.addEdge(edge9);
 
-        GraphHelper<Node, Edge<Node>> graphHelper = new GraphHelper<>(graph);
-        graphHelper.computeChildrenCnt();
+        GraphCalculator<Node, Edge<Node>> calculator = new GraphCalculator<>(graph);
+        calculator.calculateChildrenCnt();
 
-        Map<Integer, Set<Integer>> childrenMap = graphHelper.getChildrenMap();
+        Map<Integer, Set<Integer>> childrenMap = calculator.getChildrenMap();
 
         assertEquals(ImmutableSet.of(2, 5, 6), childrenMap.get(1));
         assertEquals(ImmutableSet.of(5, 6), childrenMap.get(2));

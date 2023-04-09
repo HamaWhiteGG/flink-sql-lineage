@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @description: Graph
@@ -23,6 +24,11 @@ public class Graph<N extends Node, E extends Edge<N>> {
         this.edgeSet = new HashSet<>();
     }
 
+    public Graph(Map<String, N> nodeMap, Set<E> edgeSet) {
+        this.nodeMap = nodeMap;
+        this.edgeSet = edgeSet;
+    }
+
     public Set<N> queryNodeSet() {
         return new HashSet<>(nodeMap.values());
     }
@@ -37,6 +43,19 @@ public class Graph<N extends Node, E extends Edge<N>> {
 
     public void addEdge(E edge) {
         edgeSet.add(edge);
+    }
+
+    public Map<Integer, N> queryNodeIdMap() {
+        return nodeMap.values()
+                .stream()
+                .collect(Collectors.toMap(N::getNodeId, node -> node));
+    }
+
+    public Set<Integer> queryNodeIdSet() {
+        return nodeMap.values()
+                .stream()
+                .map(N::getNodeId)
+                .collect(Collectors.toSet());
     }
 }
 
