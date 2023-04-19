@@ -11,8 +11,8 @@
 | 2 | HamaWhite | 2.0.0 | 2022-11-24 | 1. 支持Watermark</br> 2. 支持UDTF </br> 3. 改变Calcite源码修改方式 </br> 4. 升级Hudi和Mysql CDC版本 |
 | 3 | HamaWhite | 2.0.1 | 2022-12-01 | 1. 支持field AS LOCALTIMESTAMP                                                       |
 | 4 | HamaWhite | 2.0.2 | 2022-12-30 | 1. 支持 CEP</br> 2. 支持 ROW_NUMBER()                                                  |
-| 5 | HamaWhite | 3.0.0 | 2023-01-03 | 1. 支持显示字段间转换关系                                                                     |
-| 6 | HamaWhite | 3.0.1 | 2023-01-12 | 1. 去除单测对外部环境的依赖                                                                    |
+| 5 | HamaWhite | 2.0.3 | 2023-01-03 | 1. 支持显示字段间转换关系                                                                     |
+| 6 | HamaWhite | 2.0.4 | 2023-01-12 | 1. 去除单测对外部环境的依赖                                                                    |
 
 
 </br>
