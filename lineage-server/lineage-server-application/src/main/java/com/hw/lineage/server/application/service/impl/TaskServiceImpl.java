@@ -26,6 +26,7 @@ import com.hw.lineage.server.domain.service.TaskDomainService;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.domain.vo.TaskId;
+import com.hw.lineage.server.domain.vo.TaskSource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -112,7 +113,8 @@ public class TaskServiceImpl implements TaskService {
                 .setTaskId(new TaskId(command.getTaskId()))
                 .setTaskName(command.getTaskName())
                 .setDescr(command.getDescr())
-                .setCatalogId(new CatalogId(command.getCatalogId()));
+                .setCatalogId(new CatalogId(command.getCatalogId()))
+                .setTaskSource(new TaskSource(command.getSource()));
 
         if (StringUtils.isNotEmpty(command.getSource())) {
             task.setTaskStatus(TaskStatus.MODIFIED);
