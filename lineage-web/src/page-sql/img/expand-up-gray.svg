@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>编组备份</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="交互细节" transform="translate(-1798.000000, -388.000000)">
+            <g id="编组备份" transform="translate(1798.000000, 388.000000)">
+                <path d="M8,13 C4.6862,13 2,10.3138 2,7 C2,3.6862 4.6862,1 8,1 C11.3138,1 14,3.6862 14,7 C14,10.3138 11.3138,13 8,13 Z" id="形状" fill="#ABABAB" fill-rule="nonzero"></path>
+                <polygon id="路径" fill="#FFFFFF" fill-rule="nonzero" points="7.33333333 6.33333333 4.66666667 6.33333333 4.66666667 7.66666667 7.33333333 7.66666667 7.33333333 10.3333333 8.66666667 10.3333333 8.66666667 7.66666667 11.3333333 7.66666667 11.3333333 6.33333333 8.66666667 6.33333333 8.66666667 3.66666667 7.33333333 3.66666667"></polygon>
+                <rect id="矩形" fill-opacity="0.65" fill="#ABABAB" x="-1.13686838e-13" y="0" width="2" height="14"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

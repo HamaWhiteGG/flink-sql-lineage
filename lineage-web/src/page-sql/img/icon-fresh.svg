@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>还原/刷新</title>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+        <filter x="-8.3%" y="-4.2%" width="116.7%" height="116.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.709469765   0 0 0 0 0.716753186   0 0 0 0 0.75317029  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="开发界面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="改版-离线开发-开发中心-界面修改" transform="translate(-1319.000000, -128.000000)">
+            <g id="还原/刷新" transform="translate(1320.000000, 128.000000)">
+                <g id="椭圆形">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <circle stroke="#E2E3EA" stroke-width="1" stroke-linejoin="square" fill="#FFFFFF" fill-rule="evenodd" cx="12" cy="12" r="11.5"></circle>
+                </g>
+                <g id="icon/15" transform="translate(6.000000, 6.000000)" fill="#AFB1BD">
+                    <path d="M6,0.166666667 C2.75925926,0.166666667 0.166666667,2.75925926 0.166666667,6 C0.166666667,9.24074074 2.75925926,11.8333333 6,11.8333333 C9.24074074,11.8333333 11.8333333,9.24074074 11.8333333,6 C11.8333333,5.67592593 11.6168519,5.46074074 11.2927778,5.46074074 C10.9687037,5.46074074 10.7535185,5.67592593 10.7535185,6 C10.7535185,8.59259259 8.59259259,10.7535185 6,10.7535185 C3.40740741,10.7535185 1.24648148,8.59259259 1.24648148,6 C1.24648148,3.40740741 3.40740741,1.24777778 6,1.24777778 C6.86462963,1.24777778 7.83685185,1.46296296 8.485,2.00351852 L8.485,2.11111111 L7.94444444,2.75925926 C7.72796296,2.97574074 7.94444444,3.40740741 8.26851852,3.40740741 L10.7535185,3.5162963 C10.9687037,3.5162963 11.1851852,3.19222222 11.1851852,2.97574074 L10.4294444,0.59962963 C10.3205556,0.275555556 9.88888889,0.166666667 9.67240741,0.490740741 L9.24074074,1.13888889 C8.26851852,0.490740741 7.1887037,0.166666667 6,0.166666667 Z" id="Fill-19"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
