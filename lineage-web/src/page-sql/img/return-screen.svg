@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="12px" viewBox="0 0 14 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>编组</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2-默认-全屏效果" transform="translate(-1349.000000, -94.000000)">
+            <g id="编组-22" transform="translate(1344.000000, 88.000000)">
+                <g id="编组" transform="translate(4.000000, 4.000000)">
+                    <polygon id="路径" points="0 0 16 0 16 16 0 16"></polygon>
+                    <path d="M12,4.66666667 L14.6666667,4.66666667 L14.6666667,6 L10.6666667,6 L10.6666667,2 L12,2 L12,4.66666667 Z M5.33333333,6 L1.33333333,6 L1.33333333,4.66666667 L4,4.66666667 L4,2 L5.33333333,2 L5.33333333,6 Z M12,11.3333333 L12,14 L10.6666667,14 L10.6666667,10 L14.6666667,10 L14.6666667,11.3333333 L12,11.3333333 Z M5.33333333,10 L5.33333333,14 L4,14 L4,11.3333333 L1.33333333,11.3333333 L1.33333333,10 L5.33333333,10 Z" id="形状" fill="#9597A5" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,35 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false
+      }
+    ],
+    "@babel/preset-react",
+  ],
+  "exclude": ["/node_modules\/react/"],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      { "legacy": true }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      { "loose" : true }
+    ]
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        [
+          "@babel/plugin-transform-runtime",
+          {
+            "corejs": 2
+          }
+        ],
+        "@babel/plugin-transform-modules-commonjs"
+      ]
+    }
+  }
+}

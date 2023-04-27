@@ -1,44 +1,47 @@
-import React from 'react';
+
+import React,{ useState } from 'react'
 import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { UploadOutlined, UserOutlined, VideoCameraOutlined, FileTextOutlined, ProfileOutlined, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
+import { Layout, Menu, theme, Button, Tooltip } from 'antd'
+import './common/common.styl'
 
 const { Header, Content, Footer, Sider } = Layout
 const App = () => {
+  // const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer },
   } = theme.useToken()
 
-  const iconMap = {
-    'sql': <UserOutlined />,
-    'task-manage': <UserOutlined />,
-  }
+  // const iconMap = {
+  //   'sql': <BranchesOutlined />,
+  //   'task-manage': <FileTextOutlined />,
+  // }
 
   const menuMap = [
     {
-      key: 'sql',
-      icon: UserOutlined,
-      label: 'Sql',
-      url: 'sql',
+      key: 'job',
+      icon: BranchesOutlined,
+      label: 'Job',
+      url: 'job',
     },
+    // {
+    //   key: 'catalog',
+    //   icon: FileTextOutlined,
+    //   label: 'Catalog',
+    //   url: 'catalog',
+    // },
     {
       key: 'task-manage',
-      icon: UserOutlined,
+      icon: SettingOutlined,
       label: 'Task Manage',
       url: 'task-manage',
-    }
+    },
+    
   ]
   return (
     <Layout>
       <Sider
         breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
       >
         <div className="logo" />
         <Menu
@@ -46,40 +49,43 @@ const App = () => {
           mode="inline"
           defaultSelectedKeys={['4']}
           items={menuMap.map(
-            
             (item, index) => ({
               key: String(index + 1),
               icon: React.createElement(item.icon),
               label: <Link 
               to={`/${item.url}`}
-              // state={{url: t.url}}
             >{item.label}</Link>,
             }),
-          )}
+          )
+        }
         />
       </Sider>
       <Layout>
         <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
+          className="FBV FBAE header-box"
         >
-          <div></div>
+          <div className=''>
+            <Tooltip title='Document'>
+              <ProfileOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+            </Tooltip>
+            <Tooltip title='GitHub'>
+              <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+            </Tooltip>
+            <Button type='link'>EN</Button>
+          </div>
+          
         </Header>
         <Content
           style={{
-            margin: '24px 16px 0',
           }}
         >
           <div
             style={{
-              padding: 24,
               minHeight: 360,
               background: colorBgContainer,
             }}
           >
-            <Outlet/>
+            <Outlet />
           </div>
         </Content>
         <Footer
