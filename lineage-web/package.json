@@ -1,0 +1,69 @@
+{
+  "name": "lineage-web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "@babel/core": "7.16.0",
+    "@babel/plugin-proposal-class-properties": "7.16.0",
+    "@babel/plugin-proposal-decorators": "7.16.4",
+    "@babel/plugin-proposal-export-namespace-from": "7.16.0",
+    "@babel/plugin-proposal-function-sent": "7.16.0",
+    "@babel/plugin-proposal-json-strings": "7.16.0",
+    "@babel/plugin-proposal-numeric-separator": "7.16.0",
+    "@babel/plugin-proposal-throw-expressions": "7.16.0",
+    "@babel/plugin-syntax-dynamic-import": "7.8.3",
+    "@babel/plugin-syntax-import-meta": "7.10.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.21.2",
+    "@babel/plugin-transform-runtime": "7.16.4",
+    "@babel/preset-env": "7.16.4",
+    "@babel/preset-react": "7.16.0",
+    "@babel/runtime-corejs2": "7.16.3",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "antd": "^5.2.1",
+    "axios": "0.27.x",
+    "babel-loader": "8.x",
+    "babel-preset-react-app": "^10.0.1",
+    "butterfly-dag": "4.1.23",
+    "butterfly-react": "0.0.37-beta",
+    "customize-cra": "^1.0.0",
+    "js-base64": "^3.7.5",
+    "lodash": "^4.17.21",
+    "mobx": "5.x",
+    "mobx-react": "5.4.3",
+    "monaco-editor": "0.35.0",
+    "monaco-editor-webpack-plugin": "^7.0.1",
+    "react": "16.x",
+    "react-app-rewired": "^2.2.1",
+    "react-dom": "16.x",
+    "react-monaco-editor": "^0.51.0",
+    "react-router-dom": "^6.8.1",
+    "react-scripts": "5.0.1",
+    "stylus": "^0.59.0",
+    "stylus-loader": "^7.1.0",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0"
+  }
+}

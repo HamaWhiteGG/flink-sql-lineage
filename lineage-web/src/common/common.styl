@@ -1,0 +1,251 @@
+// 填加单位后缀
+u(n)
+  n == 0 ? n : unit(n, px)
+
+// font color
+$font-colors = {
+    '0': #000,
+    '3': #333,
+    '4': #444,
+    '5': #555,
+    '6': #666,
+    '7': #777,
+    '8': #888,
+    '9': #999,
+    'a': #aaa,
+    'b': #bbb,
+    'c': #ccc,
+    'd': #ddd,
+    'e': #eee,
+    'f': #fff,
+    '85': rgba(0, 0, 0, .85),
+    '-pr': #2466FF
+}
+
+html 
+  height 100vh
+  min-height 100vh
+  @import './flexbox.styl'
+
+  for $key, $value in $font-colors
+    .fc{$key}
+      color $value
+
+  // font size
+  for $n in 0 10 12 14 16 18 20 22 24 26 28 30
+    .fs{$n}
+      font-size u($n)
+
+  // all padding
+  for $n in 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
+    .p{$n}
+      padding u($n)
+
+  // special padding
+  for $n in 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
+    .pt{$n}
+      padding-top u($n)
+    .pr{$n}
+      padding-right u($n)
+    .pb{$n}
+      padding-bottom u($n)
+    .pl{$n}
+      padding-left u($n)
+
+  // all margin
+  for $n in 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
+    .m{$n}
+      margin u($n)
+
+  // special margin
+  for $n in 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
+    .mt{$n}
+      margin-top u($n)
+    .mr{$n}
+      margin-right u($n)
+    .mb{$n}
+      margin-bottom u($n)
+    .ml{$n}
+      margin-left u($n)
+
+  // special opacity
+  for $n, $i in 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+    .op{$i + 1}
+      opacity $n
+
+  .bold
+    font-weight bold
+
+  .fw-normal
+    font-weight 300
+
+  // 定位
+  .pr
+    position relative
+  .pa
+    position absolute
+
+  .fac
+    text-align center
+  .fal
+    text-align left
+  .far
+    text-align right
+
+  .hide
+    display none
+
+  .r4
+    border-radius 4px
+
+  .omit
+    overflow hidden
+    text-overflow ellipsis
+    word-break keep-all
+    white-space nowrap
+
+  for $n in 2 3 4 5
+    .omit{$n}
+      overflow hidden
+      text-overflow ellipsis
+      display flex
+      -webkit-line-clamp $n
+      -webkit-box-orient vertical
+
+  .hand
+    cursor pointer
+
+  .fn-clear:after
+    visibility hidden
+    display block
+    font-size 0
+    height 0
+
+  .gray-box
+    background-color #fafafa
+    border 1px solid #d9d9d9
+
+  .gray-box-deep
+    background-color #f5f5f5
+    border 1px solid #d9d9d9
+
+  .gray-bd
+    border 1px solid #e8e8e8
+
+  .gray-bd-deep
+    border 1px solid #d9d9d9
+
+  .pointer
+    cursor pointer
+
+  .gray-bg
+    background #f3f4f9
+  .white-bg
+    background #fff
+  .empty-status
+    color rgba(0, 0, 0, .25)
+  .page-title-bar
+    height 72px
+    line-height 72px
+    padding 0 16px
+    color #000
+    font-size 16px
+    background #fff
+  .main-wrapper
+    min-width 1440px
+  // 全局覆盖antd divider的间距
+  .ant-divider-horizontal
+    margin-top 16px
+    margin-bottom 16px
+  .ant-btn-link
+    padding-left 0px
+    padding-right 0px
+  .color-success
+    color #52C41A
+  .color-failed
+    color #F5222D
+  .status-dot
+    position relative
+    padding-left 10px
+    &:before
+      content ""
+      position absolute
+      border-radius 6px
+      width 6px
+      height 6px
+      background #1890FF
+      left 0px
+      top 5px
+  .status-dot-success
+    &:before
+      background #00CC66
+  .status-dot-failed
+    &:before
+      background #FF0033
+
+.ant-table-row-1
+  background-color #fafafa
+  .ant-table-cell-fix-left, .ant-table-cell-fix-right
+    background-color #fafafa  
+  
+// 统一覆盖ant样式
+html
+  .ant-tabs .ant-tabs-nav
+    margin 0
+  .ant-card-head-wrapper
+    height 48px
+  .ant-card-head-title
+    font-size 14px
+  .ant-card .ant-card-body
+    padding 16px 24px 24px 24px
+
+// 统一修改表格
+html
+  .color25
+    color rgba(0,0,0,0.25)
+  .color45
+    color rgba(0,0,0,0.45)
+  .color65
+    color rgba(0,0,0,0.65)
+  .color85
+    color rgba(0,0,0,0.85)
+
+  /*按钮左右边距16px*/
+  .ant-btn-sm
+    padding-left 16px
+    padding-right 16px
+  .ant-btn-link
+    padding-left 0
+    padding-right 0
+  /*小表格高度最低40px*/
+  .ant-table-small
+    line-height 1.95
+  /*表头背景色和字色*/
+  .ant-table-small .ant-table-thead>tr>th
+    background-color #F6F6F6
+    color rgba(0,0,0,0.45)
+  /*表格斑马线的颜色*/
+  .ant-table-row-1
+    background-color rgba(246,246,246,0.4)
+  /*可展开的表格中，子表格对齐*/
+  .ant-table.ant-table-small .ant-table-tbody .ant-table-wrapper:only-child .ant-table
+    margin-left 40px
+  /*表单项间距16px*/
+  .ant-form-item
+    margin-bottom 16px
+  /*多选下拉框样式*/
+  .ant-select-multiple.ant-select-sm .ant-select-selection-item
+    height 16px !important
+    line-height 14px !important
+  .ant-table-row-1
+    background-color #FBFBFB
+  .ant-empty-image
+    margin-bottom 16px
+  // .ant-table-cell-fix-left, .ant-table-cell-fix-right 
+  //   background-color #FBFBFB
+  .ant-select-multiple.ant-select-sm .ant-select-selection-item
+    height 16px !important
+    line-height 14px !important
+
+.disabled 
+  color rgba(0,0,0,0.25) !important
