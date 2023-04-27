@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>编组 26备份 2</title>
+    <desc>Created with Sketch.</desc>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1-默认样式" transform="translate(-925.000000, -537.000000)">
+            <g id="主表" transform="translate(695.000000, 528.000000)">
+                <g id="编组-26备份-2" transform="translate(237.000000, 16.000000) scale(-1, 1) translate(-237.000000, -16.000000) translate(230.000000, 9.000000)">
+                    <g id="编组">
+                        <path d="M6,1.5 C4.481175,1.5 3.10617287,2.11558391 2.11087839,3.11087839 C1.11558391,4.10617287 0.5,5.481175 0.5,7 C0.5,8.518825 1.11558391,9.89382713 2.11087839,10.8891216 C3.10617287,11.8844161 4.481175,12.5 6,12.5 C7.518825,12.5 8.89382713,11.8844161 9.88912161,10.8891216 C10.8844161,9.89382713 11.5,8.518825 11.5,7 C11.5,5.481175 10.8844161,4.10617287 9.88912161,3.11087839 C8.89382713,2.11558391 7.518825,1.5 6,1.5 Z" id="形状" stroke="#2466FF" fill="#FFFFFF" fill-rule="nonzero"></path>
+                        <polygon id="路径" fill="#2466FF" fill-rule="nonzero" points="5.33333333 6.33333333 2.66666667 6.33333333 2.66666667 7.66666667 5.33333333 7.66666667 6.66666667 7.66666667 9.33333333 7.66666667 9.33333333 6.33333333 6.66666667 6.33333333"></polygon>
+                        <rect id="矩形" fill-opacity="0.65" fill="#2466FF" x="12" y="0" width="2" height="14"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
