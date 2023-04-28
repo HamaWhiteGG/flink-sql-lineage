@@ -2,6 +2,7 @@ package com.hw.lineage.flink;
 
 import com.hw.lineage.flink.cep.CepTest;
 import com.hw.lineage.flink.common.CommonTest;
+import com.hw.lineage.flink.common.SimpleTest;
 import com.hw.lineage.flink.localtimestamp.LocaltimestampTest;
 import com.hw.lineage.flink.lookup.join.LookupJoinTest;
 import com.hw.lineage.flink.proctime.ProctimeTest;
@@ -21,6 +22,7 @@ import org.junit.runners.Suite;
 @Ignore
 @RunWith(Suite.class)
 @Suite.SuiteClasses({CommonTest.class
+        , SimpleTest.class
         , LookupJoinTest.class
         , TableFunctionTest.class
         , WatermarkTest.class
@@ -30,8 +32,8 @@ import org.junit.runners.Suite;
         , ProctimeTest.class})
 public class SuiteTest {
 
-    /**
-     * The entry class of the test suite is just to organize the test classes together for testing,
-     * without any test methods.
+    /*
+      The entry class of the test suite is just to organize the test classes together for testing,
+      without any test methods.
      */
 }

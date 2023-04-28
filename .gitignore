@@ -63,3 +63,4 @@ lineage-web/node/
 static
 /lineage-server/lineage-server-start/data/
 logs
+yarn.lock
