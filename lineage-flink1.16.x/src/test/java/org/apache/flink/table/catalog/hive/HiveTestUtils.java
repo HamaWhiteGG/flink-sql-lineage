@@ -1,7 +1,6 @@
-package apache.flink.table.catalog.hive;
+package org.apache.flink.table.catalog.hive;
 
 import org.apache.flink.table.catalog.exceptions.CatalogException;
-import org.apache.flink.table.catalog.hive.HiveCatalog;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.junit.rules.TemporaryFolder;
 
