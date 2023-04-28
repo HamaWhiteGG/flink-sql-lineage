@@ -159,12 +159,11 @@
             </exclusions>
         </dependency>
 
-        <!--        temporarily comment out, the download package is too slow-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.paimon</groupId>-->
-        <!--            <artifactId>paimon-flink-1.16</artifactId>-->
-        <!--            <version>${paimon.version}</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.paimon</groupId>
+            <artifactId>paimon-flink-1.16</artifactId>
+            <version>${paimon.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

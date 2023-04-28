@@ -11,8 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Temporarily comment out, the download package is too slow
- *
+ * @description: PaimonTest
  * @author: HamaWhite
  */
 @Ignore

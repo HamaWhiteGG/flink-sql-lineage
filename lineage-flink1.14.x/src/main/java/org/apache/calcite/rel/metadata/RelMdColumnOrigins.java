@@ -40,6 +40,8 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
 
     private static final Logger LOG = LoggerFactory.getLogger(RelMdColumnOrigins.class);
 
+    private final Pattern pattern = Pattern.compile("\\$\\d+");
+
     public static final RelMetadataProvider SOURCE =
             ReflectiveRelMetadataProvider.reflectiveSource(
                     BuiltInMethod.COLUMN_ORIGIN.method, new RelMdColumnOrigins());
@@ -69,14 +71,9 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
 
         final Set<RelColumnOrigin> set = new LinkedHashSet<>();
         for (Integer iInput : call.getArgList()) {
-            Set<RelColumnOrigin> inputSet =
-                    mq.getColumnOrigins(rel.getInput(), iInput);
-            inputSet = createDerivedColumnOrigins(inputSet, call.toString(), true);
-            if (inputSet != null) {
-                set.addAll(inputSet);
-            }
+            set.addAll(mq.getColumnOrigins(rel.getInput(), iInput));
         }
-        return set;
+        return createDerivedColumnOrigins(set, call);
     }
 
     public Set<RelColumnOrigin> getColumnOrigins(Join rel, RelMetadataQuery mq,
@@ -108,9 +105,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * Support the field blood relationship of table function
      */
     public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) {
-
         List<RelDataTypeField> leftFieldList = rel.getLeft().getRowType().getFieldList();
-
         int nLeftColumns = leftFieldList.size();
         Set<RelColumnOrigin> set;
         if (iOutputColumn < nLeftColumns) {
@@ -131,10 +126,10 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                         break;
                     }
                 }
-                /**
-                 * Get the fields from the left table, don't go to
-                 * getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
-                 * otherwise the return is null, and the UDTF field origin cannot be parsed
+                /*
+                  Get the fields from the left table, don't go to
+                  getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
+                  otherwise the return is null, and the UDTF field origin cannot be parsed
                  */
                 set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
 
@@ -142,7 +137,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                 String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
                         + DELIMITER
                         + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
-                set = createDerivedColumnOrigins(set, transform, false);
+                set = createDerivedColumnOrigins(set, transform);
             } else {
                 set = mq.getColumnOrigins(rel.getRight(), iOutputColumn - nLeftColumns);
             }
@@ -202,7 +197,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         }
         // Anything else is a derivation, possibly from multiple columns.
         final Set<RelColumnOrigin> set = getMultipleColumns(rexNode, input, mq);
-        return createDerivedColumnOrigins(set, rexNode.toString(), true);
+        return createDerivedColumnOrigins(set, rexNode);
     }
 
     private int computeIndexWithOffset(List<RexNode> projects, int baseIndex, int iOutputColumn) {
@@ -232,8 +227,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         RexPatternFieldRef rexPatternFieldRef = searchRexPatternFieldRef(rexNode);
         if (rexPatternFieldRef != null) {
             final Set<RelColumnOrigin> set = mq.getColumnOrigins(input, rexPatternFieldRef.getIndex());
-            String originTransform = rexNode instanceof RexCall ? ((RexCall) rexNode).getOperands().get(0).toString() : null;
-            return createDerivedColumnOrigins(set, originTransform, true);
+            if (rexNode instanceof RexCall) {
+                return createDerivedColumnOrigins(set, ((RexCall) rexNode).getOperands().get(0));
+            } else {
+                return createDerivedColumnOrigins(set);
+            }
         }
         return Collections.emptySet();
     }
@@ -260,10 +258,9 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                 return rel.getProgram().expandLocalRef(localRef);
             }
         };
-        final List<RexNode> projects = new ArrayList<>();
-        for (RexNode rex : rexShuttle.apply(rel.getProgram().getProjectList())) {
-            projects.add(rex);
-        }
+
+        List<RexNode> projects = new ArrayList<>(rexShuttle.apply(rel.getProgram().getProjectList()));
+
         final RexNode rexNode = projects.get(iOutputColumn);
         if (rexNode instanceof RexInputRef) {
             // Direct reference:  no derivation added.
@@ -383,13 +380,13 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
     }
 
     private Set<RelColumnOrigin> createDerivedColumnOrigins(
-            Set<RelColumnOrigin> inputSet, String transform, boolean originTransform) {
+            Set<RelColumnOrigin> inputSet, Object transform) {
         if (inputSet == null || inputSet.isEmpty()) {
             return Collections.emptySet();
         }
         final Set<RelColumnOrigin> set = new LinkedHashSet<>();
 
-        String finalTransform = originTransform ? computeTransform(inputSet, transform) : transform;
+        String finalTransform = computeTransform(inputSet, transform);
         for (RelColumnOrigin rco : inputSet) {
             RelColumnOrigin derived =
                     new RelColumnOrigin(
@@ -406,10 +403,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
     /**
      * Replace the variable at the beginning of $ in input with the real field information
      */
-    private String computeTransform(Set<RelColumnOrigin> inputSet, String transform) {
-        LOG.debug("origin transform: {}", transform);
-        Pattern pattern = Pattern.compile("\\$\\d+");
-        Matcher matcher = pattern.matcher(transform);
+    private String computeTransform(Set<RelColumnOrigin> inputSet, Object transform) {
+        LOG.debug("origin transform: {}, class: {}", transform, transform.getClass());
+        String finalTransform = transform.toString();
+
+        Matcher matcher = pattern.matcher(finalTransform);
 
         Set<String> operandSet = new LinkedHashSet<>();
         while (matcher.find()) {
@@ -417,31 +415,66 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         }
 
         if (operandSet.isEmpty()) {
-            LOG.info("operandSet is empty");
-            return null;
+            return finalTransform;
         }
         if (inputSet.size() != operandSet.size()) {
             LOG.warn("The number [{}] of fields in the source tables are not equal to operands [{}]", inputSet.size(), operandSet.size());
             return null;
         }
 
-        Map<String, String> sourceColumnMap = new HashMap<>();
-        Iterator<String> iterator = optimizeSourceColumnSet(inputSet).iterator();
-        operandSet.forEach(e -> sourceColumnMap.put(e, iterator.next()));
-        LOG.debug("sourceColumnMap: {}", sourceColumnMap);
+        Map<String, String> sourceColumnMap = buildSourceColumnMap(inputSet, transform);
 
-        matcher = pattern.matcher(transform);
+        matcher = pattern.matcher(finalTransform);
         String temp;
         while (matcher.find()) {
             temp = matcher.group();
-            transform = transform.replace(temp, sourceColumnMap.get(temp));
+            finalTransform = finalTransform.replace(temp, sourceColumnMap.get(temp));
         }
-
         // temporary special treatment
-        transform = transform.replace("_UTF-16LE", "");
-        LOG.debug("transform: {}", transform);
-        return transform;
+        finalTransform = finalTransform.replace("_UTF-16LE", "");
+        LOG.debug("final transform: {}", finalTransform);
+        return finalTransform;
     }
+
+
+    /**
+     * According to the order of generating inputSet, generate the corresponding index number.
+     *
+     * <p>
+     * for example: ROW_NUMBER() OVER (PARTITION BY $0 ORDER BY $3 DESC NULLS LAST),
+     * The order of inputSet is $3, $0, instead of $0, $3 obtained by traversing the above string normally
+     *
+     */
+    private Map<String, String> buildSourceColumnMap(Set<RelColumnOrigin> inputSet, Object transform) {
+        Set<Integer> traversalSet = new LinkedHashSet<>();
+        if (transform instanceof AggregateCall) {
+            AggregateCall call = ((AggregateCall) transform);
+            traversalSet.addAll(call.getArgList());
+        } else if (transform instanceof RexNode) {
+            RexNode rexNode = (RexNode) transform;
+            RexVisitor<Void> visitor =
+                    new RexVisitorImpl<Void>(true) {
+                        @Override
+                        public Void visitInputRef(RexInputRef inputRef) {
+                            traversalSet.add(inputRef.getIndex());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitPatternFieldRef(RexPatternFieldRef fieldRef) {
+                            traversalSet.add(fieldRef.getIndex());
+                            return null;
+                        }
+                    };
+            rexNode.accept(visitor);
+        }
+        Map<String, String> sourceColumnMap = new HashMap<>();
+        Iterator<String> iterator = optimizeSourceColumnSet(inputSet).iterator();
+        traversalSet.forEach(index -> sourceColumnMap.put("$" + index, iterator.next()));
+        LOG.debug("sourceColumnMap: {}", sourceColumnMap);
+        return sourceColumnMap;
+    }
+
 
     /**
      * Increase the readability of transform.
@@ -482,7 +515,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
     }
 
     private Set<String> optimizeName(Set<List<String>> qualifiedSet, Function<List<String>, String> mapper) {
-        return qualifiedSet.stream().map(mapper).collect(Collectors.toSet());
+        return qualifiedSet.stream().map(mapper).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private Set<RelColumnOrigin> getMultipleColumns(RexNode rexNode, RelNode input,
