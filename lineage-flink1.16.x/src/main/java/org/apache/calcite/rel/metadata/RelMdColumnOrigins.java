@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Constant.DELIMITER;
+import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 
 
 /**
@@ -31,6 +32,7 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  *  <li>Support transform, add method createDerivedColumnOrigins(Set<RelColumnOrigin> inputSet, String transform, boolean originTransform), and related code
  *  <li>Support field AS LOCALTIMESTAMP, modify method getColumnOrigins(Project rel, RelMetadataQuery mq, int iOutputColumn)
  *  <li>Support PROCTIME() is the first filed, add method computeIndexWithOffset, used by getColumnOrigins(Project rel, RelMetadataQuery mq, int iOutputColumn)
+ *  <li>Support TVF, modify method getColumnOrigins(TableFunctionScan rel, RelMetadataQuery mq, int iOutputColumn)
  * </ol>
  *
  * @description: RelMdColumnOrigins supplies a default implementation of {@link RelMetadataQuery#getColumnOrigins} for the standard logical algebra.
@@ -294,14 +296,26 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
 
     public Set<RelColumnOrigin> getColumnOrigins(TableFunctionScan rel,
                                                  RelMetadataQuery mq, int iOutputColumn) {
-        final Set<RelColumnOrigin> set = new LinkedHashSet<>();
+        Set<RelColumnOrigin> set = new LinkedHashSet<>();
         Set<RelColumnMapping> mappings = rel.getColumnMappings();
         if (mappings == null) {
             if (!rel.getInputs().isEmpty()) {
-                // This is a non-leaf transformation:  say we don't
-                // know about origins, because there are probably
-                // columns below.
-                return Collections.emptySet();
+                RelNode input = rel.getInput(0);
+                List<RelDataTypeField> inputFieldList = input.getRowType().getFieldList();
+                int nInputColumns = inputFieldList.size();
+                if (iOutputColumn < nInputColumns) {
+                    return mq.getColumnOrigins(input, iOutputColumn);
+                } else {
+                    RexCall rexCall = (RexCall) rel.getCall();
+                    List<RexNode> operands = rexCall.getOperands();
+                    RexInputRef rexInputRef = (RexInputRef) ((RexCall) operands.get(1)).getOperands().get(0);
+                    set= mq.getColumnOrigins(input, rexInputRef.getIndex());
+
+                    String transform= rexCall.op.getName()
+                            + DELIMITER
+                            + rexCall.getType().getFieldNames().get(iOutputColumn);
+                    return createDerivedColumnOrigins(set, transform);
+                }
             } else {
                 // This is a leaf transformation: say there are fer sure no
                 // column origins.
@@ -326,7 +340,9 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         return set;
     }
 
-    // Catch-all rule when none of the others apply.
+    /**
+     * Catch-all rule when none of the others apply.
+     */
     @SuppressWarnings("squid:S1172")
     public Set<RelColumnOrigin> getColumnOrigins(RelNode rel,
                                                  RelMetadataQuery mq, int iOutputColumn) {
@@ -443,7 +459,6 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * <p>
      * for example: ROW_NUMBER() OVER (PARTITION BY $0 ORDER BY $3 DESC NULLS LAST),
      * The order of inputSet is $3, $0, instead of $0, $3 obtained by traversing the above string normally
-     *
      */
     private Map<String, String> buildSourceColumnMap(Set<RelColumnOrigin> inputSet, Object transform) {
         Set<Integer> traversalSet = new LinkedHashSet<>();
@@ -468,7 +483,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                     };
             rexNode.accept(visitor);
         }
-        Map<String, String> sourceColumnMap = new HashMap<>();
+        Map<String, String> sourceColumnMap = new HashMap<>(INITIAL_CAPACITY);
         Iterator<String> iterator = optimizeSourceColumnSet(inputSet).iterator();
         traversalSet.forEach(index -> sourceColumnMap.put("$" + index, iterator.next()));
         LOG.debug("sourceColumnMap: {}", sourceColumnMap);

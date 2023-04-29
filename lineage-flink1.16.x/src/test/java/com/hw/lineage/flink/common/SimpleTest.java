@@ -2,7 +2,6 @@ package com.hw.lineage.flink.common;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -11,7 +10,6 @@ import org.junit.Test;
  * @description: SimpleTest
  * @author: HamaWhite
  */
-@Ignore
 public class SimpleTest extends AbstractBasicTest {
 
     @Before

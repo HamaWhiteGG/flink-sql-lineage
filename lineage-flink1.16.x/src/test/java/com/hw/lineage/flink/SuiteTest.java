@@ -9,6 +9,7 @@ import com.hw.lineage.flink.lookup.join.LookupJoinTest;
 import com.hw.lineage.flink.paimon.PaimonTest;
 import com.hw.lineage.flink.proctime.ProctimeTest;
 import com.hw.lineage.flink.tablefuncion.TableFunctionTest;
+import com.hw.lineage.flink.tvf.TvfTest;
 import com.hw.lineage.flink.watermark.WatermarkTest;
 import com.hw.lineage.flink.window.WindowTest;
 import org.junit.Ignore;
@@ -33,7 +34,8 @@ import org.junit.runners.Suite;
         , WindowTest.class
         , ProctimeTest.class
         , CtasTest.class
-        , PaimonTest.class})
+        , PaimonTest.class
+        , TvfTest.class})
 public class SuiteTest {
 
     /*
