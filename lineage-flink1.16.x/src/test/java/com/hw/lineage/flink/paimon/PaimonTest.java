@@ -2,7 +2,6 @@ package com.hw.lineage.flink.paimon;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -14,7 +13,6 @@ import java.io.IOException;
  * @description: PaimonTest
  * @author: HamaWhite
  */
-@Ignore
 public class PaimonTest extends AbstractBasicTest {
 
     private static final String catalogName = "paimon";
