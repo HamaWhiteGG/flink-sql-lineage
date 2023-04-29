@@ -7,6 +7,7 @@ import com.hw.lineage.flink.localtimestamp.LocaltimestampTest;
 import com.hw.lineage.flink.lookup.join.LookupJoinTest;
 import com.hw.lineage.flink.proctime.ProctimeTest;
 import com.hw.lineage.flink.tablefuncion.TableFunctionTest;
+import com.hw.lineage.flink.tvf.TvfTest;
 import com.hw.lineage.flink.watermark.WatermarkTest;
 import com.hw.lineage.flink.window.WindowTest;
 import org.junit.Ignore;
@@ -29,7 +30,8 @@ import org.junit.runners.Suite;
         , LocaltimestampTest.class
         , CepTest.class
         , WindowTest.class
-        , ProctimeTest.class})
+        , ProctimeTest.class
+        , TvfTest.class})
 public class SuiteTest {
 
     /*
