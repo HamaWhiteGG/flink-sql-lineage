@@ -5,12 +5,14 @@ import com.hw.lineage.server.domain.query.BasicCriteria;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * @description: UpdateCatalogCmd
  * @author: HamaWhite
  */
 @Data
+@Accessors(chain = true)
 @ToString(callSuper = true)
 public class UpdateCatalogCmd extends BasicCriteria {
 
