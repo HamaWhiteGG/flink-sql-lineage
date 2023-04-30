@@ -218,13 +218,13 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * The first column is the field after PARTITION BY, and the other columns come from the measures in Match
      */
     public Set<RelColumnOrigin> getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn) {
-        int orderCount = rel.getOrderKeys().getKeys().size();
+        int partitionCount = rel.getPartitionKeys().asList().size();
 
-        if (iOutputColumn < orderCount) {
+        if (iOutputColumn < partitionCount) {
             return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
         }
         final RelNode input = rel.getInput();
-        RexNode rexNode = rel.getMeasures().values().asList().get(iOutputColumn - orderCount);
+        RexNode rexNode = rel.getMeasures().values().asList().get(iOutputColumn - partitionCount);
 
         RexPatternFieldRef rexPatternFieldRef = searchRexPatternFieldRef(rexNode);
         if (rexPatternFieldRef != null) {
