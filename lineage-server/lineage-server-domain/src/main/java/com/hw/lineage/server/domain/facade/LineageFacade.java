@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description: LineageService
+ * @description: LineageFacade
  * @author: HamaWhite
  */
 public interface LineageFacade {
@@ -25,17 +25,21 @@ public interface LineageFacade {
 
     void deleteCatalog(String pluginCode, String catalogName);
 
+    void useCatalog(String pluginCode, String catalogName);
+
     void createDatabase(String pluginCode, String catalogName, String database, String comment);
 
     List<String> listDatabases(String pluginCode, String catalogName);
 
     void deleteDatabase(String pluginCode, String catalogName, String database);
 
+    void useDatabase(String pluginCode, String catalogName, String database);
+
     void createTable(String pluginCode, String catalogName, String database, String ddl);
 
     List<String> listTables(String pluginCode, String catalogName, String database) throws Exception;
 
-    TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) ;
+    TableInfo getTable(String pluginCode, String catalogName, String database, String tableName);
 
     String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception;
 
