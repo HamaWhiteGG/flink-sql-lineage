@@ -44,7 +44,7 @@ public class LineageClient {
     /**
      * Database
      */
-    private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS %s.`%s` COMMENT %s";
+    private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS %s.`%s` COMMENT '%s'";
     private static final String USE_DATABASE_SQL = "USE %s.`%s`";
     private static final String DROP_DATABASE_SQL = "DROP DATABASE IF EXISTS %s.`%s`";
 
@@ -115,7 +115,7 @@ public class LineageClient {
     }
 
     /**
-     *  Analyze the custom functions used in this SQL
+     * Analyze the custom functions used in this SQL
      */
     public Set<FunctionResult> analyzeFunction(String pluginCode, String catalogName, String database, String singleSql) {
         LineageService service = getLineageService(pluginCode);
@@ -174,6 +174,10 @@ public class LineageClient {
 
     public void useCatalog(String pluginCode, String catalogName) {
         execute(pluginCode, String.format(USE_CATALOG_SQL, catalogName));
+    }
+
+    public void useDatabase(String pluginCode, String catalogName, String database) {
+        execute(pluginCode, String.format(USE_DATABASE_SQL, catalogName, database));
     }
 
     public void deleteCatalog(String pluginCode, String catalogName) {
@@ -240,7 +244,7 @@ public class LineageClient {
     /**
      * Return the base64 encrypted ddl
      */
-    public String getTableDdl(String pluginCode,String catalogName, String database, String tableName) throws Exception {
+    public String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception {
         LineageService service = getLineageService(pluginCode);
         return service.getTableDdl(catalogName, database, tableName);
     }
