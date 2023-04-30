@@ -117,6 +117,14 @@ public class CatalogController {
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
+    @PutMapping("/{catalogId}/databases/{database}/default")
+    @AuditLog(module = DATABASE, type = UPDATE, descr = "'Default Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    public Result<Boolean> defaultDatabase(@PathVariable("catalogId") Long catalogId,
+                                          @PathVariable("database") String database) {
+        catalogService.defaultDatabase(catalogId, database);
+        return Result.success(ResultMessage.UPDATE_SUCCESS);
+    }
+
     @GetMapping("/{catalogId}/databases")
     @AuditLog(module = DATABASE, type = QUERY, descr = "'Query Databases In ' + @catalogService.queryCatalog(#catalogId).catalogName")
     public Result<List<String>> queryDatabases(@PathVariable("catalogId") Long catalogId) {

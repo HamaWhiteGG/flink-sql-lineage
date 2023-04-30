@@ -213,6 +213,11 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
+    public void useCatalog(String pluginCode, String catalogName) {
+        lineageClient.useCatalog(pluginCode,catalogName);
+    }
+
+    @Override
     public void createDatabase(String pluginCode, String catalogName, String database, String comment) {
         lineageClient.createDatabase(pluginCode, catalogName, database, comment);
     }
@@ -225,6 +230,11 @@ public class LineageFacadeImpl implements LineageFacade {
     @Override
     public void deleteDatabase(String pluginCode, String catalogName, String database) {
         lineageClient.deleteDatabase(pluginCode, catalogName, database);
+    }
+
+    @Override
+    public void useDatabase(String pluginCode, String catalogName, String database) {
+        lineageClient.useDatabase(pluginCode,catalogName,database);
     }
 
     @Override

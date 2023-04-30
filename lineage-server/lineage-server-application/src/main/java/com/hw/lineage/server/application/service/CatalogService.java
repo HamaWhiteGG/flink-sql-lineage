@@ -39,6 +39,8 @@ public interface CatalogService {
 
     void deleteDatabase(Long catalogId, String database);
 
+    void defaultDatabase(Long catalogId, String database);
+
     List<String> queryDatabases(Long catalogId);
 
     void createTable(CreateTableCmd command);
