@@ -32,6 +32,7 @@ import com.hw.lineage.server.domain.repository.TaskRepository;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.infrastructure.graph.GraphFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -123,10 +124,18 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public void updateCatalog(UpdateCatalogCmd command) {
+        CatalogId id = new CatalogId(command.getCatalogId());
+
+        String database = command.getDefaultDatabase();
+        if (StringUtils.isNotBlank(database)) {
+            CatalogEntry entry = catalogRepository.findEntry(id);
+            lineageFacade.useDatabase(entry.getPluginCode(), entry.getCatalogName(), database);
+        }
+
         Catalog catalog = new Catalog()
-                .setCatalogId(new CatalogId(command.getCatalogId()))
+                .setCatalogId(id)
                 .setCatalogName(command.getCatalogName())
-                .setDefaultDatabase(command.getDefaultDatabase())
+                .setDefaultDatabase(database)
                 .setDescr(command.getDescr())
                 .setCatalogProperties(command.getCatalogProperties());
 
@@ -137,14 +146,19 @@ public class CatalogServiceImpl implements CatalogService {
 
     @Override
     public void defaultCatalog(Long catalogId) {
-        catalogRepository.setDefault(new CatalogId(catalogId));
+        CatalogId id = new CatalogId(catalogId);
+        CatalogEntry entry = catalogRepository.findEntry(id);
+        lineageFacade.useCatalog(entry.getPluginCode(), entry.getCatalogName());
+        catalogRepository.setDefault(id);
     }
 
     @Override
     public void createDatabase(CreateDatabaseCmd command) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(command.getCatalogId()));
-        lineageFacade.createDatabase(entry.getPluginCode(), entry.getCatalogName()
-                , command.getDatabase(), command.getComment()
+        lineageFacade.createDatabase(entry.getPluginCode()
+                , entry.getCatalogName()
+                , command.getDatabase()
+                , command.getComment()
         );
     }
 
@@ -152,6 +166,15 @@ public class CatalogServiceImpl implements CatalogService {
     public void deleteDatabase(Long catalogId, String database) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(catalogId));
         lineageFacade.deleteDatabase(entry.getPluginCode(), entry.getCatalogName(), database);
+    }
+
+    @Override
+    public void defaultDatabase(Long catalogId, String database) {
+        UpdateCatalogCmd command = new UpdateCatalogCmd()
+                .setCatalogId(catalogId)
+                .setDefaultDatabase(database);
+
+        updateCatalog(command);
     }
 
     @Override
