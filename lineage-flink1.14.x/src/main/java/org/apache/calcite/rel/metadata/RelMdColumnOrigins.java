@@ -218,23 +218,40 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * The first column is the field after PARTITION BY, and the other columns come from the measures in Match
      */
     public Set<RelColumnOrigin> getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn) {
-        int partitionCount = rel.getPartitionKeys().asList().size();
-
-        if (iOutputColumn < partitionCount) {
-            return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
-        }
         final RelNode input = rel.getInput();
-        RexNode rexNode = rel.getMeasures().values().asList().get(iOutputColumn - partitionCount);
+        //--------------------------------------------------------------------------------------------------------------
+        // Step.1 Get the column names of the partitioned keys .
+        //--------------------------------------------------------------------------------------------------------------
+        Set<String> keys = rel.getPartitionKeys().toList().stream().map(o ->
+                input.getRowType().getFieldNames().get(o)).collect(Collectors.toSet());
+
+        //--------------------------------------------------------------------------------------------------------------
+        // Step.2 Get the lineage of these partitioned columns.
+        //--------------------------------------------------------------------------------------------------------------
+        if (keys.contains(rel.getRowType().getFieldNames().get(iOutputColumn))) {
+            return mq.getColumnOrigins(rel.getInput(), rel.getInput().getRowType()
+                    .getFieldNames().indexOf(rel.getRowType().getFieldNames().get(iOutputColumn)));
+        }
+
+        //--------------------------------------------------------------------------------------------------------------
+        // Step.3 The rest of the iOutputColumn must be derived by `measures`.
+        //--------------------------------------------------------------------------------------------------------------
+        RexNode rexNode = rel.getMeasures().get(rel.getRowType().getFieldNames().get(iOutputColumn));
+        if (null == rexNode) {
+            LOG.warn("Parse column lineage failed:[{}], #index:[{}]", rel.toString(), iOutputColumn);
+            return Collections.emptySet();
+        }
 
         RexPatternFieldRef rexPatternFieldRef = searchRexPatternFieldRef(rexNode);
         if (rexPatternFieldRef != null) {
             final Set<RelColumnOrigin> set = mq.getColumnOrigins(input, rexPatternFieldRef.getIndex());
-            if (rexNode instanceof RexCall) {
-                return createDerivedColumnOrigins(set, ((RexCall) rexNode).getOperands().get(0));
-            } else {
-                return createDerivedColumnOrigins(set);
-            }
+            return createDerivedColumnOrigins(set);
         }
+
+        //--------------------------------------------------------------------------------------------------------------
+        // Step.4 Something unsupported yet.
+        //--------------------------------------------------------------------------------------------------------------
+        LOG.warn("Parse column lineage failed:[{}], #index:[{}]", rel.toString(), iOutputColumn);
         return Collections.emptySet();
     }
 
