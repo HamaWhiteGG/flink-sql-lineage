@@ -129,6 +129,11 @@ public class TaskRepositoryImpl extends AbstractBasicRepository implements TaskR
 
     @Override
     public void removeTaskLineage(TaskId taskId) {
+        taskMapper.update(completer ->
+                completer.set(task.tableGraph).equalToNull()
+                        .set(task.columnGraph).equalToNull()
+                        .where(task.taskId, isEqualTo(taskId.getValue()))
+        );
         taskLineageMapper.delete(completer ->
                 completer.where(task.taskId, isEqualTo(taskId.getValue()))
         );

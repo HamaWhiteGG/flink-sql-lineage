@@ -218,14 +218,23 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * The first column is the field after PARTITION BY, and the other columns come from the measures in Match
      */
     public Set<RelColumnOrigin> getColumnOrigins(Match rel, RelMetadataQuery mq, int iOutputColumn) {
-        int partitionCount = rel.getPartitionKeys().asList().size();
-
-        if (iOutputColumn < partitionCount) {
-            return mq.getColumnOrigins(rel.getInput(), iOutputColumn);
-        }
         final RelNode input = rel.getInput();
-        RexNode rexNode = rel.getMeasures().values().asList().get(iOutputColumn - partitionCount);
+        List<String> fieldNameList = input.getRowType().getFieldNames();
+        String fieldName = rel.getRowType().getFieldNames().get(iOutputColumn);
 
+        // 1. get the column names of the partitioned keys.
+        Set<String> partitionKeySet = rel.getPartitionKeys().toList()
+                .stream()
+                .map(fieldNameList::get)
+                .collect(Collectors.toSet());
+
+        // 2. get the lineage of these partitioned columns.
+        if (partitionKeySet.contains(fieldName)) {
+            return mq.getColumnOrigins(input, fieldNameList.indexOf(fieldName));
+        }
+
+        // 3. the rest of the iOutputColumn must be derived by `MEASURES`.
+        RexNode rexNode = rel.getMeasures().get(fieldName);
         RexPatternFieldRef rexPatternFieldRef = searchRexPatternFieldRef(rexNode);
         if (rexPatternFieldRef != null) {
             final Set<RelColumnOrigin> set = mq.getColumnOrigins(input, rexPatternFieldRef.getIndex());
@@ -235,6 +244,8 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                 return createDerivedColumnOrigins(set);
             }
         }
+        // 4. something unsupported yet.
+        LOG.warn("Parse column lineage failed, rel:[{}], iOutputColumn:[{}]", rel, iOutputColumn);
         return Collections.emptySet();
     }
 
@@ -309,9 +320,9 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                     RexCall rexCall = (RexCall) rel.getCall();
                     List<RexNode> operands = rexCall.getOperands();
                     RexInputRef rexInputRef = (RexInputRef) ((RexCall) operands.get(1)).getOperands().get(0);
-                    set= mq.getColumnOrigins(input, rexInputRef.getIndex());
+                    set = mq.getColumnOrigins(input, rexInputRef.getIndex());
 
-                    String transform= rexCall.op.getName()
+                    String transform = rexCall.op.getName()
                             + DELIMITER
                             + rexCall.getType().getFieldNames().get(iOutputColumn);
                     return createDerivedColumnOrigins(set, transform);
