@@ -1,18 +1,26 @@
 import React,{ useState, useEffect } from 'react'
-import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Tooltip } from 'antd'
+import { useParams, useOutletContext } from 'react-router-dom'
+import { Breadcrumb, Tooltip, message, Badge } from 'antd'
 import { SaveOutlined, FormatPainterOutlined, ExpandOutlined, BranchesOutlined } from '@ant-design/icons';
 import Monaco from 'react-monaco-editor'
 import "monaco-editor/esm/vs/basic-languages/sql/sql.contribution"
 import axios from 'axios'
 import { Base64 } from 'js-base64'
 
-const Cm = ({data}) => {
+const Cm = (props) => {
   // const {taskId, taskName, taskSource, database, catalogId} = data
   const { id:taskId } = useParams()
   const [taskDetail, setTaskDetail] = useState({})
   const [lineageGraph, setLineageGraph] = useState({'nodes': [], 'links': []})
-  console.log('useParams---',taskId)
+  const [isUpdate, setIsUpdate] = useState(false)
+  const { analysisSql } = useOutletContext()
+  let obj = {
+    'FAILED': 'error', 
+    'INIT': 'default', 
+    'MODIFIED': 'warning', 
+    'RUNNING': 'processing', 
+    'SUCCESS': 'success'
+  }
 
   const _initOptions = {
     selectOnLineNumbers: true,
@@ -32,20 +40,8 @@ const Cm = ({data}) => {
         }
       ]
     }
-  };
-  const [value, setValue] = useState([
-    '"use strict";',
-    "function Person(age) {",
-    "	if (age) {",
-    "		this.age = age;",
-    "	}",
-    "}",
-    "Person.prototype.getAge = function () {",
-    "	return this.age;",
-    "};",
-  ]
-  .join("\n")
-  )
+  }
+  const [value, setValue] = useState(null)
   const editorWillMount = () => {
     // var decorations = monaco.editor.deltaDecorations(
     //   [],
@@ -78,24 +74,29 @@ const Cm = ({data}) => {
     // }
   }
   
-  // update job
-  const updateJob = () => {
-    console.log('-----analysisSql-----')
-    axios.put(`/tasks/${taskId}`, {
-      source: '',
-      taskId,
-    })
+  // update sql
+  const updateSql = async () => {
+    try {
+      const res = await axios.put(`/tasks/${taskId}`, {
+        source: Base64.encode(value),
+        taskId,
+      })
+      const {data, message: msg} = res?.data
+      if (data) message.success(msg)
+    } catch (e) {
+      message.error(e)
+    }
   }
 
-  const analysisSql = async () => {
-    await updateJob()
-    axios.post(`/tasks/${taskId}/lineage`)
-  }
+  // const analysisSql = async () => {
+  //   await updateSql()
+  //   axios.post(`/tasks/${taskId}/lineage`)
+  // }
 
   const getJobDetail = async (taskId) => {
     try {
-      // debugger
       const res = await axios.get(`tasks/${taskId}`)
+      // console.log('res.data.data---', res.data.data)
       setLineageGraph(res.data.data.lineageGraph)
       setTaskDetail(res.data.data)
       setValue(Base64.decode(res?.data?.data?.taskSource))
@@ -105,36 +106,70 @@ const Cm = ({data}) => {
     }
   }
 
+  // change monaco
+  const onChangeMonaco = (val) => {
+    if (value !== val ) {
+      setValue(val)
+      setIsUpdate(true)
+    } else {
+      setIsUpdate(false)
+    }
+  }
+
   useEffect(() => {
     getJobDetail(taskId)
   }, [taskId])
 
+  // useEffect(() => {
+  //   if (value) {
+  //     setIsUpdate(true)
+  //   }
+  // }, [value])
+
   return (
     <div className='left-box'>
-      <div className="p16">
+      <div className="FBH FBJ p16">
         <Breadcrumb separator="<">
-          <Breadcrumb.Item href="#/job/list">jobs</Breadcrumb.Item>
+          <Breadcrumb.Item href="#/job/list">Job</Breadcrumb.Item>
           <Breadcrumb.Item>{taskDetail?.taskName || '--'}</Breadcrumb.Item>
         </Breadcrumb>
+       
+        <Tooltip title={taskDetail?.taskStatus}><Badge status={obj[taskDetail?.taskStatus]} className='hand' /></Tooltip>
       </div>
       <div>
         <div className='FBH FBJ pl16 pr16 pt8 pb8 gray-box-deep'>
           <div>
-            <Tooltip title="analysis">
-              <BranchesOutlined className='mr16 hand' onClick={() => analysisSql()} />
+            <Tooltip title='analysis'>
+              <BranchesOutlined className='mr24 hand' 
+                onClick={async () => {
+                  if (isUpdate) {
+                    await updateSql()
+                  }
+                  analysisSql()
+                  setIsUpdate(false)
+                }}
+              />
             </Tooltip>
-            <SaveOutlined className='mr16' />
-            <FormatPainterOutlined className='mr16' />
-            <ExpandOutlined />
+            <Tooltip title='save'>
+              <SaveOutlined className='mr24 hand' onClick={() => updateSql()} />
+            </Tooltip>
+            <Tooltip title='format code'>
+              <FormatPainterOutlined className='mr24 hand' />
+            </Tooltip>
+            <Tooltip title='scrren all'>
+              <ExpandOutlined className='mr24 hand' />
+            </Tooltip>
           </div>
           <div>2/2 </div>
         </div>
         <Monaco 
           height={700}
+          width={620}
           value={value}
           language="sql"
           options={_initOptions}
           editorWillMount={editorWillMount}
+          onChange={onChangeMonaco}
         />
       </div>
     </div>
