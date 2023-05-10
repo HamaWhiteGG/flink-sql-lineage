@@ -107,8 +107,8 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * Support the field blood relationship of table function
      */
     public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) {
-        List<RelDataTypeField> leftFieldList = rel.getLeft().getRowType().getFieldList();
-        int nLeftColumns = leftFieldList.size();
+        List<String> fieldNameList = rel.getLeft().getRowType().getFieldNames();
+        int nLeftColumns = fieldNameList.size();
         Set<RelColumnOrigin> set;
         if (iOutputColumn < nLeftColumns) {
             set = mq.getColumnOrigins(rel.getLeft(), iOutputColumn);
@@ -118,33 +118,44 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                 TableFunctionScan tableFunctionScan = (TableFunctionScan) rel.getRight();
                 RexCall rexCall = (RexCall) tableFunctionScan.getCall();
                 // support only one field in table function
-                RexFieldAccess rexFieldAccess = (RexFieldAccess) rexCall.getOperands().get(0);
-                String fieldName = rexFieldAccess.getField().getName();
+                RexFieldAccess rexFieldAccess = searchRexFieldAccess(rexCall);
+                if (rexFieldAccess != null) {
+                    String fieldName = rexFieldAccess.getField().getName();
+                    /*
+                       Get the fields from the left table, don't go to
+                       getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
+                       otherwise the return is null, and the UDTF field origin cannot be parsed
+                     */
+                    int leftFieldIndex = fieldNameList.indexOf(fieldName);
+                    set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
 
-                int leftFieldIndex = 0;
-                for (int i = 0; i < nLeftColumns; i++) {
-                    if (leftFieldList.get(i).getName().equalsIgnoreCase(fieldName)) {
-                        leftFieldIndex = i;
-                        break;
-                    }
+                    // process transform for udtf
+                    String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
+                            + DELIMITER
+                            + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
+                    set = createDerivedColumnOrigins(set, transform);
+                } else {
+                    LOG.warn("Parse column lineage failed, rel:[{}], iOutputColumn:[{}]", rel, iOutputColumn);
+                    return Collections.emptySet();
                 }
-                /*
-                  Get the fields from the left table, don't go to
-                  getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
-                  otherwise the return is null, and the UDTF field origin cannot be parsed
-                 */
-                set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
-
-                // process transform for udtf
-                String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
-                        + DELIMITER
-                        + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
-                set = createDerivedColumnOrigins(set, transform);
             } else {
                 set = mq.getColumnOrigins(rel.getRight(), iOutputColumn - nLeftColumns);
             }
         }
         return set;
+    }
+
+    private RexFieldAccess searchRexFieldAccess(RexNode rexNode) {
+        if (rexNode instanceof RexCall) {
+            RexNode operand = ((RexCall) rexNode).getOperands().get(0);
+            if (operand instanceof RexFieldAccess) {
+                return (RexFieldAccess) operand;
+            } else {
+                // recursive search
+                return searchRexFieldAccess(operand);
+            }
+        }
+        return null;
     }
 
     public Set<RelColumnOrigin> getColumnOrigins(SetOp rel,
