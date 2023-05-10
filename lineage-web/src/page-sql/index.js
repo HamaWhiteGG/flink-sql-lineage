@@ -1,13 +1,10 @@
 import React,{ useState, useEffect } from 'react'
-import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
-import { Breadcrumb } from 'antd'
+import { Outlet, useParams, useNavigate } from 'react-router-dom'
+import { Spin, message } from 'antd'
 import axios from 'axios'
-// import { SaveOutlined, FormatPainterOutlined, ExpandOutlined, BranchesOutlined } from '@ant-design/icons';
-// import * as monaco from "monaco-editor"
 import Monaco from 'react-monaco-editor'
 import LeftBox from './job-sql'
 import RinghtBox from './right-box'
-// import { encode, decode } from '../common/utils'
 import { Base64 } from 'js-base64'
 
 import './index.css'
@@ -17,7 +14,8 @@ const Page = () => {
   const { id:taskId } = useParams()
   const [taskDetail, setTaskDetail] = useState({})
   const [lineageGraph, setLineageGraph] = useState({'nodes': [], 'links': []})
-
+  const [catalogList, setCatalogList] = useState([])
+  const [analysisLoading, setAnalysisLoading] = useState(false)
 
   const [value, setValue] = useState([
     '"use strict";',
@@ -33,48 +31,62 @@ const Page = () => {
   .join("\n")
   );
 
-  // console.log('taskSource----',Base64.decode(taskSource))
-
-
+  // first into detail html
   const getDetail = async () => {
     try {
       const res = await axios.get(`tasks/${taskId}`);
-        setLineageGraph(res.data.data.lineageGraph)
-        setTaskDetail(res.data.data)
-        // console.log('result---',res.data.data.lineageGraph)
-    } catch (e) {
-    
-    } finally {
+      setLineageGraph(res.data.data.lineageGraph)
+      setTaskDetail(res.data.data)
+    } catch (error) {
+      message.error(error)
     }
-  };
+  }
+  // get catologs
+  const getCatalogList = async () => {
+    try {
+      const res = await axios.get('/catalogs')
+      console.log('catalogs---', res)
+      setCatalogList(res?.data?.data?.list)
+    } catch (e) {
+      message.error(e)
+    }
+  }
 
-  // useEffect(() => {
-  //   // setValue(Base64.decode(taskSource).split(','))
-  // }, [taskSource])
+  // analysis SQL
+  const analysisSql = async (id) => {
+    setAnalysisLoading(true)
+    try {
+      const res = await axios.post(`/tasks/${taskId || id}/lineage`)
+      setAnalysisLoading(false)
+      setLineageGraph(res.data.data.lineageGraph)
+      setTaskDetail(res.data.data)
+      message.success(res.data.message)
+    } catch (error) {
+      message.error(error)
+    }
+  }
 
   useEffect(() => {
     taskId && getDetail();
   }, [taskId])
 
-  // analysis SQL
-  // const analysisSql = () => {
-  //   console.log('-----analysisSql-----')
-  //   // axios.post(`/tasks/${taskId}/lineage`)
-  //   axios.post(`/tasks/1/lineage`)
-  // }
+  useEffect(() => {
+    getCatalogList()
+  }, [])
+
   return (
-    <div className="main-wrapper FBH FBJ">
+    <div className='FBH'>
+
       {/* editor */}
-      {/* <LeftBox 
-        data={taskDetail} 
-        analysisSql={analysisSql}
-      /> */}
-      <Outlet />
+      <Outlet context={{analysisSql, catalogList}} />
+
       {/* lineage */}
-      <div className='right-box'>
-        <RinghtBox data={lineageGraph} />
+      <div className='right-box FBV FBAJ FBJC'>
+        <Spin spinning={analysisLoading} style={{  height: '100%', width: '100%' }}>
+          <RinghtBox data={lineageGraph} taskDetail={taskDetail} catalogList={catalogList} />
+        </Spin>
       </div>
-     
+
     </div>
   )
 }

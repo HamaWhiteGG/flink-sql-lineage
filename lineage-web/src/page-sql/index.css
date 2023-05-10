@@ -1,17 +1,39 @@
 .main-box{
-  min-width: 1440px;
+  min-width: 1200px;
 }
 .left-box {
-	width: 600px;
+	width: 621px;
+	border-right: 1px solid #e8e8e8;
 }
 .right-box {
-  width: 1000px;
+  width: calc(100% - 621px);
+	min-height: 756px;
+	overflow-x: scroll;
+}
+.right-box .top-info-box {
+	position: fixed;
+	top: 48px;
+	border-bottom: 1px solid #e8e8e8;
+	width: 100%;
+	
 }
 .lineage-box {
 	width: 1000px;
 	height: 700px;
 }
 
+.log-box {
+	height: 40px;
+	position: absolute;
+	bottom: -40px;
+	width: 100%;
+	background: rgb(255, 255, 255);
+	z-index: 999;
+}
+.log-info {
+	overflow: scroll;
+  height: 346px;
+}
 
 /* editor */
 .line-decoration::before {

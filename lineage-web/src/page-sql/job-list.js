@@ -1,13 +1,16 @@
 import React,{ useState, useEffect, useRef } from 'react'
-import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Tooltip, Table, Badge, Button, Modal, Form, Checkbox, Input } from 'antd'
-import { PlusSquareOutlined, SearchOutlined } from '@ant-design/icons';
+import { Outlet, Link, useOutletContext } from 'react-router-dom'
+import { Breadcrumb, Tooltip, Table, Badge, Button, Modal, Form, Checkbox, Input, Select, message } from 'antd'
+import { BranchesOutlined, EditOutlined, DeleteOutlined, PlusSquareOutlined, SearchOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import Monaco from 'react-monaco-editor'
 import "monaco-editor/esm/vs/basic-languages/sql/sql.contribution"
 import axios from 'axios'
 
-const AddModal = ({visible, title, onCancel, getJobList}) => {
+const { Option } = Select
+const { confirm } = Modal
+const AddModal = ({visible, onCancel, getJobList, record, type='Add', catalogList=[]}) => {
   const [form] = Form.useForm()
+  const [databaseList, setDatabaseList] = useState([])
   const onFinish = (values) => {
     console.log('Success:', values)
   }
@@ -15,22 +18,69 @@ const AddModal = ({visible, title, onCancel, getJobList}) => {
     console.log('Failed:', errorInfo)
   }
 
-  // add job
+  // add job || edit job
   const handleOnOk = () => {
     const {validateFields} = form
     validateFields().then(async values => {
-      console.log('11', values)
-      const res = await axios.post(
-        `/tasks`, 
-        Object.assign({catalogId: '0', database: 'string'}, {...values})
-      )
-      if (res) getJobList()
+      let res = null
+      switch (type) {
+        case 'Add':
+          res = await axios.post(
+            `/tasks`, 
+            {...values}
+          )
+          break;
+        case 'Edit':
+          res = await axios.put(
+            `/tasks/${record.taskId}`, 
+            {...values}
+          )
+          break;
+        default:
+          res = await axios.post(
+            `/tasks`, 
+            {...values}
+          )
+          break;
+      }
+      
+      if (res) {
+        onCancel()
+        getJobList()
+      }
     })
   }
 
+  // get database under catalogs
+  const getDatabase = async (id) => {
+    try {
+      const res = await axios.get(`/catalogs/${id}/databases`)
+      const resDatabase = res?.data?.data
+      console.log('getDatabase---', res, resDatabase[0])
+
+      await setDatabaseList(resDatabase || [])
+      // form.setFieldValue('database', 111)
+      form.setFieldValue('database', resDatabase[0])
+    } catch (e) {
+      message.error(e)
+    }
+  }
+
+  const onChangeCatalog = e => {
+    getDatabase(e)
+  }
+
+  useEffect(() => {
+    if (form && visible && type === 'Edit') {
+      form.setFieldsValue({...record})
+    } else {
+      form.resetFields()
+    }
+  }, [visible])
+
   const modalProps = {
     visible,
-    title: "Add Job",
+    title: `${type} Job`,
     onCancel: () => {
       onCancel()
       form.resetFields()
@@ -62,6 +112,38 @@ const AddModal = ({visible, title, onCancel, getJobList}) => {
       autoComplete="off"
     >
       <Form.Item
+        label="catalog"
+        name="catalogId"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your catalog!',
+          },
+        ]}
+      >
+        <Select placeholder='catalog' onChange={e => onChangeCatalog(e)}>
+          {
+            catalogList.map(t => <Option key={t.catalogId} value={t.catalogId}>{t.catalogName}</Option>)
+          }
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="database"
+        name="database"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your database!',
+          },
+        ]}
+      >
+        <Select placeholder='database'>
+          {
+            databaseList?.map(t => <Option key={t} value={t}>{t}</Option>)
+          }
+        </Select>
+      </Form.Item>
+      <Form.Item
         label="name"
         name="taskName"
         rules={[
@@ -89,11 +171,16 @@ const AddModal = ({visible, title, onCancel, getJobList}) => {
     </Form>
   </Modal>
 }
+
 const Cm = () => {
+  const { analysisSql, catalogList } = useOutletContext()
   const searchRef = useRef(null)
   const [dataSource, setDataSource] = useState([])
   const [visible, setVisible] = useState(false)
   const [inputVisible, setInputVisible] = useState(false)
+  const [curTaskId, setCurTaskId] = useState(null)
+  const [curRecord, setCurRecord] = useState(null)
+  const [curType, setCurType] = useState('add')
   
   const columns = [{
     title: 'name',
@@ -107,16 +194,41 @@ const Cm = () => {
     key: 'taskStatus',
     align: 'center',
     render: (text) => {
-      // let obj = {
-      //   ''
-      // }
-      return <Tooltip title={text}><Badge status="success" /></Tooltip>
+      let obj = {
+        'FAILED': 'error', 
+        'INIT': 'default', 
+        'MODIFIED': 'warning', 
+        'RUNNING': 'processing', 
+        'SUCCESS': 'success'
+      }
+      return <Tooltip title={text}><Badge status={obj[text]} /></Tooltip>
     }
   },{
     title: 'describe',
     dataIndex: 'descr',
     key: 'descr',
     ellipsis: true,
+  },{
+    title: '',
+    dataIndex: 'action',
+    key: 'action',
+    width: 80,
+    render: (text, record) => {
+      const { taskId } = record
+      return taskId === curTaskId && <span>
+        <Tooltip title=''><BranchesOutlined className='fc-pr hand mr8' onClick={() => analysisSql(taskId)} /></Tooltip>
+        <Tooltip title=''>
+          <EditOutlined className='fc-pr hand mr8' onClick={() => {
+            setVisible(true)
+            setCurType('Edit')
+          }} />
+        </Tooltip>
+        <Tooltip title=''><DeleteOutlined className='fc-pr hand' onClick={() => deletConfirm(taskId)} /></Tooltip>
+      </span>
+    },
+    shouldCellUpdate: (record, prevRecord) => {
+      return record !== curTaskId || prevRecord?.taskId === curTaskId
+    }
   },]
 
   // get job list
@@ -130,18 +242,49 @@ const Cm = () => {
     setDataSource(res.data.data.list)
   }
 
+  // delet job confirm
+  const deletConfirm = id => {
+    confirm({
+      title: 'Do you Want to delete these items?',
+      icon: <ExclamationCircleOutlined />,
+      // content: 'Some descriptions',
+      onOk: () => deletJob(id)
+    })
+  }
+
+  // delet job
+  const deletJob = async id => {
+    try {
+      const res = await axios.delete(`/tasks/${id}`)
+      if (res?.data?.data) getJobList()
+    } catch (e) {
+      message.error(e)
+    }
+  }
+
   const onCancel = () => {
     setVisible(false)
     
   }
+
   useEffect(() => {
     getJobList()
   }, [])
+
+  const addModalProps = {
+    visible,
+    onCancel:onCancel,
+    getJobList,
+    record: curRecord,
+    type: curType,
+    catalogList
+  }
+
   return (
     <div className='left-box'>
       <div className="p16 FBH FBJ">
         <Breadcrumb separator="<">
-          <Breadcrumb.Item href="#/job/list">jobs</Breadcrumb.Item>
+          <Breadcrumb.Item>Job</Breadcrumb.Item>
         </Breadcrumb>
         <Input 
           ref={searchRef} 
@@ -169,17 +312,33 @@ const Cm = () => {
           />
         </Tooltip>
         <Tooltip title="add job">
-          <PlusSquareOutlined className='fs16 fc7' onClick={() => setVisible(true)} />
+          <PlusSquareOutlined 
+            className='fs16 fc7' 
+            onClick={() => {
+              setVisible(true)
+              setCurType('Add')
+            }}
+          />
         </Tooltip>
       </div>
-      <div>
+      <div className='m16 p8 gray-bd r4'>
         <Table
           size="small"
           dataSource={dataSource}
           columns={columns}
+          onRow={(record) => {
+            return {
+              onMouseEnter: (event) => {
+                setCurTaskId(record?.taskId)
+                setCurRecord(record)
+              },
+              onMouseLeave: (event) => setCurTaskId(null),
+            };
+          }}
+          
         />
       </div>
-      <AddModal visible={visible} onCancel={onCancel} getJobList={getJobList}/>
+      <AddModal {...addModalProps}/>
     </div>
   )
 }
