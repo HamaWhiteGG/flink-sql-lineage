@@ -1,0 +1,32 @@
+.catalog-list {
+  height: 600px;
+  overflow: scroll;
+}
+.list-item {
+  /* margin-bottom: 24px; */
+}
+.list-item:hover {
+  box-shadow: 0 2px 5px #eee;
+}
+.list-item .item-logo {
+  width: 30px;
+  height: 30px;
+}
+.list-item .item-content{
+  width: calc(100% - 30px);
+}
+.item-content .options {
+  display: none;
+}
+.item-content:hover .options {
+  display: block;
+}
+.item-content .item-info{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: right;
+  color: #666;
+  font-size: 14px;
+  padding-right: 10px;
+}

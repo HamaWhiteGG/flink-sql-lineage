@@ -7,7 +7,9 @@ import PageJob from './page-sql'
 import JobSql from './page-sql/job-sql'
 import JobList from './page-sql/job-list'
 import PageJobList from './page-sql/job-list'
-import PageTaskManage from './page-task-manage'
+import PageCatalog from './page-catalog'
+import PageCatalogList from './page-catalog/catalog-list'
+import PageCatalogDetail from './page-catalog/catalog-detail'
 
 const ReactSample = () => {
   return <HashRouter>
@@ -19,8 +21,21 @@ const ReactSample = () => {
           <Route path="list" element={<JobList />} />
           <Route path="sql?/:id" element={<JobSql />} />
         </Route>
-        <Route path="task-manage" element={<PageTaskManage />} />
+        <Route path="catalog" element={<PageCatalog />}>
+          <Route index element={<PageCatalogList />} />
+          <Route path="list" element={<PageCatalogList />} />
+          <Route path="detail?/:id" element={<PageCatalogDetail />} />
+        </Route>
+        <Route
+          path="*"
+          element={
+            <main style={{ padding: '1rem' }}>
+              <p className="fc45">正在开发建设中，敬请期待～</p>
+            </main>
+          }
+        />
       </Route>
+      
     </Routes>
   </HashRouter>
 }

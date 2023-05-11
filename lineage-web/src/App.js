@@ -31,10 +31,10 @@ const App = () => {
     //   url: 'catalog',
     // },
     {
-      key: 'task-manage',
+      key: 'catalog',
       icon: SettingOutlined,
-      label: 'Task Manage',
-      url: 'task-manage',
+      label: 'Catalog',
+      url: 'catalog',
     },
     
   ]
