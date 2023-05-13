@@ -1,7 +1,7 @@
 package com.hw.lineage.server.interfaces.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.TableInfo;
+import com.hw.lineage.common.model.TableInfo;
 import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
 import com.hw.lineage.server.application.command.catalog.CreateDatabaseCmd;
 import com.hw.lineage.server.application.command.catalog.CreateTableCmd;

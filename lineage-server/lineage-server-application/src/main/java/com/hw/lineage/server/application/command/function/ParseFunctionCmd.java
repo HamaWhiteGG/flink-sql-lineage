@@ -17,5 +17,4 @@ public class ParseFunctionCmd implements Serializable {
     private Long pluginId;
     @NotBlank
     private String functionPath;
-
 }

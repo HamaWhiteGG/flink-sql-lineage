@@ -4,6 +4,7 @@ import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultCode;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -39,27 +40,29 @@ public class ExceptionHandlers {
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionHandlers.class);
 
     @ExceptionHandler(Exception.class)
-    protected Result<Boolean> handleExceptionHandler(final Exception exception) {
-        LOG.error(exception.getMessage(), exception);
-        String message = exception instanceof LineageException ? exception.getMessage() : exception.toString();
+    protected Result<Boolean> handleExceptionHandler(final Exception e) {
+        LOG.error(e.getMessage(), e);
+        String message = e instanceof LineageException
+                ? e.getMessage()
+                : String.format("%s%sCaused by: %s", e.getMessage(), System.lineSeparator(), ExceptionUtils.getRootCauseMessage(e));
         return Result.error(message);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    protected Result<Boolean> handleIllegalArgumentException(final IllegalArgumentException exception) {
-        LOG.error("illegal argument exception", exception);
-        return Result.error(exception.getMessage());
+    protected Result<Boolean> handleIllegalArgumentException(final IllegalArgumentException e) {
+        LOG.error("illegal argument exception", e);
+        return Result.error(e.getMessage());
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    protected Result<Boolean> handleDuplicateKeyException(final DuplicateKeyException exception) {
-        LOG.error("duplicate key exception ", exception);
+    protected Result<Boolean> handleDuplicateKeyException(final DuplicateKeyException e) {
+        LOG.error("duplicate key exception ", e);
         return Result.error(ResultMessage.UNIQUE_INDEX_CONFLICT_ERROR);
     }
 
     @ExceptionHandler(NullPointerException.class)
-    protected Result<Boolean> handleNullPointException(final NullPointerException exception) {
-        LOG.error("null pointer exception ", exception);
+    protected Result<Boolean> handleNullPointException(final NullPointerException e) {
+        LOG.error("null pointer exception ", e);
         return Result.error(ResultCode.NOT_FOUND_EXCEPTION, ResultMessage.NULL_POINTER_EXCEPTION);
     }
 

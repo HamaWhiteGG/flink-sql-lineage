@@ -14,9 +14,7 @@ public class Constant {
 
     public static final int INITIAL_CAPACITY = 16;
 
-    public static final String ILLEGAL_PARAM="illegal param";
+    public static final String ILLEGAL_PARAM = "illegal param";
 
-
-    public static final Long DEFAULT_USER_ID=0L;
-
+    public static final Long DEFAULT_USER_ID = 0L;
 }

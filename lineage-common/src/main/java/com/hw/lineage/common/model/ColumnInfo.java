@@ -1,4 +1,4 @@
-package com.hw.lineage.common.result;
+package com.hw.lineage.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

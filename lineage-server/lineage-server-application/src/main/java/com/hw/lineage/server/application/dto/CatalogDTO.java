@@ -1,9 +1,11 @@
 package com.hw.lineage.server.application.dto;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.hw.lineage.common.enums.CatalogType;
+import com.hw.lineage.common.model.Property;
 import com.hw.lineage.server.application.dto.basic.BasicDTO;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @description: CatalogDTO
@@ -24,7 +26,7 @@ public class CatalogDTO extends BasicDTO {
 
     private String descr;
 
-    private JSONObject catalogProperties;
+    private List<Property> propertyList;
 
     private Boolean defaultCatalog;
 }

@@ -1,7 +1,7 @@
 package com.hw.lineage.server.application.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.model.FunctionInfo;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.function.CreateFunctionCmd;

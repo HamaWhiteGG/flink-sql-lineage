@@ -1,10 +1,10 @@
 package com.hw.lineage.common.service;
 
+import com.hw.lineage.common.model.FunctionInfo;
+import com.hw.lineage.common.model.FunctionResult;
+import com.hw.lineage.common.model.LineageResult;
+import com.hw.lineage.common.model.TableInfo;
 import com.hw.lineage.common.plugin.Plugin;
-import com.hw.lineage.common.result.FunctionInfo;
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.LineageResult;
-import com.hw.lineage.common.result.TableInfo;
 
 import java.io.File;
 import java.io.IOException;

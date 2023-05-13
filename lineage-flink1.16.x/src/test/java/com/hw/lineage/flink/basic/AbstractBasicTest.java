@@ -1,10 +1,10 @@
 package com.hw.lineage.flink.basic;
 
-import org.apache.flink.table.catalog.hive.HiveTestUtils;
-import com.hw.lineage.common.result.FunctionResult;
-import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.model.FunctionResult;
+import com.hw.lineage.common.model.LineageResult;
 import com.hw.lineage.flink.LineageServiceImpl;
 import org.apache.flink.table.catalog.hive.HiveCatalog;
+import org.apache.flink.table.catalog.hive.HiveTestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;

@@ -1,11 +1,7 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskFunctionDO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -16,11 +12,7 @@ import org.mybatis.dynamic.sql.update.UpdateDSL;
 import org.mybatis.dynamic.sql.update.UpdateDSLCompleter;
 import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
-import org.mybatis.dynamic.sql.util.mybatis3.CommonCountMapper;
-import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
-import org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper;
-import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
-import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
+import org.mybatis.dynamic.sql.util.mybatis3.*;
 
 import java.util.Collection;
 import java.util.List;

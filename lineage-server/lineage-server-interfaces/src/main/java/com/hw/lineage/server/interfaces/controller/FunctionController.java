@@ -1,6 +1,6 @@
 package com.hw.lineage.server.interfaces.controller;
 
-import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.model.FunctionInfo;
 import com.hw.lineage.server.application.command.function.ParseFunctionCmd;
 import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;

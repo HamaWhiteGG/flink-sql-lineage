@@ -22,19 +22,20 @@ public class ByteArrayBase64TypeHandler extends BaseTypeHandler<byte[]> {
 
     @Override
     public byte[] getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String value = rs.getString(columnName);
-        return value != null ? Base64Utils.decodeBytes(value) : new byte[0];
+        return decodeBytes(rs.getString(columnName));
     }
 
     @Override
     public byte[] getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String value = rs.getString(columnIndex);
-        return value != null ? Base64Utils.decodeBytes(value) : new byte[0];
+        return decodeBytes(rs.getString(columnIndex));
     }
 
     @Override
     public byte[] getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String value = cs.getString(columnIndex);
+        return decodeBytes(cs.getString(columnIndex));
+    }
+
+    private byte[] decodeBytes(String value) {
         return value != null ? Base64Utils.decodeBytes(value) : new byte[0];
     }
 }

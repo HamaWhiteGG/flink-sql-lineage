@@ -3,7 +3,7 @@ package com.hw.lineage.server.application.service.impl;
 import com.github.pagehelper.PageInfo;
 import com.hw.lineage.common.enums.CatalogType;
 import com.hw.lineage.common.enums.TableKind;
-import com.hw.lineage.common.result.TableInfo;
+import com.hw.lineage.common.model.TableInfo;
 import com.hw.lineage.common.util.PageUtils;
 import com.hw.lineage.server.application.assembler.DtoAssembler;
 import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
@@ -81,7 +81,7 @@ public class CatalogServiceImpl implements CatalogService {
                 .setCatalogType(command.getCatalogType())
                 .setDefaultDatabase(command.getDefaultDatabase())
                 .setDescr(command.getDescr())
-                .setCatalogProperties(command.getCatalogProperties())
+                .setPropertyList(command.getPropertyList())
                 .setDefaultCatalog(command.getDefaultCatalog());
 
         catalog.setCreateUserId(command.getUserId())
@@ -137,7 +137,7 @@ public class CatalogServiceImpl implements CatalogService {
                 .setCatalogName(command.getCatalogName())
                 .setDefaultDatabase(database)
                 .setDescr(command.getDescr())
-                .setCatalogProperties(command.getCatalogProperties());
+                .setPropertyList(command.getPropertyList());
 
         catalog.setModifyUserId(command.getUserId());
         catalog.setModifyTime(System.currentTimeMillis());

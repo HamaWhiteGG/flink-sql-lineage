@@ -1,6 +1,6 @@
 package com.hw.lineage.server.infrastructure.graph;
 
-import com.hw.lineage.common.result.ColumnInfo;
+import com.hw.lineage.common.model.ColumnInfo;
 import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.facade.LineageFacade;

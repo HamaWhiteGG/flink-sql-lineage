@@ -1,7 +1,7 @@
 package com.hw.lineage.server.domain.facade;
 
-import com.hw.lineage.common.result.FunctionInfo;
-import com.hw.lineage.common.result.TableInfo;
+import com.hw.lineage.common.model.FunctionInfo;
+import com.hw.lineage.common.model.TableInfo;
 import com.hw.lineage.server.domain.entity.task.Task;
 
 import java.io.File;

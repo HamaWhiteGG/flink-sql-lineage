@@ -1,6 +1,6 @@
 package com.hw.lineage.server.infrastructure.facade.impl;
 
-import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.model.FunctionInfo;
 import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.server.AbstractSpringBootTest;
 import com.hw.lineage.server.domain.facade.LineageFacade;

@@ -1,7 +1,9 @@
 package com.hw.lineage.server.infrastructure.persistence.dos;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.hw.lineage.common.enums.CatalogType;
+import com.hw.lineage.common.model.Property;
+
+import java.util.List;
 
 /**
  * @description: This class corresponds to the database table bas_catalog
@@ -34,7 +36,7 @@ public class CatalogDO {
 
     private Boolean invalid;
 
-    private JSONObject catalogProperties;
+    private List<Property> propertyList;
 
     public Long getCatalogId() {
         return catalogId;
@@ -132,12 +134,12 @@ public class CatalogDO {
         this.invalid = invalid;
     }
 
-    public JSONObject getCatalogProperties() {
-        return catalogProperties;
+    public List<Property> getPropertyList() {
+        return propertyList;
     }
 
-    public void setCatalogProperties(JSONObject catalogProperties) {
-        this.catalogProperties = catalogProperties;
+    public void setPropertyList(List<Property> propertyList) {
+        this.propertyList = propertyList;
     }
 
     @Override
@@ -153,18 +155,18 @@ public class CatalogDO {
         }
         CatalogDO other = (CatalogDO) that;
         return (this.getCatalogId() == null ? other.getCatalogId() == null : this.getCatalogId().equals(other.getCatalogId()))
-            && (this.getPluginId() == null ? other.getPluginId() == null : this.getPluginId().equals(other.getPluginId()))
-            && (this.getCatalogName() == null ? other.getCatalogName() == null : this.getCatalogName().equals(other.getCatalogName()))
-            && (this.getCatalogType() == null ? other.getCatalogType() == null : this.getCatalogType().equals(other.getCatalogType()))
-            && (this.getDefaultDatabase() == null ? other.getDefaultDatabase() == null : this.getDefaultDatabase().equals(other.getDefaultDatabase()))
-            && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
-            && (this.getDefaultCatalog() == null ? other.getDefaultCatalog() == null : this.getDefaultCatalog().equals(other.getDefaultCatalog()))
-            && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
-            && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
-            && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
-            && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
-            && (this.getCatalogProperties() == null ? other.getCatalogProperties() == null : this.getCatalogProperties().equals(other.getCatalogProperties()));
+                && (this.getPluginId() == null ? other.getPluginId() == null : this.getPluginId().equals(other.getPluginId()))
+                && (this.getCatalogName() == null ? other.getCatalogName() == null : this.getCatalogName().equals(other.getCatalogName()))
+                && (this.getCatalogType() == null ? other.getCatalogType() == null : this.getCatalogType().equals(other.getCatalogType()))
+                && (this.getDefaultDatabase() == null ? other.getDefaultDatabase() == null : this.getDefaultDatabase().equals(other.getDefaultDatabase()))
+                && (this.getDescr() == null ? other.getDescr() == null : this.getDescr().equals(other.getDescr()))
+                && (this.getDefaultCatalog() == null ? other.getDefaultCatalog() == null : this.getDefaultCatalog().equals(other.getDefaultCatalog()))
+                && (this.getCreateUserId() == null ? other.getCreateUserId() == null : this.getCreateUserId().equals(other.getCreateUserId()))
+                && (this.getModifyUserId() == null ? other.getModifyUserId() == null : this.getModifyUserId().equals(other.getModifyUserId()))
+                && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
+                && (this.getModifyTime() == null ? other.getModifyTime() == null : this.getModifyTime().equals(other.getModifyTime()))
+                && (this.getInvalid() == null ? other.getInvalid() == null : this.getInvalid().equals(other.getInvalid()))
+                && (this.getPropertyList() == null ? other.getPropertyList() == null : this.getPropertyList().equals(other.getPropertyList()));
     }
 
     @Override
@@ -183,7 +185,7 @@ public class CatalogDO {
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getModifyTime() == null) ? 0 : getModifyTime().hashCode());
         result = prime * result + ((getInvalid() == null) ? 0 : getInvalid().hashCode());
-        result = prime * result + ((getCatalogProperties() == null) ? 0 : getCatalogProperties().hashCode());
+        result = prime * result + ((getPropertyList() == null) ? 0 : getPropertyList().hashCode());
         return result;
     }
 
@@ -205,7 +207,7 @@ public class CatalogDO {
         sb.append(", createTime=").append(createTime);
         sb.append(", modifyTime=").append(modifyTime);
         sb.append(", invalid=").append(invalid);
-        sb.append(", catalogProperties=").append(catalogProperties);
+        sb.append(", propertyList=").append(propertyList);
         sb.append("]");
         return sb.toString();
     }

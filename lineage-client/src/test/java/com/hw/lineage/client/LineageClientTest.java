@@ -1,7 +1,7 @@
 package com.hw.lineage.client;
 
 import com.google.common.collect.ImmutableMap;
-import com.hw.lineage.common.result.LineageResult;
+import com.hw.lineage.common.model.LineageResult;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;

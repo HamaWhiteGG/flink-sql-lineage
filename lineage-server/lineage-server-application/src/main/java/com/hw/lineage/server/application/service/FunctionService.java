@@ -1,15 +1,15 @@
 package com.hw.lineage.server.application.service;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.model.FunctionInfo;
 import com.hw.lineage.server.application.command.function.CreateFunctionCmd;
 import com.hw.lineage.server.application.command.function.ParseFunctionCmd;
 import com.hw.lineage.server.application.command.function.UpdateFunctionCmd;
 import com.hw.lineage.server.application.dto.FunctionDTO;
-import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.domain.query.function.FunctionCheck;
 import com.hw.lineage.server.domain.query.function.FunctionQuery;
 import com.hw.lineage.server.domain.query.function.FunctionTaskQuery;
+import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 
 import java.io.IOException;
 import java.util.List;

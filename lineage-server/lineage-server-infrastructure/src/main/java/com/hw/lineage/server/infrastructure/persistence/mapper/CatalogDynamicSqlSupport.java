@@ -1,10 +1,12 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.hw.lineage.common.enums.CatalogType;
-import java.sql.JDBCType;
+import com.hw.lineage.common.model.Property;
 import org.mybatis.dynamic.sql.AliasableSqlTable;
 import org.mybatis.dynamic.sql.SqlColumn;
+
+import java.sql.JDBCType;
+import java.util.List;
 
 public final class CatalogDynamicSqlSupport {
     public static final Catalog catalog = new Catalog();
@@ -33,7 +35,7 @@ public final class CatalogDynamicSqlSupport {
 
     public static final SqlColumn<Boolean> invalid = catalog.invalid;
 
-    public static final SqlColumn<JSONObject> catalogProperties = catalog.catalogProperties;
+    public static final SqlColumn<List<Property>> propertyList = catalog.propertyList;
 
     public static final class Catalog extends AliasableSqlTable<Catalog> {
         public final SqlColumn<Long> catalogId = column("`catalog_id`", JDBCType.BIGINT);
@@ -60,7 +62,7 @@ public final class CatalogDynamicSqlSupport {
 
         public final SqlColumn<Boolean> invalid = column("`invalid`", JDBCType.BIT);
 
-        public final SqlColumn<JSONObject> catalogProperties = column("`catalog_properties`", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler");
+        public final SqlColumn<List<Property>> propertyList = column("`properties`", JDBCType.LONGVARCHAR, "com.hw.lineage.server.infrastructure.persistence.mybatis.handler.PropertyListTypeHandler");
 
         public Catalog() {
             super("bas_catalog", Catalog::new);

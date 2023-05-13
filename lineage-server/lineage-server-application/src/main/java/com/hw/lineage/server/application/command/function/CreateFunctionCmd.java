@@ -14,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @ToString(callSuper = true)
 public class CreateFunctionCmd extends BasicCriteria {
+
     @ApiModelProperty(hidden = true)
     private Long catalogId;
 
