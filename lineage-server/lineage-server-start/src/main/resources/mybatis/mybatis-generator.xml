@@ -69,9 +69,10 @@
                     javaType="com.hw.lineage.common.enums.CatalogType"
                     typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.impl.CatalogTypeHandler"/>
             <columnOverride
-                    column="catalog_properties"
-                    javaType="com.alibaba.fastjson2.JSONObject"
-                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.JsonTypeHandler"/>
+                    column="properties"
+                    property="propertyList"
+                    javaType="java.util.List&lt;com.hw.lineage.common.model.Property&gt;"
+                    typeHandler="com.hw.lineage.server.infrastructure.persistence.mybatis.handler.PropertyListTypeHandler"/>
         </table>
 
         <table tableName="bas_table" domainObjectName="Table" delimitAllColumns="true">

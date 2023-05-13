@@ -2,7 +2,7 @@ package com.hw.lineage.server.infrastructure.persistence.mapper.custom;
 
 import com.hw.lineage.server.domain.query.function.FunctionEntry;
 import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
-import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.ListTypeHandler;
+import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.LongListTypeHandler;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -38,7 +38,7 @@ public interface CustomFunctionMapper {
     @Results(id = "FunctionTaskResult", value = {
             @Result(column = "task_id", property = "taskId", jdbcType = JdbcType.BIGINT),
             @Result(column = "task_name", property = "taskName", jdbcType = JdbcType.VARCHAR),
-            @Result(column = SQL_IDS, property = "sqlIdList", typeHandler = ListTypeHandler.class, jdbcType = JdbcType.VARCHAR),
+            @Result(column = SQL_IDS, property = "sqlIdList", typeHandler = LongListTypeHandler.class, jdbcType = JdbcType.BIGINT),
             @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.BIGINT),
     })
     List<FunctionTaskDTO> selectMany(SelectStatementProvider selectStatement);

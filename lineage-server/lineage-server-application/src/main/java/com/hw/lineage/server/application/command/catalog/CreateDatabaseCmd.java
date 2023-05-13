@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class CreateDatabaseCmd implements Serializable {
+
     @ApiModelProperty(hidden = true)
     private Long catalogId;
 
@@ -19,5 +20,4 @@ public class CreateDatabaseCmd implements Serializable {
     private String database;
 
     private String comment;
-
 }

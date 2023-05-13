@@ -152,19 +152,19 @@ CREATE TABLE `bas_plugin`
 DROP TABLE IF EXISTS `bas_catalog`;
 CREATE TABLE `bas_catalog`
 (
-    `catalog_id`         bigint(20) AUTO_INCREMENT,
-    `plugin_id`          bigint(20)  NOT NULL,
-    `catalog_name`       varchar(64) NOT NULL,
-    `catalog_type`       varchar(32) NOT NULL DEFAULT 'generic_in_memory',
-    `default_database`   varchar(64) NOT NULL,
-    `descr`              varchar(256)         DEFAULT NULL,
-    `catalog_properties` text                 DEFAULT NULL,
-    `default_catalog`    tinyint(1)  NOT NULL DEFAULT '0',
-    `create_user_id`     bigint(20)  NOT NULL DEFAULT '0',
-    `modify_user_id`     bigint(20)  NOT NULL DEFAULT '0',
-    `create_time`        bigint(20)  NOT NULL,
-    `modify_time`        bigint(20)  NOT NULL,
-    `invalid`            tinyint(1)  NOT NULL DEFAULT '0',
+    `catalog_id`       bigint(20) AUTO_INCREMENT,
+    `plugin_id`        bigint(20)  NOT NULL,
+    `catalog_name`     varchar(64) NOT NULL,
+    `catalog_type`     varchar(32) NOT NULL DEFAULT 'generic_in_memory',
+    `default_database` varchar(64) NOT NULL,
+    `descr`            varchar(256)         DEFAULT NULL,
+    `properties`       text                 DEFAULT NULL,
+    `default_catalog`  tinyint(1)  NOT NULL DEFAULT '0',
+    `create_user_id`   bigint(20)  NOT NULL DEFAULT '0',
+    `modify_user_id`   bigint(20)  NOT NULL DEFAULT '0',
+    `create_time`      bigint(20)  NOT NULL,
+    `modify_time`      bigint(20)  NOT NULL,
+    `invalid`          tinyint(1)  NOT NULL DEFAULT '0',
     PRIMARY KEY (`catalog_id`),
     KEY `catalog_name_idx` (`catalog_name`)
 ) ENGINE = InnoDB

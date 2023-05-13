@@ -1,11 +1,13 @@
 package com.hw.lineage.server.application.command.catalog;
 
-import com.alibaba.fastjson2.JSONObject;
+import com.hw.lineage.common.model.Property;
 import com.hw.lineage.server.domain.query.BasicCriteria;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * @description: UpdateCatalogCmd
@@ -25,6 +27,5 @@ public class UpdateCatalogCmd extends BasicCriteria {
 
     private String descr;
 
-    private JSONObject catalogProperties;
-
+    private List<Property> propertyList;
 }

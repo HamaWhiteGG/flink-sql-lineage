@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @description: ListTypeHandler
+ * @description: LongListTypeHandler
  * @author: HamaWhite
  */
-public class ListTypeHandler extends BaseTypeHandler<List<Long>> {
+public class LongListTypeHandler extends BaseTypeHandler<List<Long>> {
 
     private static final String DELIM = ",";
 
