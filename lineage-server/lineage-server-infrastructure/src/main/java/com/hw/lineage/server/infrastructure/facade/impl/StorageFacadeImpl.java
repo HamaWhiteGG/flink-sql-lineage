@@ -65,11 +65,8 @@ public class StorageFacadeImpl implements StorageFacade {
 
     @Override
     public String store(Storage storage, InputStream inputStream) throws IOException {
-        String filePath = StringUtils.joinWith(File.separator
-                , storage.getStorageType().value()
-                , System.currentTimeMillis()
-                , storage.getFileName()
-        );
+        String filePath = StringUtils.joinWith(File.separator, storage.getStorageType().value(),
+                System.currentTimeMillis(), storage.getFileName());
 
         Path destPath = buildPath(filePath);
         Files.createDirectories(destPath.getParent());

@@ -36,7 +36,6 @@ import static com.hw.lineage.server.infrastructure.persistence.mapper.TableDynam
 import static org.mybatis.dynamic.sql.SqlBuilder.equalTo;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
 
-
 /**
  * @description: TableRepositoryImpl
  * @author: HamaWhite
@@ -53,12 +52,10 @@ public class TableRepositoryImpl extends AbstractBasicRepository implements Tabl
     @Override
     public Table find(TableId tableId) {
         TableDO tableDO = tableMapper.selectByPrimaryKey(tableId.getValue())
-                .orElseThrow(() ->
-                        new LineageException(String.format("tableId [%d] is not existed", tableId.getValue()))
-                );
+                .orElseThrow(
+                        () -> new LineageException(String.format("tableId [%d] is not existed", tableId.getValue())));
         return converter.toTable(tableDO);
     }
-
 
     @Override
     public Table save(Table table) {
@@ -76,13 +73,11 @@ public class TableRepositoryImpl extends AbstractBasicRepository implements Tabl
         tableMapper.deleteByPrimaryKey(tableId.getValue());
     }
 
-
     @Override
     public List<Table> findMemory() {
-        List<TableDO> tableDOList = tableMapper.select(completer ->
-                completer.join(catalog).on(table.catalogId, equalTo(catalog.catalogId))
-                        .where(catalog.catalogType, isEqualToWhenPresent(CatalogType.MEMORY))
-        );
+        List<TableDO> tableDOList =
+                tableMapper.select(completer -> completer.join(catalog).on(table.catalogId, equalTo(catalog.catalogId))
+                        .where(catalog.catalogType, isEqualToWhenPresent(CatalogType.MEMORY)));
         return converter.toTableList(tableDOList);
     }
 }

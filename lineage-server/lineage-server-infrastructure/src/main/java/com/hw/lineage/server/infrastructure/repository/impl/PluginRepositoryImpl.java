@@ -40,7 +40,6 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
-
 /**
  * @description: PluginRepositoryImpl
  * @author: HamaWhite
@@ -57,7 +56,8 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
     @Override
     public Plugin find(PluginId pluginId) {
         PluginDO pluginDO = pluginMapper.selectByPrimaryKey(pluginId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("pluginId [%d] is not existed", pluginId.getValue())));
+                .orElseThrow(
+                        () -> new LineageException(String.format("pluginId [%d] is not existed", pluginId.getValue())));
         return converter.toPlugin(pluginDO);
     }
 
@@ -80,32 +80,27 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
     @Override
     public PageInfo<Plugin> findAll(PluginQuery pluginQuery) {
         try (Page<PluginDO> page = PageMethod.startPage(pluginQuery.getPageNum(), pluginQuery.getPageSize())) {
-            PageInfo<PluginDO> pageInfo = page.doSelectPageInfo(() ->
-                    pluginMapper.select(completer ->
-                            completer.where(pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
-                                    .orderBy(buildSortSpecification(pluginQuery))
-                    )
-            );
+            PageInfo<PluginDO> pageInfo = page.doSelectPageInfo(() -> pluginMapper.select(
+                    completer -> completer.where(pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
+                            .orderBy(buildSortSpecification(pluginQuery))));
             return PageUtils.convertPage(pageInfo, converter::toPlugin);
         }
     }
 
     @Override
     public void setDefault(PluginId pluginId) {
-        pluginMapper.update(completer ->
-                completer.set(plugin.defaultPlugin).equalTo(FALSE).where(plugin.defaultPlugin, isEqualTo(TRUE))
-        );
-        pluginMapper.update(completer ->
-                completer.set(plugin.defaultPlugin).equalTo(TRUE).where(plugin.pluginId, isEqualTo(pluginId.getValue()))
-        );
+        pluginMapper.update(completer -> completer.set(plugin.defaultPlugin).equalTo(FALSE)
+                .where(plugin.defaultPlugin, isEqualTo(TRUE)));
+        pluginMapper.update(completer -> completer.set(plugin.defaultPlugin).equalTo(TRUE)
+                .where(plugin.pluginId, isEqualTo(pluginId.getValue())));
     }
 
     @Override
     public boolean check(PluginCheck pluginCheck) {
         return !pluginMapper.select(completer -> completer
                 .where(pluginName, isEqualToWhenPresent(pluginCheck.getPluginName()))
-                .or(pluginCode, isEqualToWhenPresent(pluginCheck.getPluginCode()))
-        ).isEmpty();
+                .or(pluginCode, isEqualToWhenPresent(pluginCheck.getPluginCode())))
+                .isEmpty();
     }
 
     @Override

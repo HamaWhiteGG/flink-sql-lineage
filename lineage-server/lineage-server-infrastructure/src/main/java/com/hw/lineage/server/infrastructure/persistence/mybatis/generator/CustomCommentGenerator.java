@@ -37,6 +37,7 @@ import java.util.Set;
  * @author: HamaWhite
  */
 public class CustomCommentGenerator implements CommentGenerator {
+
     private final Properties properties = new Properties();
     private boolean suppressDate = false;
     private boolean suppressAllComments = false;
@@ -62,7 +63,8 @@ public class CustomCommentGenerator implements CommentGenerator {
     @Override
     public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         if (!this.suppressAllComments) {
-            String description = "This class corresponds to the database table " + introspectedTable.getFullyQualifiedTable();
+            String description =
+                    "This class corresponds to the database table " + introspectedTable.getFullyQualifiedTable();
             topLevelClass.addJavaDocLine("/**");
             topLevelClass.addJavaDocLine(" * @description: " + description);
             topLevelClass.addJavaDocLine(" * @author: " + properties.getProperty("author"));
@@ -74,9 +76,9 @@ public class CustomCommentGenerator implements CommentGenerator {
         }
     }
 
-
     @Override
-    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
+    public void addFieldAnnotation(Field field, IntrospectedTable introspectedTable,
+            IntrospectedColumn introspectedColumn, Set<FullyQualifiedJavaType> imports) {
         // get the column comment and add it to the comment
         String remarks = introspectedColumn.getRemarks();
         if (!suppressAllComments && addRemarkComments && StringUtility.stringHasValue(remarks)) {

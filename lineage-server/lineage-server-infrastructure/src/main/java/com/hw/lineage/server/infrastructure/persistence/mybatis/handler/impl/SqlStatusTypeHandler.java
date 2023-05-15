@@ -26,6 +26,7 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.IntEnumT
  * @author: HamaWhite
  */
 public class SqlStatusTypeHandler extends IntEnumTypeHandler<SqlStatus> {
+
     public SqlStatusTypeHandler() {
         super(SqlStatus.class);
     }

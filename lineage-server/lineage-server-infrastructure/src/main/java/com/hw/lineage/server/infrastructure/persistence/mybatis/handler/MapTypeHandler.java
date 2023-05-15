@@ -39,7 +39,8 @@ import java.util.Map;
 public class MapTypeHandler extends BaseTypeHandler<Map<String, String>> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Map<String, String> parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, Map<String, String> parameter, JdbcType jdbcType)
+            throws SQLException {
         if (MapUtils.isNotEmpty(parameter)) {
             String x = JSON.toJSONString(parameter);
             ps.setString(i, x);

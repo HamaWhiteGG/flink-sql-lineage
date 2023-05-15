@@ -55,10 +55,10 @@ public class PermissionRepositoryImpl extends AbstractBasicRepository implements
     @Override
     public Permission find(PermissionId permissionId) {
         PermissionDO permissionDO = permissionMapper.selectByPrimaryKey(permissionId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("permissionId [%d] is not existed", permissionId.getValue())));
+                .orElseThrow(() -> new LineageException(
+                        String.format("permissionId [%d] is not existed", permissionId.getValue())));
         return converter.toPermission(permissionDO);
     }
-
 
     @Override
     public Permission save(Permission permission) {
@@ -78,22 +78,21 @@ public class PermissionRepositoryImpl extends AbstractBasicRepository implements
 
     @Override
     public boolean check(String permissionName, String permissionCode) {
-        return !permissionMapper.select(completer ->
-                completer.where(PermissionDynamicSqlSupport.permissionName, isEqualToWhenPresent(permissionName))
-                        .or(PermissionDynamicSqlSupport.permissionCode, isEqualToWhenPresent(permissionCode))
-        ).isEmpty();
+        return !permissionMapper
+                .select(completer -> completer
+                        .where(PermissionDynamicSqlSupport.permissionName, isEqualToWhenPresent(permissionName))
+                        .or(PermissionDynamicSqlSupport.permissionCode, isEqualToWhenPresent(permissionCode)))
+                .isEmpty();
     }
 
     @Override
     public PageInfo<Permission> findAll(PermissionQuery permissionQuery) {
-        try (Page<PermissionDO> page = PageMethod.startPage(permissionQuery.getPageNum(), permissionQuery.getPageSize())) {
-            PageInfo<PermissionDO> pageInfo = page.doSelectPageInfo(() ->
-                    permissionMapper.select(completer ->
-                            completer.where(permissionName, isLike(buildLikeValue(permissionQuery.getPermissionName())))
-                                    .and(permissionCode, isLike(buildLikeValue(permissionQuery.getPermissionCode())))
-                                    .orderBy(buildSortSpecification(permissionQuery))
-                    )
-            );
+        try (Page<PermissionDO> page =
+                PageMethod.startPage(permissionQuery.getPageNum(), permissionQuery.getPageSize())) {
+            PageInfo<PermissionDO> pageInfo = page.doSelectPageInfo(() -> permissionMapper.select(completer -> completer
+                    .where(permissionName, isLike(buildLikeValue(permissionQuery.getPermissionName())))
+                    .and(permissionCode, isLike(buildLikeValue(permissionQuery.getPermissionCode())))
+                    .orderBy(buildSortSpecification(permissionQuery))));
             return PageUtils.convertPage(pageInfo, converter::toPermission);
         }
     }

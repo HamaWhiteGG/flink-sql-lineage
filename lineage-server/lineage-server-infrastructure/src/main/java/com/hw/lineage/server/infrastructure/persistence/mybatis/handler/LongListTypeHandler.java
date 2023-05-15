@@ -39,7 +39,8 @@ public class LongListTypeHandler extends BaseTypeHandler<List<Long>> {
     private static final String DELIM = ",";
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, List<Long> parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, List<Long> parameter, JdbcType jdbcType)
+            throws SQLException {
         String value = StringUtils.collectionToDelimitedString(parameter, DELIM);
         ps.setString(i, value);
     }

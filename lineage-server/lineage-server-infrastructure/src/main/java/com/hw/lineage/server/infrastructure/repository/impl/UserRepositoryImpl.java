@@ -48,7 +48,6 @@ import static com.hw.lineage.server.infrastructure.persistence.mapper.RolePermis
 import static com.hw.lineage.server.infrastructure.persistence.mapper.RoleUserDynamicSqlSupport.roleUser;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
-
 /**
  * @description: UserRepositoryImpl
  * @author: HamaWhite
@@ -71,15 +70,15 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
     @Override
     public User find(UserId userId) {
         UserDO userDO = userMapper.selectByPrimaryKey(userId.getValue())
-                .orElseThrow(() ->
-                        new LineageException(String.format("userId [%d] is not existed", userId.getValue()))
-                );
+                .orElseThrow(
+                        () -> new LineageException(String.format("userId [%d] is not existed", userId.getValue())));
         return converter.toUser(userDO);
     }
 
     @Override
     public boolean check(String name) {
-        return !userMapper.select(completer -> completer.where(UserDynamicSqlSupport.username, isEqualTo(name))).isEmpty();
+        return !userMapper.select(completer -> completer.where(UserDynamicSqlSupport.username, isEqualTo(name)))
+                .isEmpty();
     }
 
     @Override
@@ -100,41 +99,35 @@ public class UserRepositoryImpl extends AbstractBasicRepository implements UserR
 
     @Override
     public User find(String username) {
-        UserDO userDO = userMapper.selectOne(completer -> completer.where(UserDynamicSqlSupport.username, isEqualTo(username)))
-                .orElseThrow(() ->
-                        new LineageException("user account or password error")
-                );
+        UserDO userDO =
+                userMapper.selectOne(completer -> completer.where(UserDynamicSqlSupport.username, isEqualTo(username)))
+                        .orElseThrow(() -> new LineageException("user account or password error"));
         return converter.toUser(userDO);
     }
 
     @Override
     public List<Role> findRoles(UserId userId) {
-        List<RoleDO> roleDOList = roleMapper.select(completer ->
-                completer.join(roleUser).on(role.roleId, equalTo(roleUser.roleId))
-                        .where(roleUser.userId, isEqualTo(userId.getValue()))
-        );
+        List<RoleDO> roleDOList =
+                roleMapper.select(completer -> completer.join(roleUser).on(role.roleId, equalTo(roleUser.roleId))
+                        .where(roleUser.userId, isEqualTo(userId.getValue())));
         return converter.toRoleList(roleDOList);
     }
 
     @Override
     public List<Permission> findPermissions(UserId userId) {
-        List<PermissionDO> permissionDOList = permissionMapper.select(completer ->
-                completer.join(rolePermission).on(permission.permissionId, equalTo(rolePermission.permissionId))
-                        .join(roleUser).on(rolePermission.roleId, equalTo(roleUser.roleId))
-                        .where(roleUser.userId, isEqualTo(userId.getValue()))
-        );
+        List<PermissionDO> permissionDOList = permissionMapper.select(completer -> completer.join(rolePermission)
+                .on(permission.permissionId, equalTo(rolePermission.permissionId))
+                .join(roleUser).on(rolePermission.roleId, equalTo(roleUser.roleId))
+                .where(roleUser.userId, isEqualTo(userId.getValue())));
         return converter.toPermissionList(permissionDOList);
     }
 
     @Override
     public PageInfo<User> findAll(UserQuery userQuery) {
         try (Page<UserDO> page = PageMethod.startPage(userQuery.getPageNum(), userQuery.getPageSize())) {
-            PageInfo<UserDO> pageInfo = page.doSelectPageInfo(() ->
-                    userMapper.select(completer ->
-                            completer.where(UserDynamicSqlSupport.username, isLike(buildLikeValue(userQuery.getUsername())))
-                                    .orderBy(buildSortSpecification(userQuery))
-                    )
-            );
+            PageInfo<UserDO> pageInfo = page.doSelectPageInfo(() -> userMapper.select(completer -> completer
+                    .where(UserDynamicSqlSupport.username, isLike(buildLikeValue(userQuery.getUsername())))
+                    .orderBy(buildSortSpecification(userQuery))));
             return PageUtils.convertPage(pageInfo, converter::toUser);
         }
     }

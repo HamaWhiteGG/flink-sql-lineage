@@ -35,6 +35,7 @@ import java.util.Optional;
  */
 @Mapper
 public interface CustomCatalogMapper {
+
     @SelectProvider(type = SqlProviderAdapter.class, method = "select")
     @Results(id = "CatalogEntryResult", value = {
             @Result(column = "plugin_id", property = "pluginId", jdbcType = JdbcType.BIGINT),

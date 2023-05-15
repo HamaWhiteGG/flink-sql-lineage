@@ -26,6 +26,7 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.IntEnumT
  * @author: HamaWhite
  */
 public class OperationStatusTypeHandler extends IntEnumTypeHandler<OperationStatus> {
+
     public OperationStatusTypeHandler() {
         super(OperationStatus.class);
     }

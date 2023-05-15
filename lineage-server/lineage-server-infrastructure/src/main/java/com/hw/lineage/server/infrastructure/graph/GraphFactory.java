@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Constant.DELIMITER;
 
-
 /**
  * @description: GraphFactory
  * @author: HamaWhite
@@ -72,7 +71,8 @@ public class GraphFactory {
 
             ColumnNode sourceColumnNode = columnGraph.queryNode(lineage.buildSourceColumnName());
             ColumnNode targetColumnNode = columnGraph.queryNode(lineage.buildTargetColumnName());
-            columnGraph.addEdge(new ColumnEdge(atomic.getAndIncrement(), sourceColumnNode, targetColumnNode, lineage.getTransform()));
+            columnGraph.addEdge(new ColumnEdge(atomic.getAndIncrement(), sourceColumnNode, targetColumnNode,
+                    lineage.getTransform()));
         }
     }
 
@@ -84,8 +84,8 @@ public class GraphFactory {
             Integer tableNodeId = atomic.getAndIncrement();
             sourceTableNode = new TableNode(tableNodeId, sourceTableName);
             tableGraph.addNode(sourceTableName, sourceTableNode);
-            List<ColumnInfo> columnList = lineageFacade.getTable(pluginCode, lineage.getSourceCatalog()
-                    , lineage.getSourceDatabase(), lineage.getSourceTable()).getColumnList();
+            List<ColumnInfo> columnList = lineageFacade.getTable(pluginCode, lineage.getSourceCatalog(),
+                    lineage.getSourceDatabase(), lineage.getSourceTable()).getColumnList();
 
             for (ColumnInfo column : columnList) {
                 String nodeName = String.join(DELIMITER, sourceTableName, column.getColumnName());
@@ -97,7 +97,6 @@ public class GraphFactory {
         return sourceTableNode;
     }
 
-
     private TableNode getTargetTableNode(String pluginCode, TaskLineage lineage) {
         String targetTableName = lineage.buildTargetTableName();
         TableNode targetTableNode = tableGraph.queryNode(targetTableName);
@@ -106,8 +105,8 @@ public class GraphFactory {
             Integer tableNodeId = atomic.getAndIncrement();
             targetTableNode = new TableNode(tableNodeId, targetTableName);
             tableGraph.addNode(targetTableName, targetTableNode);
-            List<ColumnInfo> columnList = lineageFacade.getTable(pluginCode, lineage.getTargetCatalog()
-                    , lineage.getTargetDatabase(), lineage.getTargetTable()).getColumnList();
+            List<ColumnInfo> columnList = lineageFacade.getTable(pluginCode, lineage.getTargetCatalog(),
+                    lineage.getTargetDatabase(), lineage.getTargetTable()).getColumnList();
 
             for (ColumnInfo column : columnList) {
                 String nodeName = String.join(DELIMITER, targetTableName, column.getColumnName());

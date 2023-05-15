@@ -34,7 +34,8 @@ import java.sql.SQLException;
 public class ByteArrayBase64TypeHandler extends BaseTypeHandler<byte[]> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, byte[] parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, byte[] parameter, JdbcType jdbcType)
+            throws SQLException {
         ps.setString(i, Base64Utils.encodeBytes(parameter));
     }
 

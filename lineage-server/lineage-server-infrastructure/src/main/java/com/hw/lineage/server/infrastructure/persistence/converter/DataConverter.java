@@ -36,6 +36,7 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring")
 public interface DataConverter {
+
     DataConverter INSTANCE = Mappers.getMapper(DataConverter.class);
 
     @Mapping(source = "taskId", target = "taskId.value")

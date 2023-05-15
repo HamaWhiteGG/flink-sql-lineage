@@ -26,6 +26,7 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.StringEn
  * @author: HamaWhite
  */
 public class OperationTypeHandler extends StringEnumTypeHandler<OperationType> {
+
     public OperationTypeHandler() {
         super(OperationType.class);
     }

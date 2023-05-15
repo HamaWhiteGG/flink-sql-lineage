@@ -51,12 +51,12 @@ public interface CustomFunctionMapper {
     })
     Optional<FunctionEntry> selectOne(SelectStatementProvider selectStatement);
 
-
     @SelectProvider(type = SqlProviderAdapter.class, method = "select")
     @Results(id = "FunctionTaskResult", value = {
             @Result(column = "task_id", property = "taskId", jdbcType = JdbcType.BIGINT),
             @Result(column = "task_name", property = "taskName", jdbcType = JdbcType.VARCHAR),
-            @Result(column = SQL_IDS, property = "sqlIdList", typeHandler = LongListTypeHandler.class, jdbcType = JdbcType.BIGINT),
+            @Result(column = SQL_IDS, property = "sqlIdList", typeHandler = LongListTypeHandler.class,
+                    jdbcType = JdbcType.BIGINT),
             @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.BIGINT),
     })
     List<FunctionTaskDTO> selectMany(SelectStatementProvider selectStatement);

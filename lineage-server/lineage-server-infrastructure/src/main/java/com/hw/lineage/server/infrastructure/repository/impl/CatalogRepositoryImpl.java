@@ -64,21 +64,18 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
     @Override
     public Catalog find(CatalogId catalogId) {
         CatalogDO catalogDO = catalogMapper.selectByPrimaryKey(catalogId.getValue())
-                .orElseThrow(() ->
-                        new LineageException(String.format("catalogId [%d] is not existed", catalogId.getValue()))
-                );
+                .orElseThrow(() -> new LineageException(
+                        String.format("catalogId [%d] is not existed", catalogId.getValue())));
         return converter.toCatalog(catalogDO);
     }
 
     @Override
     public Catalog find(PluginId pluginId, String catalogName) {
-        CatalogDO catalogDO = catalogMapper.selectOne(completer ->
-                        completer.where(catalog.pluginId, isEqualTo(pluginId.getValue()))
-                                .and(catalog.catalogName, isEqualTo(catalogName)))
-                .orElseThrow(() ->
-                        new LineageException(String.format("pluginId [%d], catalogName [%s] is not existed"
-                                , pluginId.getValue(), catalogName))
-                );
+        CatalogDO catalogDO = catalogMapper
+                .selectOne(completer -> completer.where(catalog.pluginId, isEqualTo(pluginId.getValue()))
+                        .and(catalog.catalogName, isEqualTo(catalogName)))
+                .orElseThrow(() -> new LineageException(String.format("pluginId [%d], catalogName [%s] is not existed",
+                        pluginId.getValue(), catalogName)));
         return converter.toCatalog(catalogDO);
     }
 
@@ -106,25 +103,20 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
     @Override
     public PageInfo<Catalog> findAll(CatalogQuery catalogQuery) {
         try (Page<CatalogDO> page = PageMethod.startPage(catalogQuery.getPageNum(), catalogQuery.getPageSize())) {
-            PageInfo<CatalogDO> pageInfo = page.doSelectPageInfo(() ->
-                    catalogMapper.select(completer ->
-                            completer.where(catalogName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
-                                    .and(catalogType, isEqualToWhenPresent(catalogQuery.getCatalogType()))
-                                    .orderBy(buildSortSpecification(catalogQuery))
-                    )
-            );
+            PageInfo<CatalogDO> pageInfo = page.doSelectPageInfo(() -> catalogMapper.select(
+                    completer -> completer.where(catalogName, isLike(buildLikeValue(catalogQuery.getCatalogName())))
+                            .and(catalogType, isEqualToWhenPresent(catalogQuery.getCatalogType()))
+                            .orderBy(buildSortSpecification(catalogQuery))));
             return PageUtils.convertPage(pageInfo, converter::toCatalog);
         }
     }
 
     @Override
     public void setDefault(CatalogId catalogId) {
-        catalogMapper.update(completer ->
-                completer.set(catalog.defaultCatalog).equalTo(FALSE).where(catalog.defaultCatalog, isEqualTo(TRUE))
-        );
-        catalogMapper.update(completer ->
-                completer.set(catalog.defaultCatalog).equalTo(TRUE).where(catalog.catalogId, isEqualTo(catalogId.getValue()))
-        );
+        catalogMapper.update(completer -> completer.set(catalog.defaultCatalog).equalTo(FALSE)
+                .where(catalog.defaultCatalog, isEqualTo(TRUE)));
+        catalogMapper.update(completer -> completer.set(catalog.defaultCatalog).equalTo(TRUE).where(catalog.catalogId,
+                isEqualTo(catalogId.getValue())));
     }
 
     @Override
@@ -136,8 +128,7 @@ public class CatalogRepositoryImpl extends AbstractBasicRepository implements Ca
                         .where(catalog.catalogId, isEqualTo(catalogId.getValue()))
                         .build().render(RenderingStrategies.MYBATIS3);
 
-        return customCatalogMapper.selectOne(selectStatement).orElseThrow(() ->
-                new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue()))
-        );
+        return customCatalogMapper.selectOne(selectStatement).orElseThrow(
+                () -> new LineageException(String.format("catalogId [%s] is not existed", catalogId.getValue())));
     }
 }

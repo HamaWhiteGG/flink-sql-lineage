@@ -26,6 +26,7 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.StringEn
  * @author: HamaWhite
  */
 public class ModuleCodeHandler extends StringEnumTypeHandler<ModuleCode> {
+
     public ModuleCodeHandler() {
         super(ModuleCode.class);
     }

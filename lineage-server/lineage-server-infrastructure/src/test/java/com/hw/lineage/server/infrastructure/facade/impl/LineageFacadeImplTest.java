@@ -23,7 +23,6 @@ import org.powermock.reflect.Whitebox;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 /**
  * @description: LineageFacadeImplTest
  * @author: HamaWhite
@@ -33,7 +32,7 @@ public class LineageFacadeImplTest {
 
     @Test
     public void testCtas() throws Exception {
-        LineageFacadeImpl lineageFacade=new LineageFacadeImpl();
+        LineageFacadeImpl lineageFacade = new LineageFacadeImpl();
 
         String singleSql = "CREATE TABLE IF NOT EXISTS my_ctas_table          " +
                 "WITH (                                                       " +
@@ -46,7 +45,7 @@ public class LineageFacadeImplTest {
                 "FROM                                                         " +
                 "       datagen_source                                        " +
                 "WHERE                                                        " +
-                "       mod(id, 10) = 0                                       " ;
+                "       mod(id, 10) = 0                                       ";
 
         boolean result = Whitebox.invokeMethod(lineageFacade, "ctas", singleSql);
         assertThat(result).isTrue();

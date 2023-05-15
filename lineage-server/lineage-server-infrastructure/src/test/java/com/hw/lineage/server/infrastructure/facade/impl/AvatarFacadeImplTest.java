@@ -40,7 +40,7 @@ public class AvatarFacadeImplTest {
 
         String[] usernames = {"demo", "admin", "HamaWhite", "Asteria", "Cattleya"};
         for (String username : usernames) {
-            byte[] bytes =facade.generateAvatar(username.hashCode());
+            byte[] bytes = facade.generateAvatar(username.hashCode());
             assertThat(bytes).isNotNull();
             LOG.info("username: {}, avatar: {}", username, Base64Utils.encodeBytes(bytes));
         }

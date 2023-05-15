@@ -38,7 +38,8 @@ import java.util.List;
 public class PropertyListTypeHandler extends BaseTypeHandler<List<Property>> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, List<Property> parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, List<Property> parameter, JdbcType jdbcType)
+            throws SQLException {
         ps.setString(i, JSON.toJSONString(parameter));
     }
 

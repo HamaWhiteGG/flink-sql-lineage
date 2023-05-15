@@ -26,6 +26,7 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.StringEn
  * @author: HamaWhite
  */
 public class SqlTypeHandler extends StringEnumTypeHandler<SqlType> {
+
     public SqlTypeHandler() {
         super(SqlType.class);
     }

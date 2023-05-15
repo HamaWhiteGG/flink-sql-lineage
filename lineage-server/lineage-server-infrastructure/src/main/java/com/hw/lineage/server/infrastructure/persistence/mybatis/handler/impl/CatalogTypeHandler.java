@@ -26,6 +26,7 @@ import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.StringEn
  * @author: HamaWhite
  */
 public class CatalogTypeHandler extends StringEnumTypeHandler<CatalogType> {
+
     public CatalogTypeHandler() {
         super(CatalogType.class);
     }
