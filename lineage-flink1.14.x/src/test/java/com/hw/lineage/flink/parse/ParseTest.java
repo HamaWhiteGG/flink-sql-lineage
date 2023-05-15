@@ -38,38 +38,33 @@ public class ParseTest extends AbstractBasicTest {
         createTableOfOdsMysqlUsers();
     }
 
-
     @Test
     public void testParse() {
         context.parseValidate("SELECT id, name, birthday FROM ods_mysql_users");
     }
 
-
     @Test
     public void testParseWithErrorSyntax() {
-        assertThrows("SQL parse failed. Encountered \"ods_mysql_users\" at line 1, column 38."
-                , SqlParserException.class
-                , () -> context.parseValidate("SELECT id, name, birthday ERROR_FROM ods_mysql_users")
-        );
+        assertThrows("SQL parse failed. Encountered \"ods_mysql_users\" at line 1, column 38.",
+                SqlParserException.class,
+                () -> context.parseValidate("SELECT id, name, birthday ERROR_FROM ods_mysql_users"));
     }
-
 
     @Test
     public void testParseWithErrorTable() {
-        assertThrows("SQL validation failed. From line 1, column 32 to line 1, column 52: Object 'error_ods_mysql_users' not found"
-                , ValidationException.class
-                , () -> context.parseValidate("SELECT id, name, birthday FROM error_ods_mysql_users")
-        );
+        assertThrows(
+                "SQL validation failed. From line 1, column 32 to line 1, column 52: Object 'error_ods_mysql_users' not found",
+                ValidationException.class,
+                () -> context.parseValidate("SELECT id, name, birthday FROM error_ods_mysql_users"));
 
     }
 
-
     @Test
     public void testParseWithErrorFiled() {
-        assertThrows("SQL validation failed. From line 1, column 8 to line 1, column 15: Column 'error_id' not found in any table"
-                , ValidationException.class
-                , () -> context.parseValidate("SELECT error_id, name, birthday FROM ods_mysql_users")
-        );
+        assertThrows(
+                "SQL validation failed. From line 1, column 8 to line 1, column 15: Column 'error_id' not found in any table",
+                ValidationException.class,
+                () -> context.parseValidate("SELECT error_id, name, birthday FROM ods_mysql_users"));
     }
 
     @Test

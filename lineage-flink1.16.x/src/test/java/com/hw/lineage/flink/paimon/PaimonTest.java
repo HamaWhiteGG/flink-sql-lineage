@@ -62,8 +62,7 @@ public class PaimonTest extends AbstractBasicTest {
         context.execute("CREATE CATALOG " + catalogName + " with (          " +
                 "       'type' = 'paimon'                                           ," +
                 "       'warehouse' = '" + warehouse.toURI() + "'                    " +
-                ")"
-        );
+                ")");
         context.execute(String.format("USE CATALOG %s", catalogName));
     }
 
@@ -113,7 +112,6 @@ public class PaimonTest extends AbstractBasicTest {
         analyzeLineage(catalogName, secondSql, secondExpected);
     }
 
-
     /**
      * Create table demo_log_01
      */
@@ -129,8 +127,7 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, hh, user_id) NOT ENFORCED            " +
                 ") PARTITIONED BY (dt, hh) with (                             " +
                 "        'bucket' = '4'                                       " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -148,8 +145,7 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, hh, user_id) NOT ENFORCED            " +
                 ") PARTITIONED BY (dt, hh) with (                             " +
                 "        'bucket' = '4'                                       " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -167,10 +163,8 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, hh, user_id) NOT ENFORCED            " +
                 ") PARTITIONED BY (dt, hh) with (                             " +
                 "        'bucket' = '4'                                       " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create table demo_log_agg
@@ -185,7 +179,6 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, user_id) NOT ENFORCED                " +
                 ") PARTITIONED BY (dt) with (                                 " +
                 "        'bucket' = '2'                                       " +
-                ")"
-        );
+                ")");
     }
 }

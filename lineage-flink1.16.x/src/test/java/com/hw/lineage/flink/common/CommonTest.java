@@ -44,7 +44,6 @@ public class CommonTest extends AbstractBasicTest {
         createFunctionOfMySuffix();
     }
 
-
     /**
      * insert-select, but the fields of the query and sink do not match
      * <p>
@@ -64,7 +63,6 @@ public class CommonTest extends AbstractBasicTest {
 
         context.analyzeLineage(sql);
     }
-
 
     /**
      * insert-select.
@@ -158,7 +156,6 @@ public class CommonTest extends AbstractBasicTest {
         analyzeFunction(sql, new String[]{"my_suffix_udf"});
     }
 
-
     /**
      * insert-partition-select.
      * <p>
@@ -187,7 +184,6 @@ public class CommonTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
     }
 
-
     /**
      * insert-partition-with-columnList select.
      * <p>
@@ -209,7 +205,6 @@ public class CommonTest extends AbstractBasicTest {
 
         analyzeLineage(sql, expectedArray);
     }
-
 
     /**
      * insert-select-select
@@ -250,7 +245,6 @@ public class CommonTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
     }
 
-
     /**
      * insert-select-two-table join.
      * <p>
@@ -276,8 +270,10 @@ public class CommonTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
-                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name",
+                        "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
+                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name",
+                        "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
                 {"dim_mysql_company", "company_name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
@@ -287,7 +283,6 @@ public class CommonTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
     }
 
-
     /**
      * Create my_suffix_udf
      */
@@ -295,8 +290,7 @@ public class CommonTest extends AbstractBasicTest {
         context.execute("DROP FUNCTION IF EXISTS my_suffix_udf");
 
         context.execute("CREATE FUNCTION IF NOT EXISTS my_suffix_udf " +
-                "AS 'com.hw.lineage.flink.common.MySuffixFunction'"
-        );
+                "AS 'com.hw.lineage.flink.common.MySuffixFunction'");
     }
 
 }

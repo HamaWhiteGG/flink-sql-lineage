@@ -42,22 +42,22 @@ import org.junit.runners.Suite;
  */
 @Ignore
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CommonTest.class
-        , SimpleTest.class
-        , LookupJoinTest.class
-        , TableFunctionTest.class
-        , WatermarkTest.class
-        , LocaltimestampTest.class
-        , CepTest.class
-        , WindowTest.class
-        , ProctimeTest.class
-        , CtasTest.class
-        , PaimonTest.class
-        , TvfTest.class})
+@Suite.SuiteClasses({CommonTest.class,
+        SimpleTest.class,
+        LookupJoinTest.class,
+        TableFunctionTest.class,
+        WatermarkTest.class,
+        LocaltimestampTest.class,
+        CepTest.class,
+        WindowTest.class,
+        ProctimeTest.class,
+        CtasTest.class,
+        PaimonTest.class,
+        TvfTest.class})
 public class SuiteTest {
 
     /*
-      The entry class of the test suite is just to organize the test classes together for testing,
-      without any test methods.
+     * The entry class of the test suite is just to organize the test classes together for testing, without any test
+     * methods.
      */
 }

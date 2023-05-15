@@ -40,7 +40,6 @@ public class WatermarkTest extends AbstractBasicTest {
         createTableOfDwdHudiUsers();
     }
 
-
     /**
      * insert-select-watermark.
      * <p>
@@ -65,12 +64,12 @@ public class WatermarkTest extends AbstractBasicTest {
                 {"ods_mysql_users_watermark", "name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users_watermark", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
+                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition",
+                        "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         analyzeLineage(sql, expectedArray);
     }
-
 
     /**
      * insert-select-two-table-watermark join.
@@ -97,12 +96,15 @@ public class WatermarkTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users_watermark", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users_watermark", "name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users_watermark.name, dim_mysql_company.company_name)"},
-                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users_watermark.name, dim_mysql_company.company_name)"},
+                {"ods_mysql_users_watermark", "name", "dwd_hudi_users", "name",
+                        "CONCAT(ods_mysql_users_watermark.name, dim_mysql_company.company_name)"},
+                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name",
+                        "CONCAT(ods_mysql_users_watermark.name, dim_mysql_company.company_name)"},
                 {"dim_mysql_company", "company_name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users_watermark", "ts", "dwd_hudi_users", "ts"},
-                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
+                {"ods_mysql_users_watermark", "birthday", "dwd_hudi_users", "partition",
+                        "DATE_FORMAT(birthday, 'yyyyMMdd')"}
         };
 
         analyzeLineage(sql, expectedArray);

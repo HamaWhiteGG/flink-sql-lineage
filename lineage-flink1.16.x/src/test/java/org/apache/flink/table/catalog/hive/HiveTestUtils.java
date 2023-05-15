@@ -31,6 +31,7 @@ import java.io.IOException;
  * @author: HamaWhite
  */
 public class HiveTestUtils {
+
     private static final String HIVE_WAREHOUSE_URI_FORMAT = "jdbc:derby:;databaseName=%s;create=true";
 
     private static final TemporaryFolder TEMPORARY_FOLDER = new TemporaryFolder();
@@ -40,10 +41,9 @@ public class HiveTestUtils {
                 catalogName,
                 defaultDatabase,
                 createHiveConf(),
-                hiveVersion
-                , true);
+                hiveVersion,
+                true);
     }
-
 
     public static HiveConf createHiveConf() {
         ClassLoader classLoader = HiveTestUtils.class.getClassLoader();

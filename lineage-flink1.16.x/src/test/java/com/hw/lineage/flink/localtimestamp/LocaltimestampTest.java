@@ -59,7 +59,6 @@ public class LocaltimestampTest extends AbstractBasicTest {
 
     }
 
-
     /**
      * Create datagen source table datagen_source
      */
@@ -74,10 +73,8 @@ public class LocaltimestampTest extends AbstractBasicTest {
                 "       WATERMARK FOR ts AS ts                      " +
                 ") WITH ( " +
                 "       'connector' = 'datagen'                     " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create print sink table print_sink
@@ -93,7 +90,6 @@ public class LocaltimestampTest extends AbstractBasicTest {
                 "       ts              TIMESTAMP(3)                 " +
                 ") WITH ( " +
                 "       'connector' = 'print'                        " +
-                ")"
-        );
+                ")");
     }
 }

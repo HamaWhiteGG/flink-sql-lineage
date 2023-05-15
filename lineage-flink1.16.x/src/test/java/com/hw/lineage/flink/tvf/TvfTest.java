@@ -142,7 +142,6 @@ public class TvfTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
     }
 
-
     @Test
     public void testCumulate() {
         String sql = "INSERT INTO print_sink                            " +
@@ -194,7 +193,6 @@ public class TvfTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
     }
 
-
     /**
      * Create mysql cdc table bid
      */
@@ -215,8 +213,7 @@ public class TvfTest extends AbstractBasicTest {
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users'            ," +
                 "       'scan.incremental.snapshot.enabled' = 'false'   " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -234,8 +231,7 @@ public class TvfTest extends AbstractBasicTest {
                 "       window_time         TIMESTAMP(3)                     " +
                 ") WITH (                                                    " +
                 "       'connector' = 'print'                                " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -250,7 +246,6 @@ public class TvfTest extends AbstractBasicTest {
                 "       price               DECIMAL(10, 2)                    " +
                 ") WITH (                                                     " +
                 "       'connector' = 'print'                                 " +
-                ")"
-        );
+                ")");
     }
 }

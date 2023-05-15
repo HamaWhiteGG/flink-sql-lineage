@@ -51,7 +51,7 @@ public class CtasTest extends AbstractBasicTest {
                 "FROM                                                         " +
                 "       datagen_source                                        " +
                 "WHERE                                                        " +
-                "       mod(id, 10) = 0                                       " ;
+                "       mod(id, 10) = 0                                       ";
 
         String[][] expectedArray = {
                 {"datagen_source", "id", "my_ctas_table", "id"},
@@ -60,7 +60,6 @@ public class CtasTest extends AbstractBasicTest {
         };
         analyzeLineage(ctasSql, expectedArray);
     }
-
 
     /**
      * Create datagen source table datagen_source
@@ -74,7 +73,6 @@ public class CtasTest extends AbstractBasicTest {
                 "       age             INT                                   " +
                 ") WITH (                                                     " +
                 "       'connector' = 'datagen'                               " +
-                ")"
-        );
+                ")");
     }
 }

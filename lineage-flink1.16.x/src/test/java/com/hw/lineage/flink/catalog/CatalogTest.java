@@ -45,6 +45,7 @@ import static org.junit.Assert.assertThrows;
  * @author: HamaWhite
  */
 public class CatalogTest {
+
     private static final Logger LOG = LoggerFactory.getLogger(CatalogTest.class);
 
     private static final String database = "lineage_db";
@@ -61,9 +62,10 @@ public class CatalogTest {
         assertThat(context.getCurrentCatalog(), is(catalogName));
     }
 
-
     private void useMemoryCatalog(String catalogName) {
-        context.execute(String.format("CREATE CATALOG %s with ( 'type'='generic_in_memory','default-database'='" + database + "' )", catalogName));
+        context.execute(String.format(
+                "CREATE CATALOG %s with ( 'type'='generic_in_memory','default-database'='" + database + "' )",
+                catalogName));
         context.execute(String.format("USE CATALOG %s", catalogName));
     }
 
@@ -75,7 +77,6 @@ public class CatalogTest {
         assertThat(context.getCurrentCatalog(), is(catalogName));
     }
 
-
     private void useJdbcCatalog(String catalogName) {
         // The database must be created in advance, otherwise an error will be reported when creating the catalog
         context.execute("CREATE CATALOG " + catalogName + " with (  " +
@@ -84,8 +85,7 @@ public class CatalogTest {
                 "       'username' = 'root'                                 ," +
                 "       'password' = 'root@123456'                          ," +
                 "       'base-url' = 'jdbc:mysql://192.168.90.150:3306'      " +
-                ")"
-        );
+                ")");
         context.execute(String.format("USE CATALOG %s", catalogName));
     }
 
@@ -104,11 +104,9 @@ public class CatalogTest {
                 "       'default-database' = '" + database + "'                      ," +
                 "       'hive-conf-dir' = '../data/hive-conf-dir'                    ," +
                 "       'hive-version' = '3.1.2'                                      " +
-                ")"
-        );
+                ")");
         context.execute(String.format("USE CATALOG %s", catalogName));
     }
-
 
     @Test
     public void testQueryMemoryCatalogInfo() throws Exception {
@@ -123,11 +121,10 @@ public class CatalogTest {
         String catalogName = "jdbc_catalog";
         useJdbcCatalog(catalogName);
 
-        assertThrows(String.format("Could not execute CreateTable in path `%s`.`%s`.`%s`", catalogName, database, tableName)
-                , TableException.class
-                , () -> checkQueryCatalogInfo(catalogName));
+        assertThrows(
+                String.format("Could not execute CreateTable in path `%s`.`%s`.`%s`", catalogName, database, tableName),
+                TableException.class, () -> checkQueryCatalogInfo(catalogName));
     }
-
 
     @Test
     @Ignore("depends on the external Hive environment")
@@ -136,7 +133,6 @@ public class CatalogTest {
         useHiveCatalog(catalogName);
         checkQueryCatalogInfo(catalogName);
     }
-
 
     private void checkQueryCatalogInfo(String catalogName) throws Exception {
         createTableOfOdsMysqlUsersWatermark();
@@ -158,9 +154,8 @@ public class CatalogTest {
                                  * TODO optimize,this should be PROCTIME(),but [PROCTIME()]
                                  * Because the asSummaryString method of different subclasses of Expression is different
                                  */
-                                new ColumnInfo("proc_time", "[PROCTIME()]", "", false, "")
-                        )
-                ).setPropertiesMap(
+                                new ColumnInfo("proc_time", "[PROCTIME()]", "", false, "")))
+                .setPropertiesMap(
                         ImmutableMap.of(
                                 "password", "xxx",
                                 "hostname", "127.0.0.1",
@@ -169,9 +164,7 @@ public class CatalogTest {
                                 "port", "3306",
                                 "database-name", "demo",
                                 "table-name", "users",
-                                "username", "root"
-                        )
-                );
+                                "username", "root"));
         TableInfo tableInfo = context.getTable(catalogName, database, tableName);
         LOG.info("tableInfo: {}", tableInfo);
         assertEquals(expectedTableInfo, tableInfo);
@@ -222,7 +215,6 @@ public class CatalogTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
 }

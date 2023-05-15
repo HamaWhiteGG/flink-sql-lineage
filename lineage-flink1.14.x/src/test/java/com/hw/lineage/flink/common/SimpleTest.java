@@ -49,7 +49,6 @@ public class SimpleTest extends AbstractBasicTest {
                 "FROM                                                   " +
                 "       ods_user                                        ";
 
-
         String[][] expectedArray = {
                 {"ods_user", "id", "mysql_user", "id"},
                 {"ods_user", "birthday", "mysql_user", "birthday"},
@@ -72,8 +71,7 @@ public class SimpleTest extends AbstractBasicTest {
                 "       'username'  = 'root'                                ," +
                 "       'password'  = 'xxx'                                 ," +
                 "       'table-name'= 'mysql_user'                           " +
-                ")"
-        );
+                ")");
     }
 
     protected void createTableOfOdsUser() {
@@ -90,7 +88,6 @@ public class SimpleTest extends AbstractBasicTest {
                 "       'username'  = 'root'                                ," +
                 "       'password'  = 'xxx'                                 ," +
                 "       'table-name'= 'ods_user'                             " +
-                ")"
-        );
+                ")");
     }
 }

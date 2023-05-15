@@ -40,7 +40,6 @@ public class LookupJoinTest extends AbstractBasicTest {
         createTableOfDwdHudiUsers();
     }
 
-
     /**
      * insert-select-two-table lookup join.
      * <p>
@@ -66,8 +65,10 @@ public class LookupJoinTest extends AbstractBasicTest {
 
         String[][] expectedArray = {
                 {"ods_mysql_users", "id", "dwd_hudi_users", "id"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
-                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name", "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "name",
+                        "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
+                {"dim_mysql_company", "company_name", "dwd_hudi_users", "name",
+                        "CONCAT(ods_mysql_users.name, dim_mysql_company.company_name)"},
                 {"dim_mysql_company", "company_name", "dwd_hudi_users", "company_name"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},

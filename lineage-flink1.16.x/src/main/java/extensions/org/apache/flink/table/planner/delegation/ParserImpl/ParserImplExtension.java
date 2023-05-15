@@ -18,7 +18,6 @@
 
 package extensions.org.apache.flink.table.planner.delegation.ParserImpl;
 
-
 import com.google.common.base.Preconditions;
 import manifold.ext.rt.api.Extension;
 import manifold.ext.rt.api.Jailbreak;
@@ -56,7 +55,6 @@ public class ParserImplExtension {
         Preconditions.checkArgument(parsed.size() == 1, "only single statement supported");
         return parsed.get(0);
     }
-
 
     /**
      * validate the query

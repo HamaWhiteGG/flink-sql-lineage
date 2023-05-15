@@ -111,8 +111,7 @@ public class ProctimeTest extends AbstractBasicTest {
                 "       'properties.group.id'   = 'testGroup',                       " +
                 "       'scan.startup.mode'     = 'earliest-offset',                 " +
                 "       'format'    = 'json'                                         " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -127,8 +126,7 @@ public class ProctimeTest extends AbstractBasicTest {
                 "       B               STRING                                       " +
                 ") WITH (                                                            " +
                 "       'connector' = 'print'                                        " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -143,10 +141,8 @@ public class ProctimeTest extends AbstractBasicTest {
                 "       make_time       AS PROCTIME()                         " +
                 ") WITH (                                                     " +
                 "       'connector' = 'datagen'                               " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create print sink table print_sink
@@ -160,7 +156,6 @@ public class ProctimeTest extends AbstractBasicTest {
                 "       make_time       TIMESTAMP(3)                         " +
                 ") WITH (                                                    " +
                 "       'connector' = 'print'                                " +
-                ")"
-        );
+                ")");
     }
 }

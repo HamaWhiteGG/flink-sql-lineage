@@ -33,7 +33,7 @@ import org.apache.calcite.plan.RelOptTable;
  * @author: HamaWhite
  */
 public class RelColumnOrigin {
-    //~ Instance fields --------------------------------------------------------
+    // ~ Instance fields --------------------------------------------------------
 
     private final RelOptTable originTable;
 
@@ -47,7 +47,7 @@ public class RelColumnOrigin {
      */
     private String transform;
 
-    //~ Constructors -----------------------------------------------------------
+    // ~ Constructors -----------------------------------------------------------
 
     public RelColumnOrigin(
             RelOptTable originTable,
@@ -69,7 +69,7 @@ public class RelColumnOrigin {
         this.transform = transform;
     }
 
-    //~ Methods ----------------------------------------------------------------
+    // ~ Methods ----------------------------------------------------------------
 
     /**
      * Returns table of origin.

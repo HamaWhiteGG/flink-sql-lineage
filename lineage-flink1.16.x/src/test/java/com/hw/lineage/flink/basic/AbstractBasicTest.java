@@ -60,7 +60,6 @@ public abstract class AbstractBasicTest {
         context.useCatalog(hiveCatalog);
     }
 
-
     @AfterClass
     public static void closeCatalog() {
         if (hiveCatalog != null) {
@@ -74,7 +73,6 @@ public abstract class AbstractBasicTest {
         List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
     }
-
 
     protected void analyzeLineage(String catalogName, String sql, String[][] expectedArray) {
         List<LineageResult> actualList = analyzeLineage(sql);
@@ -123,8 +121,7 @@ public abstract class AbstractBasicTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -149,10 +146,8 @@ public abstract class AbstractBasicTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create mysql dim table dim_mysql_company
@@ -169,8 +164,7 @@ public abstract class AbstractBasicTest {
                 "       'username'  = 'root'                 ," +
                 "       'password'  = 'xxx'          ," +
                 "       'table-name'= 'company' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -191,8 +185,7 @@ public abstract class AbstractBasicTest {
                 "        `partition`        VARCHAR(20)                      " +
                 ") PARTITIONED BY (`partition`) WITH ( " +
                 "       'connector' = 'print'                                " +
-                ")"
-        );
+                ")");
     }
 
 }

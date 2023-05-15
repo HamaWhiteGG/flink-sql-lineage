@@ -18,7 +18,6 @@
 
 package extensions.org.apache.flink.table.planner.delegation.ParserImpl;
 
-
 import manifold.ext.rt.api.Extension;
 import manifold.ext.rt.api.Jailbreak;
 import manifold.ext.rt.api.This;
@@ -49,7 +48,6 @@ public class ParserImplExtension {
         // parse the sql query
         return parser.parse(statement);
     }
-
 
     /**
      * validate the query

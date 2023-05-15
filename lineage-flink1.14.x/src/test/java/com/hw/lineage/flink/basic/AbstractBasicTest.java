@@ -111,8 +111,7 @@ public abstract class AbstractBasicTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -137,10 +136,8 @@ public abstract class AbstractBasicTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create mysql dim table dim_mysql_company
@@ -157,8 +154,7 @@ public abstract class AbstractBasicTest {
                 "       'username'  = 'root'                 ," +
                 "       'password'  = 'xxx'          ," +
                 "       'table-name'= 'company' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -179,8 +175,7 @@ public abstract class AbstractBasicTest {
                 "       'table.type' = 'COPY_ON_WRITE'                          ," +
                 "       'read.streaming.enabled' = 'true'                       ," +
                 "       'read.streaming.check-interval' = '1'                    " +
-                ")"
-        );
+                ")");
     }
 
 }

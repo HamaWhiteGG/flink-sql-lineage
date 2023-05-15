@@ -43,7 +43,6 @@ public class TableFunctionTest extends AbstractBasicTest {
         createTableOfDwdHudiUsers();
     }
 
-
     /**
      * insert-select with my_split_udtf
      * <p>
@@ -75,7 +74,6 @@ public class TableFunctionTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
         analyzeFunction(sql, new String[]{"my_split_udtf"});
     }
-
 
     /**
      * insert-select left join with my_split_udtf
@@ -110,7 +108,6 @@ public class TableFunctionTest extends AbstractBasicTest {
         analyzeFunction(sql, new String[]{"my_split_udtf"});
     }
 
-
     /**
      * insert-select left join with my_split_udtf and rename fields of the function in SQL
      * <p>
@@ -144,7 +141,6 @@ public class TableFunctionTest extends AbstractBasicTest {
         analyzeFunction(sql, new String[]{"my_split_udtf"});
     }
 
-
     /**
      * <a href="https://github.com/HamaWhiteGG/flink-sql-lineage/issues/66">UDTF resolve exceptions when functions in it</a>
      */
@@ -163,9 +159,11 @@ public class TableFunctionTest extends AbstractBasicTest {
                 "   LATERAL TABLE(my_split_udtf(CAST(name AS STRING))) AS T(new_word, new_length)";
 
         String[][] expectedArray = {
-                {"ods_mysql_users", "name", "dwd_hudi_users", "id", "my_split_udtf(CAST(name):VARCHAR(2147483647) CHARACTER SET \"UTF-16LE\").length"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "id",
+                        "my_split_udtf(CAST(name):VARCHAR(2147483647) CHARACTER SET \"UTF-16LE\").length"},
                 {"ods_mysql_users", "name", "dwd_hudi_users", "name"},
-                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name", "my_split_udtf(CAST(name):VARCHAR(2147483647) CHARACTER SET \"UTF-16LE\").word"},
+                {"ods_mysql_users", "name", "dwd_hudi_users", "company_name",
+                        "my_split_udtf(CAST(name):VARCHAR(2147483647) CHARACTER SET \"UTF-16LE\").word"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "birthday"},
                 {"ods_mysql_users", "ts", "dwd_hudi_users", "ts"},
                 {"ods_mysql_users", "birthday", "dwd_hudi_users", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
@@ -182,7 +180,6 @@ public class TableFunctionTest extends AbstractBasicTest {
         context.execute("DROP FUNCTION IF EXISTS my_split_udtf");
 
         context.execute("CREATE FUNCTION IF NOT EXISTS my_split_udtf " +
-                "AS 'com.hw.lineage.flink.tablefuncion.MySplitFunction'"
-        );
+                "AS 'com.hw.lineage.flink.tablefuncion.MySplitFunction'");
     }
 }
