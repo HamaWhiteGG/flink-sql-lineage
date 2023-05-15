@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -66,8 +65,8 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <directory>src/main/resources</directory>
                 <includes>
                     <include>application*.properties</include>
                     <include>scripts/h2/**</include>
@@ -113,10 +112,10 @@
                 <executions>
                     <execution>
                         <id>test-function-a</id>
-                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <phase>process-test-classes</phase>
                         <configuration>
                             <finalName>function-a</finalName>
                             <attach>false</attach>
@@ -127,10 +126,10 @@
                     </execution>
                     <execution>
                         <id>test-function-b</id>
-                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <phase>process-test-classes</phase>
                         <configuration>
                             <finalName>function-b</finalName>
                             <attach>false</attach>
@@ -147,20 +146,20 @@
                 <executions>
                     <execution>
                         <id>copy-functions</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
                             <target>
-                                <copy todir="../../data/storage/functions/function-a/" overwrite="true">
+                                <copy overwrite="true" todir="../../data/storage/functions/function-a/">
                                     <fileset dir="${project.build.directory}">
-                                        <include name="function-a.jar"/>
+                                        <include name="function-a.jar" />
                                     </fileset>
                                 </copy>
-                                <copy todir="../../data/storage/functions/function-b/" overwrite="true">
+                                <copy overwrite="true" todir="../../data/storage/functions/function-b/">
                                     <fileset dir="${project.build.directory}">
-                                        <include name="function-b.jar"/>
+                                        <include name="function-b.jar" />
                                     </fileset>
                                 </copy>
                             </target>
