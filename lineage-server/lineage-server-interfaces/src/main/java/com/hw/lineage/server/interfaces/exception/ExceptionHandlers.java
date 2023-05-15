@@ -44,7 +44,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 /**
  * refers to @see <a href="https://github.com/apache/shenyu">https://github.com/apache/shenyu</a>. thanks
  *
@@ -62,7 +61,8 @@ public class ExceptionHandlers {
         LOG.error(e.getMessage(), e);
         String message = e instanceof LineageException
                 ? e.getMessage()
-                : String.format("%s%sCaused by: %s", e.getMessage(), System.lineSeparator(), ExceptionUtils.getRootCauseMessage(e));
+                : String.format("%s%sCaused by: %s", e.getMessage(), System.lineSeparator(),
+                        ExceptionUtils.getRootCauseMessage(e));
         return Result.error(message);
     }
 
@@ -85,7 +85,8 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected Result<Boolean> handleHttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException e) {
+    protected Result<Boolean> handleHttpRequestMethodNotSupportedException(
+            final HttpRequestMethodNotSupportedException e) {
         LOG.warn("http request method not supported", e);
         StringBuilder sb = new StringBuilder();
         sb.append(e.getMethod());
@@ -134,7 +135,8 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    protected Result<Boolean> handleMissingServletRequestParameterException(final MissingServletRequestParameterException e) {
+    protected Result<Boolean> handleMissingServletRequestParameterException(
+            final MissingServletRequestParameterException e) {
         LOG.warn("missing servlet request parameter", e);
         return Result.error(String.format("%s parameter is missing", e.getParameterName()));
     }
@@ -148,6 +150,7 @@ public class ExceptionHandlers {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected Result<Boolean> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
         LOG.warn("method argument type mismatch", e);
-        return Result.error(String.format("%s should be of type %s", e.getName(), Objects.requireNonNull(e.getRequiredType()).getName()));
+        return Result.error(String.format("%s should be of type %s", e.getName(),
+                Objects.requireNonNull(e.getRequiredType()).getName()));
     }
 }

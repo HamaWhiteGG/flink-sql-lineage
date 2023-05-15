@@ -23,6 +23,7 @@ package com.hw.lineage.server.interfaces.result;
  * @author: HamaWhite
  */
 public class ResultMessage {
+
     private ResultMessage() {
         throw new IllegalStateException("Utility class");
     }
@@ -61,15 +62,15 @@ public class ResultMessage {
 
     public static final String NOT_LOGGED_IN = "please log in first";
 
-    public static final String USER_ACCOUNT_EXPIRED= "user account expired";
+    public static final String USER_ACCOUNT_EXPIRED = "user account expired";
 
-    public static final String USER_ACCOUNT_OR_PASSWORD_ERROR= "user account or password error";
+    public static final String USER_ACCOUNT_OR_PASSWORD_ERROR = "user account or password error";
 
-    public static final String USER_PASSWORD_EXPIRED= "user password expired";
+    public static final String USER_PASSWORD_EXPIRED = "user password expired";
 
-    public static final String USER_ACCOUNT_DISABLE= "user account disable";
+    public static final String USER_ACCOUNT_DISABLE = "user account disable";
 
-    public static final String USER_ACCOUNT_LOCKED= "user account locked";
+    public static final String USER_ACCOUNT_LOCKED = "user account locked";
 
     public static final String DETAIL_FAILED = "detail failed";
 

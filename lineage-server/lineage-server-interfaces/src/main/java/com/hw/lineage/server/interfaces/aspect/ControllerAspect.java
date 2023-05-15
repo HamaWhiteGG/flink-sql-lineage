@@ -52,6 +52,7 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class ControllerAspect implements ApplicationContextAware {
+
     private static final Logger LOG = LoggerFactory.getLogger(ControllerAspect.class);
 
     private ApplicationContext applicationContext;
@@ -110,7 +111,8 @@ public class ControllerAspect implements ApplicationContextAware {
         } finally {
             stopWatch.stop();
             if (notSkipLog(signature)) {
-                LOG.info("method: {}, time: {} ms, parameters: {}, result: {}", method, stopWatch.getTotalTimeMillis(), parameters, result);
+                LOG.info("method: {}, time: {} ms, parameters: {}, result: {}", method, stopWatch.getTotalTimeMillis(),
+                        parameters, result);
             }
             if (getAuditLog(signature) != null) {
                 command.setDuration(stopWatch.getTotalTimeMillis());
@@ -122,13 +124,12 @@ public class ControllerAspect implements ApplicationContextAware {
         }
     }
 
-
     private boolean notSkipLog(MethodSignature signature) {
         return signature.getMethod().getAnnotation(SkipLogAspect.class) == null;
     }
 
     private boolean isAuditParams(MethodSignature signature) {
-        if(getAuditLog(signature)!=null) {
+        if (getAuditLog(signature) != null) {
             return getAuditLog(signature).params();
         }
         return false;

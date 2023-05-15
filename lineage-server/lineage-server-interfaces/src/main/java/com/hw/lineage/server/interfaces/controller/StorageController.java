@@ -59,7 +59,8 @@ public class StorageController {
     @SkipLogAspect
     @PostMapping("/upload")
     @AuditLog(module = STORAGE, type = UPLOAD, descr = "'Upload File: ' + #file.originalFilename", params = false)
-    public Result<String> uploadFile(@RequestParam("file") MultipartFile file, @NotNull StorageType storageType) throws IOException {
+    public Result<String> uploadFile(@RequestParam("file") MultipartFile file, @NotNull StorageType storageType)
+            throws IOException {
         checkArgument(!file.isEmpty(), "failed to store empty file.");
         String filePath = storageService.uploadFile(file, storageType);
         return Result.success(ResultMessage.UPLOAD_SUCCESS, filePath);

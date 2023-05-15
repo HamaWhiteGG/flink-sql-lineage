@@ -18,7 +18,6 @@
 
 package com.hw.lineage.server.interfaces.enhanced;
 
-
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.hw.lineage.common.exception.LineageException;
@@ -78,7 +77,6 @@ public class EnhancedHttpRequestWrapper extends HttpServletRequestWrapper {
         return Collections.unmodifiableMap(parameters);
     }
 
-
     @Override
     public Enumeration<String> getParameterNames() {
         return Collections.enumeration(getParameterMap().keySet());
@@ -89,14 +87,13 @@ public class EnhancedHttpRequestWrapper extends HttpServletRequestWrapper {
         return getParameterMap().get(name);
     }
 
-
     /**
      * Get the stream in the request, adding additional parameters
      */
     public void enhancedBody(HttpServletRequest request, Map<String, String> additionalMap) {
         StringBuilder builder = new StringBuilder();
         try (InputStreamReader streamReader = new InputStreamReader(request.getInputStream());
-             BufferedReader bufferedReader = new BufferedReader(streamReader)) {
+                BufferedReader bufferedReader = new BufferedReader(streamReader)) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 builder.append(line);
@@ -124,6 +121,7 @@ public class EnhancedHttpRequestWrapper extends HttpServletRequestWrapper {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(body);
 
         return new ServletInputStream() {
+
             @Override
             public int read() throws IOException {
                 return inputStream.read();

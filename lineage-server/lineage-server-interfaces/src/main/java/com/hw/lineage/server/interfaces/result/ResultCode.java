@@ -23,6 +23,7 @@ package com.hw.lineage.server.interfaces.result;
  * @author: HamaWhite
  */
 public class ResultCode {
+
     private ResultCode() {
         throw new IllegalStateException("Utility class");
     }

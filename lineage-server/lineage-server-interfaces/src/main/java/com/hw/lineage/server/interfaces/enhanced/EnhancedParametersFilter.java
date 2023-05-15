@@ -59,17 +59,18 @@ public class EnhancedParametersFilter implements Filter {
      * @throws ServletException ...
      */
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             Map<String, String> additionalMap = buildAdditionalParameters();
-            EnhancedHttpRequestWrapper httpRequestWrapper = new EnhancedHttpRequestWrapper((HttpServletRequest) request, additionalMap);
+            EnhancedHttpRequestWrapper httpRequestWrapper =
+                    new EnhancedHttpRequestWrapper((HttpServletRequest) request, additionalMap);
             // pass the request along the filter chain
             chain.doFilter(httpRequestWrapper, response);
         } else {
             chain.doFilter(request, response);
         }
     }
-
 
     /**
      * Add the userId parameter in the request parameter

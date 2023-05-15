@@ -18,7 +18,6 @@
 
 package com.hw.lineage.server.interfaces.controller;
 
-
 import org.junit.Test;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.SpelParseException;
@@ -27,7 +26,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertThrows;
-
 
 /**
  * @description: SpelTest
@@ -49,7 +47,6 @@ public class SpelTest {
         assertThat(result).isEqualTo("Query Table: memory_catalog.default.ods_mysql_users");
     }
 
-
     @Test
     public void testSpelWithoutParameters() {
         ExpressionParser parser = new SpelExpressionParser();
@@ -57,13 +54,12 @@ public class SpelTest {
         context.setVariable("pluginName", "plugin_demo_1");
 
         String expression1 = "Check Plugin Exist";
-        assertThrows("EL1041E: After parsing a valid expression, there is still more data in the expression: 'Plugin'"
-                , SpelParseException.class
-                , () -> parser.parseExpression(expression1).getValue(context, String.class));
+        assertThrows("EL1041E: After parsing a valid expression, there is still more data in the expression: 'Plugin'",
+                SpelParseException.class, () -> parser.parseExpression(expression1).getValue(context, String.class));
 
         // strings with no parameters are enclosed in single quotation marks
         String expression2 = "'Check Plugin Exist'";
-        String result=parser.parseExpression(expression2).getValue(context, String.class);
+        String result = parser.parseExpression(expression2).getValue(context, String.class);
         assertThat(result).isEqualTo("Check Plugin Exist");
     }
 }

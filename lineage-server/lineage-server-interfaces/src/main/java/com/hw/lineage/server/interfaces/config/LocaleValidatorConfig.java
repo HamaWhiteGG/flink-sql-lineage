@@ -31,6 +31,7 @@ import java.util.Locale;
  */
 @Configuration
 public class LocaleValidatorConfig {
+
     @Bean
     LocaleResolver localeResolver() {
         // force english for spring-boot-starter-validation error messages

@@ -52,7 +52,8 @@ public class PermissionController {
     private PermissionService permissionService;
 
     @GetMapping("/{permissionId}")
-    @AuditLog(module = PERMISSION, type = QUERY, descr = "'Query Permission: ' + @permissionService.queryPermission(#permissionId).permissionName")
+    @AuditLog(module = PERMISSION, type = QUERY,
+            descr = "'Query Permission: ' + @permissionService.queryPermission(#permissionId).permissionName")
     public Result<PermissionDTO> queryPermission(@PathVariable("permissionId") Long permissionId) {
         PermissionDTO permissionDTO = permissionService.queryPermission(permissionId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, permissionDTO);
@@ -79,16 +80,18 @@ public class PermissionController {
     }
 
     @PutMapping("/{permissionId}")
-    @AuditLog(module = PERMISSION, type = UPDATE, descr = "'Update Permission: ' + @permissionService.queryPermission(#permissionId).permissionName")
+    @AuditLog(module = PERMISSION, type = UPDATE,
+            descr = "'Update Permission: ' + @permissionService.queryPermission(#permissionId).permissionName")
     public Result<Boolean> updatePermission(@PathVariable("permissionId") Long permissionId,
-                                        @Valid @RequestBody UpdatePermissionCmd command) {
+            @Valid @RequestBody UpdatePermissionCmd command) {
         command.setPermissionId(permissionId);
         permissionService.updatePermission(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{permissionId}")
-    @AuditLog(module = PERMISSION, type = DELETE, descr = "'Delete Permission: ' + @permissionService.queryPermission(#permissionId).permissionName")
+    @AuditLog(module = PERMISSION, type = DELETE,
+            descr = "'Delete Permission: ' + @permissionService.queryPermission(#permissionId).permissionName")
     public Result<Boolean> deletePermission(@PathVariable("permissionId") Long permissionId) {
         permissionService.deletePermission(permissionId);
         return Result.success(ResultMessage.DELETE_SUCCESS);

@@ -77,13 +77,13 @@ public class SecurityConfig {
     @Resource
     private UserService userService;
 
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         // override the default UserDetailsService
         authenticationProvider.setUserDetailsService(userService);
         authenticationProvider.setPasswordEncoder(new PasswordEncoder() {
+
             @Override
             public String encode(CharSequence rawPassword) {
                 // unencrypted password
@@ -97,7 +97,6 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -108,16 +107,18 @@ public class SecurityConfig {
                 .httpBasic()
                 .and()
                 .formLogin()
-                .successHandler((req, resp, authentication) -> writeSecurityResult(resp, Result.success(LOGIN_SUCCESS, authentication.getPrincipal())))
+                .successHandler((req, resp, authentication) -> writeSecurityResult(resp,
+                        Result.success(LOGIN_SUCCESS, authentication.getPrincipal())))
                 .failureHandler((req, resp, e) -> writeSecurityResult(resp, Result.error(optimizeFailureMessage(e))))
                 .and()
                 .logout()
-                .logoutSuccessHandler((req, resp, authentication) -> writeSecurityResult(resp, Result.success(LOGOUT_SUCCESS)))
+                .logoutSuccessHandler(
+                        (req, resp, authentication) -> writeSecurityResult(resp, Result.success(LOGOUT_SUCCESS)))
                 .permitAll()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint((req, resp, authException) -> writeSecurityResult(resp, Result.error(NOT_LOGGED_IN)))
-        ;
+                .authenticationEntryPoint(
+                        (req, resp, authException) -> writeSecurityResult(resp, Result.error(NOT_LOGGED_IN)));
 
         // add the userId parameter in the request parameter
         http.addFilterBefore(new EnhancedParametersFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -148,5 +149,3 @@ public class SecurityConfig {
         }
     }
 }
-
-

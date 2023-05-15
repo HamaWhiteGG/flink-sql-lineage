@@ -64,7 +64,7 @@ public class UserController {
 
     @GetMapping("/{userId}/avatar")
     @AuditLog(module = USER, type = QUERY, descr = "'Query User Avatar: ' + @userService.queryUser(#userId).username")
-    public ResponseEntity<byte[]> queryUserAvatar(@PathVariable("userId") Long userId)  {
+    public ResponseEntity<byte[]> queryUserAvatar(@PathVariable("userId") Long userId) {
         UserDTO userDTO = userService.queryUser(userId);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
@@ -94,7 +94,7 @@ public class UserController {
     @PutMapping("/{userId}")
     @AuditLog(module = USER, type = UPDATE, descr = "'Update User: ' + @userService.queryUser(#userId).username")
     public Result<Boolean> updateUser(@PathVariable("userId") Long userId,
-                                      @Valid @RequestBody UpdateUserCmd command) {
+            @Valid @RequestBody UpdateUserCmd command) {
         command.setUserId(userId);
         userService.updateUser(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);

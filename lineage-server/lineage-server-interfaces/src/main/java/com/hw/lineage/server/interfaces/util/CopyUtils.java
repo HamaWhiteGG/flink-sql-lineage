@@ -30,7 +30,7 @@ public class CopyUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static<T> T deepClone(T source) throws IOException, ClassNotFoundException {
+    public static <T> T deepClone(T source) throws IOException, ClassNotFoundException {
         Object obj;
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);

@@ -40,7 +40,7 @@ public class RequestUtils {
             "HTTP_FORWARDED_FOR",
             "HTTP_FORWARDED",
             "HTTP_VIA",
-            "REMOTE_ADDR" };
+            "REMOTE_ADDR"};
 
     public static String getIpAddr(HttpServletRequest request) {
         for (String header : IP_HEADER_CANDIDATES) {

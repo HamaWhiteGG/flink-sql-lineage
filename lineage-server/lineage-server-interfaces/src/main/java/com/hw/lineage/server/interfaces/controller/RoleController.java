@@ -81,7 +81,7 @@ public class RoleController {
     @PutMapping("/{roleId}")
     @AuditLog(module = ROLE, type = UPDATE, descr = "'Update Role: ' + @roleService.queryRole(#roleId).roleName")
     public Result<Boolean> updateRole(@PathVariable("roleId") Long roleId,
-                                        @Valid @RequestBody UpdateRoleCmd command) {
+            @Valid @RequestBody UpdateRoleCmd command) {
         command.setRoleId(roleId);
         roleService.updateRole(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
