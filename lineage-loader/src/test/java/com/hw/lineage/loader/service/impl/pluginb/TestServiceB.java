@@ -25,6 +25,7 @@ import com.hw.lineage.loader.service.TestService;
  * @author: HamaWhite
  */
 public class TestServiceB implements TestService {
+
     @Override
     public String say(String name) {
         return "B-" + name;

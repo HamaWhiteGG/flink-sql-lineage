@@ -28,6 +28,7 @@ import com.hw.lineage.loader.service.TestService;
  * @author: HamaWhite
  */
 public class DynamicClassA implements TestService {
+
     @Override
     public String say(String name) {
         return "Dynamic-A-" + name;

@@ -91,7 +91,7 @@ public class PluginLoader implements AutoCloseable {
      */
     public <P> Iterator<P> load(Class<P> service) {
         try (TemporaryClassLoaderContext ignored =
-                     TemporaryClassLoaderContext.of(pluginClassLoader)) {
+                TemporaryClassLoaderContext.of(pluginClassLoader)) {
             return new ContextClassLoaderSettingIterator<>(
                     ServiceLoader.load(service, pluginClassLoader).iterator(), pluginClassLoader);
         }
@@ -130,7 +130,7 @@ public class PluginLoader implements AutoCloseable {
         @Override
         public P next() {
             try (TemporaryClassLoaderContext ignored =
-                         TemporaryClassLoaderContext.of(pluginClassLoader)) {
+                    TemporaryClassLoaderContext.of(pluginClassLoader)) {
                 return delegate.next();
             }
         }

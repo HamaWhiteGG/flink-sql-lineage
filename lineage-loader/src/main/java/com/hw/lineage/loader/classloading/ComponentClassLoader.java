@@ -53,6 +53,7 @@ import java.util.*;
  * @author: HamaWhite
  */
 public class ComponentClassLoader extends URLClassLoader {
+
     private static final ClassLoader PLATFORM_OR_BOOTSTRAP_LOADER;
 
     private final ClassLoader ownerClassLoader;
@@ -242,8 +243,8 @@ public class ComponentClassLoader extends URLClassLoader {
         return new IteratorBackedEnumeration<>(iterator);
     }
 
-
     static class IteratorBackedEnumeration<T> implements Enumeration<T> {
+
         private final Iterator<T> backingIterator;
 
         public IteratorBackedEnumeration(Iterator<T> backingIterator) {
@@ -275,8 +276,7 @@ public class ComponentClassLoader extends URLClassLoader {
         ClassLoader platformLoader = null;
         try {
             platformLoader =
-                    (ClassLoader)
-                            ClassLoader.class.getMethod("getPlatformClassLoader").invoke(null);
+                    (ClassLoader) ClassLoader.class.getMethod("getPlatformClassLoader").invoke(null);
         } catch (NoSuchMethodException e) {
             // on Java 8 this method does not exist, but using null indicates the bootstrap
             // loader that we want to have

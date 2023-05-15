@@ -36,6 +36,7 @@ import java.io.StringWriter;
  * @author: HamaWhite
  */
 public class TestLogger {
+
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Rule
