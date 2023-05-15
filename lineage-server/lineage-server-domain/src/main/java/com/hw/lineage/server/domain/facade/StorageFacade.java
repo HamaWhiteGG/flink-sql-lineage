@@ -30,9 +30,10 @@ import java.net.MalformedURLException;
  * @author: HamaWhite
  */
 public interface StorageFacade {
+
     void init() throws IOException;
 
-    String store(Storage storage, InputStream inputStream) throws IOException ;
+    String store(Storage storage, InputStream inputStream) throws IOException;
 
     void delete(String filePath) throws IOException;
 

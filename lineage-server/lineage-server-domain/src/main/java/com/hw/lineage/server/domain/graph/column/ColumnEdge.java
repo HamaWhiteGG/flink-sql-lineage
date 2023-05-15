@@ -34,9 +34,8 @@ public class ColumnEdge extends Edge<ColumnNode> {
 
     private String transform;
 
-
-    public ColumnEdge(Integer edgeId,ColumnNode source, ColumnNode target, String transform) {
-        super(edgeId,source, target);
+    public ColumnEdge(Integer edgeId, ColumnNode source, ColumnNode target, String transform) {
+        super(edgeId, source, target);
         this.transform = transform;
     }
 }

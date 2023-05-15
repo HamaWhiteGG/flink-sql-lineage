@@ -18,7 +18,6 @@
 
 package com.hw.lineage.server.domain.graph.column;
 
-
 import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

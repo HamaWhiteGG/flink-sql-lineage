@@ -34,4 +34,3 @@ public class UserId implements Identifier {
         this.value = value;
     }
 }
-

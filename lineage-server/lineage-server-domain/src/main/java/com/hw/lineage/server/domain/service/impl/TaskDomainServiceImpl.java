@@ -58,16 +58,17 @@ public class TaskDomainServiceImpl implements TaskDomainService {
             .put("RESET", RESET)
             .put("ADD", JAR).put("REMOVE", JAR)
             .build();
-    private static final List<SqlType> SUPPORT_SQL_TYPE = Arrays.asList(CREATE, DROP, ALTER, INSERT, USE, LOAD, UNLOAD, SET, RESET, JAR);
-
+    private static final List<SqlType> SUPPORT_SQL_TYPE =
+            Arrays.asList(CREATE, DROP, ALTER, INSERT, USE, LOAD, UNLOAD, SET, RESET, JAR);
 
     @Override
     public void generateTaskSql(Task task) {
         task.getTaskSource().split()
                 .forEach(e -> {
                     SqlType sqlType = extractSqlType(e.getSqlSource());
-                    checkArgument(SUPPORT_SQL_TYPE.contains(sqlType)
-                            , "currently only supports SQL starting with %s, not yet: %s", SUPPORT_SQL_TYPE, e.getSqlSource());
+                    checkArgument(SUPPORT_SQL_TYPE.contains(sqlType),
+                            "currently only supports SQL starting with %s, not yet: %s", SUPPORT_SQL_TYPE,
+                            e.getSqlSource());
                     TaskSql taskSql = new TaskSql()
                             .setTaskId(task.getTaskId())
                             .setSqlSource(Base64Utils.encode(e.getSqlSource()))

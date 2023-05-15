@@ -42,7 +42,6 @@ public class TaskSource {
 
     private static final String NEWLINE_REGEX = "\r?\n";
 
-
     private final String value;
 
     public TaskSource(String value) {

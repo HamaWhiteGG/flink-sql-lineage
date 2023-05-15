@@ -33,4 +33,3 @@ public class UserCheck implements Serializable {
     @NotNull
     private String username;
 }
-

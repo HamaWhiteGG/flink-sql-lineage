@@ -65,8 +65,8 @@ public interface LineageFacade {
 
     void deleteTable(String pluginCode, String catalogName, String database, String tableName) throws Exception;
 
-    void createFunction(String pluginCode, String catalogName, String database, String functionName
-            , String className, String functionPath);
+    void createFunction(String pluginCode, String catalogName, String database, String functionName, String className,
+            String functionPath);
 
     void deleteFunction(String pluginCode, String catalogName, String database, String functionName);
 

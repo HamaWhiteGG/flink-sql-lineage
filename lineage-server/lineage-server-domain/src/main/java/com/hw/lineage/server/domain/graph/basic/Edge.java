@@ -46,12 +46,16 @@ public class Edge<N extends Node> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Edge edge = (Edge) o;
-
-        if (!source.equals(edge.source)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Edge<N> edge = (Edge<N>) o;
+        if (!source.equals(edge.source)) {
+            return false;
+        }
         return target.equals(edge.target);
     }
 

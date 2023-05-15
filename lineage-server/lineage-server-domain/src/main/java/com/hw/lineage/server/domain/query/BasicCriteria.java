@@ -30,6 +30,7 @@ import java.io.Serializable;
  */
 @Data
 public class BasicCriteria implements Serializable {
+
     @NotNull
     @ApiModelProperty(hidden = true)
     private Long userId;

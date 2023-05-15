@@ -76,4 +76,3 @@ public class Graph<N extends Node, E extends Edge<N>> {
                 .collect(Collectors.toSet());
     }
 }
-

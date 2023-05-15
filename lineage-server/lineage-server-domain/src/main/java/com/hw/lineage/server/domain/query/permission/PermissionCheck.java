@@ -33,4 +33,3 @@ public class PermissionCheck implements Serializable {
 
     private String permissionCode;
 }
-

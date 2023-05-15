@@ -33,4 +33,3 @@ public class RoleCheck implements Serializable {
     @NotNull
     private String roleName;
 }
-

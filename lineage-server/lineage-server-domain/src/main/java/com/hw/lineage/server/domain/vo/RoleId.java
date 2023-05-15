@@ -34,4 +34,3 @@ public class RoleId implements Identifier {
         this.value = value;
     }
 }
-

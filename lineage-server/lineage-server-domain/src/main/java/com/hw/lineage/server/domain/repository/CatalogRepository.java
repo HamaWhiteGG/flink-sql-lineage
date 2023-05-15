@@ -44,4 +44,3 @@ public interface CatalogRepository extends Repository<Catalog, CatalogId> {
 
     CatalogEntry findEntry(CatalogId catalogId);
 }
-

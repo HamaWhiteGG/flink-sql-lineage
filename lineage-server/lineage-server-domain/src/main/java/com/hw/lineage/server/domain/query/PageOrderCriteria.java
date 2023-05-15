@@ -28,6 +28,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public class PageOrderCriteria extends OrderCriteria {
+
     private Integer pageNum = 1;
     private Integer pageSize = 10;
 }

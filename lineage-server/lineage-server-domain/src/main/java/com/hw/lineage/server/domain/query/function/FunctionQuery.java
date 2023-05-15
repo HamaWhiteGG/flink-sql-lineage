@@ -30,6 +30,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public class FunctionQuery extends PageOrderCriteria {
+
     @ApiModelProperty(hidden = true)
     private Long catalogId;
 

@@ -35,7 +35,7 @@ public class TableEdge extends Edge<TableNode> {
     private String sqlSource;
 
     public TableEdge(Integer edgeId, TableNode source, TableNode target, String sqlSource) {
-        super(edgeId,source, target);
+        super(edgeId, source, target);
         this.sqlSource = sqlSource;
     }
 }

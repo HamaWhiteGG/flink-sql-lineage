@@ -27,7 +27,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public abstract class BasicEntity extends RootEntity{
+public abstract class BasicEntity extends RootEntity {
 
     private Long createUserId;
 
