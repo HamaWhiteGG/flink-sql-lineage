@@ -68,7 +68,6 @@ public class LineageClient {
     private static final String CREATE_FUNCTION_SQL = "CREATE FUNCTION IF NOT EXISTS %s.`%s`.%s AS '%s' USING JAR '%s'";
     private static final String DROP_FUNCTION_SQL = "DROP FUNCTION IF EXISTS %s.`%s`.%s";
 
-
     private final Map<String, LineageService> lineageServiceMap;
 
     public LineageClient(String path) {
@@ -81,14 +80,13 @@ public class LineageClient {
                     checkArgument(lineageServiceList.size() == 1,
                             "%s plugin no implementation of LineageService or greater than 1", entry.getKey());
                     return lineageServiceList.get(0);
-                }
-        ));
+                }));
     }
 
     private Map<String, Iterator<LineageService>> loadPlugins(String path) {
         File pluginRootFolder = new File(path);
         if (!pluginRootFolder.exists()) {
-            // for lineage-server-start maven test, user.dir is lineage-server/lineage-server-start, so go back two levels of directories
+            // for lineage-server-start maven test, user.dir is lineage-server/lineage-server-start
             pluginRootFolder = new File("../../" + path);
         }
         Path pluginRootFolderPath = pluginRootFolder.toPath();
@@ -120,7 +118,8 @@ public class LineageClient {
     /**
      * Analyze the field blood relationship of the input SQL
      */
-    public List<LineageResult> analyzeLineage(String pluginCode, String catalogName, String database, String singleSql) {
+    public List<LineageResult> analyzeLineage(String pluginCode, String catalogName, String database,
+            String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
@@ -131,7 +130,8 @@ public class LineageClient {
     /**
      * Analyze the custom functions used in this SQL
      */
-    public Set<FunctionResult> analyzeFunction(String pluginCode, String catalogName, String database, String singleSql) {
+    public Set<FunctionResult> analyzeFunction(String pluginCode, String catalogName, String database,
+            String singleSql) {
         LineageService service = getLineageService(pluginCode);
         try (TemporaryClassLoaderContext ignored = TemporaryClassLoaderContext.of(service.getClassLoader())) {
             service.execute(String.format(USE_DATABASE_SQL, catalogName, database));
@@ -207,11 +207,10 @@ public class LineageClient {
         execute(pluginCode, String.format(DROP_DATABASE_SQL, catalogName, database));
     }
 
-    public void createFunction(String pluginCode, String catalogName, String database, String functionName
-            , String className, String functionPath) {
-        execute(pluginCode
-                , String.format(CREATE_FUNCTION_SQL, catalogName, database, functionName, className, functionPath)
-        );
+    public void createFunction(String pluginCode, String catalogName, String database, String functionName,
+            String className, String functionPath) {
+        execute(pluginCode,
+                String.format(CREATE_FUNCTION_SQL, catalogName, database, functionName, className, functionPath));
     }
 
     public void deleteFunction(String pluginCode, String catalogName, String database, String functionName) {
@@ -250,7 +249,8 @@ public class LineageClient {
     /**
      * Reads a registered table and returns the tableResult.
      */
-    public TableInfo getTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+    public TableInfo getTable(String pluginCode, String catalogName, String database, String tableName)
+            throws Exception {
         LineageService service = getLineageService(pluginCode);
         return service.getTable(catalogName, database, tableName);
     }
@@ -258,7 +258,8 @@ public class LineageClient {
     /**
      * Return the base64 encrypted ddl
      */
-    public String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+    public String getTableDdl(String pluginCode, String catalogName, String database, String tableName)
+            throws Exception {
         LineageService service = getLineageService(pluginCode);
         return service.getTableDdl(catalogName, database, tableName);
     }

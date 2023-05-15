@@ -56,8 +56,7 @@ public class LineageClientTest {
 
         Map<String, String> propertiesMap = ImmutableMap.of(
                 "type", "generic_in_memory",
-                "default-database", database
-        );
+                "default-database", database);
 
         Stream.of(PLUGIN_CODES).forEach(pluginCode -> {
             client.createCatalog(pluginCode, catalogName, propertiesMap);
@@ -129,8 +128,7 @@ public class LineageClientTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -151,8 +149,7 @@ public class LineageClientTest {
                 "       'table.type' = 'COPY_ON_WRITE'                          ," +
                 "       'read.streaming.enabled' = 'true'                       ," +
                 "       'read.streaming.check-interval' = '1'                    " +
-                ")"
-        );
+                ")");
     }
 
     @Test
@@ -162,14 +159,14 @@ public class LineageClientTest {
                 "default-database", "lineage_catalog",
                 "username", "root",
                 "password", "root@123456",
-                "base-url", "jdbc:mysql://127.0.0.1:3306"
-        );
+                "base-url", "jdbc:mysql://127.0.0.1:3306");
         String properties = propertiesMap.entrySet()
                 .stream()
                 .map(entry -> String.format("'%s'='%s'", entry.getKey(), entry.getValue()))
                 .collect(Collectors.joining(","));
 
-        assertThat(properties, is("'type'='jdbc','default-database'='lineage_catalog','username'='root','password'='root@123456','base-url'='jdbc:mysql://127.0.0.1:3306'"));
+        assertThat(properties, is(
+                "'type'='jdbc','default-database'='lineage_catalog','username'='root','password'='root@123456','base-url'='jdbc:mysql://127.0.0.1:3306'"));
     }
 
 }
