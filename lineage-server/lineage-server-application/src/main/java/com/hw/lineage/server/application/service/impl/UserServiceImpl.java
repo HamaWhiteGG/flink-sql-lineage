@@ -44,7 +44,6 @@ import java.util.List;
 import static com.hw.lineage.common.util.Constant.DEFAULT_USER_ID;
 import static com.hw.lineage.common.util.Preconditions.checkNotNull;
 
-
 /**
  * @description: UserServiceImpl
  * @author: HamaWhite

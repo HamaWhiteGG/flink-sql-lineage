@@ -50,6 +50,7 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  */
 @Mapper(componentModel = "spring")
 public interface DtoAssembler {
+
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 
     @Mapping(source = "taskId.value", target = "taskId")
@@ -102,7 +103,6 @@ public interface DtoAssembler {
     @Mapping(source = "user.userId.value", target = "userId")
     UserDTO fromUserRoles(User user, List<Role> roleList);
 
-
     @Mapping(source = "roleId.value", target = "roleId")
     RoleDTO fromRole(Role role);
 
@@ -117,12 +117,12 @@ public interface DtoAssembler {
         LineageGraph lineageGraph = toLineageGraph(task.getTableGraph(),
                 task.getColumnGraph(),
                 catalogName,
-                task.getDatabase()
-        );
+                task.getDatabase());
         taskDTO.setLineageGraph(lineageGraph);
     }
 
-    default LineageGraph toLineageGraph(TableGraph tableGraph, ColumnGraph columnGraph, String catalogName, String database) {
+    default LineageGraph toLineageGraph(TableGraph tableGraph, ColumnGraph columnGraph, String catalogName,
+            String database) {
         LineageGraph lineageGraph = new LineageGraph();
         if (tableGraph == null) {
             return lineageGraph;
@@ -132,7 +132,8 @@ public interface DtoAssembler {
                 .map(tableNode -> {
                     List<Column> columnList = tableNode.getColumnNodeList()
                             .stream()
-                            .map(columnNode -> new Column(columnNode.getNodeId().toString(), columnNode.getNodeName(), columnNode.getChildrenCnt()))
+                            .map(columnNode -> new Column(columnNode.getNodeId().toString(), columnNode.getNodeName(),
+                                    columnNode.getChildrenCnt()))
                             .collect(Collectors.toList());
 
                     String optimizedName = optimizeTableName(catalogName, database, tableNode.getNodeName());
@@ -148,24 +149,20 @@ public interface DtoAssembler {
         // add table edges
         List<Link> linkList = tableGraph.getEdgeSet()
                 .stream()
-                .map(tableEdge -> new TableLink(tableEdge.getEdgeId().toString()
-                        , tableEdge.getSource().getNodeId().toString()
-                        , tableEdge.getTarget().getNodeId().toString()
-                        , tableEdge.getSqlSource()))
+                .map(tableEdge -> new TableLink(tableEdge.getEdgeId().toString(),
+                        tableEdge.getSource().getNodeId().toString(), tableEdge.getTarget().getNodeId().toString(),
+                        tableEdge.getSqlSource()))
                 .collect(Collectors.toList());
 
         // add column edges
         linkList.addAll(columnGraph.getEdgeSet()
                 .stream()
-                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId().toString()
-                        , columnEdge.getSource().getTableNodeId().toString()
-                        , columnEdge.getTarget().getTableNodeId().toString()
-                        , columnEdge.getSource().getNodeId().toString()
-                        , columnEdge.getTarget().getNodeId().toString()
-                        , Strings.nullToEmpty(columnEdge.getTransform())
-                ))
-                .collect(Collectors.toList())
-        );
+                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId().toString(),
+                        columnEdge.getSource().getTableNodeId().toString(),
+                        columnEdge.getTarget().getTableNodeId().toString(),
+                        columnEdge.getSource().getNodeId().toString(), columnEdge.getTarget().getNodeId().toString(),
+                        Strings.nullToEmpty(columnEdge.getTransform())))
+                .collect(Collectors.toList()));
         return lineageGraph.setNodes(vertexList).setLinks(linkList);
     }
 

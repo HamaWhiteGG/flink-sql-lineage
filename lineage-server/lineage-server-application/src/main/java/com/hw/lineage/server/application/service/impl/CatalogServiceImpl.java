@@ -173,11 +173,8 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public void createDatabase(CreateDatabaseCmd command) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(command.getCatalogId()));
-        lineageFacade.createDatabase(entry.getPluginCode()
-                , entry.getCatalogName()
-                , command.getDatabase()
-                , command.getComment()
-        );
+        lineageFacade.createDatabase(entry.getPluginCode(), entry.getCatalogName(), command.getDatabase(),
+                command.getComment());
     }
 
     @Override
@@ -204,9 +201,8 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public void createTable(CreateTableCmd command) {
         CatalogEntry entry = catalogRepository.findEntry(new CatalogId(command.getCatalogId()));
-        lineageFacade.createTable(entry.getPluginCode(), entry.getCatalogName()
-                , command.getDatabase(), command.getDdl()
-        );
+        lineageFacade.createTable(entry.getPluginCode(), entry.getCatalogName(), command.getDatabase(),
+                command.getDdl());
     }
 
     @Override
@@ -245,8 +241,7 @@ public class CatalogServiceImpl implements CatalogService {
         return assembler.toLineageGraph(tableGraph,
                 columnGraph,
                 entry.getCatalogName(),
-                database
-        );
+                database);
     }
 
     @Override
@@ -284,9 +279,8 @@ public class CatalogServiceImpl implements CatalogService {
         Plugin plugin = pluginRepository.find(catalog.getPluginId());
         Map<String, String> propertiesMap = catalog.getPropertiesMap();
         if (catalog.getCatalogType().equals(HIVE)) {
-            Arrays.asList("hive-conf-dir", "hadoop-conf-dir").forEach(option ->
-                    propertiesMap.computeIfPresent(option, (key, value) -> storageFacade.getParentUri(value))
-            );
+            Arrays.asList("hive-conf-dir", "hadoop-conf-dir").forEach(option -> propertiesMap.computeIfPresent(option,
+                    (key, value) -> storageFacade.getParentUri(value)));
         }
         lineageFacade.createCatalog(plugin.getPluginCode(), catalog.getCatalogName(), propertiesMap);
         LOG.info("created catalog: [{}] in plugin: [{}]", catalog.getCatalogName(), plugin.getPluginName());

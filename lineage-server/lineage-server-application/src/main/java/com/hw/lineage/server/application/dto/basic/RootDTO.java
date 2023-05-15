@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @author: HamaWhite
  */
 @Data
-public abstract class RootDTO implements Serializable  {
+public abstract class RootDTO implements Serializable {
 
     private Long createTime;
 

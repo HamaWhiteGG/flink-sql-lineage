@@ -45,7 +45,6 @@ public class AuditServiceImpl implements AuditService {
     @Resource
     private DtoAssembler assembler;
 
-
     @Override
     public Long createAudit(CreateAuditCmd command) {
         Audit audit = new Audit()

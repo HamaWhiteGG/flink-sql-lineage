@@ -29,7 +29,6 @@ import org.junit.Test;
 import static com.hw.lineage.server.application.assembler.DtoAssembler.INSTANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 /**
  * @description: DtoAssemblerTest
  * @author: HamaWhite
@@ -63,7 +62,6 @@ public class DtoAssemblerTest {
         assertThat(taskDTO.getCreateTime()).isEqualTo(time);
         assertThat(taskDTO.getModifyTime()).isEqualTo(time);
     }
-
 
     @Test
     public void testOptimizeName() {

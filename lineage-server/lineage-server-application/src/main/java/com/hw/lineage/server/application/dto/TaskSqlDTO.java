@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author: HamaWhite
  */
 @Data
-public class  TaskSqlDTO implements Serializable {
+public class TaskSqlDTO implements Serializable {
 
     private Long sqlId;
 

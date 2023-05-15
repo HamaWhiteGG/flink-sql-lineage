@@ -32,7 +32,6 @@ import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import java.io.IOException;
 import java.util.List;
 
-
 /**
  * @description: FunctionService
  * @author: HamaWhite

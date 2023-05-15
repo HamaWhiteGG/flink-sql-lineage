@@ -29,6 +29,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TableDTO {
+
     private String tableName;
 
     private TableKind tableKind;

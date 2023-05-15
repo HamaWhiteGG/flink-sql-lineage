@@ -33,7 +33,7 @@ public interface StorageService {
 
     void init() throws IOException;
 
-    String uploadFile(MultipartFile file, StorageType storageType) throws IOException ;
+    String uploadFile(MultipartFile file, StorageType storageType) throws IOException;
 
     void deleteFile(String filePath) throws IOException;
 

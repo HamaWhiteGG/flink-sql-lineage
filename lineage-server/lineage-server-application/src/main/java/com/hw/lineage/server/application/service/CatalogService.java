@@ -32,7 +32,6 @@ import com.hw.lineage.server.domain.query.catalog.CatalogQuery;
 
 import java.util.List;
 
-
 /**
  * @description: CatalogService
  * @author: HamaWhite

@@ -29,6 +29,7 @@ import java.util.List;
  */
 @Data
 public class RoleDTO extends RootDTO {
+
     private Long roleId;
 
     private String roleName;

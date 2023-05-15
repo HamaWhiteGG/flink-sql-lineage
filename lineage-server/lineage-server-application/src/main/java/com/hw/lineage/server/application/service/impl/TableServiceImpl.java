@@ -49,14 +49,12 @@ public class TableServiceImpl implements TableService {
     @Resource
     private LineageFacade lineageFacade;
 
-
     @Override
     public void createMemoryTables() {
         List<Table> tableList = tableRepository.findMemory();
         // create tables of memory catalog in flink
         tableList.forEach(this::createTableInEngine);
     }
-
 
     private void createTableInEngine(Table table) {
         CatalogEntry entry = catalogRepository.findEntry(table.getCatalogId());

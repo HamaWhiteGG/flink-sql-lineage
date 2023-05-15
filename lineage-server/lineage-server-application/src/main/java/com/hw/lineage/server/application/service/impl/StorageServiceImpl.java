@@ -47,7 +47,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String uploadFile(MultipartFile file, StorageType storageType) throws IOException {
-        Storage storage = new Storage(file.getOriginalFilename(),storageType);
+        Storage storage = new Storage(file.getOriginalFilename(), storageType);
         // store file
         try (InputStream inputStream = file.getInputStream()) {
             return storageFacade.store(storage, inputStream);

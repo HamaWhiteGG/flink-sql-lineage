@@ -161,12 +161,11 @@ public class FunctionServiceImpl implements FunctionService {
         functionList.forEach(this::createFunctionInEngine);
     }
 
-
     private void createFunctionInEngine(Function function) {
         CatalogEntry entry = catalogRepository.findEntry(function.getCatalogId());
         String functionPath = storageFacade.getUri(function.getFunctionPath());
-        lineageFacade.createFunction(entry.getPluginCode(), entry.getCatalogName(), function.getDatabase()
-                , function.getFunctionName(), function.getClassName(), functionPath);
+        lineageFacade.createFunction(entry.getPluginCode(), entry.getCatalogName(), function.getDatabase(),
+                function.getFunctionName(), function.getClassName(), functionPath);
         LOG.info("created function: [{}] in catalog: [{}]", function.getFunctionName(), entry.getCatalogName());
     }
 }
