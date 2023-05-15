@@ -36,6 +36,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @SpringBootApplication(scanBasePackages = {"com.hw.lineage.server.*"})
 public class LineageServerApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(LineageServerApplication.class, args);
     }

@@ -40,7 +40,7 @@ public class PluginMapperTest extends AbstractSpringBootTest {
     public void testSelectByPrimaryKey() {
         Long pluginId = 1L;
 
-        PluginDO pluginDO=pluginMapper.selectByPrimaryKey(pluginId)
+        PluginDO pluginDO = pluginMapper.selectByPrimaryKey(pluginId)
                 .orElseThrow(() -> new LineageException(String.format("pluginId [%s] is not existed", pluginId)));
 
         assertThat(pluginDO).isNotNull();

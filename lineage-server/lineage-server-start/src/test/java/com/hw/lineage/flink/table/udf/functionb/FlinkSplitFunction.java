@@ -37,4 +37,3 @@ public class FlinkSplitFunction extends TableFunction<Row> {
         }
     }
 }
-

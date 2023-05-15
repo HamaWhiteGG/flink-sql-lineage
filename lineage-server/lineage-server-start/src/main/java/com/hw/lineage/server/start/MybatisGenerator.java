@@ -37,6 +37,7 @@ import java.util.List;
  * @author: HamaWhite
  */
 public class MybatisGenerator {
+
     private static final Logger LOG = LoggerFactory.getLogger(MybatisGenerator.class);
 
     private static final String MYBATIS_GENERATOR_CONFIG = "mybatis/mybatis-generator.xml";

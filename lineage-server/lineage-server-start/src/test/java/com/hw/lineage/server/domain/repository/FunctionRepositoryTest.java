@@ -35,7 +35,6 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-
 /**
  * @description: FunctionRepositoryTest
  * @author: HamaWhite
@@ -82,7 +81,7 @@ public class FunctionRepositoryTest extends AbstractSpringBootTest {
         FunctionTaskQuery query = new FunctionTaskQuery();
         query.setFunctionId(1L);
         PageInfo<FunctionTaskDTO> pageInfo = functionRepository.findFunctionTasks(query);
-        LOG.info("result: {}",pageInfo);
+        LOG.info("result: {}", pageInfo);
         assertThat(pageInfo).isNotNull();
     }
 }
