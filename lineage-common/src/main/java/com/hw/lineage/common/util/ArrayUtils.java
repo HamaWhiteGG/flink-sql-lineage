@@ -23,6 +23,7 @@ package com.hw.lineage.common.util;
  * @author: HamaWhite
  */
 public class ArrayUtils {
+
     private ArrayUtils() {
     }
 

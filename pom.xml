@@ -464,9 +464,9 @@
                     <version>${spotless-maven-plugin.version}</version>
                     <configuration>
                         <java>
-                            <!--                            <eclipse>-->
-                            <!--                                <file>style/spotless-formatter.xml</file>-->
-                            <!--                            </eclipse>-->
+                            <eclipse>
+                                <file>style/spotless-formatter.xml</file>
+                            </eclipse>
                             <licenseHeader>
                                 <file>style/license-header</file>
                             </licenseHeader>

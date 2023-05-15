@@ -48,5 +48,4 @@ public class TableInfo {
      */
     private Map<String, String> propertiesMap;
 
-
 }

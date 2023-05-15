@@ -25,6 +25,7 @@ import com.hw.lineage.common.enums.basic.StringEnum;
  * @author: HamaWhite
  */
 public enum SqlType implements StringEnum<SqlType> {
+
     SELECT("select"),
     CREATE("create"),
     DROP("drop"),

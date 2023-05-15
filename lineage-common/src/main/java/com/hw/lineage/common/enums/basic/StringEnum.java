@@ -23,5 +23,6 @@ package com.hw.lineage.common.enums.basic;
  * @author: HamaWhite
  */
 public interface StringEnum<E extends Enum<E>> {
+
     String value();
 }

@@ -58,8 +58,8 @@ public class LineageResult {
      */
     private String transform;
 
-    public LineageResult(String sourceTablePath, String sourceColumn
-            , String targetTablePath, String targetColumn, String transform) {
+    public LineageResult(String sourceTablePath, String sourceColumn, String targetTablePath, String targetColumn,
+            String transform) {
         String[] sourceItems = sourceTablePath.split("\\" + Constant.DELIMITER);
         String[] targetItems = targetTablePath.split("\\" + Constant.DELIMITER);
 
@@ -74,8 +74,8 @@ public class LineageResult {
         this.transform = transform;
     }
 
-    public LineageResult(String catalog, String database, String sourceTable, String sourceColumn
-            , String targetTable, String targetColumn) {
+    public LineageResult(String catalog, String database, String sourceTable, String sourceColumn, String targetTable,
+            String targetColumn) {
         this.sourceCatalog = catalog;
         this.sourceDatabase = database;
         this.sourceTable = sourceTable;

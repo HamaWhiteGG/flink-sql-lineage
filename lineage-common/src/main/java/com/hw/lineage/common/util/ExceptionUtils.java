@@ -27,7 +27,6 @@ public class ExceptionUtils {
     private ExceptionUtils() {
     }
 
-
     /**
      * Throws the given {@code Throwable} in scenarios where the signatures do not allow you to
      * throw an arbitrary Throwable. Errors and RuntimeExceptions are thrown directly, other

@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  * @author: HamaWhite
  */
 public class PageUtils {
+
     private PageUtils() {
         throw new IllegalStateException("Utility class");
     }

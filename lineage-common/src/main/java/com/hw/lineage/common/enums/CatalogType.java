@@ -18,7 +18,6 @@
 
 package com.hw.lineage.common.enums;
 
-
 import com.hw.lineage.common.enums.basic.StringEnum;
 
 /**

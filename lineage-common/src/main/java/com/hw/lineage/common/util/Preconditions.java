@@ -39,9 +39,8 @@ public class Preconditions {
     private Preconditions() {
     }
 
-
     // ------------------------------------------------------------------------
-    //  Null checks
+    // Null checks
     // ------------------------------------------------------------------------
 
     public static <T> T checkNotNull(@Nullable T reference, RuntimeException exception) {
@@ -50,7 +49,6 @@ public class Preconditions {
         }
         return reference;
     }
-
 
     /**
      * Ensures that the given object reference is not null. Upon violation, a {@code
@@ -113,7 +111,7 @@ public class Preconditions {
     }
 
     // ------------------------------------------------------------------------
-    //  Boolean Condition Checking (Argument)
+    // Boolean Condition Checking (Argument)
     // ------------------------------------------------------------------------
 
     /**
@@ -168,7 +166,7 @@ public class Preconditions {
     }
 
     // ------------------------------------------------------------------------
-    //  Boolean Condition Checking (State)
+    // Boolean Condition Checking (State)
     // ------------------------------------------------------------------------
 
     /**
@@ -275,7 +273,7 @@ public class Preconditions {
     }
 
     // ------------------------------------------------------------------------
-    //  Utilities
+    // Utilities
     // ------------------------------------------------------------------------
 
     /**
