@@ -113,6 +113,10 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (iOutputColumn < nLeftColumns) {
             set = mq.getColumnOrigins(rel.getLeft(), iOutputColumn);
         } else {
+            set = new HashSet<>();
+            for (Integer required : rel.getRequiredColumns().asList()) {
+                set.addAll(mq.getColumnOrigins(rel.getLeft(), required));
+            }
             if (rel.getRight() instanceof TableFunctionScan) {
                 // get the field name of the left table configured in the Table Function on the right
                 TableFunctionScan tableFunctionScan = (TableFunctionScan) rel.getRight();
@@ -121,14 +125,6 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                 RexFieldAccess rexFieldAccess = searchRexFieldAccess(rexCall);
                 if (rexFieldAccess != null) {
                     String fieldName = rexFieldAccess.getField().getName();
-                    /*
-                       Get the fields from the left table, don't go to
-                       getColumnOrigins(TableFunctionScan rel,RelMetadataQuery mq, int iOutputColumn),
-                       otherwise the return is null, and the UDTF field origin cannot be parsed
-                     */
-                    int leftFieldIndex = fieldNameList.indexOf(fieldName);
-                    set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
-
                     // process transform for udtf
                     String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
                             + DELIMITER
