@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.flink.basic;
 
 import com.hw.lineage.common.model.FunctionResult;
@@ -42,7 +60,6 @@ public abstract class AbstractBasicTest {
         context.useCatalog(hiveCatalog);
     }
 
-
     @AfterClass
     public static void closeCatalog() {
         if (hiveCatalog != null) {
@@ -56,7 +73,6 @@ public abstract class AbstractBasicTest {
         List<LineageResult> expectedList = LineageResult.buildResult(catalogName, defaultDatabase, expectedArray);
         assertEquals(expectedList, actualList);
     }
-
 
     protected void analyzeLineage(String catalogName, String sql, String[][] expectedArray) {
         List<LineageResult> actualList = analyzeLineage(sql);
@@ -105,8 +121,7 @@ public abstract class AbstractBasicTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -131,10 +146,8 @@ public abstract class AbstractBasicTest {
                 "       'server-time-zone' = 'Asia/Shanghai' ," +
                 "       'database-name' = 'demo'             ," +
                 "       'table-name'    = 'users' " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create mysql dim table dim_mysql_company
@@ -151,8 +164,7 @@ public abstract class AbstractBasicTest {
                 "       'username'  = 'root'                 ," +
                 "       'password'  = 'xxx'          ," +
                 "       'table-name'= 'company' " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -173,8 +185,7 @@ public abstract class AbstractBasicTest {
                 "        `partition`        VARCHAR(20)                      " +
                 ") PARTITIONED BY (`partition`) WITH ( " +
                 "       'connector' = 'print'                                " +
-                ")"
-        );
+                ")");
     }
 
 }

@@ -1,5 +1,22 @@
-package com.hw.lineage.server.domain.vo;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+package com.hw.lineage.server.domain.vo;
 
 import com.hw.lineage.common.util.Base64Utils;
 import org.junit.Test;
@@ -20,7 +37,8 @@ public class TaskSourceTest {
      */
     @Test
     public void testFirstSplitSource() {
-        String source = "SELECT * FROM t1;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
+        String source =
+                "SELECT * FROM t1;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
         source = Base64Utils.encode(source);
         TaskSource taskSource = new TaskSource(source);
         List<SplitSource> splitList = taskSource.split();
@@ -35,7 +53,8 @@ public class TaskSourceTest {
      */
     @Test
     public void testSecondSplitSource() {
-        String source = "SELECT * FROM t1;SELECT SPLIT_INDEX(str, \";\", 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
+        String source =
+                "SELECT * FROM t1;SELECT SPLIT_INDEX(str, \";\", 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
         source = Base64Utils.encode(source);
         TaskSource taskSource = new TaskSource(source);
         List<TaskSource.SplitSource> splitList = taskSource.split();
@@ -50,7 +69,8 @@ public class TaskSourceTest {
      */
     @Test
     public void testThirdSplitSource() {
-        String source = "SELECT * FROM t1;SELECT SPLIT_INDEX(str,':', 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
+        String source =
+                "SELECT * FROM t1;SELECT SPLIT_INDEX(str,':', 0) FROM t2;SELECT SPLIT_INDEX(str, \"m;2\", 0) FROM t3";
         source = Base64Utils.encode(source);
         TaskSource taskSource = new TaskSource(source);
         List<TaskSource.SplitSource> splitList = taskSource.split();
@@ -79,7 +99,8 @@ public class TaskSourceTest {
      */
     @Test
     public void testFifthSplitSource() {
-        String source = "SELECT * FROM t1;;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;;;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
+        String source =
+                "SELECT * FROM t1;;SELECT SPLIT_INDEX(str, ';', 0) FROM t2;;;SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3";
         source = Base64Utils.encode(source);
         TaskSource taskSource = new TaskSource(source);
         List<TaskSource.SplitSource> splitList = taskSource.split();
@@ -114,7 +135,6 @@ public class TaskSourceTest {
         assertThat(splitList.get(2)).isEqualTo(new SplitSource("SELECT SPLIT_INDEX(str, 'm;2', 0) FROM t3", 10L));
     }
 
-
     /**
      * Remove comments and line break
      */
@@ -135,7 +155,8 @@ public class TaskSourceTest {
         List<TaskSource.SplitSource> splitList = taskSource.split();
         assertThat(splitList).isNotNull().asList().hasSize(3);
         System.out.println(splitList);
-        assertThat(splitList.get(0)).isEqualTo(new SplitSource("CREATE TABLE users (\n" + "  id INT PRIMARY KEY,\n" + "  name VARCHAR(100)\n)",2L));
+        assertThat(splitList.get(0)).isEqualTo(
+                new SplitSource("CREATE TABLE users (\n" + "  id INT PRIMARY KEY,\n" + "  name VARCHAR(100)\n)", 2L));
         assertThat(splitList.get(1)).isEqualTo(new SplitSource("INSERT INTO users (id, name) VALUES (1, 'Alice')", 8L));
         assertThat(splitList.get(2)).isEqualTo(new SplitSource("INSERT INTO users (id, name) VALUES (2, 'Bob')", 9L));
     }

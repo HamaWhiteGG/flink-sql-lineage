@@ -1,9 +1,26 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.flink.cep;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
 import org.junit.Before;
 import org.junit.Test;
-
 
 /**
  * The test case comes from <a href="https://www.jianshu.com/p/c0b76abe4224">CEP used by Flink (SQL method)</a> and
@@ -60,12 +77,12 @@ public class CepTest extends AbstractBasicTest {
                 {"temperature_source", "ts", "print_sink", "end_ts", "LAST(B.ts, 0)"},
                 {"temperature_source", "temperature", "print_sink", "start_temp", "A.temperature"},
                 {"temperature_source", "temperature", "print_sink", "end_temp", "LAST(B.temperature, 0)"},
-                {"temperature_source", "temperature", "print_sink", "avg_temp", "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
+                {"temperature_source", "temperature", "print_sink", "avg_temp",
+                        "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
         };
 
         analyzeLineage(sql, expectedArray);
     }
-
 
     @Test
     public void testInsertSelectViewCep() {
@@ -91,8 +108,7 @@ public class CepTest extends AbstractBasicTest {
                 "               A as A.temperature < 50,                    " +
                 "               B as B.temperature >=50,                    " +
                 "               C as C.temperature < 50                     " +
-                "   )"
-        );
+                "   )");
 
         String sql = "INSERT INTO print_sink (rack_id, start_ts, end_ts, start_temp, end_temp, avg_temp) " +
                 "SELECT " +
@@ -105,19 +121,20 @@ public class CepTest extends AbstractBasicTest {
                 "FROM" +
                 "   temperature_view";
 
-        // variables A and B in transform are not replaced. LAST and AVG functions have also been replaced, and add CAST function.
+        // variables A and B in transform are not replaced. LAST and AVG functions have also been replaced, and add CAST
+        // function.
         String[][] expectedArray = {
                 {"temperature_source", "rack_id", "print_sink", "rack_id"},
                 {"temperature_source", "ts", "print_sink", "start_ts", "CAST(A.ts):TIMESTAMP(3)"},
                 {"temperature_source", "ts", "print_sink", "end_ts", "CAST(LAST(B.ts, 0)):TIMESTAMP(3)"},
                 {"temperature_source", "temperature", "print_sink", "start_temp", "A.temperature"},
                 {"temperature_source", "temperature", "print_sink", "end_temp", "LAST(B.temperature, 0)"},
-                {"temperature_source", "temperature", "print_sink", "avg_temp", "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
+                {"temperature_source", "temperature", "print_sink", "avg_temp",
+                        "CAST(/(SUM(B.temperature), COUNT(B.temperature))):INTEGER"}
         };
 
         analyzeLineage(sql, expectedArray);
     }
-
 
     /**
      * Create datagen source table temperature_source
@@ -134,10 +151,8 @@ public class CepTest extends AbstractBasicTest {
                 "       'connector' = 'filesystem'                          ," +
                 "       'path' = 'data/temperature_record.csv'              ," +
                 "       'format' = 'csv'                                     " +
-                ")                                                           "
-        );
+                ")                                                           ");
     }
-
 
     /**
      * Create print sink table print_sink
@@ -154,8 +169,7 @@ public class CepTest extends AbstractBasicTest {
                 "       avg_temp            INT                              " +
                 ") WITH (                                                    " +
                 "       'connector' = 'print'                                " +
-                ")                                                           "
-        );
+                ")                                                           ");
     }
 
     /**
@@ -173,8 +187,7 @@ public class CepTest extends AbstractBasicTest {
                 "       row_time AS PROCTIME()                               " +
                 ") WITH (                                                    " +
                 "       'connector' = 'datagen'                              " +
-                ")                                                           "
-        );
+                ")                                                           ");
     }
 
     /**
@@ -191,8 +204,7 @@ public class CepTest extends AbstractBasicTest {
                 "       end_time            BIGINT                           " +
                 ") WITH (                                                    " +
                 "       'connector' = 'blackhole'                            " +
-                ")                                                           "
-        );
+                ")                                                           ");
     }
 
     /**

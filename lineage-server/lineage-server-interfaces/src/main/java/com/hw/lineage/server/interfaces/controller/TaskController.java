@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.interfaces.controller;
 
 import com.github.pagehelper.PageInfo;
@@ -73,7 +91,7 @@ public class TaskController {
     @PutMapping("/{taskId}")
     @AuditLog(module = TASK, type = UPDATE, descr = "'Update Task: ' + @taskService.queryTask(#taskId).taskName")
     public Result<Boolean> updateTask(@PathVariable("taskId") Long taskId,
-                                      @Valid @RequestBody UpdateTaskCmd command) {
+            @Valid @RequestBody UpdateTaskCmd command) {
         command.setTaskId(taskId);
         taskService.updateTask(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
@@ -87,7 +105,8 @@ public class TaskController {
     }
 
     @PostMapping("/{taskId}/lineage")
-    @AuditLog(module = TASK, type = ANALYZE_LINEAGE, descr = "'Analyze Lineage: ' + @taskService.queryTask(#taskId).taskName")
+    @AuditLog(module = TASK, type = ANALYZE_LINEAGE,
+            descr = "'Analyze Lineage: ' + @taskService.queryTask(#taskId).taskName")
     public Result<TaskDTO> analyzeTaskLineage(@PathVariable("taskId") Long taskId) {
         TaskDTO taskDTO = taskService.analyzeTaskLineage(taskId);
         return Result.success(ResultMessage.ANALYZE_LINEAGE_SUCCESS, taskDTO);
@@ -96,14 +115,15 @@ public class TaskController {
     @PostMapping("/{taskId}/syntax")
     @AuditLog(module = TASK, type = CHECK_SYNTAX, descr = "'Check Syntax: ' + @taskService.queryTask(#taskId).taskName")
     public Result<TaskSyntaxDTO> checkTaskSyntax(@PathVariable("taskId") Long taskId) {
-        TaskSyntaxDTO taskSyntaxDTO= taskService.checkTaskSyntax(taskId);
+        TaskSyntaxDTO taskSyntaxDTO = taskService.checkTaskSyntax(taskId);
         return Result.success(ResultMessage.CHECK_SYNTAX_SUCCESS, taskSyntaxDTO);
     }
 
     @GetMapping("/{taskId}/functions")
-    @AuditLog(module = TASK, type = QUERY, descr = "'Query Task Functions: ' + @taskService.queryTask(#taskId).taskName")
+    @AuditLog(module = TASK, type = QUERY,
+            descr = "'Query Task Functions: ' + @taskService.queryTask(#taskId).taskName")
     public Result<PageInfo<TaskFunctionDTO>> queryTaskFunctions(@PathVariable("taskId") Long taskId,
-                                                                TaskFunctionQuery query) {
+            TaskFunctionQuery query) {
         query.setTaskId(taskId);
         PageInfo<TaskFunctionDTO> pageInfo = taskService.queryTaskFunctions(query);
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);

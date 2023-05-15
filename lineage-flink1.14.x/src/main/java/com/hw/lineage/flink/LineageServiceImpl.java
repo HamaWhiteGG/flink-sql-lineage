@@ -1,5 +1,22 @@
-package com.hw.lineage.flink;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+package com.hw.lineage.flink;
 
 import com.hw.lineage.common.enums.TableKind;
 import com.hw.lineage.common.model.*;
@@ -57,19 +74,18 @@ import static java.util.Objects.requireNonNull;
  * @author: HamaWhite
  */
 public class LineageServiceImpl implements LineageService {
+
     private static final Logger LOG = LoggerFactory.getLogger(LineageServiceImpl.class);
 
     private static final String SHOW_CREATE_TABLE_SQL = "SHOW CREATE TABLE %s.`%s`.%s";
 
     private static final String SHOW_CREATE_VIEW_SQL = "SHOW CREATE VIEW %s.`%s`.%s";
 
-
     private static final Map<String, String> FUNCTION_SUFFIX_MAP = ImmutableMap.of(
             ScalarFunction.class.getName(), "udf",
             TableFunction.class.getName(), "udtf",
             AggregateFunction.class.getName(), "udaf",
-            TableAggregateFunction.class.getName(), "udtaf"
-    );
+            TableAggregateFunction.class.getName(), "udtaf");
 
     private final TableEnvironmentImpl tableEnv;
 
@@ -146,11 +162,12 @@ public class LineageServiceImpl implements LineageService {
     @Override
     public List<LineageResult> analyzeLineage(String singleSql) {
         /*
-          Since TableEnvironment is not thread-safe, add this sentence to solve it.
-          Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
-          http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
+         * Since TableEnvironment is not thread-safe, add this sentence to solve it. Otherwise, NullPointerException
+         * will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
+         * http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
          */
-        RelMetadataQueryBase.THREAD_PROVIDERS.set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
+        RelMetadataQueryBase.THREAD_PROVIDERS
+                .set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
 
         LOG.info("Analyze lineage Sql: \n {}", singleSql);
         // 1. Generate original relNode tree
@@ -165,7 +182,6 @@ public class LineageServiceImpl implements LineageService {
         // 2. Build lineage based from RelMetadataQuery
         return buildFiledLineageResult(sinkTable, oriRelNode);
     }
-
 
     private Tuple2<String, RelNode> parseStatement(String singleSql) {
         // do parse, validate and convert
@@ -189,11 +205,12 @@ public class LineageServiceImpl implements LineageService {
      */
     private Operation parseValidateConvert(String singleSql) {
         /*
-          Since TableEnvironment is not thread-safe, add this sentence to solve it.
-          Otherwise, NullPointerException will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
-          http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
+         * Since TableEnvironment is not thread-safe, add this sentence to solve it. Otherwise, NullPointerException
+         * will appear when org.apache.calcite.rel.metadata.RelMetadataQuery.<init>
+         * http://apache-flink.370.s1.nabble.com/flink1-11-0-sqlQuery-NullPointException-td5466.html
          */
-        RelMetadataQueryBase.THREAD_PROVIDERS.set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
+        RelMetadataQueryBase.THREAD_PROVIDERS
+                .set(JaninoRelMetadataProvider.of(FlinkDefaultRelMetadataProvider.INSTANCE()));
 
         List<Operation> operations = tableEnv.getParser().parse(singleSql);
         if (operations.size() != 1) {
@@ -232,7 +249,8 @@ public class LineageServiceImpl implements LineageService {
 
                     // filed
                     int ordinal = rco.getOriginColumnOrdinal();
-                    List<String> fieldNames = ((TableSourceTable) table).catalogTable().getResolvedSchema().getColumnNames();
+                    List<String> fieldNames =
+                            ((TableSourceTable) table).catalogTable().getResolvedSchema().getColumnNames();
                     String sourceColumn = fieldNames.get(ordinal);
                     LOG.debug("----------------------------------------------------------");
                     LOG.debug("Source table: {}", sourceTable);
@@ -241,13 +259,13 @@ public class LineageServiceImpl implements LineageService {
                         LOG.debug("transform: {}", rco.getTransform());
                     }
                     // add record
-                    resultList.add(new LineageResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
+                    resultList.add(
+                            new LineageResult(sourceTable, sourceColumn, sinkTable, targetColumn, rco.getTransform()));
                 }
             }
         }
         return resultList;
     }
-
 
     /**
      * Check the size of query and sink fields match
@@ -276,17 +294,18 @@ public class LineageServiceImpl implements LineageService {
         URL url = file.toURI().toURL();
 
         try (URLClassLoader classLoader = new URLClassLoader(new URL[]{url}, getClass().getClassLoader());
-             JarFile jarFile = new JarFile(file)) {
+                JarFile jarFile = new JarFile(file)) {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 String entryName = entries.nextElement().getName();
                 if (entryName.endsWith(".class")) {
                     String className = entryName.replace("/", ".").substring(0, entryName.length() - 6);
-                    // filter commons-compress.jar because of asm and org.apache.flink.table.functions.python.PythonScalarFunction
+                    // filter commons-compress.jar because of asm
                     if (!className.startsWith("org.apache.commons.compress.harmony")
                             && !className.startsWith("org.apache.flink.table.functions")) {
                         Class<?> clazz = classLoader.loadClass(className);
-                        if (clazz.getSuperclass() != null && FUNCTION_SUFFIX_MAP.containsKey(clazz.getSuperclass().getName())) {
+                        if (clazz.getSuperclass() != null
+                                && FUNCTION_SUFFIX_MAP.containsKey(clazz.getSuperclass().getName())) {
                             resultList.add(parseUserDefinedFunction(clazz));
                         }
                     }
@@ -335,15 +354,13 @@ public class LineageServiceImpl implements LineageService {
         return "return " + searchClassName(method.getReturnType().getName());
     }
 
-
     private String searchClassName(String value) {
         return value.contains(".") ? value.substring(value.lastIndexOf(".") + 1) : value;
     }
 
     private Catalog getCatalog(String catalogName) {
-        return tableEnv.getCatalog(catalogName).orElseThrow(() ->
-                new ValidationException(String.format("Catalog %s does not exist", catalogName))
-        );
+        return tableEnv.getCatalog(catalogName)
+                .orElseThrow(() -> new ValidationException(String.format("Catalog %s does not exist", catalogName)));
     }
 
     @Override
@@ -369,15 +386,12 @@ public class LineageServiceImpl implements LineageService {
         LOG.info("table.schema: {}", schema);
         List<String> primaryKeyList = new ArrayList<>();
         schema.getPrimaryKey()
-                .ifPresent(pk ->
-                        primaryKeyList.addAll(pk.getColumnNames())
-                );
+                .ifPresent(pk -> primaryKeyList.addAll(pk.getColumnNames()));
 
         Map<String, String> watermarkMap = schema.getWatermarkSpecs()
                 .stream()
-                .collect(Collectors.toMap(Schema.UnresolvedWatermarkSpec::getColumnName
-                        , entry -> entry.getWatermarkExpression().toString())
-                );
+                .collect(Collectors.toMap(Schema.UnresolvedWatermarkSpec::getColumnName,
+                        entry -> entry.getWatermarkExpression().toString()));
 
         List<ColumnInfo> columnList = schema.getColumns()
                 .stream()
@@ -386,8 +400,8 @@ public class LineageServiceImpl implements LineageService {
                         .setColumnType(processColumnType(column))
                         .setComment(column.getComment().orElse(""))
                         .setPrimaryKey(primaryKeyList.contains(column.getName()))
-                        .setWatermark(watermarkMap.getOrDefault(column.getName(), ""))
-                ).collect(Collectors.toList());
+                        .setWatermark(watermarkMap.getOrDefault(column.getName(), "")))
+                .collect(Collectors.toList());
 
         return new TableInfo()
                 .setTableName(tableName)
@@ -433,7 +447,6 @@ public class LineageServiceImpl implements LineageService {
         // simplified table name
         return tableDdl.replace(String.format("`%s`.`%s`.", catalogName, database), "");
     }
-
 
     public String getCurrentCatalog() {
         return tableEnv.getCurrentCatalog();

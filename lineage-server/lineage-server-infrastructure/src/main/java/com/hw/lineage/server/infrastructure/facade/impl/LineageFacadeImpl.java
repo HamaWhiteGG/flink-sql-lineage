@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.infrastructure.facade.impl;
 
 import com.hw.lineage.client.LineageClient;
@@ -127,23 +145,25 @@ public class LineageFacadeImpl implements LineageFacade {
         } catch (Exception e) {
             task.setTaskStatus(TaskStatus.FAILED);
             task.appendTaskLog(e.getMessage());
-            LOG.info("taskId: {}, taskName: {} is failed. the taskLog is: \n{}", task.getTaskId(), task.getTaskName(), task.getTaskLog());
+            LOG.info("taskId: {}, taskName: {} is failed. the taskLog is: \n{}", task.getTaskId(), task.getTaskName(),
+                    task.getTaskLog());
         }
     }
 
     private void parseValidate(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
-        doProcessSql(task, taskSql, singleSql, () ->
-                lineageClient.parseValidate(pluginCode, catalogName, task.getDatabase(), singleSql));
+        doProcessSql(task, taskSql, singleSql,
+                () -> lineageClient.parseValidate(pluginCode, catalogName, task.getDatabase(), singleSql));
     }
 
     private void execute(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
-        doProcessSql(task, taskSql, singleSql, () ->
-                lineageClient.execute(pluginCode, catalogName, task.getDatabase(), singleSql));
+        doProcessSql(task, taskSql, singleSql,
+                () -> lineageClient.execute(pluginCode, catalogName, task.getDatabase(), singleSql));
     }
 
     private void analyzeLineage(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         doProcessSql(task, taskSql, singleSql, () -> {
-            List<LineageResult> resultList = lineageClient.analyzeLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
+            List<LineageResult> resultList =
+                    lineageClient.analyzeLineage(pluginCode, catalogName, task.getDatabase(), singleSql);
             resultList.forEach(e -> {
                 TaskLineage taskLineage = new TaskLineage()
                         .setTaskId(task.getTaskId())
@@ -165,7 +185,8 @@ public class LineageFacadeImpl implements LineageFacade {
 
     private void analyzeFunction(String pluginCode, String catalogName, Task task, TaskSql taskSql, String singleSql) {
         doProcessSql(task, taskSql, singleSql, () -> {
-            Set<FunctionResult> resultSet = lineageClient.analyzeFunction(pluginCode, catalogName, task.getDatabase(), singleSql);
+            Set<FunctionResult> resultSet =
+                    lineageClient.analyzeFunction(pluginCode, catalogName, task.getDatabase(), singleSql);
             resultSet.forEach(e -> {
                 TaskFunction taskFunction = new TaskFunction()
                         .setTaskId(task.getTaskId())
@@ -197,8 +218,7 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public List<FunctionInfo> parseFunction(String pluginCode, File file) throws
-            IOException, ClassNotFoundException {
+    public List<FunctionInfo> parseFunction(String pluginCode, File file) throws IOException, ClassNotFoundException {
         return lineageClient.parseFunction(pluginCode, file);
     }
 
@@ -214,7 +234,7 @@ public class LineageFacadeImpl implements LineageFacade {
 
     @Override
     public void useCatalog(String pluginCode, String catalogName) {
-        lineageClient.useCatalog(pluginCode,catalogName);
+        lineageClient.useCatalog(pluginCode, catalogName);
     }
 
     @Override
@@ -234,7 +254,7 @@ public class LineageFacadeImpl implements LineageFacade {
 
     @Override
     public void useDatabase(String pluginCode, String catalogName, String database) {
-        lineageClient.useDatabase(pluginCode,catalogName,database);
+        lineageClient.useDatabase(pluginCode, catalogName, database);
     }
 
     @Override
@@ -258,7 +278,8 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public String getTableDdl(String pluginCode, String catalogName, String database, String tableName) throws Exception {
+    public String getTableDdl(String pluginCode, String catalogName, String database, String tableName)
+            throws Exception {
         String tableDdl = lineageClient.getTableDdl(pluginCode, catalogName, database, tableName);
         return Base64Utils.encode(tableDdl);
     }
@@ -269,14 +290,13 @@ public class LineageFacadeImpl implements LineageFacade {
     }
 
     @Override
-    public void deleteTable(String pluginCode, String catalogName, String database, String tableName) throws
-            Exception {
+    public void deleteTable(String pluginCode, String catalogName, String database, String tableName) throws Exception {
         lineageClient.deleteTable(pluginCode, catalogName, database, tableName);
     }
 
     @Override
-    public void createFunction(String pluginCode, String catalogName, String database, String functionName, String
-            className, String functionPath) {
+    public void createFunction(String pluginCode, String catalogName, String database, String functionName,
+            String className, String functionPath) {
         lineageClient.createFunction(pluginCode, catalogName, database, functionName, className, functionPath);
     }
 
