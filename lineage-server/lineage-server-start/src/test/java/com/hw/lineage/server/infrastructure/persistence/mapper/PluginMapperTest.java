@@ -21,6 +21,7 @@ package com.hw.lineage.server.infrastructure.persistence.mapper;
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.server.AbstractSpringBootTest;
 import com.hw.lineage.server.infrastructure.persistence.dos.PluginDO;
+
 import org.junit.Test;
 
 import javax.annotation.Resource;

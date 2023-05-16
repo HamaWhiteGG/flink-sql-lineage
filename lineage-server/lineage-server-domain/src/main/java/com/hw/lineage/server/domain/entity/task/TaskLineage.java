@@ -20,6 +20,7 @@ package com.hw.lineage.server.domain.entity.task;
 
 import com.hw.lineage.server.domain.vo.SqlId;
 import com.hw.lineage.server.domain.vo.TaskId;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 

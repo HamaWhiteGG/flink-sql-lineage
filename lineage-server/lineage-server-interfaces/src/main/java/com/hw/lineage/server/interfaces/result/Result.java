@@ -18,8 +18,9 @@
 
 package com.hw.lineage.server.interfaces.result;
 
-import lombok.Data;
 import org.springframework.http.HttpStatus;
+
+import lombok.Data;
 
 import java.io.Serializable;
 

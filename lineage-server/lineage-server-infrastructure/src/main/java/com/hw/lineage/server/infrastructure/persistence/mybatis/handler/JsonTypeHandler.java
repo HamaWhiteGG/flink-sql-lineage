@@ -19,6 +19,7 @@
 package com.hw.lineage.server.infrastructure.persistence.mybatis.handler;
 
 import com.alibaba.fastjson2.JSON;
+
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 

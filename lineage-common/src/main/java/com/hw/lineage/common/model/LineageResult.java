@@ -19,6 +19,7 @@
 package com.hw.lineage.common.model;
 
 import com.hw.lineage.common.util.Constant;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

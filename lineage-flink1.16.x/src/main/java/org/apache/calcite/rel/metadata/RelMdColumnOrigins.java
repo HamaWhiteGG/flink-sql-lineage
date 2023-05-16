@@ -59,7 +59,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
 
     private static final Logger LOG = LoggerFactory.getLogger(RelMdColumnOrigins.class);
 
-    private final Pattern pattern = Pattern.compile("\\$\\d+");
+    private final Pattern pattern = Pattern.compile("\\$[\\w.]+");
 
     public static final RelMetadataProvider SOURCE =
             ReflectiveRelMetadataProvider.reflectiveSource(
@@ -83,10 +83,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         }
 
         // Aggregate columns are derived from input columns
-        AggregateCall call =
-                rel.getAggCallList().get(iOutputColumn
-                        - rel.getGroupCount());
-
+        AggregateCall call = rel.getAggCallList().get(iOutputColumn - rel.getGroupCount());
         final Set<RelColumnOrigin> set = new LinkedHashSet<>();
         for (Integer iInput : call.getArgList()) {
             set.addAll(mq.getColumnOrigins(rel.getInput(), iInput));
@@ -123,53 +120,23 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
     public Set<RelColumnOrigin> getColumnOrigins(Correlate rel, RelMetadataQuery mq, int iOutputColumn) {
         List<String> fieldNameList = rel.getLeft().getRowType().getFieldNames();
         int nLeftColumns = fieldNameList.size();
-        Set<RelColumnOrigin> set;
         if (iOutputColumn < nLeftColumns) {
-            set = mq.getColumnOrigins(rel.getLeft(), iOutputColumn);
+            return mq.getColumnOrigins(rel.getLeft(), iOutputColumn);
         } else {
             if (rel.getRight() instanceof TableFunctionScan) {
+                final Set<RelColumnOrigin> set = new LinkedHashSet<>();
+                for (Integer iInput : rel.getRequiredColumns().asList()) {
+                    set.addAll(mq.getColumnOrigins(rel.getLeft(), iInput));
+                }
                 // get the field name of the left table configured in the Table Function on the right
                 TableFunctionScan tableFunctionScan = (TableFunctionScan) rel.getRight();
-                RexCall rexCall = (RexCall) tableFunctionScan.getCall();
-                // support only one field in table function
-                RexFieldAccess rexFieldAccess = searchRexFieldAccess(rexCall);
-                if (rexFieldAccess != null) {
-                    String fieldName = rexFieldAccess.getField().getName();
-                    /*
-                     * Get the fields from the left table, don't go to getColumnOrigins(TableFunctionScan
-                     * rel,RelMetadataQuery mq, int iOutputColumn), otherwise the return is null, and the UDTF field
-                     * origin cannot be parsed
-                     */
-                    int leftFieldIndex = fieldNameList.indexOf(fieldName);
-                    set = mq.getColumnOrigins(rel.getLeft(), leftFieldIndex);
-
-                    // process transform for udtf
-                    String transform = rexCall.toString().replace(rexFieldAccess.toString(), fieldName)
-                            + DELIMITER
-                            + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
-                    set = createDerivedColumnOrigins(set, transform);
-                } else {
-                    LOG.warn("Parse column lineage failed, rel:[{}], iOutputColumn:[{}]", rel, iOutputColumn);
-                    return Collections.emptySet();
-                }
-            } else {
-                set = mq.getColumnOrigins(rel.getRight(), iOutputColumn - nLeftColumns);
+                String transform = computeTransform(set, tableFunctionScan.getCall())
+                        + DELIMITER
+                        + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
+                return createDerivedColumnOrigins(set, transform);
             }
+            return mq.getColumnOrigins(rel.getRight(), iOutputColumn - nLeftColumns);
         }
-        return set;
-    }
-
-    private RexFieldAccess searchRexFieldAccess(RexNode rexNode) {
-        if (rexNode instanceof RexCall) {
-            RexNode operand = ((RexCall) rexNode).getOperands().get(0);
-            if (operand instanceof RexFieldAccess) {
-                return (RexFieldAccess) operand;
-            } else {
-                // recursive search
-                return searchRexFieldAccess(operand);
-            }
-        }
-        return null;
     }
 
     public Set<RelColumnOrigin> getColumnOrigins(SetOp rel, RelMetadataQuery mq, int iOutputColumn) {
@@ -483,7 +450,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
      * The order of inputSet is $3, $0, instead of $0, $3 obtained by traversing the above string normally
      */
     private Map<String, String> buildSourceColumnMap(Set<RelColumnOrigin> inputSet, Object transform) {
-        Set<Integer> traversalSet = new LinkedHashSet<>();
+        Set<Object> traversalSet = new LinkedHashSet<>();
         if (transform instanceof AggregateCall) {
             AggregateCall call = ((AggregateCall) transform);
             traversalSet.addAll(call.getArgList());
@@ -501,6 +468,12 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                         @Override
                         public Void visitPatternFieldRef(RexPatternFieldRef fieldRef) {
                             traversalSet.add(fieldRef.getIndex());
+                            return null;
+                        }
+
+                        @Override
+                        public Void visitFieldAccess(RexFieldAccess fieldAccess) {
+                            traversalSet.add(fieldAccess.toString().replace("$", ""));
                             return null;
                         }
                     };

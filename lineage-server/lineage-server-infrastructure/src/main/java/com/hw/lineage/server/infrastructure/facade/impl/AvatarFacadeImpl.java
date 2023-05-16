@@ -22,6 +22,7 @@ import com.hw.lineage.server.domain.facade.AvatarFacade;
 import com.talanlabs.avatargenerator.Avatar;
 import com.talanlabs.avatargenerator.GitHubAvatar;
 import com.talanlabs.avatargenerator.layers.backgrounds.RandomColorPaintBackgroundLayer;
+
 import org.springframework.stereotype.Service;
 
 /**

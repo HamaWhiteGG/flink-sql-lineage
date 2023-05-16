@@ -21,6 +21,7 @@ package com.hw.lineage.server.infrastructure.persistence.mapper.custom;
 import com.hw.lineage.server.domain.query.function.FunctionEntry;
 import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.infrastructure.persistence.mybatis.handler.LongListTypeHandler;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;

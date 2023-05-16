@@ -26,9 +26,11 @@ import com.hw.lineage.server.domain.vo.TableId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.TableDO;
 import com.hw.lineage.server.infrastructure.persistence.mapper.TableMapper;
+
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+
 import java.util.List;
 
 import static com.hw.lineage.server.infrastructure.persistence.mapper.CatalogDynamicSqlSupport.catalog;

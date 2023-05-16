@@ -19,6 +19,7 @@
 package com.hw.lineage.flink.proctime;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
+
 import org.apache.calcite.rel.core.Project;
 import org.apache.calcite.rel.metadata.RelMdColumnOrigins;
 import org.apache.calcite.rel.metadata.RelMetadataQuery;

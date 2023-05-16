@@ -19,6 +19,7 @@
 package com.hw.lineage.server.infrastructure.persistence.mapper.custom;
 
 import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;

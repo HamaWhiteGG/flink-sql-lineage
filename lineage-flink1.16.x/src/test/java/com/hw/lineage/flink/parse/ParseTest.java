@@ -19,6 +19,7 @@
 package com.hw.lineage.flink.parse;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
+
 import org.apache.flink.table.api.SqlParserException;
 import org.apache.flink.table.api.ValidationException;
 import org.junit.Before;

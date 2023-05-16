@@ -24,10 +24,12 @@ import com.hw.lineage.flink.common.SimpleTest;
 import com.hw.lineage.flink.localtimestamp.LocaltimestampTest;
 import com.hw.lineage.flink.lookup.join.LookupJoinTest;
 import com.hw.lineage.flink.proctime.ProctimeTest;
+import com.hw.lineage.flink.tablefuncion.TableFunctionMultiParamsTest;
 import com.hw.lineage.flink.tablefuncion.TableFunctionTest;
 import com.hw.lineage.flink.tvf.TvfTest;
 import com.hw.lineage.flink.watermark.WatermarkTest;
 import com.hw.lineage.flink.window.WindowTest;
+
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -44,6 +46,7 @@ import org.junit.runners.Suite;
         SimpleTest.class,
         LookupJoinTest.class,
         TableFunctionTest.class,
+        TableFunctionMultiParamsTest.class,
         WatermarkTest.class,
         LocaltimestampTest.class,
         CepTest.class,

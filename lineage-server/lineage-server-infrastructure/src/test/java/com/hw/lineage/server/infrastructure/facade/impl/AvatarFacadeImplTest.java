@@ -20,6 +20,7 @@ package com.hw.lineage.server.infrastructure.facade.impl;
 
 import com.hw.lineage.common.util.Base64Utils;
 import com.hw.lineage.server.domain.facade.AvatarFacade;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -19,6 +19,7 @@
 package com.hw.lineage.server.domain.query.role;
 
 import com.hw.lineage.server.domain.query.PageOrderCriteria;
+
 import lombok.Data;
 import lombok.ToString;
 

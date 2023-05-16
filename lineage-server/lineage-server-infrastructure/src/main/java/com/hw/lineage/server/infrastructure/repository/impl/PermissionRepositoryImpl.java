@@ -31,6 +31,7 @@ import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.PermissionDO;
 import com.hw.lineage.server.infrastructure.persistence.mapper.PermissionDynamicSqlSupport;
 import com.hw.lineage.server.infrastructure.persistence.mapper.PermissionMapper;
+
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;

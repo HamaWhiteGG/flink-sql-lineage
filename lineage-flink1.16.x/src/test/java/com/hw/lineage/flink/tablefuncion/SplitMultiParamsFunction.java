@@ -16,29 +16,27 @@
  * limitations under the License.
  */
 
-package com.hw.lineage.server.application.dto.graph.link;
+package com.hw.lineage.flink.tablefuncion;
 
-import com.hw.lineage.server.application.dto.graph.link.basic.Link;
-
-import lombok.Data;
+import org.apache.flink.table.annotation.DataTypeHint;
+import org.apache.flink.table.annotation.FunctionHint;
+import org.apache.flink.table.functions.TableFunction;
+import org.apache.flink.types.Row;
 
 /**
- * @description: ColumnLink
+ * The test case comes from <a href="https://github.com/HamaWhiteGG/flink-sql-lineage/pull/73">fix parse error when table function has multiple params</a>, thanks
+ * <p>
+ * A user-defined table function (UDTF) takes multiple scalar values as input arguments.
+ *
  * @author: HamaWhite
  */
-@Data
-public class ColumnLink extends Link {
+@FunctionHint(output = @DataTypeHint("ROW<word STRING, length INT>"))
+public class SplitMultiParamsFunction extends TableFunction<Row> {
 
-    private String u;
-
-    private String v;
-
-    private String transform;
-
-    public ColumnLink(String id, String relU, String relV, String u, String v, String transform) {
-        super(id, relU, relV);
-        this.u = u;
-        this.v = v;
-        this.transform = transform;
+    public void eval(String str, String other) {
+        for (String s : str.split(" ")) {
+            // use collect(...) to emit a row
+            collect(Row.of(s, other.length()));
+        }
     }
 }

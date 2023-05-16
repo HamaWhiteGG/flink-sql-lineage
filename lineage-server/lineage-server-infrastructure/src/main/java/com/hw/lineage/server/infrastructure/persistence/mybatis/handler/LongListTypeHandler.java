@@ -19,6 +19,7 @@
 package com.hw.lineage.server.infrastructure.persistence.mybatis.handler;
 
 import com.google.common.base.Splitter;
+
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.util.StringUtils;

@@ -33,12 +33,14 @@ import com.hw.lineage.server.domain.query.user.UserCheck;
 import com.hw.lineage.server.domain.query.user.UserQuery;
 import com.hw.lineage.server.domain.repository.UserRepository;
 import com.hw.lineage.server.domain.vo.UserId;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 import java.util.List;
 
 import static com.hw.lineage.common.util.Constant.DEFAULT_USER_ID;

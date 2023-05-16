@@ -18,9 +18,10 @@
 
 package com.hw.lineage.server.infrastructure.config;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import lombok.Data;
 
 /**
  * @description: LineageConfig

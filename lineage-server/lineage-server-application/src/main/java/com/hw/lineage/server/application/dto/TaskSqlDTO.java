@@ -20,6 +20,7 @@ package com.hw.lineage.server.application.dto;
 
 import com.hw.lineage.common.enums.SqlStatus;
 import com.hw.lineage.common.enums.SqlType;
+
 import lombok.Data;
 
 import java.io.Serializable;

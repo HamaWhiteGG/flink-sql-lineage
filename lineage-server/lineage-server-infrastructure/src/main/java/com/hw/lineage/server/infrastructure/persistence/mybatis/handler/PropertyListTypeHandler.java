@@ -20,6 +20,7 @@ package com.hw.lineage.server.infrastructure.persistence.mybatis.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.hw.lineage.common.model.Property;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;

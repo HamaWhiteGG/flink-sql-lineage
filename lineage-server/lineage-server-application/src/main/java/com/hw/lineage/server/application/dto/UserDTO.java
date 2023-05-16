@@ -20,10 +20,12 @@ package com.hw.lineage.server.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hw.lineage.server.application.dto.basic.RootDTO;
-import lombok.Data;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collection;

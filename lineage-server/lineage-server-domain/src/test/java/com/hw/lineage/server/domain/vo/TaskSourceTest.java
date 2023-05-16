@@ -19,12 +19,13 @@
 package com.hw.lineage.server.domain.vo;
 
 import com.hw.lineage.common.util.Base64Utils;
+
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static com.hw.lineage.server.domain.vo.TaskSource.SplitSource;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * @description: TaskSourceTest
