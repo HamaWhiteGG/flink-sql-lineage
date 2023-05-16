@@ -63,12 +63,12 @@ public class TableFunctionMultiParamsTest extends AbstractBasicTest {
                 "   LATERAL TABLE(split_multi_params_udtf(name, extra_name))";
 
         String[][] expectedArray = {
-                {"ods_mysql_users_extra", "name", "dwd_hudi_users_extra", "id", "my_split_udtf(name, extra_name).length"},
-                {"ods_mysql_users_extra", "extra_name", "dwd_hudi_users_extra", "id", "my_split_udtf(name, extra_name).length"},
+                {"ods_mysql_users_extra", "name", "dwd_hudi_users_extra", "id", "split_multi_params_udtf(name, extra_name).length"},
+                {"ods_mysql_users_extra", "extra_name", "dwd_hudi_users_extra", "id", "split_multi_params_udtf(name, extra_name).length"},
                 {"ods_mysql_users_extra", "name", "dwd_hudi_users_extra", "name"},
                 {"ods_mysql_users_extra", "extra_name", "dwd_hudi_users_extra", "extra_name"},
-                {"ods_mysql_users_extra", "name", "dwd_hudi_users_extra", "company_name", "my_split_udtf(name, extra_name).word"},
-                {"ods_mysql_users_extra", "extra_name", "dwd_hudi_users_extra", "company_name", "my_split_udtf(name, extra_name).word"},
+                {"ods_mysql_users_extra", "name", "dwd_hudi_users_extra", "company_name", "split_multi_params_udtf(name, extra_name).word"},
+                {"ods_mysql_users_extra", "extra_name", "dwd_hudi_users_extra", "company_name", "split_multi_params_udtf(name, extra_name).word"},
                 {"ods_mysql_users_extra", "birthday", "dwd_hudi_users_extra", "birthday"},
                 {"ods_mysql_users_extra", "ts", "dwd_hudi_users_extra", "ts"},
                 {"ods_mysql_users_extra", "birthday", "dwd_hudi_users_extra", "partition", "DATE_FORMAT(birthday, 'yyyyMMdd')"}
