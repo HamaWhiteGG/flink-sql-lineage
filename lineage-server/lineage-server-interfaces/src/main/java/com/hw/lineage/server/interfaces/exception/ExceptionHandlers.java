@@ -1,9 +1,28 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.interfaces.exception;
 
 import com.hw.lineage.common.exception.LineageException;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultCode;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +40,11 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 
 /**
  * refers to @see <a href="https://github.com/apache/shenyu">https://github.com/apache/shenyu</a>. thanks
@@ -44,7 +63,8 @@ public class ExceptionHandlers {
         LOG.error(e.getMessage(), e);
         String message = e instanceof LineageException
                 ? e.getMessage()
-                : String.format("%s%sCaused by: %s", e.getMessage(), System.lineSeparator(), ExceptionUtils.getRootCauseMessage(e));
+                : String.format("%s%sCaused by: %s", e.getMessage(), System.lineSeparator(),
+                        ExceptionUtils.getRootCauseMessage(e));
         return Result.error(message);
     }
 
@@ -67,7 +87,8 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected Result<Boolean> handleHttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException e) {
+    protected Result<Boolean> handleHttpRequestMethodNotSupportedException(
+            final HttpRequestMethodNotSupportedException e) {
         LOG.warn("http request method not supported", e);
         StringBuilder sb = new StringBuilder();
         sb.append(e.getMethod());
@@ -116,7 +137,8 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    protected Result<Boolean> handleMissingServletRequestParameterException(final MissingServletRequestParameterException e) {
+    protected Result<Boolean> handleMissingServletRequestParameterException(
+            final MissingServletRequestParameterException e) {
         LOG.warn("missing servlet request parameter", e);
         return Result.error(String.format("%s parameter is missing", e.getParameterName()));
     }
@@ -130,6 +152,7 @@ public class ExceptionHandlers {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected Result<Boolean> handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
         LOG.warn("method argument type mismatch", e);
-        return Result.error(String.format("%s should be of type %s", e.getName(), Objects.requireNonNull(e.getRequiredType()).getName()));
+        return Result.error(String.format("%s should be of type %s", e.getName(),
+                Objects.requireNonNull(e.getRequiredType()).getName()));
     }
 }

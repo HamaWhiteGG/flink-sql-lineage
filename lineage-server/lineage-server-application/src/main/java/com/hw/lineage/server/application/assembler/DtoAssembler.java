@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.application.assembler;
 
 import com.google.common.base.Strings;
@@ -15,6 +33,7 @@ import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.graph.column.ColumnGraph;
 import com.hw.lineage.server.domain.graph.table.TableGraph;
+
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,6 +51,7 @@ import static com.hw.lineage.common.util.Constant.DELIMITER;
  */
 @Mapper(componentModel = "spring")
 public interface DtoAssembler {
+
     DtoAssembler INSTANCE = Mappers.getMapper(DtoAssembler.class);
 
     @Mapping(source = "taskId.value", target = "taskId")
@@ -84,7 +104,6 @@ public interface DtoAssembler {
     @Mapping(source = "user.userId.value", target = "userId")
     UserDTO fromUserRoles(User user, List<Role> roleList);
 
-
     @Mapping(source = "roleId.value", target = "roleId")
     RoleDTO fromRole(Role role);
 
@@ -99,12 +118,12 @@ public interface DtoAssembler {
         LineageGraph lineageGraph = toLineageGraph(task.getTableGraph(),
                 task.getColumnGraph(),
                 catalogName,
-                task.getDatabase()
-        );
+                task.getDatabase());
         taskDTO.setLineageGraph(lineageGraph);
     }
 
-    default LineageGraph toLineageGraph(TableGraph tableGraph, ColumnGraph columnGraph, String catalogName, String database) {
+    default LineageGraph toLineageGraph(TableGraph tableGraph, ColumnGraph columnGraph, String catalogName,
+            String database) {
         LineageGraph lineageGraph = new LineageGraph();
         if (tableGraph == null) {
             return lineageGraph;
@@ -114,7 +133,8 @@ public interface DtoAssembler {
                 .map(tableNode -> {
                     List<Column> columnList = tableNode.getColumnNodeList()
                             .stream()
-                            .map(columnNode -> new Column(columnNode.getNodeId().toString(), columnNode.getNodeName(), columnNode.getChildrenCnt()))
+                            .map(columnNode -> new Column(columnNode.getNodeId().toString(), columnNode.getNodeName(),
+                                    columnNode.getChildrenCnt()))
                             .collect(Collectors.toList());
 
                     String optimizedName = optimizeTableName(catalogName, database, tableNode.getNodeName());
@@ -130,24 +150,20 @@ public interface DtoAssembler {
         // add table edges
         List<Link> linkList = tableGraph.getEdgeSet()
                 .stream()
-                .map(tableEdge -> new TableLink(tableEdge.getEdgeId().toString()
-                        , tableEdge.getSource().getNodeId().toString()
-                        , tableEdge.getTarget().getNodeId().toString()
-                        , tableEdge.getSqlSource()))
+                .map(tableEdge -> new TableLink(tableEdge.getEdgeId().toString(),
+                        tableEdge.getSource().getNodeId().toString(), tableEdge.getTarget().getNodeId().toString(),
+                        tableEdge.getSqlSource()))
                 .collect(Collectors.toList());
 
         // add column edges
         linkList.addAll(columnGraph.getEdgeSet()
                 .stream()
-                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId().toString()
-                        , columnEdge.getSource().getTableNodeId().toString()
-                        , columnEdge.getTarget().getTableNodeId().toString()
-                        , columnEdge.getSource().getNodeId().toString()
-                        , columnEdge.getTarget().getNodeId().toString()
-                        , Strings.nullToEmpty(columnEdge.getTransform())
-                ))
-                .collect(Collectors.toList())
-        );
+                .map(columnEdge -> new ColumnLink(columnEdge.getEdgeId().toString(),
+                        columnEdge.getSource().getTableNodeId().toString(),
+                        columnEdge.getTarget().getTableNodeId().toString(),
+                        columnEdge.getSource().getNodeId().toString(), columnEdge.getTarget().getNodeId().toString(),
+                        Strings.nullToEmpty(columnEdge.getTransform())))
+                .collect(Collectors.toList()));
         return lineageGraph.setNodes(vertexList).setLinks(linkList);
     }
 

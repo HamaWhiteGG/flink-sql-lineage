@@ -1,6 +1,25 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.flink.paimon;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -44,8 +63,7 @@ public class PaimonTest extends AbstractBasicTest {
         context.execute("CREATE CATALOG " + catalogName + " with (          " +
                 "       'type' = 'paimon'                                           ," +
                 "       'warehouse' = '" + warehouse.toURI() + "'                    " +
-                ")"
-        );
+                ")");
         context.execute(String.format("USE CATALOG %s", catalogName));
     }
 
@@ -95,7 +113,6 @@ public class PaimonTest extends AbstractBasicTest {
         analyzeLineage(catalogName, secondSql, secondExpected);
     }
 
-
     /**
      * Create table demo_log_01
      */
@@ -111,8 +128,7 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, hh, user_id) NOT ENFORCED            " +
                 ") PARTITIONED BY (dt, hh) with (                             " +
                 "        'bucket' = '4'                                       " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -130,8 +146,7 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, hh, user_id) NOT ENFORCED            " +
                 ") PARTITIONED BY (dt, hh) with (                             " +
                 "        'bucket' = '4'                                       " +
-                ")"
-        );
+                ")");
     }
 
     /**
@@ -149,10 +164,8 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, hh, user_id) NOT ENFORCED            " +
                 ") PARTITIONED BY (dt, hh) with (                             " +
                 "        'bucket' = '4'                                       " +
-                ")"
-        );
+                ")");
     }
-
 
     /**
      * Create table demo_log_agg
@@ -167,7 +180,6 @@ public class PaimonTest extends AbstractBasicTest {
                 "       PRIMARY KEY (dt, user_id) NOT ENFORCED                " +
                 ") PARTITIONED BY (dt) with (                                 " +
                 "        'bucket' = '2'                                       " +
-                ")"
-        );
+                ")");
     }
 }
