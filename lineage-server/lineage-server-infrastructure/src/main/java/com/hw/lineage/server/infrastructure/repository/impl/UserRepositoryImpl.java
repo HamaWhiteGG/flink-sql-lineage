@@ -37,9 +37,11 @@ import com.hw.lineage.server.infrastructure.persistence.mapper.PermissionMapper;
 import com.hw.lineage.server.infrastructure.persistence.mapper.RoleMapper;
 import com.hw.lineage.server.infrastructure.persistence.mapper.UserDynamicSqlSupport;
 import com.hw.lineage.server.infrastructure.persistence.mapper.UserMapper;
+
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+
 import java.util.List;
 
 import static com.hw.lineage.server.infrastructure.persistence.mapper.PermissionDynamicSqlSupport.permission;

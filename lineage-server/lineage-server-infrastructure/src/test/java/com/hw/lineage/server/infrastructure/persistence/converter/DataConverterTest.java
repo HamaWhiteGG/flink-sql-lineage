@@ -23,6 +23,7 @@ import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.TaskId;
 import com.hw.lineage.server.domain.vo.TaskSource;
 import com.hw.lineage.server.infrastructure.persistence.dos.TaskDO;
+
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

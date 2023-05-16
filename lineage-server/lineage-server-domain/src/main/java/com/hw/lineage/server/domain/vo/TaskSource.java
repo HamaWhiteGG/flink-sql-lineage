@@ -19,9 +19,11 @@
 package com.hw.lineage.server.domain.vo;
 
 import com.hw.lineage.common.util.Base64Utils;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

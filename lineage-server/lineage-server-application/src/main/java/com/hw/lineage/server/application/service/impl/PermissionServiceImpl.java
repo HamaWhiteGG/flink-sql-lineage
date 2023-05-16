@@ -30,6 +30,7 @@ import com.hw.lineage.server.domain.query.permission.PermissionCheck;
 import com.hw.lineage.server.domain.query.permission.PermissionQuery;
 import com.hw.lineage.server.domain.repository.PermissionRepository;
 import com.hw.lineage.server.domain.vo.PermissionId;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

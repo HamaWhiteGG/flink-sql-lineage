@@ -19,6 +19,7 @@
 package com.hw.lineage.server.application.dto;
 
 import com.hw.lineage.common.enums.TaskStatus;
+
 import lombok.Data;
 
 import java.util.List;

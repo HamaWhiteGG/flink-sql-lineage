@@ -30,6 +30,7 @@ import com.hw.lineage.server.domain.query.plugin.PluginCheck;
 import com.hw.lineage.server.domain.query.plugin.PluginQuery;
 import com.hw.lineage.server.domain.repository.PluginRepository;
 import com.hw.lineage.server.domain.vo.PluginId;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

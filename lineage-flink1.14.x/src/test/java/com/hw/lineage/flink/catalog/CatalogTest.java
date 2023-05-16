@@ -24,6 +24,7 @@ import com.hw.lineage.common.enums.TableKind;
 import com.hw.lineage.common.model.ColumnInfo;
 import com.hw.lineage.common.model.TableInfo;
 import com.hw.lineage.flink.LineageServiceImpl;
+
 import org.apache.flink.table.api.ValidationException;
 import org.junit.Ignore;
 import org.junit.Test;

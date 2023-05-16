@@ -19,14 +19,16 @@
 package extensions.org.apache.flink.table.planner.delegation.ParserImpl;
 
 import com.google.common.base.Preconditions;
-import manifold.ext.rt.api.Extension;
-import manifold.ext.rt.api.Jailbreak;
-import manifold.ext.rt.api.This;
+
 import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.SqlNodeList;
 import org.apache.flink.table.planner.calcite.FlinkPlannerImpl;
 import org.apache.flink.table.planner.delegation.ParserImpl;
 import org.apache.flink.table.planner.parse.CalciteParser;
+
+import manifold.ext.rt.api.Extension;
+import manifold.ext.rt.api.Jailbreak;
+import manifold.ext.rt.api.This;
 
 import java.util.List;
 

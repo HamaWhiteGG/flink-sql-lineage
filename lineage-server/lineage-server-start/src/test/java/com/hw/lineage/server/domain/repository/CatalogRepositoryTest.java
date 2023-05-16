@@ -23,6 +23,7 @@ import com.hw.lineage.server.domain.entity.Catalog;
 import com.hw.lineage.server.domain.query.catalog.CatalogEntry;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.PluginId;
+
 import org.junit.Test;
 
 import javax.annotation.Resource;

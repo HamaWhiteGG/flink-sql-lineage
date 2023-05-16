@@ -19,6 +19,7 @@
 package com.hw.lineage.common.model;
 
 import com.hw.lineage.common.enums.TableKind;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;

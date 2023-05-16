@@ -21,6 +21,7 @@ package com.hw.lineage.server.application.command.user;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+
 import java.io.Serializable;
 
 /**

@@ -19,6 +19,7 @@
 package com.hw.lineage.server.infrastructure.persistence.mybatis.handler;
 
 import com.hw.lineage.common.enums.basic.StringEnum;
+
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 

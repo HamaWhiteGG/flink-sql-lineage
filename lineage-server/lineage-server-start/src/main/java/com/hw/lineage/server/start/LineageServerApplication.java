@@ -22,6 +22,7 @@ import com.hw.lineage.server.application.service.CatalogService;
 import com.hw.lineage.server.application.service.FunctionService;
 import com.hw.lineage.server.application.service.StorageService;
 import com.hw.lineage.server.application.service.TableService;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

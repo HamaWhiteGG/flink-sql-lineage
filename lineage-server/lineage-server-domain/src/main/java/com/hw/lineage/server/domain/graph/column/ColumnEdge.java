@@ -19,6 +19,7 @@
 package com.hw.lineage.server.domain.graph.column;
 
 import com.hw.lineage.server.domain.graph.basic.Edge;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

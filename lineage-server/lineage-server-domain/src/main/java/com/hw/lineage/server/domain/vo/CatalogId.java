@@ -19,6 +19,7 @@
 package com.hw.lineage.server.domain.vo;
 
 import com.hw.lineage.server.domain.repository.basic.Identifier;
+
 import lombok.Data;
 
 /**

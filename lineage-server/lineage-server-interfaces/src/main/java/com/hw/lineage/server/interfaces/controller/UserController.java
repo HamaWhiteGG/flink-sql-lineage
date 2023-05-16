@@ -28,13 +28,15 @@ import com.hw.lineage.server.domain.query.user.UserQuery;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
-import io.swagger.annotations.Api;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.annotations.Api;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;

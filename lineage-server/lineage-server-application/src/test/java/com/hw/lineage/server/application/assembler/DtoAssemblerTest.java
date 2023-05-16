@@ -24,6 +24,7 @@ import com.hw.lineage.server.domain.graph.column.ColumnGraph;
 import com.hw.lineage.server.domain.graph.table.TableGraph;
 import com.hw.lineage.server.domain.vo.CatalogId;
 import com.hw.lineage.server.domain.vo.TaskId;
+
 import org.junit.Test;
 
 import static com.hw.lineage.server.application.assembler.DtoAssembler.INSTANCE;

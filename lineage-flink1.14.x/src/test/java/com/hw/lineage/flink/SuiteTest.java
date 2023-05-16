@@ -28,6 +28,7 @@ import com.hw.lineage.flink.tablefuncion.TableFunctionTest;
 import com.hw.lineage.flink.tvf.TvfTest;
 import com.hw.lineage.flink.watermark.WatermarkTest;
 import com.hw.lineage.flink.window.WindowTest;
+
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

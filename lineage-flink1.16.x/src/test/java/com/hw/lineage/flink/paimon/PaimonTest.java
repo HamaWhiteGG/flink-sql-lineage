@@ -19,6 +19,7 @@
 package com.hw.lineage.flink.paimon;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

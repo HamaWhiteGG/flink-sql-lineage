@@ -18,9 +18,10 @@
 
 package org.apache.calcite.rel.metadata;
 
-import junit.framework.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import junit.framework.TestCase;
 
 import java.util.*;
 import java.util.regex.Matcher;

@@ -21,6 +21,7 @@ package com.hw.lineage.server.domain.entity;
 import com.hw.lineage.server.domain.entity.basic.RootEntity;
 import com.hw.lineage.server.domain.repository.basic.Entity;
 import com.hw.lineage.server.domain.vo.UserId;
+
 import lombok.Data;
 import lombok.experimental.Accessors;
 

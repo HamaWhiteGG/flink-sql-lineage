@@ -33,6 +33,7 @@ import com.hw.lineage.server.domain.entity.task.TaskLineage;
 import com.hw.lineage.server.domain.entity.task.TaskSql;
 import com.hw.lineage.server.domain.graph.column.ColumnGraph;
 import com.hw.lineage.server.domain.graph.table.TableGraph;
+
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

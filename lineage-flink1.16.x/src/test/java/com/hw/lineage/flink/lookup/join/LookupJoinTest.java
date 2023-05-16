@@ -19,6 +19,7 @@
 package com.hw.lineage.flink.lookup.join;
 
 import com.hw.lineage.flink.basic.AbstractBasicTest;
+
 import org.junit.Before;
 import org.junit.Test;
 

@@ -20,6 +20,7 @@ package com.hw.lineage.server.domain.graph.table;
 
 import com.hw.lineage.server.domain.graph.basic.Node;
 import com.hw.lineage.server.domain.graph.column.ColumnNode;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
