@@ -1,23 +1,49 @@
 import React,{useState, useEffect} from 'react'
+import { Link } from 'react-router-dom'
 import { Typography, Tag, Tooltip, Input, Button, message } from 'antd'
 import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons'
 import axios from 'axios'
+import CatalogAddModal from './catalog-add-modal'
 
 const { Title, Text } = Typography
 const Cm = () => {
+  const [visible, setVisible] = useState(false)
   const [catalogList, setCatalogList] = useState([])
+  const [pluginList, setPluginList] = useState([])
+  const [curRecord, setCurRecord] = useState(null)
+  const [curType, setCurType] = useState('Add')
   const getCatalogList = async () => {
     try {
       const res = await axios.get('/catalogs')
-      console.log('cataloglist- ---', res)
       setCatalogList(res.data.data.list)
     } catch (error) {
       message(error)
     }
   }
+  const getPluginList = async () => {
+    try {
+      const res = await axios.get('/plugins')
+      setPluginList(res.data.data.list)
+    } catch (error) {
+      message(error)
+    }
+  }
+
+  const onCancel = () => {
+    setVisible(false)
+  }
   useEffect(() => {
     getCatalogList()
+    getPluginList()
   }, [])
+
+  const addModalProps = {
+    visible,
+    onCancel:onCancel,
+    getCatalogList,
+    type: curType,
+    pluginList
+  }
   return (
     <div>
       <div className='m8 p16 white-bg'>
@@ -31,7 +57,8 @@ const Cm = () => {
           <div></div>
           <div>
             <Input.Search placeholder="keywords"  size="small" style={{width: '200px'}} />
-            <Button type='primary' size="small" className='ml8'>Add</Button>
+            <Button type='primary' size="small" className='ml8' onClick={() => setVisible(true)}>Add</Button>
+            <CatalogAddModal {...addModalProps} />
           </div>
         </div>
         {/* catalog-list */}
@@ -44,7 +71,7 @@ const Cm = () => {
                 </div>
                 <div className='item-content'>
                   <div className='item-top FBH FBJ mb16'>
-                    <div><span className='fs24 mr8'>{t.catalogName}</span> {t.defaultCatalog && <Tag>default</Tag>}</div>
+                    <div><Link className='fs24 mr8 fc0' to={`/catalog/${t.catalogId}`}>{t.catalogName}</Link> {t.defaultCatalog && <Tag>default</Tag>}</div>
                     <div className='options'>
                       <Tooltip title="edit">
                         <EditOutlined className='fc4 mr16 hand' />
@@ -58,19 +85,12 @@ const Cm = () => {
                     </div>
                   </div>
                   <div className='item-info FBH FBJ'>
-                    <Text>
-                      <span className='i-label'>CatalogType：{t.catalogType}</span>
-                    </Text>
-                    <Text>
-                      <span className='i-label'>DefaultDatabase：{t.defaultDatabase}</span>
-                    </Text>
-                    <Text>
-                      <span className='i-label'>plugin：{t.pluginId}</span>
-                    </Text>
+                    <span className='i-label'>CatalogType：{t.catalogType}</span>
+                    <span className='i-label'>DefaultDatabase：{t.defaultDatabase}</span>
+                    <span className='i-label'>plugin：{t.pluginId}</span>
                   </div>
                   <div className='item-info FBH FBJ'>
-                    <Text>
-                      <span className='i-label'>Describe：{t.descr}</span></Text>
+                    <span className='i-label'>Describe：{t.descr}</span>
                   </div>
                 </div>
                 
