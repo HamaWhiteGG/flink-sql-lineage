@@ -65,7 +65,7 @@ public class SecurityConfig {
             "/favicon.ico",
             "/manifest.json",
             "/logo192.png",
-            // for lineage server, currently only APIs under plugins require login and authentication
+            // currently only APIs under plugins require login and authentication.
             "/tasks/**",
             "/catalogs/**",
             "/functions/**",
