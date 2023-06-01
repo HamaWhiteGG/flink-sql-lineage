@@ -154,10 +154,8 @@ public class CatalogServiceImpl implements CatalogService {
 
         Catalog catalog = new Catalog()
                 .setCatalogId(id)
-                .setCatalogName(command.getCatalogName())
                 .setDefaultDatabase(database)
-                .setDescr(command.getDescr())
-                .setPropertyList(command.getPropertyList());
+                .setDescr(command.getDescr());
 
         catalog.setModifyUserId(command.getUserId());
         catalog.setModifyTime(System.currentTimeMillis());
