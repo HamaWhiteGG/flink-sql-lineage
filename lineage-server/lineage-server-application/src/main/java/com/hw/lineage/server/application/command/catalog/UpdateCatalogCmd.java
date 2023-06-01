@@ -40,11 +40,13 @@ public class UpdateCatalogCmd extends BasicCriteria {
     @ApiModelProperty(hidden = true)
     private Long catalogId;
 
+    @ApiModelProperty(hidden = true)
     private String catalogName;
 
     private String defaultDatabase;
 
     private String descr;
 
+    @ApiModelProperty(hidden = true)
     private List<Property> propertyList;
 }
