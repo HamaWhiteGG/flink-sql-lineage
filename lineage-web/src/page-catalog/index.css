@@ -30,3 +30,12 @@
   font-size: 14px;
   padding-right: 10px;
 }
+
+/* detail css */
+        
+.left-tree {
+  width: 270px;
+}
+.left-tree-box {
+  border-right: 1px solid #ddd;
+}

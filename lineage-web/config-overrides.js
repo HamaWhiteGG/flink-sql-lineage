@@ -4,6 +4,7 @@ const {
   overrideDevServer,
   watchAll,
   useBabelRc,
+  addWebpackAlias,
 } = require("customize-cra")
 const path = require('path')
 
@@ -39,6 +40,9 @@ module.exports = {
     disableEsLint(),
     stylus(),
     useBabelRc(), 
+    addWebpackAlias({
+      '@common': path.resolve(__dirname, './src/common')
+    }),
     config => {
       const babelLoader = {
         test: /\.jsx?/,
