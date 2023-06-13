@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, message, Modal, Select, Input, Col, Row, Divider, Upload, Button, Space } from 'antd'
-import { EditOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import axios from 'axios'
 
 const { Option } = Select
-const ContrlItem = ({ label, type, options = [], required = false, placeholder }) => {
+const contrlItem = ({ label, type, options = [], required = false, value, placeholder, uploadProps={}}) => {
   let itemContent = <Input placeholder={placeholder} style={{ width: 200 }} />
   switch (type) {
     case 'input':
       itemContent = <Input style={{ width: 200 }} />
       break;
     case 'select':
-      itemContent = <Select style={{ width: 200 }}>
+      itemContent = <Select  style={{ width: 200 }}>
         {
           options?.map(t => <Option key={t} value={t}>{t}</Option>)
         }
       </Select>
       break;
     case 'upload':
-      itemContent = <Upload />
+      itemContent = (
+        <Upload {...uploadProps}>
+          <Button icon={<UploadOutlined />}>upload</Button>
+        </Upload>
+      )
       break;
     default:
       itemContent = <Input style={{ width: 200 }} />
@@ -29,14 +33,33 @@ const ContrlItem = ({ label, type, options = [], required = false, placeholder }
 }
 const catalogPropMap = {
   'HIVE': [{
-    label: 'hive.version',
+    label: 'hive-version',
     name: 'hive-version',
     type: 'select',
-    options: ['3.1', '3.2'],
+    // type: 'input',
+    // value: '3.1.2',
+    options: ['3.1.2'],
   }, {
-    label: 'hive.conf',
-    name: 'hive-conf-dir',
+    label: 'hive-conf',
+    name: 'hive',
     type: 'upload',
+    uploadProps: {
+      name: 'file',
+      action: '/storages/upload',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      onChange(info) {
+        if (info.file.status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    }
   }],
   'JDBC': [{
     label: 'jdbcUrl',
@@ -56,17 +79,12 @@ const catalogPropMap = {
     required: true,
   }]
 }
-const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogList = [], pluginList = [] }) => {
+const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogList = [], pluginList = []}) => {
   const [form] = Form.useForm()
   const [databaseList, setDatabaseList] = useState([])
   const [catalogType, setCatalogType] = useState('HIVE')
   const [catalogProperties, setCatalogProperties] = useState(catalogPropMap['HIVE'])
-  const onFinish = (values) => {
-    console.log('Success:', values)
-  }
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo)
-  }
+
   // login
   const login = async () => {
     try {
@@ -85,7 +103,6 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
   // add || edit 
   const handleOnOk = () => {
     const { validateFields } = form
-    console.log('getValues---', form.getFieldsValue())
     const hiveProperList = {
       'hive-version': '',
       'hive-conf-dir': '',
@@ -96,20 +113,18 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
       'password': '',
     }
     const val = form.getFieldsValue()
-
     Object.keys(hiveProperList).forEach((t => hiveProperList[t] = val[t]))
     Object.keys(jdbcProperList).forEach((t => jdbcProperList[t] = val[t]))
-    console.log('hiveProperList---', hiveProperList, jdbcProperList)
     const listMap = {
       'HIVE': hiveProperList,
       'JDBC': jdbcProperList,
     }
     validateFields()
       .then(async values => {
-        const unCustomPropertyList = Object.keys(listMap[catalogType]).map(t => {return {'name': t, 'value': jdbcProperList[t], custom: false}}) || []
-        const customPropertyList = values.propertyList.map(t => {return {...t, 'custom': true}})
+        const unCustomPropertyList = Object.keys(listMap[catalogType] || {})?.map(t => {return {'name': t, 'value': listMap[catalogType][t], custom: false}}) || []
+        const customPropertyList = values.propertyList?.map(t => {return {...t, 'custom': true}}) || []
         values.propertyList = [].concat(unCustomPropertyList, customPropertyList)
-        Object.keys(listMap[catalogType]).forEach(t => {delete values[t]})
+        Object.keys(listMap[catalogType] || {}).forEach(t => {delete values[t]})
 
         let res = null
         switch (type) {
@@ -132,12 +147,18 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
             )
             break;
         }
-        if (res) {
+        console.log('res---', res)
+        const {code, message: msg} = res.data
+        if (code === 200) {
           onCancel()
           getCatalogList()
+        } else {
+          message.error(msg)
         }
       })
-      .catch((errorInfo) => { })
+      .catch((error) => {
+        message.error(error)
+      })
   }
 
   // get database under catalogs
@@ -161,9 +182,16 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
   }
 
   useEffect(() => {
-    // login()
+    login()
     if (form && visible && type === 'Edit') {
-      form.setFieldsValue({ ...record })
+      const {propertyList} = record
+      const unCustomPropertyList = propertyList.filter(t => !t.custom)
+      record.propertyList = propertyList.filter(t => t.custom)
+      const unCustomTmp = {}
+      Object.keys(unCustomPropertyList).forEach((t) => {
+        unCustomTmp[`${unCustomPropertyList[t].name}`] = unCustomPropertyList[t].value
+      })
+      form.setFieldsValue({ ...record, ...unCustomTmp })
     } else {
       form.resetFields()
     }
@@ -181,8 +209,6 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
     okText: 'save',
     width: 720,
   }
-
-
 
   return <Modal
     {...modalProps}
@@ -227,11 +253,6 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
             ]}
           >
             <Input placeholder='default database' />
-            {/* <Select placeholder='database' onChange={e => onChangeCatalog(e)}>
-              {
-                pluginList.map(t => <Option key={t.catalogId} value={t.catalogId}>{t.catalogName}</Option>)
-              }
-            </Select> */}
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -263,7 +284,7 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
           >
             <Select placeholder='plugin'>
               {
-                pluginList.map(t => <Option key={t.pluginId} value={t.pluginId}>{t.pluginName}</Option>)
+                pluginList?.map(t => <Option key={t.pluginId} value={t.pluginId}>{t.pluginName}</Option>)
               }
             </Select>
           </Form.Item>
@@ -275,7 +296,6 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
             labelCol={{ span: 3, offset: 1 }}
           >
             <Input.TextArea placeholder='description' rows={4} />
-
           </Form.Item>
         </Col>
       </Row>
@@ -287,21 +307,22 @@ const Cm = ({ visible, onCancel, getCatalogList, record, type = 'Add', catalogLi
           {
             catalogProperties?.map(
               (t, i) => <Form.Item
+                key={i}
                 label=' '
                 colon={false}
                 labelCol={{ span: 1, offset: 3 }}
                 labelAlign='left'
-                name={t.name}
-                rules={[
-                  {
-                    required: t.required,
-                    message: `Please enter ${t.label}!`,
-                  },
-                ]}
               >
                 <Space>
-                  <Input name='' value={t.label} disabled style={{ width: 200 }} />
-                  <ContrlItem {...t} />
+                  <Form.Item
+                  >
+                    <Input value={t.label} disabled style={{ width: 200 }} />
+                    </Form.Item>
+                  <Form.Item
+                    name={t.label}
+                  >
+                    {contrlItem({...t})}
+                  </Form.Item>
                 </Space>
               </Form.Item>
             )}
