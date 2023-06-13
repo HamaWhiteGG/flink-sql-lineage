@@ -56,10 +56,7 @@ const AddModal = ({visible, onCancel, getJobList, record, type='Add', catalogLis
     try {
       const res = await axios.get(`/catalogs/${id}/databases`)
       const resDatabase = res?.data?.data
-      console.log('getDatabase---', res, resDatabase[0])
-
       await setDatabaseList(resDatabase || [])
-      // form.setFieldValue('database', 111)
       form.setFieldValue('database', resDatabase[0])
     } catch (e) {
       message.error(e)
@@ -238,7 +235,6 @@ const Cm = () => {
       pageNum: 1,
       pageSize: 10
     })
-    console.log('-----analysisSql-----', res)
     setDataSource(res.data.data.list)
   }
 
@@ -264,7 +260,6 @@ const Cm = () => {
 
   const onCancel = () => {
     setVisible(false)
-    
   }
 
   useEffect(() => {
@@ -294,9 +289,6 @@ const Cm = () => {
           disabled={!inputVisible}
           onBlur={(e) => {
             setInputVisible(false)
-            // if (e.target.value.trim() === '') {
-            //   setDataSource([])
-            // }
           }}
           onKeyDown={(e) => {
             getJobList(e)

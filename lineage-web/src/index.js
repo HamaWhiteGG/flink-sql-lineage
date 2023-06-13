@@ -10,6 +10,8 @@ import PageJobList from './page-sql/job-list'
 import PageCatalog from './page-catalog'
 import PageCatalogList from './page-catalog/catalog-list'
 import PageCatalogDetail from './page-catalog/catalog-detail'
+import PageCatalogDetailTableInfo from './page-catalog/catalog-detail/detail-table-info'
+import PageCatalogDetailFunctionInfo from './page-catalog/catalog-detail/detail-function-info'
 
 const ReactSample = () => {
   return <HashRouter>
@@ -24,7 +26,10 @@ const ReactSample = () => {
         <Route path="catalog" element={<PageCatalog />}>
           <Route index element={<PageCatalogList />} />
           <Route path="list" element={<PageCatalogList />} />
-          <Route path="detail?/:id" element={<PageCatalogDetail />} />
+          <Route path=":id" element={<PageCatalogDetail />}>
+            <Route path=":databaseName/table?/:itemId" element={<PageCatalogDetailTableInfo />} />
+            <Route path=":databaseName/function?/:itemId" element={<PageCatalogDetailFunctionInfo />} />
+          </Route>
         </Route>
         <Route
           path="*"
@@ -35,7 +40,6 @@ const ReactSample = () => {
           }
         />
       </Route>
-      
     </Routes>
   </HashRouter>
 }
