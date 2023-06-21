@@ -36,7 +36,18 @@ const App = () => {
       label: 'Catalog',
       url: 'catalog',
     },
-    
+    {
+      key: 'plugin',
+      icon: SettingOutlined,
+      label: 'Plugin',
+      url: 'plugin',
+    },
+    {
+      key: 'user-manage',
+      icon: SettingOutlined,
+      label: 'User manage',
+      url: 'user-manage',
+    },
   ]
   return (
     <Layout>

@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from 'react'
 import { useParams, useOutletContext } from 'react-router-dom'
 import { Descriptions,  Button, Collapse, Tabs, message} from 'antd'
-import OverView from './info-overview'
-import Ddl from './info-ddl'
-import Lineage from './info-lineage'
+import OverView from './table-info-overview'
+import Ddl from './table-info-ddl'
+import Lineage from './table-info-lineage'
 
 const Cm = () => {
   const {id: catalogId, itemId: tableName} = useParams()
@@ -44,7 +44,7 @@ const Cm = () => {
   useEffect(() => {
     setActiveKey('1')
   }, [databaseName, itemId])
-  
+
   return (
     <div className='right-info-box'>
       <div className='white-bg p16'>

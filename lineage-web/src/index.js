@@ -12,6 +12,13 @@ import PageCatalogList from './page-catalog/catalog-list'
 import PageCatalogDetail from './page-catalog/catalog-detail'
 import PageCatalogDetailTableInfo from './page-catalog/catalog-detail/detail-table-info'
 import PageCatalogDetailFunctionInfo from './page-catalog/catalog-detail/detail-function-info'
+import PagePlugin from './page-plugin'
+import PagePluginList from './page-plugin/plugin-list'
+import PageUserManage from './page-user-manage'
+import PageUser from './page-user-manage/user'
+import PageRole from './page-user-manage/role'
+
+
 
 const ReactSample = () => {
   return <HashRouter>
@@ -30,6 +37,15 @@ const ReactSample = () => {
             <Route path=":databaseName/table?/:itemId" element={<PageCatalogDetailTableInfo />} />
             <Route path=":databaseName/function?/:itemId" element={<PageCatalogDetailFunctionInfo />} />
           </Route>
+        </Route>
+        <Route path="plugin" element={<PagePlugin />}>
+          <Route index element={<PagePluginList />} />
+          <Route path="list" element={<PagePluginList />} />
+        </Route>
+        <Route path="user-manage" element={<PageUserManage />}>
+          <Route index element={<PageUser />} />
+          <Route path="user" element={<PageUser />} />
+          <Route path="role" element={<PageRole />} />
         </Route>
         <Route
           path="*"
