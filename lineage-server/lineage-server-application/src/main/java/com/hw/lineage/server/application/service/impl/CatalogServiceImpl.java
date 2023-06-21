@@ -120,7 +120,8 @@ public class CatalogServiceImpl implements CatalogService {
     @Override
     public CatalogDTO queryCatalog(Long catalogId) {
         Catalog catalog = catalogRepository.find(new CatalogId(catalogId));
-        return assembler.fromCatalog(catalog);
+        Plugin plugin = pluginRepository.find(catalog.getPluginId());
+        return assembler.fromCatalog(catalog, plugin.getPluginName());
     }
 
     @Override

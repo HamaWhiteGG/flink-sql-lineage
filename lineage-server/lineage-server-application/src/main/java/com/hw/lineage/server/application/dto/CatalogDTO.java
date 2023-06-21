@@ -37,6 +37,8 @@ public class CatalogDTO extends BasicDTO {
 
     private Long pluginId;
 
+    private String pluginName;
+
     private String catalogName;
 
     private CatalogType catalogType;

@@ -71,6 +71,10 @@ public interface DtoAssembler {
     @Mapping(source = "pluginId.value", target = "pluginId")
     CatalogDTO fromCatalog(Catalog catalog);
 
+    @Mapping(source = "catalog.catalogId.value", target = "catalogId")
+    @Mapping(source = "catalog.pluginId.value", target = "pluginId")
+    CatalogDTO fromCatalog(Catalog catalog, String pluginName);
+
     @Mapping(source = "functionId.value", target = "functionId")
     @Mapping(source = "catalogId.value", target = "catalogId")
     FunctionDTO fromFunction(Function function);

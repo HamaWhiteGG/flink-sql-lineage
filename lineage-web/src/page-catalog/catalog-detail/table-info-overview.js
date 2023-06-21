@@ -2,11 +2,10 @@ import React,{useState, useEffect} from 'react'
 import { Collapse, Table, Checkbox, message, Typography} from 'antd'
 import io from '@common/io-context'
 
-
 const { Panel } = Collapse
 const { Text } = Typography
 const Cm = (props) => {
-  const {catalogId, defaultDatabase, tableName, databaseName} = props
+  const {catalogId, tableName, databaseName} = props
   const [activeKey, setActiveKey] = useState('schema')
   const [columnList, setColumnList] = useState([])
   const [parametersList, setParametersList] = useState([])
@@ -46,6 +45,7 @@ const Cm = (props) => {
       return <span>{text ||  <Text type="secondary">--</Text>}</span>
     }
   },]
+
   const parametersColumn = [{
     key: 'key',
     dataIndex: 'key',
@@ -59,7 +59,6 @@ const Cm = (props) => {
   const getTableInfos = async () => {
     try {
       const res = await io.get(`/catalogs/${catalogId}/databases/${databaseName}/tables/${tableName}`)
-      console.log('getTableInfos---111', res)
       const {columnList = [], propertiesMap = []} = res
       const tmpPropertiesMap = Object.keys(propertiesMap).map(t => {
         return {
@@ -85,6 +84,7 @@ const Cm = (props) => {
   useEffect(() => {
     tableName && getTableInfos()
   }, [tableName])
+  
   return (
     <div className='gray-bg pt8'>
       <Collapse ghost onChange={onChange} activeKey={activeKey}>
