@@ -75,10 +75,10 @@ const Cm = (props) => {
   }, [databaseList, defaultDatabase])
   
   const setDatabaseDefault = async node => {
-    console.log('----setDatabaseDefault----', node)
+    // console.log('----setDatabaseDefault----', node)
     try {
       const res = await io.put(`/catalogs/${catalogDetail.catalogId}/databases/${node.key}/default`)
-      console.log('----setDatabaseDefault----', res)
+      // console.log('----setDatabaseDefault----', res)
       setDefaultDatabase(node.title)
       res && getCatalogDetail() && getDatabases()
     } catch (error) {
@@ -89,25 +89,10 @@ const Cm = (props) => {
   const addTable = async node => {
     setCurDatabase(node.title)
     setAddTableVisible(true)
-    console.log('node---', node)
-  }
-
-  const confirmAddTable = async (params) => {
-    try {
-      const {ddl, database} = params
-      const res = await io.post(`/catalogs/${catalogDetail.catalogId}/databases/${database}/tables`, {
-        ddl,
-      })
-      res && setAddTableVisible(false)
-      console.log('----confirmAddTable----', res, params)
-      res && onLoadData(node.database)
-    } catch (error) {
-      message.error(error)
-    }
   }
 
   const delTable =  node => {
-    console.log('----delTable----', node)
+    // console.log('----delTable----', node)
     confirm({
       title: 'Do you Want to delete this table?',
       icon: <ExclamationCircleFilled />,
@@ -121,7 +106,7 @@ const Cm = (props) => {
         }
       },
       onCancel: () => {
-        console.log('Cancel');
+        console.log('Cancel')
       },
     })
   }
@@ -129,21 +114,10 @@ const Cm = (props) => {
   const addFunction = node => {
     setCurDatabase(node.title)
     setAddFunVisible(true)
-    console.log('----addFunction----')
   }
 
   const confirmApplyFunction = (params) => {
     setFormValues(params)
-  }
-
-  const confirmAddFunction = async (params) => {
-    try {
-      const res = await io.post(`/catalogs/${catalogDetail.catalogId}/databases/${curDatabase}/functions`, {...params})
-      console.log('----confirmAddFunction----', params)
-      res && onLoadData(node.database)
-    } catch (error) {
-      message.error(error)
-    }
   }
 
   const delFunction = node => {
@@ -205,7 +179,7 @@ const Cm = (props) => {
   }
 
   const onLoadData = ({ key, children }) => {
-    console.log('----onLoadData----')
+    console.log('----onLoadData----', key)
     return getChildren(key)
     .then((resolve=[], reject) => {
       if (children) {
@@ -247,10 +221,10 @@ const Cm = (props) => {
     visible: addTableVisible,
     curDatabase,
     databaseList,
+    catalogDetail,
+    onLoadData,
+    switchVisible: setAddTableVisible,
     onCancel: () => setAddTableVisible(false),
-    onOk: (params) => {
-      confirmAddTable(params)
-    },
   }
 
   const ModalAddFunProps = {
@@ -258,10 +232,9 @@ const Cm = (props) => {
     curDatabase,
     databaseList,
     formValues,
-    onCancel: () => setAddFunVisible(false),
-    onOk: (params) => {
-      confirmAddFunction(params)
-    },
+    catalogDetail,
+    onLoadData,
+    switchVisible: setAddFunVisible,
     analysisCallback: params => {
       setFunctionList(params.functionList)
     },

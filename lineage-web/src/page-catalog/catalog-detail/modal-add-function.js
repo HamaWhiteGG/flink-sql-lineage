@@ -13,7 +13,7 @@ const layout = {
 }
 const {Option} = Select
 const Cm = (props) => {
-  const {curDatabase, databaseList, formValues, switchApplyFunVisible, analysisCallback} = props
+  const {catalogDetail, curDatabase, databaseList, formValues, switchApplyFunVisible, analysisCallback, switchVisible, onLoadData=() => {}} = props
   const [form] = Form.useForm()
   const [functionUrl, setFunctionUrl] = useState('')
 
@@ -61,6 +61,16 @@ const Cm = (props) => {
     }
   }
 
+  const confirmAddFunction = async (params) => {
+    try {
+      const res = await io.post(`/catalogs/${catalogDetail.catalogId}/databases/${curDatabase || form.getFieldValue('database')}/functions`, {...params})
+      // console.log('----confirmAddFunction----', params)
+      res && onLoadData(curDatabase)
+    } catch (error) {
+      message.error(error)
+    }
+  }
+
   useEffect(() => {
     formValues.database = curDatabase
     form && form.setFieldsValue({...formValues})
@@ -73,13 +83,12 @@ const Cm = (props) => {
       title="Create Function"
       maskClosable={false}
       onOk={() => {
-        props.onOk(form.getFieldsValue())
-        props.onCancel()
+        confirmAddFunction(form.getFieldsValue())
+        switchVisible(false)
       }}
       onCancel={() => {
-        props.onCancel()
+        switchVisible(false)
         form.resetFields()
-        setValue('')
       }}
     >
       <Form

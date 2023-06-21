@@ -1,8 +1,9 @@
 import React,{useState, useEffect} from 'react'
-import { Modal, Form, Select } from 'antd'
+import { Modal, Form, Select, message } from 'antd'
 import Monaco from 'react-monaco-editor'
 import 'monaco-editor/esm/vs/basic-languages/sql/sql.contribution'
 import { Base64 } from 'js-base64'
+import io from '@common/io-context'
 
 const layout = {
   labelCol: {
@@ -14,7 +15,7 @@ const layout = {
 }
 const {Option} = Select
 const Cm = (props) => {
-  const {curDatabase, databaseList} = props
+  const {catalogDetail, curDatabase, databaseList, switchVisible, onLoadData=() => {}} = props
   const [form] = Form.useForm()
   const [value, setValue] = useState(null)
   const _initOptions = {
@@ -45,8 +46,22 @@ const Cm = (props) => {
     } else {
     }
   }
+
   const onFinish = (values) => {
-    console.log(values);
+    console.log(values)
+  }
+
+  const confirmAddTable = async (params) => {
+    try {
+      const {ddl, database} = params
+      const res = await io.post(`/catalogs/${catalogDetail.catalogId}/databases/${curDatabase || form.getFieldValue('database')}/tables`, {
+        ddl,
+      })
+      res && switchVisible(false)
+      res && onLoadData(curDatabase)
+    } catch (error) {
+      message.error(error)
+    }
   }
 
   useEffect(() => {
@@ -57,7 +72,7 @@ const Cm = (props) => {
     <Modal
       {...props}
       title="Create Table"
-      onOk={() => {props.onOk({ddl: Base64.encode(value), database: form.getFieldValue('database')})}}
+      onOk={() => confirmAddTable({ddl: Base64.encode(value), database: form.getFieldValue('database')})}
       onCancel={() => {
         props.onCancel()
         form.resetFields()
@@ -94,7 +109,6 @@ const Cm = (props) => {
           onChange={onChangeMonaco}
         />
       </Form>
-      
     </Modal>
   )
 }

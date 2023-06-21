@@ -5,6 +5,9 @@ import { TableOutlined, FunctionOutlined, PlusSquareOutlined } from '@ant-design
 import DetailTree from './detail-tree'
 import ModalAddDatabase from './modal-add-database'
 import io from '@common/io-context'
+import ModalAddTable from './modal-add-table'
+import ModalAddFunction from './modal-add-function'
+import ModalApplyFunction from './modal-apply-function'
 
 const Cm = () => {
   const { id: catalogId, databaseName, itemId } = useParams()
@@ -14,6 +17,12 @@ const Cm = () => {
   const [databaseTableList, setDatabaseTableList] = useState([])
   const [activeKey, setActiveKey] = useState('table')
   const [addDatabaseVisible, setAddDatabaseVisible] = useState(false)
+  const [addTableVisible, setAddTableVisible] = useState(false)
+  const [addFunVisible, setAddFunVisible] = useState(false)
+  const [applyFunVisible, setApplyFunVisible] = useState(false)
+  const [curDatabase, setCurDatabase] = useState('')
+  const [formValues, setFormValues] = useState([])
+  const [functionList, setFunctionList] = useState([])
 
   // get catalog detail
   const getCatalogDetail = async () => {
@@ -24,7 +33,7 @@ const Cm = () => {
       message.error(error)
     }
   }
-  
+
   // get databases under this catalog
   const getDatabases = async () => {
     try {
@@ -64,6 +73,10 @@ const Cm = () => {
 
   const addDatabase = () => {
     console.log(11)
+  }
+
+  const confirmApplyFunction = (params) => {
+    setFormValues(params)
   }
 
   useEffect(() => {
@@ -107,7 +120,7 @@ const Cm = () => {
     {
       key: '2',
       label: (
-        <span className='hand'>
+        <span className='hand' onClick={() => setAddTableVisible(true)}>
           Create table
         </span>
       ),
@@ -115,7 +128,7 @@ const Cm = () => {
     {
       key: '3',
       label: (
-        <span className='hand'>
+        <span className='hand' onClick={() => setAddFunVisible(true)}>
           Create function
         </span>
       ),
@@ -123,14 +136,44 @@ const Cm = () => {
   ]
 
   const modalAddDatabaseProps = {
-    visible: addDatabaseVisible,
-    // onCancle: () => {},
-    // onOk: () => {},
-    switchVisible: setAddDatabaseVisible,
     catalogId,
+    visible: addDatabaseVisible,
+    switchVisible: setAddDatabaseVisible,
     callback: getDatabases,
     getCatalogDetail,
   }
+
+  const ModalAddTableProps = {
+    visible: addTableVisible,
+    curDatabase,
+    databaseList,
+    catalogDetail,
+    // onLoadData,
+    switchVisible: setAddTableVisible,
+    onCancel: () => setAddTableVisible(false),
+  }
+
+  const ModalAddFunProps = {
+    visible: addFunVisible,
+    curDatabase,
+    databaseList,
+    formValues,
+    catalogDetail,
+    // onLoadData,
+    switchVisible: setAddFunVisible,
+    analysisCallback: params => {
+      setFunctionList(params.functionList)
+    },
+    switchApplyFunVisible: setApplyFunVisible,
+  }
+
+  const ModalApplyFunProps = {
+    functionList,
+    visible: applyFunVisible,
+    switchVisible: setApplyFunVisible,
+    onOk: (params) => confirmApplyFunction(params),
+  }
+
   return (
     <div className='FBH FBJ'>
       <div className='left-tree-box white-bg p16'>
@@ -168,6 +211,9 @@ const Cm = () => {
         }
       </div>
       <ModalAddDatabase {...modalAddDatabaseProps} />
+      <ModalAddTable {...ModalAddTableProps} />
+      <ModalAddFunction {...ModalAddFunProps} />
+      <ModalApplyFunction {...ModalApplyFunProps} />
     </div>
   )
 }
