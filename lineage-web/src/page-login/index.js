@@ -21,6 +21,7 @@ const Page = () => {
       const login_status = window.localStorage.getItem('login_status')
       if (res.data.data && login_status == 0) {
         window.localStorage.setItem('login_status', 1)
+        window.localStorage.setItem('userInfo', JSON.stringify(res.data.data))
         window.location.href = '/#/job'
       } else {
         window.localStorage.setItem('login_status', 0)
@@ -37,7 +38,7 @@ const Page = () => {
       window.location.href = '/#/job'
     }
   }, [])
-  
+
   return (
     <div className='login-wrapper'>
       <div className='login-box'>

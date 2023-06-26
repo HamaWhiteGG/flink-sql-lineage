@@ -1,16 +1,19 @@
 
 import React,{ useEffect, useState } from 'react'
-import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
-import { UploadOutlined, UserOutlined, VideoCameraOutlined, FileTextOutlined, ProfileOutlined, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Button, Tooltip } from 'antd'
+import { Outlet, Link} from 'react-router-dom'
+import { DownOutlined, ProfileOutlined, LoginOutlined, DatabaseOutlined, ToolOutlined, UserOutlined, ExclamationCircleFilled, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
+import { Layout, Menu, theme, Modal, Tooltip, Dropdown, Space, message } from 'antd'
 import './common/common.styl'
+import axios from 'axios'
 
 const { Header, Content, Footer, Sider } = Layout
+const { confirm } = Modal
 const App = () => {
   const [collapsed, setCollapsed] = useState(false)
   const {hash} = window.location
   const [current, setCurrent] = useState(hash.split('/')[1])
-  console.log()
+  const userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
+  const {username} = userInfo
   const {
     token: { colorBgContainer },
   } = theme.useToken()
@@ -30,28 +33,70 @@ const App = () => {
     // },
     {
       key: 'catalog',
-      icon: SettingOutlined,
+      icon: DatabaseOutlined,
       label: 'Catalog',
       url: 'catalog',
     },
     {
       key: 'plugin',
-      icon: SettingOutlined,
+      icon: ToolOutlined,
       label: 'Plugin',
       url: 'plugin',
     },
     {
       key: 'user-manage',
-      icon: SettingOutlined,
+      icon: UserOutlined,
       label: 'User manage',
       url: 'user-manage',
     },
   ]
 
-  const onClick = (e) => {
+  const onClickMenu = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
   }
+  const signOut = () => {
+    confirm({
+      title: 'Do you Want to Sign out?',
+      icon: <ExclamationCircleFilled />,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          const res = await axios.post('/logout')
+          const login_status = window.localStorage.getItem('login_status')
+          if (res.data.data && login_status == 1) {
+            window.localStorage.setItem('login_status', 0)
+            window.location.href = '/#/login'
+          }
+        } catch (error) {
+          message.error(error)
+        }
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
+  const items = [
+    {
+      key: '1',
+      label: (
+        <div onClick={signOut}>
+          <LoginOutlined className='mr16' />
+          Sign out
+        </div>
+      ),
+    },
+  ]
+
+  useEffect(() => {
+    const login_status = window.localStorage.getItem('login_status')
+    if (login_status == 0) {
+      window.location.href = '/#/login'
+    }
+  }, [])
   
   return (
     <Layout>
@@ -63,7 +108,7 @@ const App = () => {
           theme="dark"
           mode="inline"
           selectedKeys={[current]}
-          onClick={onClick}
+          onClick={onClickMenu}
           items={menuMap.map(
             (item) => ({
               key: item.key,
@@ -80,14 +125,25 @@ const App = () => {
         <Header
           className="FBV FBAE header-box"
         >
-          <div className=''>
+          <div className='fcf'>
             <Tooltip title='Document'>
               <ProfileOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
             </Tooltip>
             <Tooltip title='GitHub'>
               <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
             </Tooltip>
-            <Button type='link'>EN</Button>
+            {/* <Button type='link'>EN</Button> */}
+            <Dropdown 
+              menu={{
+                items,
+              }}
+              trigger='click'
+            >
+              <Space>
+                <span className='hand'>{username}</span>
+                <DownOutlined />
+              </Space>
+            </Dropdown>
           </div>
         </Header>
         <Content
