@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { Typography, Tag, Tooltip, Input, Button, message, Switch } from 'antd'
-import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined, ToolOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import io from '@common/io-context'
 import PluginAddModal from './plugin-add-modal'
@@ -83,8 +83,8 @@ const Cm = () => {
           {
             pluginList?.map(t => 
               <div className='list-item FBH FBJS gray-bd r4 p16 mb24'>
-                <div className='item-logo pr24'>
-                  logo
+                <div className='item-logo pr24 fs24 mr8 fc8'>
+                  <ToolOutlined />
                 </div>
                 <div className='item-content'>
                   <div className='item-top FBH FBJ mb16'>
