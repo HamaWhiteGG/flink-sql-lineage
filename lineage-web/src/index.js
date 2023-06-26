@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App'
+import PageLogin from './page-login'
 import PageJob from './page-sql'
 import JobSql from './page-sql/job-sql'
 import JobList from './page-sql/job-list'
@@ -23,7 +24,9 @@ import PageRole from './page-user-manage/role'
 const ReactSample = () => {
   return <HashRouter>
     <Routes>
-      <Route path="/" element={<App />}>
+      <Route path="/" element={<App />}
+      
+      >
         <Route index element={<PageJob />} />
         <Route path="job" element={<PageJob />}>
           <Route index element={<JobList />} />
@@ -46,7 +49,7 @@ const ReactSample = () => {
           <Route index element={<PageUser />} />
           <Route path="user" element={<PageUser />} />
           <Route path="role" element={<PageRole />} />
-        </Route>
+        </Route>   
         <Route
           path="*"
           element={
@@ -55,6 +58,8 @@ const ReactSample = () => {
             </main>
           }
         />
+      </Route>
+      <Route path="/login" element={<PageLogin />}>
       </Route>
     </Routes>
   </HashRouter>
