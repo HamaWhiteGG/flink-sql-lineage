@@ -66,7 +66,7 @@ const Cm = () => {
         <div className='catalog-top-bar FBH FBJ mb16'>
           <div></div>
           <div>
-            <Input.Search placeholder="keywords"  size="small" style={{width: '200px'}} />
+            {/* <Input.Search placeholder="keywords"  size="small" style={{width: '200px'}} /> */}
             <Button type='primary' size="small" className='ml8'
               onClick={() => {
                 setCurType('Add')

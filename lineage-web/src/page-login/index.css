@@ -1,0 +1,37 @@
+
+
+.login-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-title {
+  font-size: 24px;
+  color: #1777ff;
+  font-weight: 400;
+}
+.login-bd {
+  box-shadow: 1px 1px 10px #ddd;
+}
+
+/*风格一*/
+.login-wrapper {
+  background-image: url(./img/768f621302960506517df905fd902ccd.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.login-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #dbd6d6;
+}
+
+.login-bd {
+  border: 1px solid #2a2929;
+  background: #020a27b8;
+  color: #eee;
+  border-radius: 8px;
+}
