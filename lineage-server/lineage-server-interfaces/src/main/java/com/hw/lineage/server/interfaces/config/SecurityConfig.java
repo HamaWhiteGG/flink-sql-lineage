@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hw.lineage.server.application.service.UserService;
 import com.hw.lineage.server.interfaces.enhanced.EnhancedParametersFilter;
 import com.hw.lineage.server.interfaces.result.Result;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,6 +36,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
