@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, message, Modal, Select, Input, Col, Row, Divider, Upload, Button, Space } from 'antd'
 import { UploadOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import axios from 'axios'
 
 const { Option } = Select
-const contrlItem = ({ label, type, options = [], required = false, value, placeholder, uploadProps={}}) => {
-  let itemContent = <Input placeholder={placeholder} style={{ width: 200 }} />
+const contrlItem = ({ label, type, options = [], required = false, value, placeholder, uploadProps={}}, isEditable) => {
+  let itemContent = <Input placeholder={placeholder} style={{ width: 200 }} disabled={!isEditable} />
   switch (type) {
     case 'input':
-      itemContent = <Input style={{ width: 200 }} />
+      itemContent = <Input style={{ width: 200 }} disabled={!isEditable} />
       break;
     case 'select':
-      itemContent = <Select  style={{ width: 200 }}>
+      itemContent = <Select  style={{ width: 200 }} disabled={!isEditable}>
         {
           options?.map(t => <Option key={t} value={t}>{t}</Option>)
         }
@@ -20,8 +20,8 @@ const contrlItem = ({ label, type, options = [], required = false, value, placeh
       break;
     case 'upload':
       itemContent = (
-        <Upload {...uploadProps}>
-          <Button icon={<UploadOutlined />}>upload</Button>
+        <Upload {...uploadProps}  disabled={!isEditable}>
+          <Button icon={<UploadOutlined />}  disabled={!isEditable}>upload</Button>
         </Upload>
       )
       break;
@@ -81,9 +81,11 @@ const catalogPropMap = {
 }
 const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogList = [], pluginList = []}) => {
   const [form] = Form.useForm()
+  const isEditable = type === 'Add'
   const [databaseList, setDatabaseList] = useState([])
-  const [catalogType, setCatalogType] = useState('HIVE')
-  const [catalogProperties, setCatalogProperties] = useState(catalogPropMap['HIVE'])
+  const [catalogType, setCatalogType] = useState(isEditable ? 'HIVE' : record.catalogType)
+  const [catalogProperties, setCatalogProperties] = useState(catalogPropMap[isEditable ? 'HIVE': record.catalogType])
+  
 
   // login
   const login = async () => {
@@ -197,12 +199,27 @@ const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogLis
     }
   }, [visible])
 
+  
+  useEffect(() => {
+    if (type === 'Edit') {
+      if (record) {
+        setCatalogType(record.catalogType)
+        setCatalogProperties(catalogPropMap[record.catalogType])
+      } 
+    } else {
+      setCatalogType('HIVE')
+      setCatalogProperties(catalogPropMap['HIVE'])
+    }
+  }, [record, type])
+
   const modalProps = {
     visible,
     title: `${type} Catalog`,
     onCancel: () => {
       onCancel()
       form.resetFields()
+      setCatalogType('HIVE')
+      setCatalogProperties(catalogPropMap['HIVE'])
     },
     onOk: handleOnOk,
     destroyOnClose: true,
@@ -239,8 +256,9 @@ const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogLis
                 message: 'Please enter name!',
               },
             ]}
+            
           >
-            <Input placeholder='enter' />
+            <Input placeholder='enter' disabled={!isEditable} />
           </Form.Item>
           <Form.Item
             label="database"
@@ -266,7 +284,7 @@ const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogLis
               },
             ]}
           >
-            <Select placeholder='type' onChange={e => onChangeCatalog(e)}>
+            <Select placeholder='type' onChange={e => onChangeCatalog(e)}  disabled={!isEditable}>
               <Option key='MEMORY' value='MEMORY'>MemoryCatalog</Option>
               <Option key='HIVE' value='HIVE'>HiveCatalog</Option>
               <Option key='JDBC' value='JDBC'>JdbcCatalog</Option>
@@ -282,7 +300,7 @@ const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogLis
               },
             ]}
           >
-            <Select placeholder='plugin'>
+            <Select placeholder='plugin' disabled={!isEditable}>
               {
                 pluginList?.map(t => <Option key={t.pluginId} value={t.pluginId}>{t.pluginName}</Option>)
               }
@@ -321,14 +339,14 @@ const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogLis
                   <Form.Item
                     name={t.label}
                   >
-                    {contrlItem({...t})}
+                    {contrlItem({...t}, isEditable)}
                   </Form.Item>
                 </Space>
               </Form.Item>
             )}
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col span={24} offset={4}>
           <Form.List name="propertyList">
             {(fields, { add, remove }) => (
@@ -378,7 +396,7 @@ const Cm = ({visible, onCancel, getCatalogList, record, type = 'Add', catalogLis
             )}
           </Form.List>
         </Col>
-      </Row>
+      </Row> */}
     </Form>
   </Modal>
 }

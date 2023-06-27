@@ -13,7 +13,7 @@ const App = () => {
   const {hash} = window.location
   const [current, setCurrent] = useState(hash.split('/')[1])
   const userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
-  const {username=''} = userInfo
+  const {username=''} = userInfo || {}
   const {
     token: { colorBgContainer },
   } = theme.useToken()
