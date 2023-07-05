@@ -22,7 +22,7 @@ Documentation is being updated...
 </br>
 Source Address: https://github.com/HamaWhiteGG/flink-sql-lineage
 
-Author Email: baisongxx@gmail.com
+Author Email: baisongxx@gmail.com   
 
 ## 一、Basic introduction
 ### 1.1 Introduction to Apache Calcite
