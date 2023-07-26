@@ -11,7 +11,7 @@ const layout = {
   },
 }
 const Cm = (props) => {
-  const {catalogId, functionId, databaseName} = props
+  const {catalogId, functionId, databaseName, refresh} = props
   const [form] = Form.useForm()
   const [dataList, setDataList] = useState({})
 
@@ -26,7 +26,7 @@ const Cm = (props) => {
 
   useEffect(() => {
     functionId && getFunInfos()
-  }, [functionId])
+  }, [functionId, refresh])
 
   useEffect(() => {
     form && form.setFieldsValue(dataList)
@@ -45,7 +45,7 @@ const Cm = (props) => {
         >
           <Form.Item name="functionPath" label="jar file"><Input disabled /></Form.Item>
           <Form.Item name="functionName" label="name"><Input disabled /></Form.Item>
-          <Form.Item name="database" label="dadabase"><Input disabled /></Form.Item>
+          <Form.Item name="database" label="database"><Input disabled /></Form.Item>
           <Form.Item name="className" label="classname"><Input disabled /></Form.Item>
           <Form.Item name="invocation" label="invocation"><Input disabled /></Form.Item>
           <Form.Item name="descr" label="description"><Input.TextArea disabled /></Form.Item>

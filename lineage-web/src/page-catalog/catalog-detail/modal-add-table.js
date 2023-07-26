@@ -15,7 +15,7 @@ const layout = {
 }
 const {Option} = Select
 const Cm = (props) => {
-  const {catalogDetail, curDatabase, databaseList, switchVisible, onLoadData=() => {}} = props
+  const {type='add', catalogDetail, curDatabase, databaseList=[], switchVisible, onLoadData=() => {}, formValues={}} = props
   const [form] = Form.useForm()
   const [value, setValue] = useState(null)
   const _initOptions = {
@@ -53,7 +53,7 @@ const Cm = (props) => {
 
   const confirmAddTable = async (params) => {
     try {
-      const {ddl, database} = params
+      const {ddl} = params
       const res = await io.post(`/catalogs/${catalogDetail.catalogId}/databases/${curDatabase || form.getFieldValue('database')}/tables`, {
         ddl,
       })
@@ -68,15 +68,19 @@ const Cm = (props) => {
     form && form.setFieldValue('database', curDatabase)
   }, [curDatabase])
 
+  useEffect(() => {
+    setValue(formValues.value)
+  }, [formValues])
+
   return (
     <Modal
       {...props}
-      title="Create Table"
+      title={`${type === 'add' ? 'Create' : 'Edit'} Table`}
       onOk={() => confirmAddTable({ddl: Base64.encode(value), database: form.getFieldValue('database')})}
       onCancel={() => {
         props.onCancel()
-        form.resetFields()
-        setValue('')
+        type === 'add' && form.resetFields()
+        type === 'add' && setValue('')
       }}
     >
       <Form
@@ -96,7 +100,7 @@ const Cm = (props) => {
             },
           ]}
         >
-          <Select>
+          <Select disabled={type !== 'add'}>
             {databaseList.map(t => <Option key={t} value={t}>{t}</Option>)}
           </Select>
         </Form.Item>

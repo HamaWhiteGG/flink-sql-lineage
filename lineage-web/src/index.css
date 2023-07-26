@@ -21,3 +21,6 @@ code {
   height: 50px;
   line-height: 50px;
 }
+#webpack-dev-server-client-overlay {
+  display: none !important;
+}

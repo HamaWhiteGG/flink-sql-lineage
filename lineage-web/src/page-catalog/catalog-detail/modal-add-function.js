@@ -3,6 +3,7 @@ import { Modal, Form, Select, Input, Upload, Button, message } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import io from '@common/io-context'
 
+const { TextArea } = Input
 const layout = {
   labelCol: {
     span: 6,
@@ -13,7 +14,7 @@ const layout = {
 }
 const {Option} = Select
 const Cm = (props) => {
-  const {catalogDetail, curDatabase, databaseList, formValues, switchApplyFunVisible, analysisCallback, switchVisible, onLoadData=() => {}} = props
+  const {type='add', catalogDetail, curDatabase, databaseList, formValues, switchApplyFunVisible, analysisCallback, switchVisible, getDetail=() => {}} = props
   const [form] = Form.useForm()
   const [functionUrl, setFunctionUrl] = useState('')
 
@@ -64,8 +65,15 @@ const Cm = (props) => {
   const confirmAddFunction = async (params) => {
     try {
       const res = await io.post(`/catalogs/${catalogDetail.catalogId}/databases/${curDatabase || form.getFieldValue('database')}/functions`, {...params})
-      // console.log('----confirmAddFunction----', params)
-      res && onLoadData(curDatabase)
+    } catch (error) {
+      message.error(error)
+    }
+  }
+
+  const confirmUpdateFunction = async (params) => {
+    try {
+      const res = await io.put(`/catalogs/${catalogDetail.catalogId}/databases/${curDatabase || form.getFieldValue('database')}/functions/${formValues.functionId}`, {...params})
+      res && getDetail()
     } catch (error) {
       message.error(error)
     }
@@ -80,10 +88,11 @@ const Cm = (props) => {
   return (
     <Modal
       {...props}
-      title="Create Function"
+      title={`${type === 'add' ? 'Create' : 'Edit'} Function`}
       maskClosable={false}
       onOk={() => {
-        confirmAddFunction(form.getFieldsValue())
+        type === 'add' && confirmAddFunction(form.getFieldsValue())
+        type === 'edit' && confirmUpdateFunction(form.getFieldsValue())
         switchVisible(false)
       }}
       onCancel={() => {
@@ -140,7 +149,7 @@ const Cm = (props) => {
             },
           ]}
         >
-          <Select>
+          <Select disabled={type !== 'add'}>
             {databaseList.map(t => <Option key={t} value={t}>{t}</Option>)}
           </Select>
         </Form.Item>
@@ -160,7 +169,7 @@ const Cm = (props) => {
           name="descr"
           label="description"
         >
-          <Input.TextArea />
+          <TextArea />
         </Form.Item>
       </Form>
     </Modal>
