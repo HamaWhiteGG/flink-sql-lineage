@@ -1,7 +1,7 @@
 
 import React,{ useEffect, useState } from 'react'
 import { Outlet, Link} from 'react-router-dom'
-import { DownOutlined, ProfileOutlined, LoginOutlined, DatabaseOutlined, ToolOutlined, UserOutlined, ExclamationCircleFilled, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
+import { DownOutlined, ProfileOutlined, LoginOutlined, DatabaseOutlined, ToolOutlined, UserOutlined, TeamOutlined, ExclamationCircleFilled, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Tooltip, Dropdown, Space, message } from 'antd'
 import './common/common.styl'
 import axios from 'axios'
@@ -45,8 +45,8 @@ const App = () => {
     },
     {
       key: 'user-manage',
-      icon: UserOutlined,
-      label: 'User manage',
+      icon: TeamOutlined,
+      label: 'User Managerment',
       url: 'user-manage',
     },
   ]
@@ -164,7 +164,7 @@ const App = () => {
             textAlign: 'center',
           }}
         >
-          Flink SQL Lineage  ©2023
+          FlinkSQL Lineage  ©2023
         </Footer>
       </Layout>
     </Layout>
