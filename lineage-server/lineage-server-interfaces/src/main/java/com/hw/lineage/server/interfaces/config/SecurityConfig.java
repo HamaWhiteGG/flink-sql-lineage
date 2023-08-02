@@ -61,6 +61,7 @@ public class SecurityConfig {
             "/webjars/**",
             // fow lineage web
             "/",
+            "/favicon.ico",
             "/static/**",
             // currently only APIs under plugins require login and authentication.
             "/tasks/**",
