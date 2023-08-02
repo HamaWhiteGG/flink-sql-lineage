@@ -14472,7 +14472,7 @@ var Icons = {
   Label
 };
 
-var css_248z$1 = ".component {\n  height: fit-content;\n  text-align: center;\n  background: #fff;\n  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);\n  border-radius: 4px;\n  background: transparent;\n}\n.component .node-icon {\n  margin-right: 8px;\n}\n.component .node-icon .white-bg {\n  background: #fff;\n  border-radius: 2px;\n  padding: 3px;\n}\n.component .filed-title-name {\n  width: 70%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.component .operators {\n  margin-left: 10px;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.component .dashed {\n  border: 1px dashed #c9cbd3;\n  border-top-left-radius: 2px;\n  border-top-right-radius: 2px;\n}\n.component .dashed .field-content {\n  border: 0!important;\n}\n.component .field {\n  min-width: 216px;\n  background: #fff;\n}\n.component .field.loop-active .field-title {\n  border: 1px solid #F5222D;\n  border-radius: 2px;\n}\n.component .field.loop-active .field-title .item-endpoint-left {\n  border-left: 5px solid #F5222D !important;\n}\n.component .field.loop-active .field-title .item-endpoint-right {\n  background: #F5222D !important;\n}\n.component .field .field-content {\n  background: #fff;\n  border: 1px solid #D9E2EC;\n  border-top: 0;\n}\n.component .field .field-content.field-item {\n  border-bottom: 0;\n}\n.component .field .field-item {\n  font-size: 12px;\n  text-align: left;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  position: relative;\n  padding: 4px 8px;\n  border-bottom: 1px solid #f2f5f9;\n  background-color: #fff;\n}\n.component .field .field-item.field-content:hover .item-endpoint-right {\n  border-color: #ff6a00;\n  background: #ff6a00;\n}\n.component .field .field-item.field-content:hover .item-endpoint-left {\n  left: -6px;\n  display: inline-block;\n  width: 0;\n  height: 0;\n  border-top: 3px solid transparent;\n  border-bottom: 3px solid transparent;\n  border-left: 5px solid #ff6a00;\n  background: transparent;\n}\n.component .field .field-item .item-endpoint {\n  display: inline-block;\n  width: 2px;\n  height: 14px;\n  background: #c9cbd2;\n  position: absolute;\n  top: 52%;\n  transform: translateY(-50%);\n  opacity: 0;\n}\n.component .field .field-item .item-endpoint.visible {\n  opacity: 1;\n}\n.component .field .field-item .item-endpoint span {\n  display: block;\n  height: 100%;\n  width: 100%;\n}\n.component .field .field-item .item-endpoint-left {\n  left: -6px;\n  display: inline-block;\n  width: 0;\n  height: 0;\n  border-top: 3px solid transparent;\n  border-bottom: 3px solid transparent;\n  border-left: 5px solid #bdbdbd;\n  background: transparent;\n}\n.component .field .field-item .item-endpoint-right {\n  right: -3px;\n}\n.component .field .field-item .field-item-content {\n  flex: 1;\n  display: flex;\n  padding: 2px 0;\n}\n.component .field .field-item .field-item-content .field-item-icon {\n  width: 20px;\n  text-align: center;\n  font-size: 12px;\n}\n.component .field .field-item .field-item-content .field-item-title {\n  flex: 1;\n  text-align: left;\n  color: #000;\n  display: flex;\n  align-items: center;\n  width: 100%;\n}\n.component .field .field-item .field-item-content .field-item-title .item-icon {\n  height: 12.5px;\n  width: 12.5px;\n  display: inline-block;\n  margin-right: 10px;\n  margin-left: 4.25px;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text {\n  display: flex;\n  flex: 1;\n  justify-content: space-between;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .name {\n  flex: 2;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .name:hover {\n  color: #2466ff;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .desc {\n  flex: 1;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .desc .gray {\n  color: rgba(0, 0, 0, 0.25);\n}\n.component .field .field-item .field-item-content .component-operator-comtainer {\n  margin-left: 20px;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n}\n.component .field .field-title .item-endpoint {\n  opacity: 1!important;\n}\n.component .field .field-item-active {\n  background-color: #fef0e5;\n}\n.component .field .field-item-active .field-item-content .item-text {\n  display: flex;\n  flex: 1;\n  justify-content: space-between;\n}\n.component .field .field-item-active .field-item-content .item-text .name {\n  flex: 2;\n  color: #2466ff;\n}\n.component .field .field-item-active .field-item-content .item-text .desc {\n  flex: 1;\n}\n.component .field .field-item-active .field-item-content .item-text .desc .gray {\n  color: rgba(0, 0, 0, 0.25);\n}\n.component .field .field-item-active .item-endpoint-right {\n  border-color: #ff6a00;\n  background: #ff6a00;\n}\n.component .field .field-item-active .item-endpoint-left {\n  left: -6px;\n  display: inline-block;\n  width: 0;\n  height: 0;\n  border-top: 3px solid transparent;\n  border-bottom: 3px solid transparent;\n  border-left: 5px solid #ff6a00;\n  background: transparent;\n}\n.component .field .field-title {\n  display: flex;\n  justify-content: space-between;\n  border-bottom: 1px solid #ededed;\n  background-color: #e6f6ff;\n  height: 32px;\n  padding: 8px;\n  border-radius: 2px;\n  box-shadow: 0 2px 2px 0 rgba(181, 183, 192, 0.25);\n  z-index: 1;\n}\n.component .primay-table .field-title {\n  color: #fff;\n  background-image: linear-gradient(180deg, #5DBAFF 0%, #0075FF 71%);\n  border: 1px solid #FFFFFF;\n}\n.component .primay-table .field-content {\n  border: 1px solid #5DBAFF;\n  border-top: 0;\n}\n.component .left21 {\n  left: -21px !important;\n}\n";
+var css_248z$1 = ".component {\n  height: fit-content;\n  text-align: center;\n  background: #fff;\n  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15);\n  border-radius: 4px;\n  background: transparent;\n}\n.component .node-icon {\n  margin-right: 8px;\n}\n.component .node-icon .white-bg {\n  background: #fff;\n  border-radius: 2px;\n  padding: 3px;\n}\n.component .filed-title-name {\n  width: 70%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.component .operators {\n  margin-left: 10px;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.component .dashed {\n  border: 1px dashed #c9cbd3;\n  border-top-left-radius: 2px;\n  border-top-right-radius: 2px;\n}\n.component .dashed .field-content {\n  border: 0!important;\n}\n.component .field {\n  min-width: 216px;\n  background: #fff;\n}\n.component .field.loop-active .field-title {\n  border: 1px solid #F5222D;\n  border-radius: 2px;\n}\n.component .field.loop-active .field-title .item-endpoint-left {\n  border-left: 5px solid #F5222D !important;\n}\n.component .field.loop-active .field-title .item-endpoint-right {\n  background: #F5222D !important;\n}\n.component .field .field-content {\n  background: #fff;\n  border: 1px solid #D9E2EC;\n  border-top: 0;\n}\n.component .field .field-content.field-item {\n  border-bottom: 0;\n}\n.component .field .field-item {\n  font-size: 12px;\n  text-align: left;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  position: relative;\n  padding: 4px 8px;\n  border-bottom: 1px solid #f2f5f9;\n  background-color: #fff;\n}\n.component .field .field-item.field-content:hover .item-endpoint-right {\n  border-color: #ff6a00;\n  background: #ff6a00;\n}\n.component .field .field-item.field-content:hover .item-endpoint-left {\n  left: -6px;\n  display: inline-block;\n  width: 0;\n  height: 0;\n  border-top: 3px solid transparent;\n  border-bottom: 3px solid transparent;\n  border-left: 5px solid #ff6a00;\n  background: transparent;\n}\n.component .field .field-item .item-endpoint {\n  display: inline-block;\n  width: 2px;\n  height: 14px;\n  background: #c9cbd2;\n  position: absolute;\n  top: 52%;\n  transform: translateY(-50%);\n  opacity: 0;\n}\n.component .field .field-item .item-endpoint.visible {\n  opacity: 1;\n}\n.component .field .field-item .item-endpoint span {\n  display: block;\n  height: 100%;\n  width: 100%;\n}\n.component .field .field-item .item-endpoint-left {\n  left: -6px;\n  display: inline-block;\n  width: 0;\n  height: 0;\n  border-top: 3px solid transparent;\n  border-bottom: 3px solid transparent;\n  border-left: 5px solid #bdbdbd;\n  background: transparent;\n}\n.component .field .field-item .item-endpoint-right {\n  right: -3px;\n}\n.component .field .field-item .field-item-content {\n  flex: 1;\n  display: flex;\n  padding: 2px 0;\n}\n.component .field .field-item .field-item-content .field-item-icon {\n  width: 20px;\n  text-align: center;\n  font-size: 12px;\n}\n.component .field .field-item .field-item-content .field-item-title {\n  flex: 1;\n  text-align: left;\n  color: #000;\n  display: flex;\n  align-items: center;\n  width: 100%;\n}\n.component .field .field-item .field-item-content .field-item-title .item-icon {\n  height: 12.5px;\n  width: 12.5px;\n  display: inline-block;\n  margin-right: 10px;\n  margin-left: 4.25px;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text {\n  display: flex;\n  flex: 1;\n  justify-content: space-between;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .name {\n  flex: 2;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .name:hover {\n  color: #2466ff;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .desc {\n  flex: 1;\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .desc .gray {\n  color: rgba(0, 0, 0, 0.25);\n}\n.component .field .field-item .field-item-content .field-item-title .item-text .circle-text {\n  width: 15px;\n  border-radius: 10px;\n  text-align: center;\n  height: 15px;\n  line-height: 15px;\n  color: #636363;\n}\n.component .field .field-item .field-item-content .component-operator-comtainer {\n  margin-left: 20px;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n}\n.component .field .field-title .item-endpoint {\n  opacity: 1!important;\n}\n.component .field .field-item-active {\n  background-color: #fef0e5;\n}\n.component .field .field-item-active .field-item-content .item-text {\n  display: flex;\n  flex: 1;\n  justify-content: space-between;\n}\n.component .field .field-item-active .field-item-content .item-text .name {\n  flex: 2;\n  color: #2466ff;\n}\n.component .field .field-item-active .field-item-content .item-text .desc {\n  flex: 1;\n}\n.component .field .field-item-active .field-item-content .item-text .desc .gray {\n  color: rgba(0, 0, 0, 0.25);\n}\n.component .field .field-item-active .field-item-content .item-text .circle-text {\n  width: 15px;\n  border-radius: 10px;\n  text-align: center;\n  height: 15px;\n  line-height: 15px;\n  color: #636363;\n}\n.component .field .field-item-active .item-endpoint-right {\n  border-color: #ff6a00;\n  background: #ff6a00;\n}\n.component .field .field-item-active .item-endpoint-left {\n  left: -6px;\n  display: inline-block;\n  width: 0;\n  height: 0;\n  border-top: 3px solid transparent;\n  border-bottom: 3px solid transparent;\n  border-left: 5px solid #ff6a00;\n  background: transparent;\n}\n.component .field .field-title {\n  display: flex;\n  justify-content: space-between;\n  border-bottom: 1px solid #ededed;\n  background-color: #e6f6ff;\n  height: 32px;\n  padding: 8px;\n  border-radius: 2px;\n  box-shadow: 0 2px 2px 0 rgba(181, 183, 192, 0.25);\n  z-index: 1;\n}\n.component .primay-table .field-title {\n  color: #fff;\n  background-image: linear-gradient(180deg, #5DBAFF 0%, #0075FF 71%);\n  border: 1px solid #FFFFFF;\n}\n.component .primay-table .field-content {\n  border: 1px solid #5DBAFF;\n  border-top: 0;\n}\n.component .left21 {\n  left: -21px !important;\n}\n";
 styleInject(css_248z$1);
 
 const noop$2 = () => null;
@@ -14518,14 +14518,9 @@ const NodeComponent = props => {
     isLoop = false,
     loopNum = 0
   } = props;
-  const {
-    isPrimary = false
-  } = node;
   const typeObj = {
     // 1: <Icons.Application />,
-    2: isPrimary || node.tableIcon === '' || !node.tableIcon ? /*#__PURE__*/React__default["default"].createElement(Icons.TableWhite, {
-      mappingTable: node.mappingTable
-    }) : /*#__PURE__*/React__default["default"].createElement("div", {
+    2: /*#__PURE__*/React__default["default"].createElement("div", {
       className: "white-bg"
     }, /*#__PURE__*/React__default["default"].createElement(Icons.Table, {
       tableIcon: node.tableIcon,
@@ -14554,6 +14549,7 @@ const NodeComponent = props => {
     isHideEndpoint = false,
     endpointClassName = '',
     nodeClassName = '',
+    isPrimary = false,
     nodeIcon = typeObj[type],
     isLoopActive = false,
     // 环路是否高亮
@@ -14568,6 +14564,7 @@ const NodeComponent = props => {
     mappingTable // 当前节点是否为映射表
 
   } = node;
+  console.log('isFold---', isFold, !!isFold && isDownExpand || type !== 2);
   const isTableActive = activeNodeItemIds.includes(id);
   const leftClassName = !isLoop ? loopNum === 0 ? isUpExpand && (scopeType === '1' || scopeType === '3') ? 'left21' : '' : '' : '';
   return /*#__PURE__*/React__default["default"].createElement("div", {
@@ -14602,7 +14599,7 @@ const NodeComponent = props => {
     className: "filed-title-name"
   }, /*#__PURE__*/React__default["default"].createElement(antd.Tooltip, {
     title: title
-  }, title)), isDownExpand || !DownIsTable ? getEndpoint(id, id, 'right', isHideEndpoint, endpointClassName, onEndpointClick, isUpExpand) : null, isUpExpand || type !== 2 ? getEndpoint(id, id, 'left', isHideEndpoint, leftClassName, onEndpointClick, isUpExpand) : null, /*#__PURE__*/React__default["default"].createElement("div", {
+  }, title)), !!isFold ? getEndpoint(id, id, 'right', isHideEndpoint, endpointClassName, onEndpointClick, isUpExpand) : null, !!isFold ? getEndpoint(id, id, 'left', isHideEndpoint, leftClassName, onEndpointClick, isUpExpand) : null, /*#__PURE__*/React__default["default"].createElement("div", {
     className: "operators"
   }, operators.map((_ref, index) => {
     let {
@@ -14659,10 +14656,14 @@ const NodeComponent = props => {
       className: "name"
     }, nodeItem.name)), /*#__PURE__*/React__default["default"].createElement("div", {
       className: "desc omit",
-      title: nodeItem.descr || '-'
-    }, nodeItem.descr || /*#__PURE__*/React__default["default"].createElement("span", {
+      title: nodeItem.childrenCnt || '-'
+    }, /*#__PURE__*/React__default["default"].createElement(antd.Tooltip, {
+      title: "Downstream total"
+    }, /*#__PURE__*/React__default["default"].createElement("div", {
+      className: "circle-text"
+    }, nodeItem.childrenCnt || /*#__PURE__*/React__default["default"].createElement("span", {
       className: "gray"
-    }, "-"))))));
+    }, "-"))))))));
   }))));
 };
 
@@ -14932,37 +14933,43 @@ const toEdges = _ref2 => {
 
       labelRender() {
         // const imgUrl = !!edge?.task?.specificType ? (!!Task[edge?.task?.specificType] ? Task[edge?.task?.specificType] : Task.Default) : ''
-        const imgUrl = !!edge?.task ? !!edge?.task?.taskIcon ? edge?.task?.taskIcon : Task.Default : null; // taskType: 1-离线，2-运维，3-实时
-        // platform: 1-离线，2-实时
-
-        const platFormMap = {
-          1: `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`,
-          2: `/scheduler/index.html#/stream?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`
-        };
-        const urlMap = {
-          1: '/batch/index.html#/dipper/task',
-          2: platFormMap[edge?.task?.platform],
-          3: '/stream/index.html#/dipper/task'
-        };
-        const Href = urlMap[edge?.task?.taskType]; // const Href = edge?.task?.taskType == 1 ? '/batch/index.html#/dipper/task' : `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}`
-
-        const isItemEdge = !!edge.u || !!edge.v;
-
-        if ((isActive || !isItemEdge) && imgUrl) {
-          return /*#__PURE__*/React__default["default"].createElement(antd.Tooltip, {
-            title: edge?.task?.taskName
-          }, /*#__PURE__*/React__default["default"].createElement("span", {
-            onClick: () => {
-              localStorage.setItem(`${window.location.origin}_projectId`, edge?.task?.taskProjectId);
-              window.open(Href, '_blank');
-            },
-            className: `task-icon ${isActive ? 'active' : ''} ${edge.isLoopActive ? 'loop-active' : ''}`
-          }, /*#__PURE__*/React__default["default"].createElement("img", {
-            src: imgUrl,
-            width: 14,
-            height: 14
-          })));
-        }
+        // const imgUrl = !!edge?.task ? (!!edge?.task?.taskIcon ? edge?.task?.taskIcon : Task.Default) : null
+        // // taskType: 1-离线，2-运维，3-实时
+        // // platform: 1-离线，2-实时
+        // const platFormMap = {
+        //   1: `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`,
+        //   2: `/scheduler/index.html#/stream?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`,
+        // }
+        // const urlMap = {
+        //   1: '/batch/index.html#/dipper/task',
+        //   2: platFormMap[edge?.task?.platform],
+        //   3: '/stream/index.html#/dipper/task',
+        // }
+        // const Href = urlMap[edge?.task?.taskType]
+        // // const Href = edge?.task?.taskType == 1 ? '/batch/index.html#/dipper/task' : `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}`
+        // const isItemEdge = !!edge.u || !!edge.v
+        // if ((isActive || !isItemEdge) && imgUrl) {
+        //   return <Tooltip title={edge?.task?.taskName}>
+        //     <span
+        //       onClick={() => {
+        //         localStorage.setItem(`${window.location.origin}_projectId`, edge?.task?.taskProjectId)
+        //         window.open(Href, '_blank')
+        //       }}
+        //      className={`task-icon ${isActive ? 'active':''} ${edge.isLoopActive ? 'loop-active' : ''}`}>
+        //        <img src={imgUrl} width={14} height={14}/>
+        //     </span>
+        //   </Tooltip>
+        // }
+        edge?.transform ? Task.Default : null;
+        return /*#__PURE__*/React__default["default"].createElement(antd.Tooltip, {
+          title: edge?.transform
+        }, edge?.transform ? /*#__PURE__*/React__default["default"].createElement("span", {
+          onClick: () => {
+            localStorage.setItem(`${window.location.origin}_projectId`, edge?.task?.taskProjectId);
+            window.open(Href, '_blank');
+          },
+          className: `task-icon ${isActive ? 'active' : ''} ${edge.isLoopActive ? 'loop-active' : ''}`
+        }) : null);
       },
 
       labelOffset: 20
@@ -15123,36 +15130,43 @@ const toEdgesItem = _ref4 => {
       }),
       // labelRender: () => null
       labelRender: () => {
-        // const imgUrl = !!edge?.task?.specificType ? (!!Task[edge?.task?.specificType] ? Task[edge?.task?.specificType] : Task.Default) : ''
-        const imgUrl = !!edge?.task ? !!edge?.task?.taskIcon ? edge?.task?.taskIcon : Task.Default : null; // taskType: 1-离线，2-运维，3-实时
-        // platform: 1-离线，2-实时
-
-        const platFormMap = {
-          1: `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`,
-          2: `/scheduler/index.html#/stream?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`
-        };
-        const urlMap = {
-          1: '/batch/index.html#/dipper/task',
-          2: platFormMap[edge?.task?.platform],
-          3: '/stream/index.html#/dipper/task'
-        };
-        const Href = urlMap[edge?.task?.taskType]; // const Href = edge?.task?.taskType == 1 ? '/batch/index.html#/dipper/task' : `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}`
-
-        const isItemEdge = !!edge.u || !!edge.v;
-
-        if ((isActive || !isItemEdge) && imgUrl) {
-          return /*#__PURE__*/React__default["default"].createElement(antd.Tooltip, {
-            title: edge?.task?.taskName
-          }, /*#__PURE__*/React__default["default"].createElement("a", {
-            href: Href,
-            target: "_blank",
-            className: `task-icon ${isActive ? 'active' : ''} ${edge.isLoopActive ? 'loop-active' : ''}`
-          }, /*#__PURE__*/React__default["default"].createElement("img", {
-            src: imgUrl,
-            width: 14,
-            height: 14
-          })));
-        }
+        // // const imgUrl = !!edge?.task?.specificType ? (!!Task[edge?.task?.specificType] ? Task[edge?.task?.specificType] : Task.Default) : ''
+        // const imgUrl = !!edge?.task ? (!!edge?.task?.taskIcon ? edge?.task?.taskIcon : Task.Default) : null
+        // // taskType: 1-离线，2-运维，3-实时
+        // // platform: 1-离线，2-实时
+        // const platFormMap = {
+        //   1: `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`,
+        //   2: `/scheduler/index.html#/stream?taskId=${edge?.task?.taskId}&workspaceId=${edge?.task?.workspaceId}`,
+        // }
+        // const urlMap = {
+        //   1: '/batch/index.html#/dipper/task',
+        //   2: platFormMap[edge?.task?.platform],
+        //   3: '/stream/index.html#/dipper/task',
+        // }
+        // const Href = urlMap[edge?.task?.taskType]
+        // // const Href = edge?.task?.taskType == 1 ? '/batch/index.html#/dipper/task' : `/operation/index.html#/offline-task?taskId=${edge?.task?.taskId}`
+        // const isItemEdge = !!edge.u || !!edge.v
+        // if ((isActive || !isItemEdge) && imgUrl) {
+        //   return <Tooltip title={edge?.task?.taskName}>
+        //     <a 
+        //       href={Href} 
+        //       target="_blank" 
+        //       className={`task-icon ${isActive ? 'active':''} ${edge.isLoopActive ? 'loop-active' : ''}`}
+        //     >
+        //       <img src={imgUrl} width={14} height={14} />
+        //     </a>
+        //   </Tooltip>
+        // }
+        edge?.transform ? Task.Default : null;
+        return /*#__PURE__*/React__default["default"].createElement(antd.Tooltip, {
+          title: edge?.transform
+        }, edge?.transform ? /*#__PURE__*/React__default["default"].createElement("span", {
+          onClick: () => {
+            localStorage.setItem(`${window.location.origin}_projectId`, edge?.task?.taskProjectId);
+            window.open(Href, '_blank');
+          },
+          className: `task-icon ${isActive ? 'active' : ''} ${edge.isLoopActive ? 'loop-active' : ''}`
+        }) : null);
       },
       labelOffset: 20
     };
@@ -15347,7 +15361,7 @@ const getItemActiveThings = _ref6 => {
   };
 };
 
-var css_248z = ".lineage_dag {\n  height: 100%;\n}\n.lineage_dag .lineage-edge-content {\n  stroke: #BFBFBF;\n}\n.lineage_dag .lineage-edge-content:hover {\n  stroke: #f79a02;\n  stroke-width: 1px;\n}\n.lineage_dag .lineage-edge-hover-active {\n  stroke: #f79a02;\n  stroke-width: 1px;\n}\n.lineage_dag .lineage-edge-loop-active {\n  stroke: red;\n  stroke-width: 1px;\n}\n.lineage_dag .lineage-edge-hide {\n  stroke: transparent;\n}\n.lineage_dag .lineage-edge-un {\n  stroke-dasharray: 4px;\n}\n.lineage_dag .task-icon {\n  cursor: pointer;\n  position: absolute;\n  display: none;\n  border: 1px solid #dbdbdb;\n  border-radius: 10px;\n  padding: 2px;\n  width: 20px;\n  height: 20px;\n  line-height: 10px;\n  background: #fff;\n  left: -9px;\n  top: -10px;\n  z-index: 999;\n}\n.lineage_dag .task-icon:hover {\n  border: 1px solid #2466ff;\n}\n.lineage_dag .task-icon:first-child {\n  display: inline-block;\n}\n.lineage_dag .task-icon.active {\n  border: 1px solid #ff6a00;\n}\n.lineage_dag .task-icon.loop-active {\n  border: 1px solid #F5222D;\n}\n";
+var css_248z = ".lineage_dag {\n  height: 100%;\n}\n.lineage_dag .lineage-edge-content {\n  stroke: #BFBFBF;\n}\n.lineage_dag .lineage-edge-content:hover {\n  stroke: #f79a02;\n  stroke-width: 1px;\n}\n.lineage_dag .lineage-edge-hover-active {\n  stroke: #f79a02;\n  stroke-width: 1px;\n}\n.lineage_dag .lineage-edge-loop-active {\n  stroke: red;\n  stroke-width: 1px;\n}\n.lineage_dag .lineage-edge-hide {\n  stroke: transparent;\n}\n.lineage_dag .lineage-edge-un {\n  stroke-dasharray: 4px;\n}\n.lineage_dag .task-icon {\n  cursor: pointer;\n  position: inherit;\n  display: none;\n  border: 1px solid #BFBFBF;\n  border-radius: 10px;\n  padding: 2px;\n  width: 8px;\n  height: 8px;\n  line-height: 10px;\n  background: #BFBFBF;\n  left: -4px;\n  top: -4px;\n  z-index: 999;\n}\n.lineage_dag .task-icon:hover {\n  border: 1px solid #2466ff;\n}\n.lineage_dag .task-icon:first-child {\n  display: inline-block;\n}\n.lineage_dag .task-icon.active {\n  border: 1px solid #ff6a00;\n  background: #ff6a00;\n}\n.lineage_dag .task-icon.loop-active {\n  border: 1px solid #F5222D;\n  background: #F5222D;\n}\n";
 styleInject(css_248z);
 
 var defaultOptions = {
@@ -15427,7 +15441,6 @@ var LineageDag = function LineageDag(props) {
 
 
   var onCvsLoaded = function onCvsLoaded(canvas) {
-    console.log('画布初始化');
     canvasRef.current = canvas;
     onLoaded(canvas);
 
@@ -15726,4 +15739,5 @@ Table.propTypes = {
 var LineageTable = Table;
 
 exports.LineageTable = LineageTable;
+exports["default"] = LineageDag;
 //# sourceMappingURL=index.js.map

@@ -11,8 +11,8 @@
 	overflow-x: scroll;
 }
 .right-box .top-info-box {
-	position: fixed;
-	top: 48px;
+	position: absolute;
+	top: -46px;
 	border-bottom: 1px solid #e8e8e8;
 	width: 100%;
 	
