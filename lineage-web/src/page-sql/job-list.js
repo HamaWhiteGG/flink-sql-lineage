@@ -1,5 +1,5 @@
 import React,{ useState, useEffect, useRef } from 'react'
-import { Outlet, Link, useOutletContext } from 'react-router-dom'
+import { Outlet, Link, useOutletContext, useNavigate, useLocation } from 'react-router-dom'
 import { Breadcrumb, Tooltip, Table, Badge, Button, Modal, Form, Checkbox, Input, Select, message } from 'antd'
 import { BranchesOutlined, EditOutlined, DeleteOutlined, PlusSquareOutlined, SearchOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import Monaco from 'react-monaco-editor'
@@ -170,6 +170,8 @@ const AddModal = ({visible, onCancel, getJobList, record, type='Add', catalogLis
 }
 
 const Cm = () => {
+  const navigation = useNavigate()
+  const location = useLocation()
   const { analysisSql, catalogList } = useOutletContext()
   const searchRef = useRef(null)
   const [dataSource, setDataSource] = useState([])
@@ -235,7 +237,12 @@ const Cm = () => {
       pageNum: 1,
       pageSize: 10
     })
-    setDataSource(res.data.data.list)
+    const {list} = res.data.data
+    setDataSource(list)
+    // if url from login
+    if(location.state.pageUrl === 'login') {
+      navigation(`/job/sql/${list[0].taskId}`)
+    }
   }
 
   // delet job confirm

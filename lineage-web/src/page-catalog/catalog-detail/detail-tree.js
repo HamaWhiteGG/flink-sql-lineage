@@ -262,16 +262,19 @@ const Cm = (props) => {
         // icon={node => <span className='mt4 mb4' style={{verticalAlign: 'baseline'}}>{iconMap[`${node.type}`]}</span>}
         titleRender={node => (
           node.type !== 'database' ? 
-          <Link to={`/catalog/${catalogDetail.catalogId}/${node.database}/${type}/${node.id}`}>
             <div className='FBH FBJ mt4 mb4' style={{display: 'inline-flex'}}>
-              <div className='omit' style={{width: 175}}>
-                {node.title} {node.default && <Tag>default</Tag>}
-              </div>
+              <Link className='fc85' 
+              to={`/catalog/${catalogDetail.catalogId}/${node.database}/${type}/${node.id}`}
+              state={{title: node?.title}}
+              >
+                <div className='omit' style={{width: 175}}>
+                  {node.title} {node.default && <Tag>default</Tag>}
+                </div>
+              </Link>
               <div>
                 {getOparation(node)}
               </div>
             </div>
-          </Link>
           : 
           <div className='FBH FBJ' style={{display: 'inline-flex'}}>
             <div style={{width: 200}}>

@@ -162,7 +162,7 @@ const getOps = ({
     isDownExpand || loopNum > 0 ? {} : ExpandDown,
     isDownExpand && loopNum === 0 && (scopeType === '2' || scopeType === '3') ? ShrinkDown : {},
     isUpExpand && loopNum === 0 && (scopeType === '1' || scopeType === '3') ? ShrinkUp : {},
-    Info,
+    // Info,
     type === 2 ? (isFold ? Fold : UnFold) : {},
   ]
   const arry = opsData
