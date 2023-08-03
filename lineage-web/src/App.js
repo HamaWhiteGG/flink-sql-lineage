@@ -47,7 +47,7 @@ const App = () => {
     {
       key: 'user-manage',
       icon: TeamOutlined,
-      label: 'User Managerment',
+      label: 'User',
       url: 'user-manage',
     },
   ]
@@ -135,7 +135,9 @@ const App = () => {
               <ProfileOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
             </Tooltip>
             <Tooltip title='GitHub'>
-              <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+              <Link to='https://github.com/HamaWhiteGG/flink-sql-lineage' target='_blank'>
+                <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+              </Link>
             </Tooltip>
             {/* <Button type='link'>EN</Button> */}
             <Dropdown 
