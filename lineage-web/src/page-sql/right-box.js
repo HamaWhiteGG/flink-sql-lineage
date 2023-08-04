@@ -1,16 +1,19 @@
 import React,{ useState, useRef, useContext, useEffect } from 'react'
 import { Form, Typography, Empty, Tabs } from 'antd'
-import { UpOutlined, DownOutlined } from '@ant-design/icons'
+import { UpOutlined, DownOutlined, TableOutlined } from '@ant-design/icons'
 import _ from 'lodash'
 import LineageBox from './lineage-box'
 import FullScreenIcon from './img/full-screen.svg'
 import ReturnScreenIcon from './img/return-screen.svg'
+import FiledIcon from './img/filed-icon.svg'
+
 
 const { Text } = Typography
 const Page = ({data, taskDetail, catalogList}) => {
   const [form] = Form.useForm()
   const [showLog, setShowLog] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isFold, setIsFold] = useState(true)
 
   function launchFullscreen(element) {
     setIsFullscreen(true)
@@ -88,16 +91,19 @@ const Page = ({data, taskDetail, catalogList}) => {
           </div>
           
           <div className='blood-related p16 small-screen' id="lineageArea">
-            <div className="btn-item">
+            <div className="btn-item FBH FBAC">
               {
                 isFullscreen
                   ? <span className="circle-bg" title="reduce" onClick={() => exitFullscreen(document.getElementById("lineageArea"))}><img alt="" className="p6" src={ReturnScreenIcon} /></span>
                   : <span className="circle-bg" title="full screen" onClick={() => launchFullscreen(document.getElementById("lineageArea"))}><img alt="" className="p6" src={FullScreenIcon} /></span>
               }
+              <div className='ml8' onClick={() => {setIsFold(!isFold)}}>
+                {isFold ? <img className='hand' title='Field lineage' src={FiledIcon} height={14} width={20} /> : <TableOutlined className='lineage-switch-icon fs14 hand' title='Table mode' />}
+              </div>
             </div>
             {/* lineage */}
             <div className="" style={{height: lineageBoxHeight}}>
-              <LineageBox data={data} taskDetail={taskDetail} catalogList={catalogList} />
+              <LineageBox isFold={isFold} data={data} taskDetail={taskDetail} catalogList={catalogList} />
             </div>
           </div>
         </div>
