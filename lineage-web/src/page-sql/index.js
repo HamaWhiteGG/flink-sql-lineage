@@ -75,13 +75,13 @@ const Page = () => {
   }, [])
 
   return (
-    <div className='FBH'>
+    <div className='FBH' style={{height: '100%'}}>
 
       {/* editor */}
       <Outlet context={{analysisSql, catalogList}} />
 
       {/* lineage */}
-      <div className='right-box FBV FBAJ FBJC'>
+      <div className='right-box'>
         <Spin spinning={analysisLoading} style={{  height: '100%', width: '100%' }}>
           <RinghtBox data={lineageGraph} taskDetail={taskDetail} catalogList={catalogList} />
         </Spin>

@@ -2,24 +2,26 @@
   min-width: 1200px;
 }
 .left-box {
-	width: 621px;
+	width: 581px;
 	border-right: 1px solid #e8e8e8;
 }
 .right-box {
-  width: calc(100% - 621px);
+  width: calc(100% - 581px);
+	min-width: 600px;
 	min-height: 756px;
 	overflow-x: scroll;
 }
 .right-box .top-info-box {
 	position: absolute;
-	top: -46px;
+	top: -2px;
 	border-bottom: 1px solid #e8e8e8;
 	width: 100%;
 	
 }
 .lineage-box {
-	width: 1000px;
-	height: 700px;
+	width: 100%;
+	height: 100%;
+	margin-top: 30px;
 }
 
 .log-box {
@@ -54,4 +56,58 @@
 	background: lightblue;
 	width: 5px !important;
 	margin-left: 3px;
+}
+
+.btn-item {
+	width: 100%;
+	position: absolute;
+	left: 16px;
+	z-index: 9;
+}
+
+.btn-item .circle-bg {
+	cursor: pointer;
+}
+.btn-item .lineage-switch-icon{
+	vertical-align: top;
+	color: rgb(149, 151, 165);
+}
+
+.small-screen {
+  height: 660px;
+  min-height: 360px;
+}
+.small-screen .btn-item {
+	top: 60px;
+}
+.small-screen .lineage_dag .butterfly-react {
+  min-height: 100%;
+  min-width: 300px;
+  height: 300px;
+}
+.full-screen {
+  position: fixed;
+  width: 100%;
+  height: calc(100vh) !important;
+  top: 0;
+  left: 0;
+  z-index: 9;
+	background: #fff;
+}
+.full-screen .btn-item {
+	top: 17px;
+}
+.full-screen .lineage_dag {
+  /* height: 280px; */
+}
+.full-screen .butterfly-react-container {
+  overflow: inherit !important;
+  height: calc(100vh - 63px) !important;
+}
+.full-screen canvas {
+  height: calc(100vh - 63px);
+  width: 100%;
+}
+.full-screen .butterfly-react {
+  min-height: 100%;
 }

@@ -28,6 +28,9 @@ const Cm = (props) => {
     lineNumbersMinChars: 3, // 最少显示3位长的行号
     lineDecorationsWidth: 20,
     quickSuggestions: true,
+    minimap: {
+      enabled: false,
+    },
     renderLineDecorations: (lineNumber, decorations) => {
       return [
         {
@@ -164,7 +167,7 @@ const Cm = (props) => {
         </div>
         <Monaco 
           height={700}
-          width={620}
+          width={580}
           value={value}
           language="sql"
           options={_initOptions}
