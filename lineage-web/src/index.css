@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 1000px;
 }
 
 code {
@@ -16,8 +17,36 @@ code {
   line-height: 50px;
   width: 100%;
 }
+.logo img {
+  vertical-align: middle;
+  padding: 2px;
+  margin-left: 16px;
+  margin-right: 8px;
+}
+.logo .logo-txt {
+  color: #fff;
+  animation: change_color .5s;
+}
+@keyframes change_color {
+  0% {
+    color: #000; 
+  }
+  100% {
+    color: #fff;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .logo .logo-txt {
+    display: none;
+  }
+}
+
 .header-box {
   padding: 0 16px;
   height: 50px;
   line-height: 50px;
+}
+#webpack-dev-server-client-overlay {
+  display: none !important;
 }

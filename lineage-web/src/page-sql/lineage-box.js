@@ -8,7 +8,7 @@ import { store } from './store'
 
 const { Option } = Select
 const { Text } = Typography
-const Page = ({data, taskDetail, catalogList}) => {
+const Page = ({isFold, data, taskDetail, catalogList}) => {
   // console.log('catalogList---,', catalogList?.filter(t => t.catalogId === taskDetail?.catalogId)[0]?.catalogName)
   const [form] = Form.useForm()
   const cvsRef = useRef(null)
@@ -309,6 +309,7 @@ const Page = ({data, taskDetail, catalogList}) => {
     const upIndex = data.links.findIndex(t => t.relV === table.id)
     table.isUpExpand = upIndex !== -1
     table.isDownExpand = downIndex !== -1
+    table.isFold = isFold
     table.operators = getOps({
       isUpExpand: upIndex !== -1,
       isDownExpand: downIndex !== -1,

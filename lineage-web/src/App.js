@@ -1,10 +1,11 @@
 
 import React,{ useEffect, useState } from 'react'
 import { Outlet, Link} from 'react-router-dom'
-import { DownOutlined, ProfileOutlined, LoginOutlined, DatabaseOutlined, ToolOutlined, UserOutlined, ExclamationCircleFilled, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
+import { DownOutlined, ProfileOutlined, LoginOutlined, DatabaseOutlined, ToolOutlined, UserOutlined, TeamOutlined, ExclamationCircleFilled, GithubOutlined, BranchesOutlined, SettingOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, Modal, Tooltip, Dropdown, Space, message } from 'antd'
 import './common/common.styl'
 import axios from 'axios'
+import Logo from './page-login/img/logo-white.png'
 
 const { Header, Content, Footer, Sider } = Layout
 const { confirm } = Modal
@@ -45,8 +46,8 @@ const App = () => {
     },
     {
       key: 'user-manage',
-      icon: UserOutlined,
-      label: 'User manage',
+      icon: TeamOutlined,
+      label: 'User',
       url: 'user-manage',
     },
   ]
@@ -102,8 +103,12 @@ const App = () => {
     <Layout>
       <Sider
         breakpoint="lg"
+        width={220}
       >
-        <div className="logo" />
+        <div className="logo">
+          <img src={Logo} width={40} height={40} />
+          <span className='logo-txt fcf fs16 bold-600'>FlinkSQL Lineage</span>
+        </div>
         <Menu
           theme="dark"
           mode="inline"
@@ -130,7 +135,9 @@ const App = () => {
               <ProfileOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
             </Tooltip>
             <Tooltip title='GitHub'>
-              <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+              <Link to='https://github.com/HamaWhiteGG/flink-sql-lineage' target='_blank'>
+                <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+              </Link>
             </Tooltip>
             {/* <Button type='link'>EN</Button> */}
             <Dropdown 
@@ -148,12 +155,15 @@ const App = () => {
         </Header>
         <Content
           style={{
+            height: 'calc(100vh - 115px)',
+            overflow: 'scroll',
           }}
         >
           <div
             style={{
               minHeight: 360,
               background: colorBgContainer,
+              height: '100%'
             }}
           >
             <Outlet />
@@ -164,7 +174,7 @@ const App = () => {
             textAlign: 'center',
           }}
         >
-          Flink SQL Lineage  ©2023
+          FlinkSQL Lineage  ©2023
         </Footer>
       </Layout>
     </Layout>

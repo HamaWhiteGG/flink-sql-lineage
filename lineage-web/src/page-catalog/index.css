@@ -2,11 +2,10 @@
   height: 600px;
   overflow: scroll;
 }
-.list-item {
-  /* margin-bottom: 24px; */
-}
 .list-item:hover {
   box-shadow: 0 2px 5px #eee;
+  border: 1px solid #2f77ff;
+  cursor: pointer;
 }
 .list-item .item-logo {
   width: 30px;
@@ -15,17 +14,21 @@
 .list-item .item-content{
   width: calc(100% - 30px);
 }
-.item-content .options {
-  display: none;
+.list-item-wrapper {
+  position: relative;
 }
-.item-content:hover .options {
+.list-item-wrapper .options {
+  display: block;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+.list-item-wrapper:hover .options {
   display: block;
 }
 .item-content .item-info{
   width: 100%;
-  /* height: 30px; */
   line-height: 30px;
-  /* text-align: right; */
   color: #666;
   font-size: 14px;
   padding-right: 10px;

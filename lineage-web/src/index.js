@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import PageLogin from './page-login'
@@ -24,10 +24,8 @@ import PageRole from './page-user-manage/role'
 const ReactSample = () => {
   return <HashRouter>
     <Routes>
-      <Route path="/" element={<App />}
-      
-      >
-        <Route index element={<PageJob />} />
+      <Route path="/" element={<App />} >
+        <Route index element={<Navigate to='job'/>} />
         <Route path="job" element={<PageJob />}>
           <Route index element={<JobList />} />
           <Route path="list" element={<JobList />} />

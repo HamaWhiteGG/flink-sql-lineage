@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Form, Button, Checkbox, Input, message } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import './index.css'
+import Logo from './img/logo-white.png'
 
 
 const Page = () => {
+  const navigation = useNavigate()
   const [form] = Form.useForm()
   const onFinish = (values) => {
     login(values)
@@ -22,7 +25,8 @@ const Page = () => {
       if (res.data.data && login_status == 0) {
         window.localStorage.setItem('login_status', 1)
         window.localStorage.setItem('userInfo', JSON.stringify(res.data.data))
-        window.location.href = '/#/job'
+        // window.location.href = '/#/job'
+        navigation(`/job`, {state: {pageUrl: 'login'}})
       } else {
         window.localStorage.setItem('login_status', 0)
         window.location.href = '/#/login'
@@ -43,7 +47,7 @@ const Page = () => {
     <div className='login-wrapper'>
       <div className='login-box'>
         <div className='login-title FBH FBJC FBAC mb16'>
-          {/* <img src='' width={40} height={40} /> */}
+          <img src={Logo} width={50} height={50} />
           <span className='ml8 fc24'>FlinkSQL Lineage</span>
         </div>
         <div className='gray-bd pl32 pr32 pb16 login-bd'>
