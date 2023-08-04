@@ -163,7 +163,7 @@ const App = () => {
             style={{
               minHeight: 360,
               background: colorBgContainer,
-              // height: '100%'
+              height: '100%'
             }}
           >
             <Outlet />
