@@ -132,11 +132,11 @@ const App = () => {
         >
           <div className='fcf'>
             <Tooltip title='Document'>
-              <ProfileOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+              <ProfileOutlined style={{color: '#fff', fontSize: 20}} className='mr32 hand' />
             </Tooltip>
             <Tooltip title='GitHub'>
               <Link to='https://github.com/HamaWhiteGG/flink-sql-lineage' target='_blank'>
-                <GithubOutlined style={{color: '#fff', fontSize: 16}} className='mr32 hand' />
+                <GithubOutlined style={{color: '#fff', fontSize: 20}} className='mr32 hand' />
               </Link>
             </Tooltip>
             {/* <Button type='link'>EN</Button> */}

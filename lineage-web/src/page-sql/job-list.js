@@ -154,12 +154,12 @@ const AddModal = ({visible, onCancel, getJobList, record, type='Add', catalogLis
       </Form.Item>
 
       <Form.Item
-        label="desciption"
+        label="description"
         name="descr"
         rules={[
           {
             required: true,
-            message: 'Please input your desciption!',
+            message: 'Please input your description!',
           },
         ]}
       >
@@ -182,7 +182,7 @@ const Cm = () => {
   const [curType, setCurType] = useState('add')
   
   const columns = [{
-    title: 'name',
+    title: 'Name',
     dataIndex: 'taskName',
     key: 'taskName',
     ellipsis: true,
@@ -203,7 +203,7 @@ const Cm = () => {
       return <Tooltip title={text}><Badge status={obj[text]} /></Tooltip>
     }
   },{
-    title: 'describe',
+    title: 'Description',
     dataIndex: 'descr',
     key: 'descr',
     ellipsis: true,

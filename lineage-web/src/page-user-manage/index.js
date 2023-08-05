@@ -14,7 +14,7 @@ const Page = () => {
   return (
     <div className='gray-bg'>
       <div className='m8 pl16 pr16 pt16 white-bg'>
-        <div className='fs28 mb16'>User managerment</div>
+        <div className='fs28 mb16'>User Management</div>
         <Tabs items={items} />
       </div>
       <Outlet/>

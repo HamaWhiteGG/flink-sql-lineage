@@ -13,7 +13,7 @@ const Page = ({data, taskDetail, catalogList}) => {
   const [form] = Form.useForm()
   const [showLog, setShowLog] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [isFold, setIsFold] = useState(true)
+  const [isFold, setIsFold] = useState(false)
 
   function launchFullscreen(element) {
     setIsFullscreen(true)
@@ -98,7 +98,7 @@ const Page = ({data, taskDetail, catalogList}) => {
                   : <span className="circle-bg" title="full screen" onClick={() => launchFullscreen(document.getElementById("lineageArea"))}><img alt="" className="p6" src={FullScreenIcon} /></span>
               }
               <div className='ml8' onClick={() => {setIsFold(!isFold)}}>
-                {isFold ? <img className='hand' title='Field lineage' src={FiledIcon} height={14} width={20} /> : <TableOutlined className='lineage-switch-icon fs14 hand' title='Table mode' />}
+                {isFold ? <img className='hand' title='Field lineage' src={FiledIcon} height={14} width={20} /> : <TableOutlined className='lineage-switch-icon fs14 hand' title='Table lineage' />}
               </div>
             </div>
             {/* lineage */}
