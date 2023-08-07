@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -10,7 +9,6 @@
     </parent>
 
     <artifactId>lineage-dist</artifactId>
-
 
     <properties>
         <assembly.name>flink-sql-lineage-${project.version}</assembly.name>
@@ -56,10 +54,10 @@
                 <executions>
                     <execution>
                         <id>assembly</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
                             <descriptors>
                                 <descriptor>src/main/assemblies/assembly.xml</descriptor>

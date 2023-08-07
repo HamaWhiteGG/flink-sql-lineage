@@ -1,12 +1,32 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.infrastructure.facade.impl;
 
-import com.hw.lineage.common.result.FunctionInfo;
+import com.hw.lineage.common.model.FunctionInfo;
 import com.hw.lineage.common.util.Preconditions;
 import com.hw.lineage.server.AbstractSpringBootTest;
 import com.hw.lineage.server.domain.facade.LineageFacade;
+
 import org.junit.Test;
 
 import javax.annotation.Resource;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -25,7 +45,6 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
 
     private static final String[] PLUGIN_NAMES = {"flink1.14.x", "flink1.16.x"};
 
-
     /**
      * There is only one UDF in the Jar package, and only one parameter
      */
@@ -41,11 +60,9 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
                     .contains(new FunctionInfo().setFunctionName("flink_suffix_udf")
                             .setInvocation("flink_suffix_udf(String1)")
                             .setClassName("com.hw.lineage.flink.table.udf.functiona.FlinkSuffixFunction")
-                            .setDescr("return String")
-                    );
+                            .setDescr("return String"));
         });
     }
-
 
     /**
      * There is a UDF and a UDTF in the Jar package, and the UDF contains two parameters
@@ -60,17 +77,15 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
                     .asList()
                     .hasSize(2)
                     .contains(new FunctionInfo().setFunctionName("flink_prefix_udf")
-                                    .setInvocation("flink_prefix_udf(String1,Integer2)")
-                                    .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkPrefixFunction")
-                                    .setDescr("return String"),
+                            .setInvocation("flink_prefix_udf(String1,Integer2)")
+                            .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkPrefixFunction")
+                            .setDescr("return String"),
                             new FunctionInfo().setFunctionName("flink_split_udtf")
                                     .setInvocation("flink_split_udtf(String1)")
                                     .setClassName("com.hw.lineage.flink.table.udf.functionb.FlinkSplitFunction")
-                                    .setDescr("return ROW<word STRING, length INT>")
-                    );
+                                    .setDescr("return ROW<word STRING, length INT>"));
         });
     }
-
 
     private List<FunctionInfo> parseFunction(String fileName, String pluginName) {
         File file = locateJarFile(fileName);
@@ -80,7 +95,6 @@ public class LineageFacadeImplTest extends AbstractSpringBootTest {
             throw new RuntimeException(e);
         }
     }
-
 
     private File locateJarFile(String fileName) {
         File file = new File(fileName);

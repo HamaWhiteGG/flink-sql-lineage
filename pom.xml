@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -57,6 +56,7 @@
         <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
         <maven-assembly-plugin.version>3.1.0</maven-assembly-plugin.version>
         <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
+        <spotless-maven-plugin.version>2.27.1</spotless-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <frontend-maven-plugin.version>1.8.0</frontend-maven-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
@@ -230,36 +230,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <profile.active>dev</profile.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <profile.active>test</profile.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>docker</id>
-            <properties>
-                <profile.active>docker</profile.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <profile.active>prod</profile.active>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -319,10 +289,10 @@
                     <executions>
                         <execution>
                             <id>copy</id>
-                            <phase>package</phase>
                             <goals>
                                 <goal>copy-dependencies</goal>
                             </goals>
+                            <phase>package</phase>
                             <configuration>
                                 <outputDirectory>${project.build.directory}/lib</outputDirectory>
                             </configuration>
@@ -346,26 +316,26 @@
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
                     <version>${scala-maven-plugin.version}</version>
+                    <configuration>
+                        <scalaVersion>${scala.binary.version}</scalaVersion>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>scala-compile-first</id>
-                            <phase>process-resources</phase>
                             <goals>
                                 <goal>add-source</goal>
                                 <goal>compile</goal>
                             </goals>
+                            <phase>process-resources</phase>
                         </execution>
                         <execution>
-                            <phase>compile</phase>
                             <goals>
                                 <goal>compile</goal>
                                 <goal>testCompile</goal>
                             </goals>
+                            <phase>compile</phase>
                         </execution>
                     </executions>
-                    <configuration>
-                        <scalaVersion>${scala.binary.version}</scalaVersion>
-                    </configuration>
                 </plugin>
 
                 <plugin>
@@ -379,10 +349,10 @@
                     <executions>
                         <execution>
                             <id>copy lineage-web</id>
-                            <phase>generate-resources</phase>
                             <goals>
                                 <goal>copy-resources</goal>
                             </goals>
+                            <phase>generate-resources</phase>
                             <configuration>
                                 <outputDirectory>src/main/resources/static</outputDirectory>
                                 <overwrite>true</overwrite>
@@ -437,17 +407,17 @@
                     <executions>
                         <execution>
                             <id>install node and yarn</id>
-                            <phase>generate-sources</phase>
                             <goals>
                                 <goal>install-node-and-yarn</goal>
                             </goals>
+                            <phase>generate-sources</phase>
                         </execution>
                         <execution>
                             <id>yarn install</id>
-                            <phase>generate-sources</phase>
                             <goals>
                                 <goal>yarn</goal>
                             </goals>
+                            <phase>generate-sources</phase>
                             <configuration>
                                 <arguments>install</arguments>
                             </configuration>
@@ -457,10 +427,10 @@
                             <goals>
                                 <goal>yarn</goal>
                             </goals>
+                            <phase>generate-sources</phase>
                             <configuration>
                                 <arguments>build</arguments>
                             </configuration>
-                            <phase>generate-sources</phase>
                         </execution>
                     </executions>
                 </plugin>
@@ -481,10 +451,63 @@
                         </filesets>
                     </configuration>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>${maven-antrun-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless-maven-plugin.version}</version>
+                    <configuration>
+                        <java>
+                            <eclipse>
+                                <file>style/spotless-formatter.xml</file>
+                            </eclipse>
+                            <licenseHeader>
+                                <file>style/license-header</file>
+                            </licenseHeader>
+
+                            <!-- \# refers to the static imports -->
+                            <importOrder>
+                                <order>com,org,,javax,java,scala,\#</order>
+                            </importOrder>
+
+                            <removeUnusedImports />
+
+                            <excludes>
+                                <!-- generated by mybatis-generator, exclude -->
+                                <exclude>src/main/java/com/hw/lineage/server/infrastructure/persistence/dos/*.java</exclude>
+                                <exclude>src/main/java/com/hw/lineage/server/infrastructure/persistence/mapper/*.java</exclude>
+                            </excludes>
+                        </java>
+                        <pom>
+                            <sortPom>
+                                <encoding>UTF-8</encoding>
+                                <nrOfIndentSpace>4</nrOfIndentSpace>
+                                <keepBlankLines>true</keepBlankLines>
+                                <indentBlankLines>false</indentBlankLines>
+                                <indentSchemaLocation>true</indentSchemaLocation>
+                                <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                                <sortModules>false</sortModules>
+                                <sortExecutions>false</sortExecutions>
+                                <predefinedSortOrder>custom_1</predefinedSortOrder>
+                                <expandEmptyElements>false</expandEmptyElements>
+                                <sortProperties>false</sortProperties>
+                            </sortPom>
+                        </pom>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>compile</phase>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -504,6 +527,41 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile.active>dev</profile.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profile.active>test</profile.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <profile.active>docker</profile.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profile.active>prod</profile.active>
+            </properties>
+        </profile>
+    </profiles>
 </project>

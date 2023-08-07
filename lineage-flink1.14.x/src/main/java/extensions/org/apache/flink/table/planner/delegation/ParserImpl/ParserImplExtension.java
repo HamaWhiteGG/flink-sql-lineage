@@ -1,13 +1,31 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package extensions.org.apache.flink.table.planner.delegation.ParserImpl;
 
-
-import manifold.ext.rt.api.Extension;
-import manifold.ext.rt.api.Jailbreak;
-import manifold.ext.rt.api.This;
 import org.apache.calcite.sql.SqlNode;
 import org.apache.flink.table.planner.calcite.FlinkPlannerImpl;
 import org.apache.flink.table.planner.delegation.ParserImpl;
 import org.apache.flink.table.planner.parse.CalciteParser;
+
+import manifold.ext.rt.api.Extension;
+import manifold.ext.rt.api.Jailbreak;
+import manifold.ext.rt.api.This;
 
 /**
  * Extend {@link ParserImpl} with manifold-ext to add new methods.
@@ -31,7 +49,6 @@ public class ParserImplExtension {
         // parse the sql query
         return parser.parse(statement);
     }
-
 
     /**
      * validate the query

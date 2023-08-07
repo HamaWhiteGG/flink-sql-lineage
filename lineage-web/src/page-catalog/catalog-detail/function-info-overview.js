@@ -43,7 +43,7 @@ const Cm = (props) => {
             maxWidth: 600,
           }}
         >
-          <Form.Item name="functionPath" label="jar file"><Input disabled /></Form.Item>
+          <Form.Item name="functionPath" label="jar"><Input disabled /></Form.Item>
           <Form.Item name="functionName" label="name"><Input disabled /></Form.Item>
           <Form.Item name="database" label="database"><Input disabled /></Form.Item>
           <Form.Item name="className" label="classname"><Input disabled /></Form.Item>

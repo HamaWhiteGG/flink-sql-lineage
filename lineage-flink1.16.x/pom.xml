@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -133,16 +132,16 @@
             <version>${hive.version}</version>
             <exclusions>
                 <exclusion>
+                    <groupId>org.apache.calcite</groupId>
                     <artifactId>calcite-core</artifactId>
-                    <groupId>org.apache.calcite</groupId>
                 </exclusion>
                 <exclusion>
+                    <groupId>org.apache.calcite</groupId>
                     <artifactId>calcite-linq4j</artifactId>
-                    <groupId>org.apache.calcite</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>log4j-slf4j-impl</artifactId>
                     <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -153,8 +152,8 @@
             <version>${hive.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>log4j-slf4j-impl</artifactId>
                     <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -180,10 +179,10 @@
                     </execution>
                     <execution>
                         <id>unpack</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>

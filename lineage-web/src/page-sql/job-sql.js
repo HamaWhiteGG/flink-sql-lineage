@@ -169,7 +169,6 @@ const Cm = (props) => {
               <ExpandOutlined className='mr24 hand' />
             </Tooltip>
           </div>
-          <div>2/2 </div>
         </div>
         <Monaco 
           height={700}

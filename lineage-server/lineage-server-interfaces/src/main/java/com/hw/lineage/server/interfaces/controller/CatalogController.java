@@ -1,7 +1,25 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.interfaces.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hw.lineage.common.result.TableInfo;
+import com.hw.lineage.common.model.TableInfo;
 import com.hw.lineage.server.application.command.catalog.CreateCatalogCmd;
 import com.hw.lineage.server.application.command.catalog.CreateDatabaseCmd;
 import com.hw.lineage.server.application.command.catalog.CreateTableCmd;
@@ -23,12 +41,15 @@ import com.hw.lineage.server.domain.query.function.dto.FunctionTaskDTO;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
-import io.swagger.annotations.Api;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.annotations.Api;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
+
 import java.util.List;
 
 import static com.hw.lineage.common.enums.audit.ModuleCode.*;
@@ -51,7 +72,8 @@ public class CatalogController {
     private FunctionService functionService;
 
     @GetMapping("/{catalogId}")
-    @AuditLog(module = CATALOG, type = QUERY, descr = "'Query Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
+    @AuditLog(module = CATALOG, type = QUERY,
+            descr = "'Query Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
     public Result<CatalogDTO> queryCatalog(@PathVariable("catalogId") Long catalogId) {
         CatalogDTO catalogDTO = catalogService.queryCatalog(catalogId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, catalogDTO);
@@ -78,65 +100,73 @@ public class CatalogController {
     }
 
     @PutMapping("/{catalogId}")
-    @AuditLog(module = CATALOG, type = UPDATE, descr = "'Update Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
+    @AuditLog(module = CATALOG, type = UPDATE,
+            descr = "'Update Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
     public Result<Boolean> updateCatalog(@PathVariable("catalogId") Long catalogId,
-                                         @Valid @RequestBody UpdateCatalogCmd command) {
+            @Valid @RequestBody UpdateCatalogCmd command) {
         command.setCatalogId(catalogId);
         catalogService.updateCatalog(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @PutMapping("/{catalogId}/default")
-    @AuditLog(module = CATALOG, type = UPDATE, descr = "'Default Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
+    @AuditLog(module = CATALOG, type = UPDATE,
+            descr = "'Default Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
     public Result<Boolean> defaultCatalog(@PathVariable("catalogId") Long catalogId) {
         catalogService.defaultCatalog(catalogId);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{catalogId}")
-    @AuditLog(module = CATALOG, type = DELETE, descr = "'Delete Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
+    @AuditLog(module = CATALOG, type = DELETE,
+            descr = "'Delete Catalog: ' + @catalogService.queryCatalog(#catalogId).catalogName")
     public Result<Boolean> deleteCatalog(@PathVariable("catalogId") Long catalogId) {
         catalogService.deleteCatalog(catalogId);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
     @PostMapping("/{catalogId}/databases")
-    @AuditLog(module = DATABASE, type = CREATE, descr = "'Create Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #command.database")
+    @AuditLog(module = DATABASE, type = CREATE,
+            descr = "'Create Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #command.database")
     public Result<Boolean> createDatabase(@PathVariable("catalogId") Long catalogId,
-                                          @Valid @RequestBody CreateDatabaseCmd command) {
+            @Valid @RequestBody CreateDatabaseCmd command) {
         command.setCatalogId(catalogId);
         catalogService.createDatabase(command);
         return Result.success(ResultMessage.CREATE_SUCCESS);
     }
 
     @DeleteMapping("/{catalogId}/databases/{database}")
-    @AuditLog(module = DATABASE, type = DELETE, descr = "'Delete Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    @AuditLog(module = DATABASE, type = DELETE,
+            descr = "'Delete Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<Boolean> deleteDatabase(@PathVariable("catalogId") Long catalogId,
-                                          @PathVariable("database") String database) {
+            @PathVariable("database") String database) {
         catalogService.deleteDatabase(catalogId, database);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
     @PutMapping("/{catalogId}/databases/{database}/default")
-    @AuditLog(module = DATABASE, type = UPDATE, descr = "'Default Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    @AuditLog(module = DATABASE, type = UPDATE,
+            descr = "'Default Database: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<Boolean> defaultDatabase(@PathVariable("catalogId") Long catalogId,
-                                          @PathVariable("database") String database) {
+            @PathVariable("database") String database) {
         catalogService.defaultDatabase(catalogId, database);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @GetMapping("/{catalogId}/databases")
-    @AuditLog(module = DATABASE, type = QUERY, descr = "'Query Databases In ' + @catalogService.queryCatalog(#catalogId).catalogName")
+    @AuditLog(module = DATABASE, type = QUERY,
+            descr = "'Query Databases In ' + @catalogService.queryCatalog(#catalogId).catalogName")
     public Result<List<String>> queryDatabases(@PathVariable("catalogId") Long catalogId) {
         List<String> databaseList = catalogService.queryDatabases(catalogId);
         return Result.success(ResultMessage.QUERY_SUCCESS, databaseList);
     }
 
     @PostMapping("/{catalogId}/databases/{database}/tables")
-    @AuditLog(module = TABLE, type = CREATE, descr = "'Create Table By DLL In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    @AuditLog(module = TABLE, type = CREATE,
+            descr = "'Create Table By DLL In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<Boolean> createTable(@PathVariable("catalogId") Long catalogId,
-                                       @PathVariable("database") String database,
-                                       @Valid @RequestBody CreateTableCmd command) {
+            @PathVariable("database") String database,
+            @Valid @RequestBody CreateTableCmd command) {
         command.setCatalogId(catalogId);
         command.setDatabase(database);
         catalogService.createTable(command);
@@ -144,61 +174,67 @@ public class CatalogController {
     }
 
     @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}")
-    @AuditLog(module = TABLE, type = QUERY, descr = "'Query Table: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
+    @AuditLog(module = TABLE, type = QUERY,
+            descr = "'Query Table: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
     public Result<TableInfo> queryTable(@PathVariable("catalogId") Long catalogId,
-                                        @PathVariable("database") String database,
-                                        @PathVariable("tableName") String tableName) {
+            @PathVariable("database") String database,
+            @PathVariable("tableName") String tableName) {
         TableInfo tableInfo = catalogService.getTable(catalogId, database, tableName);
         return Result.success(ResultMessage.DETAIL_SUCCESS, tableInfo);
     }
 
     @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}/lineage")
-    @AuditLog(module = TABLE, type = QUERY, descr = "'Query Table Lineage: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
+    @AuditLog(module = TABLE, type = QUERY,
+            descr = "'Query Table Lineage: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
     public Result<LineageGraph> queryTableLineage(@PathVariable("catalogId") Long catalogId,
-                                                  @PathVariable("database") String database,
-                                                  @PathVariable("tableName") String tableName) {
+            @PathVariable("database") String database,
+            @PathVariable("tableName") String tableName) {
         LineageGraph lineageGraph = catalogService.getTableLineage(catalogId, database, tableName);
         return Result.success(ResultMessage.QUERY_SUCCESS, lineageGraph);
     }
 
     @GetMapping("/{catalogId}/databases/{database}/tables/{tableName}/ddl")
-    @AuditLog(module = TABLE, type = QUERY, descr = "'Query Table DDL: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
+    @AuditLog(module = TABLE, type = QUERY,
+            descr = "'Query Table DDL: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
     public Result<String> queryTableDdl(@PathVariable("catalogId") Long catalogId,
-                                        @PathVariable("database") String database,
-                                        @PathVariable("tableName") String tableName) throws Exception {
+            @PathVariable("database") String database,
+            @PathVariable("tableName") String tableName) throws Exception {
         String tableDdl = catalogService.getTableDdl(catalogId, database, tableName);
         return Result.success(ResultMessage.DETAIL_SUCCESS, tableDdl);
     }
 
-
     @GetMapping("/{catalogId}/databases/{database}/tables")
-    @AuditLog(module = TABLE, type = QUERY, descr = "'Query Tables In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    @AuditLog(module = TABLE, type = QUERY,
+            descr = "'Query Tables In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<List<TableDTO>> queryTables(@PathVariable("catalogId") Long catalogId,
-                                              @PathVariable("database") String database) throws Exception {
+            @PathVariable("database") String database) throws Exception {
         List<TableDTO> tableDTOList = catalogService.queryTables(catalogId, database);
         return Result.success(ResultMessage.QUERY_SUCCESS, tableDTOList);
     }
 
     @DeleteMapping("/{catalogId}/databases/{database}/tables/{tableName}")
-    @AuditLog(module = TABLE, type = DELETE, descr = "'Delete Table: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
+    @AuditLog(module = TABLE, type = DELETE,
+            descr = "'Delete Table: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + #tableName")
     public Result<Boolean> deleteTable(@PathVariable("catalogId") Long catalogId,
-                                       @PathVariable("database") String database,
-                                       @PathVariable("tableName") String tableName) throws Exception {
+            @PathVariable("database") String database,
+            @PathVariable("tableName") String tableName) throws Exception {
         catalogService.deleteTable(catalogId, database, tableName);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }
 
     @GetMapping("/{catalogId}/databases/{database}/functions/{functionId}")
-    @AuditLog(module = FUNCTION, type = QUERY, descr = "'Query Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + @functionService.queryFunction(#functionId).functionName")
+    @AuditLog(module = FUNCTION, type = QUERY,
+            descr = "'Query Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + @functionService.queryFunction(#functionId).functionName")
     public Result<FunctionDTO> queryFunction(@PathVariable("catalogId") Long catalogId,
-                                             @PathVariable("database") String database,
-                                             @PathVariable("functionId") Long functionId) {
+            @PathVariable("database") String database,
+            @PathVariable("functionId") Long functionId) {
         FunctionDTO functionDTO = functionService.queryFunction(functionId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, functionDTO);
     }
 
     @GetMapping("/{catalogId}/databases/{database}/functions")
-    @AuditLog(module = FUNCTION, type = QUERY, descr = "'Query Functions In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    @AuditLog(module = FUNCTION, type = QUERY,
+            descr = "'Query Functions In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<PageInfo<FunctionDTO>> queryFunctions(
             @PathVariable("catalogId") Long catalogId,
             @PathVariable("database") String database,
@@ -210,7 +246,8 @@ public class CatalogController {
     }
 
     @GetMapping("/{catalogId}/databases/{database}/functions/{functionId}/tasks")
-    @AuditLog(module = FUNCTION, type = QUERY, descr = "'Query Function Tasks: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + @functionService.queryFunction(#functionId).functionName")
+    @AuditLog(module = FUNCTION, type = QUERY,
+            descr = "'Query Function Tasks: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database+'.' + @functionService.queryFunction(#functionId).functionName")
     public Result<PageInfo<FunctionTaskDTO>> queryFunctionTasks(
             @PathVariable("catalogId") Long catalogId,
             @PathVariable("database") String database,
@@ -221,9 +258,9 @@ public class CatalogController {
         return Result.success(ResultMessage.QUERY_SUCCESS, pageInfo);
     }
 
-
     @PostMapping("/{catalogId}/databases/{database}/functions")
-    @AuditLog(module = FUNCTION, type = CREATE, descr = "'Create Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + #command.functionName")
+    @AuditLog(module = FUNCTION, type = CREATE,
+            descr = "'Create Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + #command.functionName")
     public Result<Long> createFunction(
             @PathVariable("catalogId") Long catalogId,
             @PathVariable("database") String database,
@@ -235,7 +272,8 @@ public class CatalogController {
     }
 
     @GetMapping("/{catalogId}/databases/{database}/functions/exist")
-    @AuditLog(module = FUNCTION, type = QUERY, descr = "'Check Function Exist In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
+    @AuditLog(module = FUNCTION, type = QUERY,
+            descr = "'Check Function Exist In ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database")
     public Result<Boolean> checkFunctionExist(
             @PathVariable("catalogId") Long catalogId,
             @PathVariable("database") String database,
@@ -246,21 +284,23 @@ public class CatalogController {
     }
 
     @PutMapping("/{catalogId}/databases/{database}/functions/{functionId}")
-    @AuditLog(module = FUNCTION, type = UPDATE, descr = "'Update Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName")
+    @AuditLog(module = FUNCTION, type = UPDATE,
+            descr = "'Update Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName")
     public Result<Boolean> updateFunction(@PathVariable("catalogId") Long catalogId,
-                                          @PathVariable("database") String database,
-                                          @PathVariable("functionId") Long functionId,
-                                          @Valid @RequestBody UpdateFunctionCmd command) {
+            @PathVariable("database") String database,
+            @PathVariable("functionId") Long functionId,
+            @Valid @RequestBody UpdateFunctionCmd command) {
         command.setFunctionId(functionId);
         functionService.updateFunction(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @DeleteMapping("/{catalogId}/databases/{database}/functions/{functionId}")
-    @AuditLog(module = FUNCTION, type = DELETE, descr = "'Delete Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName")
+    @AuditLog(module = FUNCTION, type = DELETE,
+            descr = "'Delete Function: ' + @catalogService.queryCatalog(#catalogId).catalogName + '.' + #database + '.' + @functionService.queryFunction(#functionId).functionName")
     public Result<Boolean> deleteFunction(@PathVariable("catalogId") Long catalogId,
-                                          @PathVariable("database") String database,
-                                          @PathVariable("functionId") Long functionId) {
+            @PathVariable("database") String database,
+            @PathVariable("functionId") Long functionId) {
         functionService.deleteFunction(catalogId, database, functionId);
         return Result.success(ResultMessage.DELETE_SUCCESS);
     }

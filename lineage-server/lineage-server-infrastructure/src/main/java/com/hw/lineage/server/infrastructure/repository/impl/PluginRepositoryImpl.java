@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.infrastructure.repository.impl;
 
 import com.github.pagehelper.Page;
@@ -13,6 +31,7 @@ import com.hw.lineage.server.domain.vo.PluginId;
 import com.hw.lineage.server.infrastructure.persistence.converter.DataConverter;
 import com.hw.lineage.server.infrastructure.persistence.dos.PluginDO;
 import com.hw.lineage.server.infrastructure.persistence.mapper.PluginMapper;
+
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -21,7 +40,6 @@ import static com.hw.lineage.server.infrastructure.persistence.mapper.PluginDyna
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
-
 
 /**
  * @description: PluginRepositoryImpl
@@ -39,7 +57,8 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
     @Override
     public Plugin find(PluginId pluginId) {
         PluginDO pluginDO = pluginMapper.selectByPrimaryKey(pluginId.getValue())
-                .orElseThrow(() -> new LineageException(String.format("pluginId [%d] is not existed", pluginId.getValue())));
+                .orElseThrow(
+                        () -> new LineageException(String.format("pluginId [%d] is not existed", pluginId.getValue())));
         return converter.toPlugin(pluginDO);
     }
 
@@ -62,32 +81,27 @@ public class PluginRepositoryImpl extends AbstractBasicRepository implements Plu
     @Override
     public PageInfo<Plugin> findAll(PluginQuery pluginQuery) {
         try (Page<PluginDO> page = PageMethod.startPage(pluginQuery.getPageNum(), pluginQuery.getPageSize())) {
-            PageInfo<PluginDO> pageInfo = page.doSelectPageInfo(() ->
-                    pluginMapper.select(completer ->
-                            completer.where(pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
-                                    .orderBy(buildSortSpecification(pluginQuery))
-                    )
-            );
+            PageInfo<PluginDO> pageInfo = page.doSelectPageInfo(() -> pluginMapper.select(
+                    completer -> completer.where(pluginName, isLike(buildLikeValue(pluginQuery.getPluginName())))
+                            .orderBy(buildSortSpecification(pluginQuery))));
             return PageUtils.convertPage(pageInfo, converter::toPlugin);
         }
     }
 
     @Override
     public void setDefault(PluginId pluginId) {
-        pluginMapper.update(completer ->
-                completer.set(plugin.defaultPlugin).equalTo(FALSE).where(plugin.defaultPlugin, isEqualTo(TRUE))
-        );
-        pluginMapper.update(completer ->
-                completer.set(plugin.defaultPlugin).equalTo(TRUE).where(plugin.pluginId, isEqualTo(pluginId.getValue()))
-        );
+        pluginMapper.update(completer -> completer.set(plugin.defaultPlugin).equalTo(FALSE)
+                .where(plugin.defaultPlugin, isEqualTo(TRUE)));
+        pluginMapper.update(completer -> completer.set(plugin.defaultPlugin).equalTo(TRUE)
+                .where(plugin.pluginId, isEqualTo(pluginId.getValue())));
     }
 
     @Override
     public boolean check(PluginCheck pluginCheck) {
         return !pluginMapper.select(completer -> completer
                 .where(pluginName, isEqualToWhenPresent(pluginCheck.getPluginName()))
-                .or(pluginCode, isEqualToWhenPresent(pluginCheck.getPluginCode()))
-        ).isEmpty();
+                .or(pluginCode, isEqualToWhenPresent(pluginCheck.getPluginCode())))
+                .isEmpty();
     }
 
     @Override

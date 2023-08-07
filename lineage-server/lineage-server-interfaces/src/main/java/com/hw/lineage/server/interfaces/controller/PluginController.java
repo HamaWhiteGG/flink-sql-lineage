@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.hw.lineage.server.interfaces.controller;
 
 import com.github.pagehelper.PageInfo;
@@ -10,10 +28,12 @@ import com.hw.lineage.server.domain.query.plugin.PluginQuery;
 import com.hw.lineage.server.interfaces.aspect.AuditLog;
 import com.hw.lineage.server.interfaces.result.Result;
 import com.hw.lineage.server.interfaces.result.ResultMessage;
-import io.swagger.annotations.Api;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import io.swagger.annotations.Api;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -35,7 +55,8 @@ public class PluginController {
     private PluginService pluginService;
 
     @GetMapping("/{pluginId}")
-    @AuditLog(module = PLUGIN, type = QUERY, descr = "'Query Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
+    @AuditLog(module = PLUGIN, type = QUERY,
+            descr = "'Query Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
     public Result<PluginDTO> queryPlugin(@PathVariable("pluginId") Long pluginId) {
         PluginDTO pluginDTO = pluginService.queryPlugin(pluginId);
         return Result.success(ResultMessage.DETAIL_SUCCESS, pluginDTO);
@@ -65,16 +86,18 @@ public class PluginController {
 
     @PutMapping("/{pluginId}")
     @PreAuthorize("hasAuthority('system:plugin:edit')")
-    @AuditLog(module = PLUGIN, type = UPDATE, descr = "'Update Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
+    @AuditLog(module = PLUGIN, type = UPDATE,
+            descr = "'Update Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
     public Result<Boolean> updatePlugin(@PathVariable("pluginId") Long pluginId,
-                                        @Valid @RequestBody UpdatePluginCmd command) {
+            @Valid @RequestBody UpdatePluginCmd command) {
         command.setPluginId(pluginId);
         pluginService.updatePlugin(command);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
     }
 
     @PutMapping("/{pluginId}/default")
-    @AuditLog(module = PLUGIN, type = UPDATE, descr = "'Default Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
+    @AuditLog(module = PLUGIN, type = UPDATE,
+            descr = "'Default Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
     public Result<Boolean> defaultPlugin(@PathVariable("pluginId") Long pluginId) {
         pluginService.defaultPlugin(pluginId);
         return Result.success(ResultMessage.UPDATE_SUCCESS);
@@ -82,7 +105,8 @@ public class PluginController {
 
     @DeleteMapping("/{pluginId}")
     @PreAuthorize("hasAuthority('system:plugin:delete')")
-    @AuditLog(module = PLUGIN, type = DELETE, descr = "'Delete Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
+    @AuditLog(module = PLUGIN, type = DELETE,
+            descr = "'Delete Plugin: ' + @pluginService.queryPlugin(#pluginId).pluginName")
     public Result<Boolean> deletePlugin(@PathVariable("pluginId") Long pluginId) {
         pluginService.deletePlugin(pluginId);
         return Result.success(ResultMessage.DELETE_SUCCESS);

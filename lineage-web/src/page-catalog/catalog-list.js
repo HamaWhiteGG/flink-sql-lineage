@@ -116,7 +116,7 @@ const Cm = () => {
   return (
     <div>
       <div className='m8 p16 white-bg'>
-        <div className='fs28 mb16'>Catalog</div>
+        <div className='fs28 mb16'>Catalog Management</div>
         <Text>
           Catalogs provide metadata, such as databases, tables, partitions, views, and functions and information needed to access data stored in a database or other external systems.
         </Text>
@@ -152,12 +152,12 @@ const Cm = () => {
                     
                   </div>
                   <div className='item-info FBH FBJ'>
-                    <span className='i-label'>Catalog Type：{t.catalogType}</span>
-                    <span className='i-label'>Default Database：{t.defaultDatabase}</span>
-                    <span className='i-label'>plugin：{pluginListMap[t.pluginId]}</span>
+                    <span className='i-label'>Type：{t.catalogType}</span>
+                    <span className='i-label'>Database：{t.defaultDatabase}</span>
+                    <span className='i-label'>Plugin：{pluginListMap[t.pluginId]}</span>
                   </div>
                   <div className='item-info FBH FBJ'>
-                    <span className='i-label'>Describe：{t.descr}</span>
+                    <span className='i-label'>Description：{t.descr}</span>
                   </div>
                 </div>
                 
