@@ -9,54 +9,27 @@ INSERT INTO lineage.bas_role (role_id, role_name, create_time, modify_time, inva
 
 INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid) VALUES (1, 1, 1, 0);
 INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid) VALUES (2, 2, 2, 0);
-INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid)
-VALUES (3, 1, 3, 0);
-INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid)
-VALUES (4, 1, 4, 0);
-INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid)
-VALUES (5, 1, 5, 0);
+INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid) VALUES (3, 1, 3, 0);
+INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid) VALUES (4, 1, 4, 0);
+INSERT INTO lineage.rel_role_user (rid, role_id, user_id, invalid) VALUES (5, 1, 5, 0);
 
-INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time,
-                                    modify_time, invalid)
-VALUES (1, 'plugins', 'add plugin', 'system:plugin:add', 1674565178000, 1674565178000, 0);
-INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time,
-                                    modify_time, invalid)
-VALUES (2, 'plugins', 'edit plugin', 'system:plugin:edit', 1674565178000, 1674565178000, 0);
-INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time,
-                                    modify_time, invalid)
-VALUES (3, 'plugins', 'delete plugin', 'system:plugin:delete', 1674565178000, 1674565178000, 0);
-INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time,
-                                    modify_time, invalid)
-VALUES (4, 'plugins', 'disable plugin', 'system:plugin:disable', 1674565178000, 1674565178000, 0);
-INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time,
-                                    modify_time, invalid)
-VALUES (5, 'plugins', 'list plugin', 'system:plugin:list', 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) VALUES (1, 'plugins', 'add plugin', 'system:plugin:add', 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) VALUES (2, 'plugins', 'edit plugin', 'system:plugin:edit', 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) VALUES (3, 'plugins', 'delete plugin', 'system:plugin:delete', 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) VALUES (4, 'plugins', 'disable plugin', 'system:plugin:disable', 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_permission (permission_id, permission_group, permission_name, permission_code, create_time, modify_time, invalid) VALUES (5, 'plugins', 'list plugin', 'system:plugin:list', 1674565178000, 1674565178000, 0);
 
-INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid)
-VALUES (1, 1, 5, 0);
-INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid)
-VALUES (2, 2, 1, 0);
-INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid)
-VALUES (3, 2, 2, 0);
-INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid)
-VALUES (4, 2, 3, 0);
-INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid)
-VALUES (5, 2, 4, 0);
-INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid)
-VALUES (6, 2, 5, 0);
+INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid) VALUES (1, 1, 5, 0);
+INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid) VALUES (2, 2, 1, 0);
+INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid) VALUES (3, 2, 2, 0);
+INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid) VALUES (4, 2, 3, 0);
+INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid) VALUES (5, 2, 4, 0);
+INSERT INTO lineage.rel_role_permission (rid, role_id, permission_id, invalid) VALUES (6, 2, 5, 0);
 
-INSERT INTO lineage.bas_plugin (plugin_id, plugin_name, plugin_code, descr, default_plugin, create_user_id,
-                                modify_user_id, create_time, modify_time, invalid)
-VALUES (1, 'Flink16', 'flink1.16.x', 'Field lineage plugin for flink1.16', 1, 2, 2, 1674565178000, 1674565178000, 0);
-INSERT INTO lineage.bas_plugin (plugin_id, plugin_name, plugin_code, descr, default_plugin, create_user_id,
-                                modify_user_id, create_time, modify_time, invalid)
-VALUES (2, 'Flink14', 'flink1.14.x', 'Field lineage plugin for flink1.14', 0, 2, 2, 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_plugin (plugin_id, plugin_name, plugin_code, descr, default_plugin, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (1, 'Flink16', 'flink1.16.x', 'Field lineage plugin for flink1.16', 1, 2, 2, 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_plugin (plugin_id, plugin_name, plugin_code, descr, default_plugin, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (2, 'Flink14', 'flink1.14.x', 'Field lineage plugin for flink1.14', 0, 2, 2, 1674565178000, 1674565178000, 0);
 
-INSERT INTO lineage.bas_catalog (catalog_id, plugin_id, catalog_name, catalog_type, default_database, descr, properties,
-                                 default_catalog, create_user_id, modify_user_id, create_time, modify_time, invalid)
-VALUES (1, 1, 'Flink16_Memory', 'generic_in_memory', 'default',
-        'The MemoryCatalog is an in-memory implementation of a catalog. All objects will be available only for the lifetime of the session.',
-        null, 1, 1, 1, 1674565178000, 1674565178000, 0);
+INSERT INTO lineage.bas_catalog (catalog_id, plugin_id, catalog_name, catalog_type, default_database, descr, properties, default_catalog, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (1, 1, 'Flink16_Memory', 'generic_in_memory', 'default', 'The MemoryCatalog is an in-memory implementation of a catalog. All objects will be available only for the lifetime of the session.', null, 1, 1, 1, 1674565178000, 1674565178000, 0);
 
 INSERT INTO lineage.bas_table (table_id, catalog_id, `database`, table_name, ddl, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (1, 1, 'default', 'ods_mysql_users', 'Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgb2RzX215c3FsX3VzZXJzICgKICAgIGlkIEJJR0lOVCBQUklNQVJZIEtFWSBOT1QgRU5GT1JDRUQsCiAgICBuYW1lIFNUUklORywKICAgIGJpcnRoZGF5IFRJTUVTVEFNUCgzKSwKICAgIHRzIFRJTUVTVEFNUCgzKSwKICAgIHByb2NfdGltZSBhcyBwcm9jdGltZSAoKQogICkKV0lUSAogICgKICAgICdjb25uZWN0b3InPSdteXNxbC1jZGMnLAogICAgJ2hvc3RuYW1lJz0nMTI3LjAuMC4xJywKICAgICdwb3J0Jz0nMzMwNicsCiAgICAndXNlcm5hbWUnPSdyb290JywKICAgICdwYXNzd29yZCc9J3h4eCcsCiAgICAnc2VydmVyLXRpbWUtem9uZSc9J0FzaWEvU2hhbmdoYWknLAogICAgJ2RhdGFiYXNlLW5hbWUnPSdkZW1vJywKICAgICd0YWJsZS1uYW1lJz0ndXNlcnMnCiAgKQ==', 'system built-in table', 1, 1, 1674565178000, 1674565178000, 0);
 INSERT INTO lineage.bas_table (table_id, catalog_id, `database`, table_name, ddl, descr, create_user_id, modify_user_id, create_time, modify_time, invalid) VALUES (2, 1, 'default', 'dwd_hudi_users', 'Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMKICBkd2RfaHVkaV91c2VycyAoCiAgICBpZCBCSUdJTlQgUFJJTUFSWSBLRVkgTk9UIEVORk9SQ0VELAogICAgbmFtZSBTVFJJTkcsCiAgICBjb21wYW55X25hbWUgU1RSSU5HLAogICAgYmlydGhkYXkgVElNRVNUQU1QKDMpLAogICAgdHMgVElNRVNUQU1QKDMpLAogICAgYHBhcnRpdGlvbmAgVkFSQ0hBUigyMCkKICApIFBBUlRJVElPTkVEIEJZIChgcGFydGl0aW9uYCkKV0lUSAogICgKICAgICdjb25uZWN0b3InPSdodWRpJywKICAgICd0YWJsZS50eXBlJz0nQ09QWV9PTl9XUklURScsCiAgICAncmVhZC5zdHJlYW1pbmcuZW5hYmxlZCc9J3RydWUnLAogICAgJ3JlYWQuc3RyZWFtaW5nLmNoZWNrLWludGVydmFsJz0nMScKICAp', 'system built-in table', 1, 1, 1674565178000, 1674565178000, 0);
