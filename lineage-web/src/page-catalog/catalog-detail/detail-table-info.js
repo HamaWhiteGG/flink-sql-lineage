@@ -81,7 +81,9 @@ const Cm = () => {
   return (
     <div className='right-info-box'>
       <div className='white-bg p16'>
-        <Descriptions title={itemId} extra={<Button type="primary" onClick={() => {setAddTableVisible(true)}}>Edit</Button>}>
+        <Descriptions title={itemId} 
+        // extra={<Button type="primary" onClick={() => {setAddTableVisible(true)}}>Edit</Button>}
+        >
           <Descriptions.Item label="Catalog Name">{catalogName}</Descriptions.Item>
           <Descriptions.Item label="Catalog Type">{catalogType}</Descriptions.Item>
           <Descriptions.Item label="Database">{defaultDatabase}</Descriptions.Item>
