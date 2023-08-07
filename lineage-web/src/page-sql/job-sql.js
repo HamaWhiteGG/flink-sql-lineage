@@ -45,9 +45,10 @@ const Cm = (props) => {
     }
   }
   const [value, setValue] = useState(null)
-  const editorWillMount = () => {
+  const editorWillMount = (editor, monaco) => {
+    // editor.getAction('editor.action.formatDocument').run();
     // var decorations = monaco.editor.deltaDecorations(
-    //   [],
+      // [],
     //   [
     //     {
     //       range: new monaco.Range(3, 1, 5, 1),
@@ -119,15 +120,20 @@ const Cm = (props) => {
     }
   }
 
+  const onKeyDown = (e) => {
+    if (e.ctrlKey && e.keyCode == 83 || e.metaKey && e.keyCode == 83) {
+      e.preventDefault();
+      updateSql()
+    }
+  }
+
   useEffect(() => {
     getJobDetail(taskId)
   }, [taskId])
 
-  // useEffect(() => {
-  //   if (value) {
-  //     setIsUpdate(true)
-  //   }
-  // }, [value])
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown)
+  }, [])
 
   return (
     <div className='left-box'>
