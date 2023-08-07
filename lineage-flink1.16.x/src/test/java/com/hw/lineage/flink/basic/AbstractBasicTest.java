@@ -169,10 +169,7 @@ public abstract class AbstractBasicTest {
     }
 
     /**
-     * Create Hudi sink table dwd_hudi_user.
-     * <p>
-     * Since flink1.16 does not support hudi, temporarily change the connector to print,
-     * but the table name remains unchanged
+     * Create Hudi sink table dwd_hudi_users
      */
     protected void createTableOfDwdHudiUsers() {
         context.execute("DROP TABLE IF EXISTS dwd_hudi_users");
@@ -185,7 +182,27 @@ public abstract class AbstractBasicTest {
                 "       ts                  TIMESTAMP(3)                    ," +
                 "        `partition`        VARCHAR(20)                      " +
                 ") PARTITIONED BY (`partition`) WITH ( " +
-                "       'connector' = 'print'                                " +
+                "       'connector' = 'hudi'                                    ," +
+                "       'table.type' = 'COPY_ON_WRITE'                          ," +
+                "       'path' = '/hudi/users'                                  ," +
+                "       'read.streaming.enabled' = 'true'                       ," +
+                "       'read.streaming.check-interval' = '1'                    " +
+                ")");
+    }
+
+    /**
+     * Create Hudi sink table dws_users_cnt
+     */
+    protected void createTableOfDwsHudiUsersCnt() {
+        context.execute("DROP TABLE IF EXISTS dws_users_cnt");
+
+        context.execute("CREATE TABLE IF NOT EXISTS  dws_users_cnt ( " +
+                "       id                  BIGINT PRIMARY KEY NOT ENFORCED ," +
+                "       name_cnt            BIGINT                          ," +
+                "       company_name_cnt    BIGINT                           " +
+                ") WITH ( " +
+                "       'connector' = 'hudi'                                    ," +
+                "       'table.type' = 'MERGE_ON_READ'                           " +
                 ")");
     }
 

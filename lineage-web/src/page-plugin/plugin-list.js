@@ -58,10 +58,10 @@ const Cm = () => {
   return (
     <div>
       <div className='m8 p16 white-bg'>
-        <div className='fs28 mb16'>Plugin</div>
-        {/* <Text>
-        xxx  
-        </Text> */}
+        <div className='fs28 mb16'>Plugin Management</div>
+        <Text>
+          The plugin is used to parse different versions of Flink.
+        </Text>
       </div>
       <div className='m8 p24 main white-bg'>
         <div className='catalog-top-bar FBH FBJ mb16'>
@@ -123,7 +123,7 @@ const Cm = () => {
                     </div> */}
                   </div>
                   <div className='item-info FBH FBJ'>
-                    <span className='i-label'>Describe：{t.descr || '--'}</span>
+                    <span className='i-label'>Description：{t.descr || '--'}</span>
                   </div>
                 </div>
                 

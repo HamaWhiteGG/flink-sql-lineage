@@ -39,6 +39,9 @@ public class LookupJoinTest extends AbstractBasicTest {
 
         // create hudi sink table dwd_hudi_users
         createTableOfDwdHudiUsers();
+
+        // Create Hudi sink table dws_users_cnt
+        createTableOfDwsHudiUsersCnt();
     }
 
     /**
@@ -79,4 +82,27 @@ public class LookupJoinTest extends AbstractBasicTest {
         analyzeLineage(sql, expectedArray);
     }
 
+    /**
+     * insert-select-from-hudi
+     */
+    @Test
+    public void testInsertSelectFromHudi() {
+        String sql = "INSERT into dws_users_cnt " +
+                "SELECT " +
+                "       id," +
+                "       COUNT(DISTINCT name), " +
+                "       COUNT(DISTINCT company_name) " +
+                "FROM" +
+                "       dwd_hudi_users " +
+                "GROUP BY " +
+                "       id";
+
+        String[][] expectedArray = {
+                {"dwd_hudi_users", "id", "dws_users_cnt", "id"},
+                {"dwd_hudi_users", "name", "dws_users_cnt", "name_cnt", "COUNT(DISTINCT name)"},
+                {"dwd_hudi_users", "company_name", "dws_users_cnt", "company_name_cnt", "COUNT(DISTINCT company_name)"}
+        };
+
+        analyzeLineage(sql, expectedArray);
+    }
 }

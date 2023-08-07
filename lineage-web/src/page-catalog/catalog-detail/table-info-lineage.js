@@ -345,7 +345,7 @@ const Cm = (props) => {
   }
   return (
     <div className='right-info-box pt8'>
-      <div onClick={() => {setIsFold(!isFold)}}>
+      {/* <div onClick={() => {setIsFold(!isFold)}}>
         {isFold ? 'Table' : 'Field'} lineage
       </div>
       <div onClick={() => onFocus()}>
@@ -356,7 +356,7 @@ const Cm = (props) => {
       </div>
       <div onClick={() => onReduce()}>
         -
-      </div>
+      </div> */}
       <LineageTable
         {...data}
         options={{}}

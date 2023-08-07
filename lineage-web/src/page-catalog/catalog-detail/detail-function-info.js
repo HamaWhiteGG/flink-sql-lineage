@@ -79,8 +79,8 @@ const Cm = () => {
           getFunInfos()
           setAddFunVisible(true)
         }}>Edit</Button>}>
-          <Descriptions.Item label="Catalog Name">{catalogName}</Descriptions.Item>
-          <Descriptions.Item label="Catalog Type">{catalogType}</Descriptions.Item>
+          <Descriptions.Item label="Name">{catalogName}</Descriptions.Item>
+          <Descriptions.Item label="Type">{catalogType}</Descriptions.Item>
           <Descriptions.Item label="Database">{defaultDatabase}</Descriptions.Item>
           <Descriptions.Item label="Plugin">{pluginName}</Descriptions.Item>
         </Descriptions>

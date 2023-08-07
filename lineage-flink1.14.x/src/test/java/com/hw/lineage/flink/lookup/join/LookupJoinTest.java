@@ -56,9 +56,9 @@ public class LookupJoinTest extends AbstractBasicTest {
                 "       b.company_name , " +
                 "       a.birthday ," +
                 "       a.ts ," +
-                "       DATE_FORMAT(a.birthday, 'yyyyMMdd') as p " +
+                "       DATE_FORMAT(a.birthday, 'yyyyMMdd') AS p " +
                 "FROM" +
-                "       ods_mysql_users as a " +
+                "       ods_mysql_users AS a " +
                 "JOIN " +
                 "   dim_mysql_company FOR SYSTEM_TIME AS OF a.proc_time AS b " +
                 "ON " +
