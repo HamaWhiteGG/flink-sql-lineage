@@ -22,7 +22,7 @@ The Lineage Analysis system for FlinkSQL supports advanced syntax such as Waterm
 * Plugin-based design, with each Flink version corresponding to a plugin.
 * Utilizing SPI and Classloaders, each plugin is loaded using a separate Classloader.
 
-## How to Build
+## Build and Deploy
 Prerequisites for building Flink:
 * Java 8
 * Unix-like environment (we use Linux, Mac OS X, Cygwin, WSL)
@@ -30,10 +30,28 @@ Prerequisites for building Flink:
 
 ```shell
 git clone https://github.com/HamaWhiteGG/flink-sql-lineage.git
+
 cd flink-sql-lineage
 mvn clean package
 ```
 > Note: If you use IntelliJ IDEA, please install the Manifold plugin.
+
+The database is MySQL, and scripts are located in the directory [scripts/mysql](scripts/mysql).
+
+If you don't have MySQL, you can switch to the test profile to quick start (which uses the H2 database).
+
+Then Run [LineageServerApplication](lineage-server/lineage-server-start/src/main/java/com/hw/lineage/server/start/LineageServerApplication.java) and then open http://127.0.0.1:8194.
+
+For deploy on a remote server, you can quickly deploy using [deploy.sh](sbin/deploy.sh) (remember to modify the IP).
+```shell
+sh sbin/deploy.sh
+```
+
+If you prefer to deploy using Docker Compose, run the following command:
+```shell
+sh sbin/start-docker-compose.sh
+```
+
 
 ## Support
 Don’t hesitate to ask!
