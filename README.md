@@ -22,6 +22,19 @@ The Lineage Analysis system for FlinkSQL supports advanced syntax such as Waterm
 * Plugin-based design, with each Flink version corresponding to a plugin.
 * Utilizing SPI and Classloaders, each plugin is loaded using a separate Classloader.
 
+## Principle
+
+![Principle.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Principle.png)
+
+1. Syntax parsing involves converting Flink SQL into an Abstract Syntax Tree (AST), referred to as AST, where Calcite uses SqlNode for representation.
+2. Syntax validation is performed by leveraging metadata information for syntax verification, resulting in a syntax tree AST composed of SqlNode elements.
+3. Semantic analysis entails constructing a relational expression RelNode tree based on SqlNode and metadata information.
+4. The getColumnOrigins(RelNode rel, int column) function from RelMetadataQuery is invoked to query original field details. Subsequently, lineage relationships are constructed, and the results are returned.
+
+> If encountering unresolved lineage relationships, please examine the types within the RelNode Tree. 
+> Generally, to accurately parse them, you can add corresponding methods within the RelMdColumnOrigins class in the source code.
+
+
 ## Build and Deploy
 Prerequisites for building Flink:
 * Java 8
