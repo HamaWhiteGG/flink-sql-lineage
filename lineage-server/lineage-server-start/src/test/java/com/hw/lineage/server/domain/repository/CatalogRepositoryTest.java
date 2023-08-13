@@ -48,13 +48,13 @@ public class CatalogRepositoryTest extends AbstractSpringBootTest {
         assertThat(entry.getPluginId()).isEqualTo(1L);
         assertThat(entry.getPluginCode()).isEqualTo("flink1.16.x");
         assertThat(entry.getCatalogId()).isEqualTo(1L);
-        assertThat(entry.getCatalogName()).isEqualTo("Flink1_16_Memory");
+        assertThat(entry.getCatalogName()).isEqualTo("Flink16_memory");
     }
 
     @Test
     public void testFind() {
         PluginId pluginId = new PluginId(1L);
-        String catalogName = "Flink1_16_Memory";
+        String catalogName = "Flink16_memory";
         Catalog catalog = catalogRepository.find(pluginId, catalogName);
 
         assertThat(catalog).isNotNull();
