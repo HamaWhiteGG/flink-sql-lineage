@@ -11,7 +11,13 @@ The Lineage Analysis system for FlinkSQL supports advanced syntax such as Waterm
 * Visualize data lineage, displaying the total number of downstream fields for a specific column.
 * Simultaneously support parsing multiple versions of Flink.
 * Automatically parse JAR content when creating a new Flink UDF to populate function information.
-* Support view reference jobs for custom functions.
+* Support view reference jobs for custom functions. 
+
+
+If you use WeChat, you can join the following group.
+
+<img src="https://github.com/HamaWhiteGG/flink-sql-lineage/blob/dev/data/images/wechat-group.png" alt="wechat-group.png" style="width:40%;">
+
 
 ## Architecture
 
