@@ -13,11 +13,9 @@ The Lineage Analysis system for FlinkSQL supports advanced syntax such as Waterm
 * Automatically parse JAR content when creating a new Flink UDF to populate function information.
 * Support view reference jobs for custom functions. 
 
-
-If you use WeChat, you can join the following group.
-
-<img src="https://github.com/HamaWhiteGG/flink-sql-lineage/blob/dev/data/images/wechat-group.png" alt="wechat-group.png" style="width:40%;">
-
+If you have WeChat and are interested, you can add me: HamaWhite.
+If you have Discord and are interested, you can add me: hamawhite.
+Alternatively, you can send an email to baisongxx@gmail.
 
 ## Architecture
 
