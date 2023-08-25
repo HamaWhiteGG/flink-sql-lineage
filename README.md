@@ -2,6 +2,8 @@
 
 The Lineage Analysis system for FlinkSQL supports advanced syntax such as Watermark, UDTF, CEP, Windowing TVFs, and CTAS. The core process involves parsing SQL using Calcite to generate a RelNode tree. Subsequently, RelMetadataQuery is utilized to retrieve field-level lineage information, which is then presented through visualization.
 
+> If you are interested, you can add me on WeChat: HamaWhite, or send email to baisongxx@gmail.com
+
 ## Features
 
 ![Product.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Product.png)
@@ -11,13 +13,7 @@ The Lineage Analysis system for FlinkSQL supports advanced syntax such as Waterm
 * Visualize data lineage, displaying the total number of downstream fields for a specific column.
 * Simultaneously support parsing multiple versions of Flink.
 * Automatically parse JAR content when creating a new Flink UDF to populate function information.
-* Support view reference jobs for custom functions. 
-
-
-If you use WeChat, you can join the following group.
-
-<img src="https://github.com/HamaWhiteGG/flink-sql-lineage/blob/dev/data/images/wechat-group.png" alt="wechat-group.png" style="width:40%;">
-
+* Support view reference jobs for custom functions.
 
 ## Architecture
 
