@@ -16,7 +16,7 @@
         <hive.version>3.1.2</hive.version>
         <mysql.cdc.version>2.2.1</mysql.cdc.version>
         <hudi.version>0.13.1</hudi.version>
-        <paimon.version>0.4-SNAPSHOT</paimon.version>
+        <paimon.version>0.4.0-incubating</paimon.version>
     </properties>
 
     <dependencies>
