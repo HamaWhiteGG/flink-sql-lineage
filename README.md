@@ -6,7 +6,7 @@ The Lineage Analysis system for FlinkSQL supports advanced syntax such as Waterm
 
 ## Features
 
-![Product.png](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Product.png)
+![Product.gif](https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Product.gif)
 
 * Support lineage at both table and column levels in Flink SQL.
 * Support processing and transformation relationships for field lineage in Flink SQL.
