@@ -28,4 +28,4 @@ printf "It takes tens of seconds for the service to start, please wait a moment.
 printf "Swagger API: http://%s:8194/swagger-ui/index.html\n" "${LOCAL_IP}"
 printf "Knife4j API: http://%s:8194/doc.html\n" "${LOCAL_IP}"
 printf "Quick Catalog API: http://%s:8194/catalogs/1\n" "${LOCAL_IP}"
-printf "Index Page: http://%s:8194/index.html\n" "${LOCAL_IP}"
+printf "Home Page: http://%s:8194\n" "${LOCAL_IP}"
