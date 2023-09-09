@@ -45,8 +45,9 @@ Prerequisites for building Flink:
 
 ```shell
 git clone https://github.com/HamaWhiteGG/flink-sql-lineage.git
-
 cd flink-sql-lineage
+
+# export JAVA_HOME=JDK8_INSTALL_HOME && mvn clean package
 mvn clean package
 ```
 > Note: If you use IntelliJ IDEA, please install the Manifold plugin.
@@ -59,11 +60,13 @@ Then Run [LineageServerApplication](lineage-server/lineage-server-start/src/main
 
 For deploy on a remote server, you can quickly deploy using [deploy.sh](sbin/deploy.sh) (remember to modify the IP).
 ```shell
+# export JAVA_HOME=JDK8_INSTALL_HOME && sh sbin/deploy.sh
 sh sbin/deploy.sh
 ```
 
 If you prefer to deploy using Docker Compose, run the following command:
 ```shell
+# export JAVA_HOME=JDK8_INSTALL_HOME && sh sbin/start-docker-compose.sh
 sh sbin/start-docker-compose.sh
 ```
 
