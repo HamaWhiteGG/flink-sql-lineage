@@ -83,5 +83,5 @@ Contact [me](baisongxx@gmail.com) if you are looking for implementation tasks th
 
 ## Reward
 If the project has been helpful to you, you can treat me to a cup of coffee.
-<img src="https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Appreciation%20code.png" alt="Appreciation code" style="width:60%;">
+<img src="https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Appreciation%20code.png" alt="Appreciation code" style="width:40%;">
 > This is a WeChat appreciation code.
