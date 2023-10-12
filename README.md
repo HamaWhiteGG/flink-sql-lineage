@@ -81,4 +81,7 @@ This is an active open-source project. We are always open to people who want to 
 
 Contact [me](baisongxx@gmail.com) if you are looking for implementation tasks that fit your skills.
 
-
+## Reward
+If the project has been helpful to you, you can treat me to a cup of coffee.
+<img src="https://github.com/HamaWhiteGG/flink-sql-lineage/blob/main/data/images/Appreciation%20code.png" alt="Appreciation code" style="width:60%;">
+> This is a WeChat appreciation code.
