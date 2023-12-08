@@ -55,16 +55,16 @@ public class FunctionRepositoryTest extends AbstractSpringBootTest {
 
         assertThat(entry).isNotNull();
         assertThat(entry.getPluginCode()).isEqualTo("flink1.16.x");
-        assertThat(entry.getCatalogName()).isEqualTo("Flink1_16_Memory");
+        assertThat(entry.getCatalogName()).isEqualTo("Flink16_memory");
         assertThat(entry.getDatabase()).isEqualTo("default");
         assertThat(entry.getFunctionId()).isEqualTo(1L);
-        assertThat(entry.getFunctionName()).isEqualTo("flink_suffix_udf");
+        assertThat(entry.getFunctionName()).isEqualTo("my_suffix_udf");
     }
 
     @Test
     public void testFind() {
         CatalogId catalogId = new CatalogId(1L);
-        Function function = functionRepository.find(catalogId, "default", "flink_suffix_udf");
+        Function function = functionRepository.find(catalogId, "default", "my_suffix_udf");
 
         assertThat(function).isNotNull();
         assertThat(function.getFunctionId()).isEqualTo(new FunctionId(1L));
