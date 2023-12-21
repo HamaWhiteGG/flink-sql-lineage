@@ -22,7 +22,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "antd": "^5.2.1",
+    "antd": "5.11.5",
     "axios": "0.27.x",
     "babel-loader": "8.x",
     "babel-preset-react-app": "^10.0.1",
