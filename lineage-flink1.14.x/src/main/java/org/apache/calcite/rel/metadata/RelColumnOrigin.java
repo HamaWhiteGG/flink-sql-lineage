@@ -104,6 +104,10 @@ public class RelColumnOrigin {
         return transform;
     }
 
+    public void setTransform(String transform) {
+        this.transform = transform;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof RelColumnOrigin)) {

@@ -85,10 +85,37 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         // Aggregate columns are derived from input columns
         AggregateCall call = rel.getAggCallList().get(iOutputColumn - rel.getGroupCount());
         final Set<RelColumnOrigin> set = new LinkedHashSet<>();
+        String transform = call.toString();
         for (Integer iInput : call.getArgList()) {
-            set.addAll(mq.getColumnOrigins(rel.getInput(), iInput));
+
+            RexNode rexNode = ((Project) rel.getInput()).getProjects().get(iInput);
+
+            if (rexNode instanceof RexLiteral) {
+                RexLiteral literal = (RexLiteral) rexNode;
+                transform = transform.replace("$" + iInput, literal.toString());
+                continue;
+            }
+
+            Set<org.apache.calcite.rel.metadata.RelColumnOrigin> subSet =
+                    mq.getColumnOrigins(rel.getInput(), iInput);
+
+            if (!(rexNode instanceof RexCall)) {
+                subSet = createDerivedColumnOrigins(subSet, rexNode);
+            }
+
+            for (org.apache.calcite.rel.metadata.RelColumnOrigin relColumnOrigin : subSet) {
+                if (relColumnOrigin.getTransform() != null) {
+                    transform = transform.replace("$" + iInput, relColumnOrigin.getTransform());
+                }
+                break;
+            }
+            set.addAll(subSet);
         }
-        return createDerivedColumnOrigins(set, call);
+
+        // 替换所有的transform
+        final String finalTransform = transform;
+        set.forEach(s -> s.setTransform(finalTransform));
+        return set;
     }
 
     public Set<RelColumnOrigin> getColumnOrigins(Join rel, RelMetadataQuery mq, int iOutputColumn) {
@@ -422,11 +449,11 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         if (operandSet.isEmpty()) {
             return finalTransform;
         }
-        if (inputSet.size() != operandSet.size()) {
+        /*if (inputSet.size() != operandSet.size()) {
             LOG.warn("The number [{}] of fields in the source tables are not equal to operands [{}]", inputSet.size(),
                     operandSet.size());
             return null;
-        }
+        }*/
 
         Map<String, String> sourceColumnMap = buildSourceColumnMap(inputSet, transform);
 
