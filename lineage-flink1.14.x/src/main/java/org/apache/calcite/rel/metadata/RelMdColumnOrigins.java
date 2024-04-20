@@ -59,7 +59,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
 
     private static final Logger LOG = LoggerFactory.getLogger(RelMdColumnOrigins.class);
 
-    private final Pattern pattern = Pattern.compile("\\$[\\w.]+");
+    private final Pattern pattern = Pattern.compile("\\$[\\d.]+");
 
     public static final RelMetadataProvider SOURCE =
             ReflectiveRelMetadataProvider.reflectiveSource(
