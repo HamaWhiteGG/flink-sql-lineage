@@ -30,8 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.hw.lineage.common.util.Constant.DELIMITER;
@@ -58,8 +56,6 @@ import static com.hw.lineage.common.util.Constant.INITIAL_CAPACITY;
 public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.ColumnOrigin> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RelMdColumnOrigins.class);
-
-    private final Pattern pattern = Pattern.compile("\\$[\\d.]+");
 
     public static final RelMetadataProvider SOURCE =
             ReflectiveRelMetadataProvider.reflectiveSource(
@@ -92,7 +88,7 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
 
             if (rexNode instanceof RexLiteral) {
                 RexLiteral literal = (RexLiteral) rexNode;
-                transform = transform.replace("$" + iInput, literal.toString());
+                transform = transform.replace("$" + iInput, literal.toString().replace("_UTF-16LE", ""));
                 continue;
             }
 
@@ -438,32 +434,12 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
     private String computeTransform(Set<RelColumnOrigin> inputSet, Object transform) {
         LOG.debug("origin transform: {}, class: {}", transform, transform.getClass());
         String finalTransform = transform.toString();
-
-        Matcher matcher = pattern.matcher(finalTransform);
-
-        Set<String> operandSet = new LinkedHashSet<>();
-        while (matcher.find()) {
-            operandSet.add(matcher.group());
-        }
-
-        if (operandSet.isEmpty()) {
-            return finalTransform;
-        }
-        /*if (inputSet.size() != operandSet.size()) {
-            LOG.warn("The number [{}] of fields in the source tables are not equal to operands [{}]", inputSet.size(),
-                    operandSet.size());
-            return null;
-        }*/
-
         Map<String, String> sourceColumnMap = buildSourceColumnMap(inputSet, transform);
 
-        matcher = pattern.matcher(finalTransform);
-        String temp;
-        while (matcher.find()) {
-            temp = matcher.group();
-            finalTransform = finalTransform.replace(temp, sourceColumnMap.get(temp));
+        for (Map.Entry<String, String> entry : sourceColumnMap.entrySet()) {
+            finalTransform = finalTransform.replace(entry.getKey(), entry.getValue());
         }
-        // temporary special treatment
+
         finalTransform = finalTransform.replace("_UTF-16LE", "");
         LOG.debug("final transform: {}", finalTransform);
         return finalTransform;
@@ -508,7 +484,12 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
         }
         Map<String, String> sourceColumnMap = new HashMap<>(INITIAL_CAPACITY);
         Iterator<String> iterator = optimizeSourceColumnSet(inputSet).iterator();
-        traversalSet.forEach(index -> sourceColumnMap.put("$" + index, iterator.next()));
+        traversalSet.forEach(
+                index -> {
+                    if (iterator.hasNext()) {
+                        sourceColumnMap.put("$" + index, iterator.next());
+                    }
+                });
         LOG.debug("sourceColumnMap: {}", sourceColumnMap);
         return sourceColumnMap;
     }
