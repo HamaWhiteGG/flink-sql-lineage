@@ -157,6 +157,12 @@ public class RelMdColumnOrigins implements MetadataHandler<BuiltInMetadata.Colum
                         + DELIMITER
                         + tableFunctionScan.getRowType().getFieldNames().get(iOutputColumn - nLeftColumns);
                 return createDerivedColumnOrigins(set, transform);
+            } else if (rel.getRight() instanceof Uncollect) { // unnest can not be parse to TableFunction
+                final Set<RelColumnOrigin> set = new LinkedHashSet<>();
+                for (Integer iInput : rel.getRequiredColumns().asList()) {
+                    set.addAll(mq.getColumnOrigins(rel.getLeft(), iInput));
+                }
+                return createDerivedColumnOrigins(set);
             }
             return mq.getColumnOrigins(rel.getRight(), iOutputColumn - nLeftColumns);
         }
