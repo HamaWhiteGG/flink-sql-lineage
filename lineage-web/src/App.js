@@ -174,7 +174,7 @@ const App = () => {
             textAlign: 'center',
           }}
         >
-          FlinkSQL Lineage  ©2023
+          FlinkSQL Lineage  ©2025
         </Footer>
       </Layout>
     </Layout>
